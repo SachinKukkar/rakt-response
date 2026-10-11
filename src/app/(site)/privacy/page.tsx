@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
-import { Notice, PageHeader } from "@/components/common/page-parts";
+import { Notice } from "@/components/common/page-parts";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
@@ -20,8 +21,9 @@ const ACCESS = [
 
 export default function PrivacyPage() {
   return (
-    <div className="page-container max-w-3xl py-8 sm:py-12">
-      <PageHeader eyebrow="Your data" title="Privacy policy" description="Last updated: 11 October 2026" />
+    <>
+      <PageHero eyebrow="Your data" title="Privacy," highlight="in plain words." subtitle="What we collect, who sees it, and how to change your mind. Last updated 11 October 2026." />
+    <div className="page-container max-w-3xl py-8">
       <Notice tone="warning" title="Review before production" className="mb-6">
         This policy describes how the Rakt Response platform actually handles data. It is not legal advice. The organisation should
         have it reviewed by a qualified professional against the Digital Personal Data Protection Act, 2023 and its rules before
@@ -136,5 +138,6 @@ export default function PrivacyPage() {
         <p>We will update this page when our practices change and show the date of the latest version above.</p>
       </div>
     </div>
+    </>
   );
 }

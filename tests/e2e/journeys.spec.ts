@@ -21,7 +21,7 @@ test.describe("homepage", () => {
     await page.getByRole("button", { name: "Open menu" }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-    await dialog.getByRole("link", { name: "Eligibility" }).click();
+    await dialog.getByRole("link", { name: "Can I donate?" }).click();
     await expect(page).toHaveURL(/\/eligibility$/);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
@@ -122,7 +122,7 @@ test.describe("authentication and access control", () => {
 test.describe("blood requests and stories", () => {
   test("public request page explains limits and offers a request form", async ({ page }) => {
     await page.goto("/blood-requests");
-    await expect(page.getByText("In an emergency, contact the hospital first")).toBeVisible();
+    await expect(page.getByText("Emergency? Call the hospital first")).toBeVisible();
     await page.getByRole("link", { name: /Submit a request/ }).click();
     await expect(page).toHaveURL(/\/blood-requests\/new/);
     await expect(page.getByText("First, contact the hospital blood bank")).toBeVisible();

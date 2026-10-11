@@ -54,6 +54,7 @@ Local Supabase (`npx supabase db reset`) also loads **fictional** seed accounts 
 | `npm run test:unit` | Validation, helpers, image metadata stripping, CSV, errors |
 | `npm run test:db` | Migrations + RLS/RPC tests in PGlite (in-process Postgres with a Supabase auth stub) |
 | `npm run test:e2e` | Playwright on phone, 320 px and desktop viewports (run `npm run build` first; `PLAYWRIGHT_CHANNEL=chrome` uses installed Chrome) |
+| `npm run test:live` | Full-stack journeys against a **local** Supabase (`npx supabase start`) with `npm run dev` running: signup + email confirmation, donations, requests, volunteer verification, consent-checked contact, stories with photos, password reset, roles, export, deletion |
 | `npm run db:check` | Apply all migrations to an in-memory database |
 | `npm run icons` | Regenerate PWA/favicon derivatives from the supplied logo |
 | `npm run bootstrap-admin -- <email>` | Create the first administrator (service role key required) |

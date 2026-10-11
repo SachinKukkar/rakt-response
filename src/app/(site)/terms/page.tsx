@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
-import { Notice, PageHeader } from "@/components/common/page-parts";
+import { Notice } from "@/components/common/page-parts";
 
 export const metadata: Metadata = {
   title: "Terms of use",
@@ -9,8 +10,9 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="page-container max-w-3xl py-8 sm:py-12">
-      <PageHeader eyebrow="Using Rakt Response" title="Terms of use" description="Last updated: 11 October 2026" />
+    <>
+      <PageHero eyebrow="The fine print" title="Terms of" highlight="use." subtitle="How Rakt Response works, and what it can and can&apos;t do. Last updated 11 October 2026." />
+    <div className="page-container max-w-3xl py-8">
       <Notice tone="warning" title="Review before production" className="mb-6">
         These terms describe how the platform works. The organisation should have them reviewed by a qualified professional before
         relying on them.
@@ -73,5 +75,6 @@ export default function TermsPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

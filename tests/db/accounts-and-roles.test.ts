@@ -319,6 +319,21 @@ describe("roles and privilege escalation", () => {
     expect(updateAttempt).toMatch(/append-only/);
   });
 
+  it("deleting an account with audit history works and keeps the anonymised entries", async () => {
+    const leaver = await createUser(db, donorMetadata({ full_name: "Audit Leaver" }));
+    await as(db, leaver, (tx) => tx.query("select public.request_account_deletion('test')"));
+    const before = await db.query<{ count: number }>("select count(*)::int as count from public.audit_logs where actor_id = $1", [leaver.id]);
+    expect(before.rows[0].count).toBeGreaterThan(0);
+    await db.query("delete from auth.users where id = $1", [leaver.id]);
+    const orphaned = await db.query<{ count: number }>(
+      "select count(*)::int as count from public.audit_logs where entity_id = $1 and action = 'profiles.deletion_requested' and actor_id is null",
+      [leaver.id],
+    );
+    expect(orphaned.rows[0].count).toBe(1);
+    const tamper = await expectDbError(db.query("update public.audit_logs set actor_id = null, action = 'x' where actor_id is not null"));
+    expect(tamper).toMatch(/append-only/);
+  });
+
   it("platform settings: public keys are readable anonymously, private ones are not", async () => {
     const anon = await as(db, null, (tx) => tx.query<{ key: string }>("select key from public.platform_settings"));
     const keys = anon.rows.map((r) => r.key);

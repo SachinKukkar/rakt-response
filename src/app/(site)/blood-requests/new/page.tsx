@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { Hospital, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Notice, PageHeader } from "@/components/common/page-parts";
+import { Notice } from "@/components/common/page-parts";
 import { BloodRequestForm } from "@/components/requests/request-form";
 import { getViewer } from "@/lib/auth";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -19,14 +20,9 @@ export default async function NewBloodRequestPage() {
   const canSubmit = isSupabaseConfigured() && (Boolean(viewer) || anonymousAllowed);
 
   return (
-    <div className="page-container max-w-2xl py-8 sm:py-12">
-      <PageHeader
-        backHref="/blood-requests"
-        backLabel="Blood requests"
-        eyebrow="Find blood"
-        title="Submit a blood request"
-        description="Takes about two minutes. A volunteer verifies every request before any donor is contacted."
-      />
+    <>
+      <PageHero eyebrow="Find blood" title="Request" highlight="donors." subtitle="About two minutes. A volunteer verifies every request before any donor is contacted." />
+    <div className="page-container max-w-2xl py-8">
       <Notice tone="warning" icon={Hospital} className="mb-5" title="First, contact the hospital blood bank">
         They know exactly what is needed and may already have units. Use this form for help finding voluntary donors.
       </Notice>
@@ -55,5 +51,6 @@ export default async function NewBloodRequestPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

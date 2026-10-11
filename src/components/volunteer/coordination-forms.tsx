@@ -175,8 +175,18 @@ export function CoordinationOutcomeForm({ requestId, donorId, response, outcome 
 export function StatusChangeForm({ requestId, allowed, canVerify }: { requestId: string; allowed: RequestStatus[]; canVerify: boolean }) {
   const [state, action] = useActionState(setRequestStatus, initialActionState);
   const options = allowed.filter((s) => canVerify || !["under_verification", "verified", "rejected"].includes(s));
-  const [status, setStatus] = useState<RequestStatus | "">(options[0] ?? "");
-  if (!options.length) return <p className="text-sm text-muted-foreground">This request is closed.</p>;
+  const [choice, setChoice] = useState<RequestStatus | "">(options[0] ?? "");
+  // After a successful change the allowed options change; fall back to the first valid one.
+  const status = choice && options.includes(choice) ? choice : (options[0] ?? "");
+  const setStatus = setChoice;
+  if (!options.length) {
+    return (
+      <div className="space-y-2">
+        <FormMessage state={state} />
+        <p className="text-sm text-muted-foreground">This request is closed.</p>
+      </div>
+    );
+  }
   const needsReason = status === "rejected" || status === "cancelled" || status === "fulfilled";
   return (
     <form action={action} className="space-y-3">

@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 const PUBLIC_PAGES = [
   "/",
   "/about",
+  "/learn",
   "/why-donate",
   "/donation-types",
   "/eligibility",

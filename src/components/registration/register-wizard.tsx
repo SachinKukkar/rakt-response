@@ -234,7 +234,7 @@ export function RegisterWizard() {
           else next();
         }}
       >
-        <h1 className="text-2xl font-extrabold" tabIndex={-1}>
+        <h1 className="font-display text-[1.75rem] leading-tight font-extrabold" tabIndex={-1}>
           {meta.title}
         </h1>
 

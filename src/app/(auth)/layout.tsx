@@ -17,7 +17,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
         <div className="mx-auto flex max-w-lg flex-col items-center px-4 pt-2 text-center">
           <LogoMark size="lg" priority className="shadow-lg shadow-black/20 ring-4 ring-white/30" />
-          <p className="mt-3 text-xl font-extrabold tracking-tight">Rakt Response</p>
+          <p className="font-display mt-3 text-2xl font-extrabold tracking-tight">Rakt Response</p>
           <p className="text-sm text-white/85">{SITE.tagline}</p>
         </div>
         <svg aria-hidden="true" viewBox="0 0 400 40" preserveAspectRatio="none" className="absolute inset-x-0 bottom-0 h-10 w-full fill-warm">

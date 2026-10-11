@@ -15,7 +15,8 @@
     "db:check": "tsx scripts/check-migrations.ts",
     "icons": "node scripts/generate-icons.mjs",
     "bootstrap-admin": "tsx scripts/bootstrap-admin.ts",
-    "check": "npm run lint && npm run typecheck && npm run test"
+    "check": "npm run lint && npm run typecheck && npm run test",
+    "test:live": "playwright test -c playwright.live.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -54,7 +55,7 @@
     "typescript": "^5",
     "vitest": "^5.0.3"
   },
-  "description": "Rakt Response — community blood donor coordination platform",
+  "description": "Rakt Response \u00e2\u20ac\u201d community blood donor coordination platform",
   "engines": {
     "node": ">=20.9"
   }

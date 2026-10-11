@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import {
   Activity,
@@ -18,7 +19,7 @@ import {
   Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EmptyState, Notice, PageHeader, SectionHeading } from "@/components/common/page-parts";
+import { EmptyState, Notice, SectionHeading } from "@/components/common/page-parts";
 import { Pill } from "@/components/common/status-badge";
 import { ImpactStats, type MetricDefinition } from "@/components/impact/impact-stats";
 import { StoryCard, TrustLabelGuide } from "@/components/stories/story-parts";
@@ -93,12 +94,9 @@ export default async function ImpactPage() {
   const camps = (campsResult.data ?? []) as PublicCamp[];
 
   return (
-    <div className="page-container py-8 sm:py-12">
-      <PageHeader
-        eyebrow="Trust & accountability"
-        title="Our Impact"
-        description="Figures calculated from real platform records, stories shared with consent, and an open explanation of how we work."
-      />
+    <>
+      <PageHero eyebrow="Our Impact" title="Real people." highlight="Real numbers." subtitle="Every figure comes straight from verified records. Every story is shared with permission." chips={["No made-up stats", "Verified ≠ self-reported", "Open about how we work"]} />
+    <div className="page-container py-8">
 
       <section className="mb-10" aria-labelledby="metrics-heading">
         <SectionHeading id="metrics-heading" title="Impact dashboard" description="Each figure is counted live from records. Unverified data is never shown as verified." />
@@ -266,5 +264,6 @@ export default async function ImpactPage() {
         </Notice>
       </section>
     </div>
+    </>
   );
 }

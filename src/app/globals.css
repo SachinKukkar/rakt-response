@@ -16,6 +16,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-heading: var(--font-sans);
+  --font-display: var(--font-bricolage), var(--font-sans);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -96,6 +97,10 @@
   h1, h2, h3, h4 {
     @apply font-heading tracking-tight text-navy;
     text-wrap: balance;
+    font-optical-sizing: auto;
+  }
+  h1, h2 {
+    letter-spacing: -0.025em;
   }
   p {
     text-wrap: pretty;
@@ -164,7 +169,100 @@
       radial-gradient(60% 50% at 85% 10%, rgba(200, 32, 50, 0.1) 0%, transparent 70%),
       radial-gradient(50% 40% at 0% 100%, rgba(21, 43, 80, 0.07) 0%, transparent 70%);
   }
+  /* Horizontal swipe rows (no JS): cards snap on phones, wrap into grids on desktop. */
+  .snap-row {
+    @apply -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2;
+    scrollbar-width: none;
+    scroll-padding-inline: 1rem;
+  }
+  .snap-row::-webkit-scrollbar {
+    display: none;
+  }
+  .snap-row > * {
+    @apply shrink-0 snap-start;
+  }
+  /* Tactile press feedback for tappable cards. */
+  .press {
+    @apply transition-transform duration-150 active:scale-[0.97] motion-reduce:transition-none;
+  }
+  .lift {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/10 motion-reduce:transition-none motion-reduce:hover:translate-y-0;
+  }
+  .sticker {
+    @apply inline-flex items-center gap-1.5 rounded-full border-2 border-navy bg-white px-3 py-1 text-xs font-extrabold tracking-wide text-navy uppercase shadow-[3px_3px_0_0_var(--navy)];
+  }
+  .hero-red {
+    background:
+      radial-gradient(90% 70% at 100% 0%, rgba(255, 140, 150, 0.45) 0%, transparent 60%),
+      radial-gradient(70% 60% at 0% 100%, rgba(21, 43, 80, 0.35) 0%, transparent 60%),
+      linear-gradient(165deg, #e63946 0%, #c82032 45%, #9e1426 100%);
+  }
+  .curve-bottom {
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
+  }
+  .text-outline {
+    -webkit-text-stroke: 2px currentColor;
+    color: transparent;
+  }
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      animation: none;
+    }
+  }
   .safe-bottom {
     padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Logo orbit: the ring spins, each drop counter-spins so its label stays upright. */
+@utility animate-orbit {
+  animation: orbit-spin 36s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility animate-orbit-reverse {
+  animation: orbit-spin 36s linear infinite reverse;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility animate-float {
+  animation: float-y 5s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }

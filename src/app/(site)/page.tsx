@@ -107,22 +107,20 @@ export default async function HomePage() {
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent to-white shadow-inner" />
             <div className="absolute inset-6 rounded-full border-2 border-dashed border-primary/15" />
             <LogoMark size="xl" priority className="relative shadow-xl shadow-primary/15" />
-            {(["A+", "O-", "B+", "AB-"] as const).map((group, i) => (
-              <BloodGroupChip
-                key={group}
-                group={group}
-                size="sm"
-                tone={i % 2 ? "outline" : "solid"}
-                className={
-                  [
-                    "absolute top-6 left-8 sm:top-10 sm:left-10",
-                    "absolute top-10 right-6 sm:top-14 sm:right-8",
-                    "absolute bottom-10 left-4 sm:bottom-14 sm:left-6",
-                    "absolute right-8 bottom-6 sm:right-12 sm:bottom-10",
-                  ][i]
-                }
-              />
-            ))}
+            {/* The drops orbit the logo; each counter-rotates so its label stays upright. */}
+            <div className="animate-orbit absolute inset-0 [--orbit-r:122px] sm:[--orbit-r:166px]">
+              {(["A+", "O-", "AB-", "B+"] as const).map((group, i) => (
+                <div
+                  key={group}
+                  className="absolute top-1/2 left-1/2 -mt-[18px] -ml-[18px]"
+                  style={{ transform: `rotate(${i * 90 - 45}deg) translateY(calc(var(--orbit-r) * -1)) rotate(${45 - i * 90}deg)` }}
+                >
+                  <div className="animate-orbit-reverse">
+                    <BloodGroupChip group={group} size="sm" tone={i % 2 ? "outline" : "solid"} />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

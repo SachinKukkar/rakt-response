@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { Eye, Lock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Notice, PageHeader } from "@/components/common/page-parts";
+import { Notice } from "@/components/common/page-parts";
 import { StoryForm } from "@/components/stories/story-form";
 import { getViewer } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -27,12 +28,9 @@ export default async function ShareYourStoryPage() {
   }
 
   return (
-    <div className="page-container max-w-2xl py-8 sm:py-12">
-      <PageHeader
-        eyebrow="Our Impact"
-        title="Share your story"
-        description="Your experience can encourage someone to donate for the first time. Share it in your own words — you stay in control."
-      />
+    <>
+      <PageHero eyebrow="Share your story" title="Your story could be" highlight={"someone's first push."} subtitle={"Donated? Needed blood? Volunteered? Tell it your way — you choose what's shown."} />
+    <div className="page-container max-w-2xl py-8">
       <ul className="mb-5 grid gap-2 sm:grid-cols-3">
         <li className="surface-tint flex items-start gap-2 p-3 text-sm">
           <Lock className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" /> Private until an administrator approves it
@@ -80,5 +78,6 @@ export default async function ShareYourStoryPage() {
         personal experiences and are never presented as medical advice.
       </Notice>
     </div>
+    </>
   );
 }

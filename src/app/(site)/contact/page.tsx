@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { FilePenLine, Hospital, Mail, MessageCircle, Phone, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Notice, PageHeader } from "@/components/common/page-parts";
+import { Notice } from "@/components/common/page-parts";
 import { getPublicSettings } from "@/lib/data/public";
 import { mailtoLink, telLink, whatsappLink } from "@/lib/contact-links";
 import { formatPhone } from "@/lib/phone";
@@ -18,8 +19,9 @@ export default async function ContactPage() {
   const settings = await getPublicSettings();
   const hasAny = settings.contactEmail || settings.contactPhone || settings.whatsapp;
   return (
-    <div className="page-container max-w-3xl py-8 sm:py-12">
-      <PageHeader eyebrow="We respond" title="Contact Rakt Response" description="Our volunteers reply as quickly as they can. We are not an emergency service." />
+    <>
+      <PageHero eyebrow="Contact" title="Talk to" highlight="the team." subtitle="Volunteers reply as fast as they can. We&apos;re not an emergency service." />
+    <div className="page-container max-w-3xl py-8">
 
       <Notice tone="warning" icon={Hospital} title="Need blood urgently?" className="mb-6">
         Contact the treating hospital or the nearest licensed blood bank first. Then{" "}
@@ -101,5 +103,6 @@ export default async function ContactPage() {
         </section>
       </div>
     </div>
+    </>
   );
 }

@@ -151,7 +151,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
 
         <section className="surface p-4" aria-labelledby="status-heading">
           <SectionHeading id="status-heading" title="Status" as="h3" />
-          <StatusChangeForm key={request.status} requestId={request.id} allowed={REQUEST_TRANSITIONS[request.status]} canVerify={viewerCan(viewer, "verify_requests")} />
+          <StatusChangeForm requestId={request.id} allowed={REQUEST_TRANSITIONS[request.status]} canVerify={viewerCan(viewer, "verify_requests")} />
           {request.closure_reason ? <p className="mt-3 text-sm text-muted-foreground">Closing note: {request.closure_reason}</p> : null}
         </section>
       </div>

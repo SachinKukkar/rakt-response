@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HandHeart, Hospital, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EmptyState, Notice, PageHeader } from "@/components/common/page-parts";
+import { EmptyState, Notice } from "@/components/common/page-parts";
+import { PageHero, SectionTitle } from "@/components/learn/learn-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
 import { RequestCard } from "@/components/requests/request-card";
 import { selectClass } from "@/components/common/form-parts";
@@ -33,33 +34,29 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
   const result = await listPublicRequests({ bloodGroup: group, district, requestType: type, limit: PAGE_SIZE, offset: (page - 1) * PAGE_SIZE });
 
   return (
-    <div className="page-container py-8 sm:py-12">
-      <PageHeader
+    <>
+      <PageHero
         eyebrow="Find blood"
-        title="Blood requests"
-        description="Need donors? Submit a request and a volunteer will verify it, then reach out to consenting donors who match."
-        actions={
-          <Button asChild size="lg">
-            <Link href="/blood-requests/new">
-              <Plus className="size-4" aria-hidden="true" /> Submit a request
-            </Link>
-          </Button>
-        }
-      />
-
-      <Notice tone="warning" icon={Hospital} title="In an emergency, contact the hospital first" className="mb-6">
-        The treating hospital or nearest licensed blood bank should always be your first call. Rakt Response coordinates voluntary
-        donors; it cannot reserve blood, certify compatibility or guarantee that a donor will be available.
+        title="Need blood?"
+        highlight="We'll rally donors."
+        subtitle="Tell us what's needed. A volunteer verifies it, then reaches out to matching donors who said yes to being contacted."
+        chips={["Verified before sharing", "Free, always", "Your details stay private"]}
+      >
+        <Button asChild size="lg" className="press bg-white text-primary hover:bg-white/90">
+          <Link href="/blood-requests/new">
+            <Plus className="size-4" aria-hidden="true" /> Submit a request
+          </Link>
+        </Button>
+      </PageHero>
+    <div className="page-container space-y-6 py-8">
+      <Notice tone="warning" icon={Hospital} title="Emergency? Call the hospital first">
+        The treating hospital or nearest licensed blood bank comes first. We coordinate voluntary donors — we can&apos;t reserve blood,
+        check compatibility or guarantee a donor.
       </Notice>
 
       <section aria-labelledby="verified-heading">
-        <h2 id="verified-heading" className="mb-1 text-lg font-bold">
-          Verified requests
-        </h2>
-        <p className="mb-4 text-sm text-muted-foreground">
-          Only requests checked by a volunteer and listed with the requester&apos;s permission appear here. If you can help, sign in
-          and respond — a volunteer will coordinate with you. Please don&apos;t go to the hospital until a volunteer confirms.
-        </p>
+        <SectionTitle id="verified-heading" kicker="Can you help?" title="Verified requests" />
+        <p className="-mt-2 mb-4 text-sm text-muted-foreground">Checked by a volunteer and shared with permission. Tap one to respond.</p>
 
         <form method="get" className="surface mb-4 grid gap-3 p-4 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end" role="search" aria-label="Filter requests">
           <div className="space-y-1.5">
@@ -137,5 +134,6 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
         )}
       </section>
     </div>
+    </>
   );
 }

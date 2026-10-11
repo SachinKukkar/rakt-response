@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/constants";
 import { siteUrl } from "@/lib/env";
@@ -7,6 +7,12 @@ import { ServiceWorkerRegister } from "@/components/layout/service-worker-regist
 
 const sans = Plus_Jakarta_Sans({
   variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const display = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",
 });
@@ -39,7 +45,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-IN" className={`${sans.variable} h-full`}>
+    <html lang="en-IN" className={`${sans.variable} ${display.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"

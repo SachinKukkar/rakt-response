@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { MessageSquareQuote, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EmptyState, Notice, PageHeader } from "@/components/common/page-parts";
+import { EmptyState, Notice } from "@/components/common/page-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
 import { StoryCard, TrustLabelGuide } from "@/components/stories/story-parts";
 import { listPublishedStories } from "@/lib/data/public";
@@ -29,19 +30,15 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
   ];
 
   return (
-    <div className="page-container py-8 sm:py-12">
-      <PageHeader
-        eyebrow="Our Impact"
-        title="Stories"
-        description="Real experiences from our community. Every story is reviewed and published only with the contributor's permission."
-        actions={
-          <Button asChild variant="outline">
-            <Link href="/share-your-story">
-              <PenLine className="size-4" aria-hidden="true" /> Share your story
-            </Link>
-          </Button>
-        }
-      />
+    <>
+      <PageHero eyebrow="Stories" title="Stories that" highlight="kept us going." subtitle="Donors, families and volunteers — in their own words, published only with their consent." chips={["Reviewed before publishing", "Withdraw any time"]}>
+        <Button asChild size="lg" className="press bg-white text-primary hover:bg-white/90">
+          <Link href="/share-your-story">
+            <PenLine className="size-4" aria-hidden="true" /> Share your story
+          </Link>
+        </Button>
+      </PageHero>
+    <div className="page-container py-8">
       <nav aria-label="Story categories" className="-mx-4 mb-5 overflow-x-auto px-4">
         <ul className="flex w-max gap-2">
           {tabs.map((tab) => {
@@ -91,5 +88,6 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
         <TrustLabelGuide />
       </div>
     </div>
+    </>
   );
 }

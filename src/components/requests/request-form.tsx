@@ -35,6 +35,11 @@ const DEFAULTS: BloodRequestInput = {
   website: "",
 };
 
+/** datetime-local value in India time, `hours` from now (for min/max hints). */
+function localIndiaInput(hours: number): string {
+  return new Date(Date.now() + (hours + 5.5) * 3600_000).toISOString().slice(0, 16);
+}
+
 export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean; defaultName?: string }) {
   const form = useForm<BloodRequestInput>({
     resolver: zodResolver(bloodRequestSchema),
@@ -193,7 +198,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           </div>
         </div>
         <Field id="required_by" label="Needed by (date and time)" required error={errors.required_by?.message} hint="India time.">
-          <Input {...fieldAria("required_by", errors.required_by?.message, true)} type="datetime-local" {...register("required_by")} />
+          <Input {...fieldAria("required_by", errors.required_by?.message, true)} type="datetime-local" min={localIndiaInput(0)} max={localIndiaInput(60 * 24)} {...register("required_by")} />
         </Field>
       </fieldset>
 

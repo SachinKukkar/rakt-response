@@ -34,7 +34,7 @@ export function PageHeader({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0 space-y-1">
           {eyebrow ? <p className="text-xs font-semibold tracking-wider text-primary uppercase">{eyebrow}</p> : null}
-          <h1 className="text-2xl font-extrabold sm:text-3xl">{title}</h1>
+          <h1 className="font-display text-[1.75rem] leading-tight font-extrabold sm:text-4xl">{title}</h1>
           {description ? <div className="max-w-2xl text-[15px] text-muted-foreground">{description}</div> : null}
         </div>
         {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
