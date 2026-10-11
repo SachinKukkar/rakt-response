@@ -1,5 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import type { BloodGroup } from "@/lib/constants";
+import { useT } from "@/i18n/client";
 
 const SIZE = {
   sm: "size-9 text-[11px]",
@@ -12,17 +15,21 @@ export function BloodGroupChip({
   group,
   size = "md",
   tone = "solid",
+  label,
   className,
 }: {
   group: BloodGroup | string;
   size?: keyof typeof SIZE;
   tone?: "solid" | "soft" | "outline";
+  /** Accessible name override (e.g. "Bombay blood group (Oh)"). */
+  label?: string;
   className?: string;
 }) {
+  const t = useT();
   return (
     <span
       className={cn("relative inline-grid shrink-0 place-items-center font-extrabold", SIZE[size], className)}
-      aria-label={`Blood group ${group}`}
+      aria-label={label ? t(label) : t("Blood group {group}", { group })}
       role="img"
     >
       <svg viewBox="0 0 48 56" aria-hidden="true" className="absolute inset-0 size-full">

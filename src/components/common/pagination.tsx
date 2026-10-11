@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
 /** Server-rendered prev/next pagination that preserves other query params. */
-export function Pagination({
+export async function Pagination({
   page,
   pageSize,
   total,
@@ -18,6 +19,7 @@ export function Pagination({
 }) {
   const pages = Math.max(1, Math.ceil(total / pageSize));
   if (pages <= 1) return null;
+  const t = await getT();
   const href = (p: number) => {
     const q = new URLSearchParams();
     for (const [k, v] of Object.entries(params)) if (v) q.set(k, v);
@@ -27,26 +29,26 @@ export function Pagination({
   };
   const linkClass = "inline-flex h-11 items-center gap-1 rounded-full border bg-white px-4 text-sm font-semibold text-navy hover:border-primary/40";
   return (
-    <nav className="mt-6 flex items-center justify-between gap-3" aria-label="Pagination">
+    <nav className="mt-6 flex items-center justify-between gap-3" aria-label={t("Pagination")}>
       {page > 1 ? (
         <Link href={href(page - 1)} className={linkClass} rel="prev">
-          <ChevronLeft className="size-4" aria-hidden="true" /> Previous
+          <ChevronLeft className="size-4" aria-hidden="true" /> {t("Previous")}
         </Link>
       ) : (
         <span className={cn(linkClass, "pointer-events-none opacity-40")} aria-hidden="true">
-          <ChevronLeft className="size-4" /> Previous
+          <ChevronLeft className="size-4" /> {t("Previous")}
         </span>
       )}
       <span className="text-sm text-muted-foreground">
-        Page {page} of {pages}
+        {t("Page {page} of {pages}", { page, pages })}
       </span>
       {page < pages ? (
         <Link href={href(page + 1)} className={linkClass} rel="next">
-          Next <ChevronRight className="size-4" aria-hidden="true" />
+          {t("Next")} <ChevronRight className="size-4" aria-hidden="true" />
         </Link>
       ) : (
         <span className={cn(linkClass, "pointer-events-none opacity-40")} aria-hidden="true">
-          Next <ChevronRight className="size-4" />
+          {t("Next")} <ChevronRight className="size-4" />
         </span>
       )}
     </nav>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, Info, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { tx } from "@/i18n/tx";
 
 export function PageHeader({
   title,
@@ -28,14 +29,14 @@ export function PageHeader({
           className="-ml-2 inline-flex min-h-10 items-center gap-1 rounded-full px-2 text-sm font-medium text-muted-foreground hover:text-navy"
         >
           <ChevronLeft className="size-4" aria-hidden="true" />
-          {backLabel}
+          {tx(backLabel)}
         </Link>
       ) : null}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          {eyebrow ? <p className="text-xs font-semibold tracking-wider text-primary uppercase">{eyebrow}</p> : null}
-          <h1 className="font-display text-[1.75rem] leading-tight font-extrabold sm:text-4xl">{title}</h1>
-          {description ? <div className="max-w-2xl text-[15px] text-muted-foreground">{description}</div> : null}
+          {eyebrow ? <p className="text-xs font-semibold tracking-wider text-primary uppercase">{tx(eyebrow)}</p> : null}
+          <h1 className="font-display text-[1.75rem] leading-tight font-extrabold sm:text-4xl">{tx(title)}</h1>
+          {description ? <div className="max-w-2xl text-[15px] text-muted-foreground">{tx(description)}</div> : null}
         </div>
         {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
       </div>
@@ -62,9 +63,9 @@ export function SectionHeading({
     <div className={cn("mb-3 flex items-end justify-between gap-3", className)}>
       <div className="min-w-0">
         <Tag id={id} className={cn("font-bold", Tag === "h2" ? "text-lg sm:text-xl" : "text-base")}>
-          {title}
+          {tx(title)}
         </Tag>
-        {description ? <p className="mt-0.5 text-sm text-muted-foreground">{description}</p> : null}
+        {description ? <p className="mt-0.5 text-sm text-muted-foreground">{tx(description)}</p> : null}
       </div>
       {action}
     </div>
@@ -89,8 +90,8 @@ export function EmptyState({
       <span className="mb-3 grid size-14 place-items-center rounded-full bg-accent text-primary">
         <Icon className="size-6" aria-hidden="true" />
       </span>
-      <p className="font-semibold text-navy">{title}</p>
-      {description ? <div className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</div> : null}
+      <p className="font-semibold text-navy">{tx(title)}</p>
+      {description ? <div className="mt-1 max-w-sm text-sm text-muted-foreground">{tx(description)}</div> : null}
       {action ? <div className="mt-4">{action}</div> : null}
     </div>
   );
@@ -123,12 +124,12 @@ export function StatCard({
     >
       <div className="flex items-start justify-between gap-2">
         <p className={cn("text-xs font-semibold tracking-wide uppercase", tone === "navy" ? "text-white/75" : "text-muted-foreground")}>
-          {label}
+          {tx(label)}
         </p>
         {Icon ? <Icon className={cn("size-4.5", tone === "navy" ? "text-white/80" : "text-primary")} aria-hidden="true" /> : null}
       </div>
       <p className={cn("mt-1.5 text-2xl font-extrabold tabular-nums", tone === "navy" ? "text-white" : "text-navy")}>{value}</p>
-      {hint ? <p className={cn("mt-1 text-xs", tone === "navy" ? "text-white/75" : "text-muted-foreground")}>{hint}</p> : null}
+      {hint ? <p className={cn("mt-1 text-xs", tone === "navy" ? "text-white/75" : "text-muted-foreground")}>{tx(hint)}</p> : null}
     </div>
   );
 }
@@ -163,8 +164,8 @@ export function Notice({
         aria-hidden="true"
       />
       <div className="space-y-1">
-        {title ? <p className="font-semibold text-navy">{title}</p> : null}
-        <div className="leading-relaxed">{children}</div>
+        {title ? <p className="font-semibold text-navy">{tx(title)}</p> : null}
+        <div className="leading-relaxed">{tx(children)}</div>
       </div>
     </div>
   );
@@ -189,8 +190,8 @@ export function CardListSkeleton({ rows = 4 }: { rows?: number }) {
 export function KeyValue({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-border/70 py-2.5 text-sm last:border-0">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="text-right font-medium text-foreground">{children}</dd>
+      <dt className="text-muted-foreground">{tx(label)}</dt>
+      <dd className="text-right font-medium text-foreground">{tx(children)}</dd>
     </div>
   );
 }

@@ -3,16 +3,21 @@ import Link from "next/link";
 import { MailCheck } from "lucide-react";
 import { AuthCard } from "@/components/auth/auth-card";
 import { ResendVerificationForm } from "@/components/auth/auth-forms";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Confirm your email" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Confirm your email") };
+}
 
-export default function VerifyEmailPage() {
+export default async function VerifyEmailPage() {
+  const t = await getT();
   return (
     <AuthCard
-      title="Check your inbox"
+      title={t("Check your inbox")}
       footer={
         <Link href="/login" className="font-semibold text-primary hover:underline">
-          Go to sign in
+          {t("Go to sign in")}
         </Link>
       }
     >
@@ -22,12 +27,14 @@ export default function VerifyEmailPage() {
         </span>
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
-            We sent a confirmation link to the email address you registered with. Open it on this phone or any device to
-            activate your account.
+            {t(
+              "We sent a confirmation link to the email address you registered with. Open it on this phone or any device to activate your account.",
+            )}
           </p>
           <p>
-            Your profile stays private until you confirm your email. Emails can take a few minutes — please also check spam or
-            promotions folders.
+            {t(
+              "Your profile stays private until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.",
+            )}
           </p>
         </div>
       </div>

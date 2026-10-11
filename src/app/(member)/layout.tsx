@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { MemberShell } from "@/components/layout/member-shell";
 import { requireViewer } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function MemberLayout({ children }: { children: React.ReactNode }) {
   const viewer = await requireViewer();

@@ -18,6 +18,7 @@ import {
   UserRound,
   Users,
 } from "lucide-react";
+import { useT } from "@/i18n/client";
 import { cn } from "@/lib/utils";
 
 const ICONS = {
@@ -53,9 +54,10 @@ function isActive(pathname: string, item: NavItem) {
 /** Pill-style bottom navigation for phones. */
 export function BottomNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
+  const t = useT();
   return (
     <nav
-      aria-label="Primary"
+      aria-label={t("Primary")}
       className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border/70 bg-white/95 px-2 pt-2 backdrop-blur lg:hidden"
     >
       <ul className="mx-auto flex max-w-md items-stretch justify-between gap-1 rounded-full bg-navy p-1.5 shadow-lg shadow-navy/20">
@@ -73,7 +75,7 @@ export function BottomNav({ items }: { items: NavItem[] }) {
                 )}
               >
                 <Icon className="size-5" aria-hidden="true" />
-                <span className="truncate">{item.label}</span>
+                <span className="truncate">{t(item.label)}</span>
               </Link>
             </li>
           );
@@ -86,11 +88,12 @@ export function BottomNav({ items }: { items: NavItem[] }) {
 /** Sidebar navigation for tablets/desktops. */
 export function SideNav({ groups }: { groups: Array<{ title: string; items: NavItem[] }> }) {
   const pathname = usePathname();
+  const t = useT();
   return (
-    <nav aria-label="Account" className="space-y-6">
+    <nav aria-label={t("Account")} className="space-y-6">
       {groups.map((group) => (
         <div key={group.title}>
-          <p className="mb-2 px-3 text-xs font-bold tracking-wider text-muted-foreground uppercase">{group.title}</p>
+          <p className="mb-2 px-3 text-xs font-bold tracking-wider text-muted-foreground uppercase">{t(group.title)}</p>
           <ul className="space-y-0.5">
             {group.items.map((item) => {
               const Icon = ICONS[item.icon];
@@ -106,7 +109,7 @@ export function SideNav({ groups }: { groups: Array<{ title: string; items: NavI
                     )}
                   >
                     <Icon className="size-4.5" aria-hidden="true" />
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </li>
               );

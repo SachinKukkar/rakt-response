@@ -27,17 +27,21 @@ import { getImpactMetrics, listPublishedStories } from "@/lib/data/public";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatDate, formatNumber } from "@/lib/format";
 import { TRUST_LABELS } from "@/lib/constants";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Our Impact",
-  description: "Transparent, record-based figures, real stories shared with consent, and how Rakt Response works.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return {
+    title: t("Our Impact"),
+    description: t("Transparent, record-based figures, real stories shared with consent, and how Rakt Response works."),
+  };
+}
 
 export const revalidate = 300;
 
 const IMPACT_METRICS: MetricDefinition[] = [
   { key: "registered_donors", label: "Registered donors", icon: Users, definition: "Active donor accounts with a confirmed email address." },
-  { key: "verified_donors", label: "Verified donors", icon: UserCheck, definition: "Donor profiles checked by an administrator. Verification is not a medical eligibility decision." },
+  { key: "verified_donors", label: "Verified donors", icon: UserCheck, definition: "Registered donors who confirmed their email address. Verification is not a medical eligibility decision." },
   { key: "verified_whole_blood_donations", label: "Verified whole blood donations", icon: Droplet, definition: "Whole blood donation records verified by an authorised volunteer or administrator." },
   { key: "verified_sdp_donations", label: "Verified SDP donations", icon: HeartPulse, definition: "Single donor platelet records that have been verified. Counted separately from whole blood." },
   { key: "requests_received", label: "Blood requests received", icon: Inbox, definition: "Requests submitted to volunteers (excluding drafts). Includes requests that could not be verified." },
@@ -66,7 +70,7 @@ interface PublicCamp {
 }
 
 const HOW_WE_WORK = [
-  { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves. Profiles are private by default and an administrator can verify identity details. Verification never decides medical eligibility." },
+  { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves and are verified once they confirm their email. Profiles are private by default, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility." },
   { icon: ClipboardCheck, title: "Reviewing blood requests", text: "Every request is checked by an authorised volunteer — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors." },
   { icon: HandHeart, title: "Coordinating with donors", text: "Volunteers contact only donors who allowed it, or who accept a contact request. Each access to contact details is logged and rate-limited." },
   { icon: Droplet, title: "Updating donation records", text: "Donors add donations as self-reported. Authorised reviewers verify them separately for whole blood and SDP." },
@@ -76,6 +80,7 @@ const HOW_WE_WORK = [
 
 export default async function ImpactPage() {
   const client = createPublicClient();
+  const t = await getT();
   const [metrics, stories, campsResult] = await Promise.all([
     getImpactMetrics(),
     listPublishedStories(null, 3),
@@ -95,7 +100,7 @@ export default async function ImpactPage() {
 
   return (
     <>
-      <PageHero eyebrow="Our Impact" title="Real people." highlight="Real numbers." subtitle="Every figure comes straight from verified records. Every story is shared with permission." chips={["No made-up stats", "Verified ≠ self-reported", "Open about how we work"]} />
+      <PageHero eyebrow={t("Our Impact")} title={t("Real people.")} highlight={t("Real numbers.")} subtitle={t("Every figure comes straight from verified records. Every story is shared with permission.")} chips={["No made-up stats", "Verified ≠ self-reported", "Open about how we work"].map((chip) => t(chip))} />
     <div className="page-container py-8">
 
       <section className="mb-10" aria-labelledby="metrics-heading">
@@ -103,15 +108,16 @@ export default async function ImpactPage() {
         <ImpactStats metrics={metrics} items={IMPACT_METRICS} showDefinitions />
         {metrics && metrics.coordination_sample_size >= 3 && metrics.median_hours_to_coordination !== null ? (
           <p className="mt-3 rounded-xl bg-secondary p-3 text-sm text-secondary-foreground">
-            Median time from verification to active coordination:{" "}
-            <strong>{metrics.median_hours_to_coordination} hours</strong> (based on {formatNumber(metrics.coordination_sample_size)} requests with
-            recorded timestamps).
+            {t("Median time from verification to active coordination:")}{" "}
+            <strong>{t("{hours} hours", { hours: metrics.median_hours_to_coordination })}</strong>{" "}
+            {t("(based on {count} requests with recorded timestamps).", { count: formatNumber(metrics.coordination_sample_size) })}
           </p>
         ) : null}
         {metrics ? (
           <p className="mt-2 text-xs text-muted-foreground">
-            Self-reported donations awaiting verification: {formatNumber(metrics.self_reported_donations)} — shown separately and not
-            included in verified totals.
+            {t("Self-reported donations awaiting verification: {count} — shown separately and not included in verified totals.", {
+              count: formatNumber(metrics.self_reported_donations),
+            })}
           </p>
         ) : null}
       </section>
@@ -135,9 +141,9 @@ export default async function ImpactPage() {
                 <p className="font-semibold">{source.label}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {source.period_start || source.period_end
-                    ? `Period: ${formatDate(source.period_start)} – ${formatDate(source.period_end)}. `
+                    ? `${t("Period: {start} – {end}.", { start: formatDate(source.period_start), end: formatDate(source.period_end) })} `
                     : ""}
-                  Source: {source.source}. Verified {formatDate(source.verified_at)}.
+                  {t("Source: {source}. Verified {date}.", { source: source.source, date: formatDate(source.verified_at) })}
                 </p>
               </li>
             ))}
@@ -151,7 +157,7 @@ export default async function ImpactPage() {
           title="Stories of donors, families and volunteers"
           action={
             <Link href="/stories" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-              All stories
+              {t("All stories")}
             </Link>
           }
         />
@@ -168,7 +174,7 @@ export default async function ImpactPage() {
             description="We only publish real experiences after review and with the contributor's consent."
             action={
               <Button asChild variant="outline">
-                <Link href="/share-your-story">Share your story</Link>
+                <Link href="/share-your-story">{t("Share your story")}</Link>
               </Button>
             }
           />
@@ -189,43 +195,43 @@ export default async function ImpactPage() {
                 </p>
                 <p className="font-bold text-navy">{camp.name}</p>
                 {camp.partners_confirmed && camp.organizing_partners ? (
-                  <p className="text-sm text-muted-foreground">With {camp.organizing_partners}</p>
+                  <p className="text-sm text-muted-foreground">{t("With {partners}", { partners: camp.organizing_partners })}</p>
                 ) : null}
                 <dl className="grid grid-cols-2 gap-2 text-sm">
                   {camp.data_verified_at && camp.verified_donor_count !== null ? (
                     <div className="rounded-xl bg-success-soft p-2">
-                      <dt className="text-xs text-success">Verified donors</dt>
+                      <dt className="text-xs text-success">{t("Verified donors")}</dt>
                       <dd className="font-bold text-navy">{formatNumber(camp.verified_donor_count)}</dd>
                     </div>
                   ) : null}
                   {camp.data_verified_at && camp.verified_units_collected !== null ? (
                     <div className="rounded-xl bg-success-soft p-2">
-                      <dt className="text-xs text-success">Verified units collected</dt>
+                      <dt className="text-xs text-success">{t("Verified units collected")}</dt>
                       <dd className="font-bold text-navy">{formatNumber(camp.verified_units_collected)}</dd>
                     </div>
                   ) : null}
                   {camp.registrations_count !== null ? (
                     <div className="rounded-xl bg-muted p-2">
-                      <dt className="text-xs text-muted-foreground">Registrations (not donations)</dt>
+                      <dt className="text-xs text-muted-foreground">{t("Registrations (not donations)")}</dt>
                       <dd className="font-bold text-navy">{formatNumber(camp.registrations_count)}</dd>
                     </div>
                   ) : null}
                   {camp.volunteer_count !== null ? (
                     <div className="rounded-xl bg-muted p-2">
-                      <dt className="text-xs text-muted-foreground">Volunteers</dt>
+                      <dt className="text-xs text-muted-foreground">{t("Volunteers")}</dt>
                       <dd className="font-bold text-navy">{formatNumber(camp.volunteer_count)}</dd>
                     </div>
                   ) : null}
                 </dl>
                 {camp.highlights ? <p className="text-sm">{camp.highlights}</p> : null}
-                {camp.learnings ? <p className="text-sm text-muted-foreground">Learnings: {camp.learnings}</p> : null}
+                {camp.learnings ? <p className="text-sm text-muted-foreground">{t("Learnings: {learnings}", { learnings: camp.learnings })}</p> : null}
                 {camp.data_verified_at ? (
                   <p className="text-xs text-muted-foreground">
-                    Figures verified {formatDate(camp.data_verified_at)}
-                    {camp.data_source ? ` · Source: ${camp.data_source}` : ""}
+                    {t("Figures verified {date}", { date: formatDate(camp.data_verified_at) })}
+                    {camp.data_source ? ` · ${t("Source: {source}", { source: camp.data_source })}` : ""}
                   </p>
                 ) : (
-                  <p className="text-xs text-muted-foreground">Participation figures not yet verified.</p>
+                  <p className="text-xs text-muted-foreground">{t("Participation figures not yet verified.")}</p>
                 )}
               </li>
             ))}
@@ -241,8 +247,8 @@ export default async function ImpactPage() {
           {HOW_WE_WORK.map((item) => (
             <li key={item.title} className="surface p-4">
               <item.icon className="mb-2 size-6 text-primary" aria-hidden="true" />
-              <p className="font-semibold text-navy">{item.title}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{item.text}</p>
+              <p className="font-semibold text-navy">{t(item.title)}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t(item.text)}</p>
             </li>
           ))}
         </ul>
@@ -251,16 +257,17 @@ export default async function ImpactPage() {
       <section aria-labelledby="report-heading" className="grid gap-3 md:grid-cols-2">
         <Notice icon={ShieldCheck} title="Report inaccurate information">
           <p id="report-heading">
-            If a figure, request or story looks wrong, please <Link href="/contact" className="font-semibold text-primary underline">tell us</Link>. We
-            will review it and correct or remove it.
+            {t("If a figure, request or story looks wrong, please")}{" "}
+            <Link href="/contact" className="font-semibold text-primary underline">{t("tell us")}</Link>
+            {t(". We will review it and correct or remove it.")}
           </p>
         </Notice>
         <Notice icon={FilePenLine} title="Corrections and removal">
-          Contributors can request a correction or withdraw their story at any time from{" "}
+          {t("Contributors can request a correction or withdraw their story at any time from")}{" "}
           <Link href="/share-your-story/submissions" className="font-semibold text-primary underline">
-            My stories
+            {t("My stories")}
           </Link>
-          . Withdrawal removes it from the website immediately.
+          {t(". Withdrawal removes it from the website immediately.")}
         </Notice>
       </section>
     </div>

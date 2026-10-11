@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { BLOOD_GROUPS, type BloodGroup } from "@/lib/constants";
+import { useT } from "@/i18n/client";
 
 /** Accessible radio group of blood-group drops (tap-friendly grid). */
 export function BloodGroupPicker({
@@ -19,13 +20,14 @@ export function BloodGroupPicker({
   labelledBy?: string;
   allowAny?: boolean;
 }) {
+  const t = useT();
   return (
     <div>
       <div role="radiogroup" aria-labelledby={labelledBy} aria-invalid={error ? true : undefined} className="grid grid-cols-4 gap-2">
         {allowAny ? (
           <label className="col-span-4 flex min-h-11 cursor-pointer items-center justify-center rounded-xl border bg-white text-sm font-semibold has-checked:border-primary has-checked:bg-accent has-checked:text-primary">
             <input type="radio" name={name} value="" checked={value === ""} onChange={() => onChange("")} className="sr-only" />
-            Any blood group
+            {t("Any blood group")}
           </label>
         ) : null}
         {BLOOD_GROUPS.map((group) => (
@@ -51,7 +53,7 @@ export function BloodGroupPicker({
       </div>
       {error ? (
         <p className="mt-1.5 text-xs font-medium text-destructive" role="alert">
-          {error}
+          {t(error)}
         </p>
       ) : null}
     </div>
@@ -74,6 +76,7 @@ export function ChipChoice<T extends string>({
   labelledBy?: string;
   columns?: 1 | 2 | 3;
 }) {
+  const t = useT();
   return (
     <div
       role="radiogroup"
@@ -93,8 +96,8 @@ export function ChipChoice<T extends string>({
             onChange={() => onChange(option.value)}
             className="sr-only"
           />
-          <span className="font-semibold text-navy">{option.label}</span>
-          {option.description ? <span className="mt-0.5 text-xs text-muted-foreground">{option.description}</span> : null}
+          <span className="font-semibold text-navy">{t(option.label)}</span>
+          {option.description ? <span className="mt-0.5 text-xs text-muted-foreground">{t(option.description)}</span> : null}
         </label>
       ))}
     </div>

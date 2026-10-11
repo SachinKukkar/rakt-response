@@ -14,6 +14,7 @@ import { Notice } from "@/components/common/page-parts";
 import { submitBloodRequest, type SubmittedRequest } from "@/actions/requests";
 import { CONTACT_METHOD_LABELS, INDIAN_STATES, REQUEST_TYPE_LABELS, URGENCY_LABELS, type ContactMethod, type RequestType, type Urgency } from "@/lib/constants";
 import { bloodRequestSchema, type BloodRequestInput } from "@/lib/validation/forms";
+import { useT } from "@/i18n/client";
 
 const DEFAULTS: BloodRequestInput = {
   requester_name: "",
@@ -41,6 +42,7 @@ function localIndiaInput(hours: number): string {
 }
 
 export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean; defaultName?: string }) {
+  const t = useT();
   const form = useForm<BloodRequestInput>({
     resolver: zodResolver(bloodRequestSchema),
     defaultValues: { ...DEFAULTS, requester_name: defaultName ?? "" },
@@ -78,29 +80,30 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
     return (
       <div className="surface space-y-4 p-5 sm:p-7" role="status">
         <CheckCircle2 className="size-10 text-success" aria-hidden="true" />
-        <h2 className="text-xl font-extrabold">Request received</h2>
+        <h2 className="text-xl font-extrabold">{t("Request received")}</h2>
         <p className="text-sm">
-          Your reference is <strong className="text-navy">{submitted.referenceCode}</strong>. Please note it down.
+          {t("Your reference is")} <strong className="text-navy">{submitted.referenceCode}</strong>. {t("Please note it down.")}
         </p>
         {submitted.possibleDuplicate ? (
-          <Notice tone="warning" title="A similar request is already open">
-            It looks like a request for the same blood group at this hospital was submitted recently. Volunteers will check both so
-            donors aren&apos;t contacted twice.
+          <Notice tone="warning" title={t("A similar request is already open")}>
+            {t(
+              "It looks like a request for the same blood group at this hospital was submitted recently. Volunteers will check both so donors aren't contacted twice.",
+            )}
           </Notice>
         ) : null}
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
-          <li>A volunteer will verify the request with you or the hospital before contacting donors.</li>
-          <li>Until it is verified it is not shown publicly or sent to donors.</li>
-          <li>Keep in touch with the hospital blood bank — they decide what is needed and when.</li>
+          <li>{t("A volunteer will verify the request with you or the hospital before contacting donors.")}</li>
+          <li>{t("Until it is verified it is not shown publicly or sent to donors.")}</li>
+          <li>{t("Keep in touch with the hospital blood bank — they decide what is needed and when.")}</li>
         </ul>
         <div className="flex flex-col gap-2 sm:flex-row">
           {submitted.signedIn ? (
             <Button asChild>
-              <Link href="/requests">Track in My requests</Link>
+              <Link href="/requests">{t("Track in My requests")}</Link>
             </Button>
           ) : null}
           <Button asChild variant="outline">
-            <Link href="/blood-requests">Back to blood requests</Link>
+            <Link href="/blood-requests">{t("Back to blood requests")}</Link>
           </Button>
         </div>
       </div>
@@ -116,10 +119,10 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
       </div>
 
       <fieldset className="space-y-4">
-        <legend className="mb-1 text-base font-bold text-navy">What is needed</legend>
+        <legend className="mb-1 text-base font-bold text-navy">{t("What is needed")}</legend>
         <div className="space-y-2">
           <p id="rq-bg" className="text-sm font-semibold text-navy">
-            Blood group <span className="text-primary">*</span>
+            {t("Blood group")} <span className="text-primary">*</span>
           </p>
           <Controller
             control={control}
@@ -131,7 +134,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
         </div>
         <div className="space-y-2">
           <p id="rq-type" className="text-sm font-semibold text-navy">
-            Type of donor needed <span className="text-primary">*</span>
+            {t("Type of donor needed")} <span className="text-primary">*</span>
           </p>
           <Controller
             control={control}
@@ -144,17 +147,18 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
                 value={field.value}
                 onChange={field.onChange}
                 options={[
-                  { value: "whole_blood", label: REQUEST_TYPE_LABELS.whole_blood, description: "Standard blood donation (the hospital may separate components)." },
-                  { value: "sdp", label: REQUEST_TYPE_LABELS.sdp, description: "Single donor platelets collected by apheresis at the hospital's platelet unit." },
-                  { value: "other_apheresis", label: REQUEST_TYPE_LABELS.other_apheresis, description: "Another specific apheresis component, as advised by the hospital." },
+                  { value: "whole_blood", label: t(REQUEST_TYPE_LABELS.whole_blood), description: t("Standard blood donation (the hospital may separate components).") },
+                  { value: "sdp", label: t(REQUEST_TYPE_LABELS.sdp), description: t("Single donor platelets collected by apheresis at the hospital's platelet unit.") },
+                  { value: "other_apheresis", label: t(REQUEST_TYPE_LABELS.other_apheresis), description: t("Another specific apheresis component, as advised by the hospital.") },
                 ]}
               />
             )}
           />
           {requestType === "sdp" ? (
             <p className="rounded-xl bg-secondary p-3 text-xs text-secondary-foreground">
-              SDP donors need additional screening at the apheresis centre (for example a platelet count). The hospital decides
-              suitability and timing — we only help find willing donors.
+              {t(
+                "SDP donors need additional screening at the apheresis centre (for example a platelet count). The hospital decides suitability and timing — we only help find willing donors.",
+              )}
             </p>
           ) : null}
         </div>
@@ -179,7 +183,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           </Field>
           <div className="space-y-2">
             <p id="rq-urgency" className="text-sm font-semibold text-navy">
-              Urgency <span className="text-primary">*</span>
+              {t("Urgency")} <span className="text-primary">*</span>
             </p>
             <Controller
               control={control}
@@ -191,7 +195,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
                   columns={3}
                   value={field.value}
                   onChange={field.onChange}
-                  options={(Object.keys(URGENCY_LABELS) as Urgency[]).map((u) => ({ value: u, label: URGENCY_LABELS[u] }))}
+                  options={(Object.keys(URGENCY_LABELS) as Urgency[]).map((u) => ({ value: u, label: t(URGENCY_LABELS[u]) }))}
                 />
               )}
             />
@@ -203,7 +207,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-1 text-base font-bold text-navy">Where</legend>
+        <legend className="mb-1 text-base font-bold text-navy">{t("Where")}</legend>
         <Field id="hospital_name" label="Hospital or blood bank" required error={errors.hospital_name?.message}>
           <Input {...fieldAria("hospital_name", errors.hospital_name?.message)} {...register("hospital_name")} />
         </Field>
@@ -216,10 +220,10 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           </Field>
           <Field id="state" label="State" error={errors.state?.message}>
             <select id="state" className={selectClass} {...register("state")}>
-              <option value="">Select…</option>
+              <option value="">{t("Select…")}</option>
               {INDIAN_STATES.map((s) => (
                 <option key={s} value={s}>
-                  {s}
+                  {t(s)}
                 </option>
               ))}
             </select>
@@ -228,8 +232,8 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-1 text-base font-bold text-navy">How volunteers can reach you</legend>
-        <p className="text-xs text-muted-foreground">Kept private — only authorised volunteers see these details.</p>
+        <legend className="mb-1 text-base font-bold text-navy">{t("How volunteers can reach you")}</legend>
+        <p className="text-xs text-muted-foreground">{t("Kept private — only authorised volunteers see these details.")}</p>
         <Field id="requester_name" label="Your name" required error={errors.requester_name?.message}>
           <Input {...fieldAria("requester_name", errors.requester_name?.message)} autoComplete="name" {...register("requester_name")} />
         </Field>
@@ -245,7 +249,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           <select id="requester_contact_method" className={selectClass} {...register("requester_contact_method")}>
             {(["phone", "whatsapp", "email"] as ContactMethod[]).concat(signedIn ? ["in_app"] : []).map((m) => (
               <option key={m} value={m}>
-                {CONTACT_METHOD_LABELS[m]}
+                {t(CONTACT_METHOD_LABELS[m])}
               </option>
             ))}
           </select>
@@ -287,13 +291,13 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
 
       {serverError ? (
         <p className="rounded-xl border border-destructive/25 bg-destructive/5 px-3.5 py-3 text-sm text-destructive" role="alert">
-          {serverError}
+          {t(serverError)}
         </p>
       ) : null}
 
       <Button type="submit" size="lg" className="w-full" disabled={pending}>
         {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Send className="size-4" aria-hidden="true" />}
-        {pending ? "Submitting…" : "Submit request for verification"}
+        {pending ? t("Submitting…") : t("Submit request for verification")}
       </Button>
     </form>
   );

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { T } from "@/i18n/client";
 
 export function AuthCard({
   title,
@@ -28,8 +29,11 @@ export function AuthCard({
 export function NotConfiguredNotice() {
   return (
     <div className="mb-4 rounded-xl border border-warning/30 bg-warning-soft p-3 text-sm text-foreground/85" role="note">
-      The Rakt Response database is not connected in this environment, so accounts cannot be created or used yet. See the
-      README for Supabase setup.
+      <T>
+        {
+          "The Rakt Response database is not connected in this environment, so accounts cannot be created or used yet. See the README for Supabase setup."
+        }
+      </T>
     </div>
   );
 }

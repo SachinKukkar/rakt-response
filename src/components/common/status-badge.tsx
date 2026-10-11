@@ -1,5 +1,6 @@
 import { BadgeCheck, CircleDashed, CircleX, Clock3, HeartHandshake, ShieldAlert, Siren } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { tx } from "@/i18n/tx";
 import {
   PROFILE_VERIFICATION_LABELS,
   RECORD_SOURCE_LABELS,
@@ -46,7 +47,7 @@ export function Pill({
       )}
     >
       {Icon ? <Icon className="size-3.5" aria-hidden="true" /> : null}
-      {children}
+      {tx(children)}
     </span>
   );
 }

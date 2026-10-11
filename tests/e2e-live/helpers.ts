@@ -9,7 +9,8 @@ export async function login(page: Page, email: string, password = PASSWORD) {
   await page.locator("#email").fill(email);
   await page.locator("#password").fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 });
+  // Administrators land on the admin hub; everyone else on the dashboard.
+  await expect(page).toHaveURL(/\/(dashboard|admin)/, { timeout: 30_000 });
 }
 
 export async function logout(page: Page) {
@@ -50,6 +51,12 @@ export async function expectHealthyPage(page: Page, path: string) {
 }
 
 /** Runs SQL against the LOCAL Supabase database container (test setup only). */
+/** Runs a query against the local database and returns its single value. */
+export function localSqlValue(sql: string): string {
+  const container = process.env.SUPABASE_DB_CONTAINER ?? "supabase_db_rakt-response";
+  return execSync(`docker exec -i ${container} psql -U postgres -d postgres -tA -v ON_ERROR_STOP=1`, { input: sql }).toString().trim();
+}
+
 export function localSql(sql: string) {
   const container = process.env.SUPABASE_DB_CONTAINER ?? "supabase_db_rakt-response";
   execSync(`docker exec -i ${container} psql -U postgres -d postgres -v ON_ERROR_STOP=1`, { input: sql, stdio: ["pipe", "ignore", "inherit"] });

@@ -16,6 +16,7 @@ import { resizeImageForUpload } from "@/lib/client-image";
 import { BLOOD_GROUPS, DONATION_TYPE_LABELS, DONATION_TYPES, STORY_TYPE_LABELS, type DonationType, type StoryType } from "@/lib/constants";
 import { storySchema, type StoryInput } from "@/lib/validation/forms";
 import { cn } from "@/lib/utils";
+import { useT } from "@/i18n/client";
 
 const STEPS = [
   { title: "About you", fields: ["story_type", "contributor_name", "public_display_name", "follow_up_email", "follow_up_phone", "city"] },
@@ -79,6 +80,7 @@ export function StoryForm({
   const [done, setDone] = useState(false);
   const [pending, startTransition] = useTransition();
   const values = useWatch({ control }) as StoryInput;
+  const t = useT();
 
   useEffect(() => () => {
     if (photoUrl) URL.revokeObjectURL(photoUrl);
@@ -159,13 +161,14 @@ export function StoryForm({
     return (
       <div className="surface space-y-3 p-5 sm:p-7" role="status">
         <CheckCircle2 className="size-10 text-success" aria-hidden="true" />
-        <h2 className="text-xl font-extrabold">Thank you for sharing your story</h2>
+        <h2 className="text-xl font-extrabold">{t("Thank you for sharing your story")}</h2>
         <p className="text-sm text-muted-foreground">
-          It is private until an administrator reviews it. We may contact you to check details. Nothing is published without your
-          consent, and you can withdraw at any time.
+          {t(
+            "It is private until an administrator reviews it. We may contact you to check details. Nothing is published without your consent, and you can withdraw at any time.",
+          )}
         </p>
         <Button asChild>
-          <Link href="/share-your-story/submissions">View my stories</Link>
+          <Link href="/share-your-story/submissions">{t("View my stories")}</Link>
         </Button>
       </div>
     );
@@ -173,8 +176,8 @@ export function StoryForm({
 
   const storyType = values.story_type;
   const typeOptions = (Object.keys(STORY_TYPE_LABELS) as StoryType[])
-    .filter((t) => t !== "volunteer" || isStaff)
-    .map((t) => ({ value: t, label: STORY_TYPE_LABELS[t] }));
+    .filter((type) => type !== "volunteer" || isStaff)
+    .map((type) => ({ value: type, label: t(STORY_TYPE_LABELS[type]) }));
   const previewName = values.consent_show_name ? values.public_display_name || values.contributor_name.split(" ")[0] : null;
 
   return (
@@ -192,7 +195,7 @@ export function StoryForm({
     >
       <div className="surface p-4">
         <p className="mb-2 text-xs font-semibold text-muted-foreground">
-          Step {step + 1} of {STEPS.length}: {STEPS[step].title}
+          {t("Step {step} of {total}: {title}", { step: step + 1, total: STEPS.length, title: t(STEPS[step].title) })}
         </p>
         <div className="flex gap-1.5" aria-hidden="true">
           {STEPS.map((s, i) => (
@@ -202,20 +205,20 @@ export function StoryForm({
       </div>
 
       <div className="surface space-y-5 p-5 sm:p-7">
-        <h2 className="text-xl font-extrabold">{STEPS[step].title}</h2>
+        <h2 className="text-xl font-extrabold">{t(STEPS[step].title)}</h2>
 
         {step === 0 ? (
           <>
             <div className="space-y-2">
               <p id="st-type" className="text-sm font-semibold text-navy">
-                What kind of story is this?
+                {t("What kind of story is this?")}
               </p>
               <Controller
                 control={control}
                 name="story_type"
                 render={({ field }) => <ChipChoice<StoryType> name="story_type" labelledBy="st-type" value={field.value} onChange={field.onChange} options={typeOptions} />}
               />
-              <p className="text-xs text-muted-foreground">{TYPE_HINTS[storyType]}</p>
+              <p className="text-xs text-muted-foreground">{t(TYPE_HINTS[storyType])}</p>
             </div>
             <Field id="contributor_name" label="Your name (private)" required error={errors.contributor_name?.message} hint="Only reviewers see this.">
               <Input {...fieldAria("contributor_name", errors.contributor_name?.message, true)} autoComplete="name" {...register("contributor_name")} />
@@ -247,27 +250,27 @@ export function StoryForm({
               label="Your story"
               required
               error={errors.body?.message}
-              hint={`${values.body.length}/6000 · Write in your own words. Please avoid patient names, diagnoses, phone numbers or hospital documents.`}
+              hint={`${values.body.length}/6000 · ${t("Write in your own words. Please avoid patient names, diagnoses, phone numbers or hospital documents.")}`}
             >
               <Textarea {...fieldAria("body", errors.body?.message, true)} rows={9} maxLength={6000} {...register("body")} />
             </Field>
             <div className="grid gap-4 sm:grid-cols-3">
               <Field id="experience_period" label="When (approximate)" error={errors.experience_period?.message}>
-                <Input {...fieldAria("experience_period", errors.experience_period?.message)} placeholder="e.g. March 2026" {...register("experience_period")} />
+                <Input {...fieldAria("experience_period", errors.experience_period?.message)} placeholder={t("e.g. March 2026")} {...register("experience_period")} />
               </Field>
               <Field id="donation_type" label="Donation type, if relevant">
                 <select id="donation_type" className={selectClass} {...register("donation_type")}>
-                  <option value="">Not applicable</option>
-                  {DONATION_TYPES.filter((t) => t !== "unknown").map((t) => (
-                    <option key={t} value={t}>
-                      {DONATION_TYPE_LABELS[t as DonationType]}
+                  <option value="">{t("Not applicable")}</option>
+                  {DONATION_TYPES.filter((type) => type !== "unknown").map((type) => (
+                    <option key={type} value={type}>
+                      {t(DONATION_TYPE_LABELS[type as DonationType])}
                     </option>
                   ))}
                 </select>
               </Field>
               <Field id="blood_group" label="Blood group (optional)">
                 <select id="blood_group" className={selectClass} {...register("blood_group")}>
-                  <option value="">Prefer not to say</option>
+                  <option value="">{t("Prefer not to say")}</option>
                   {BLOOD_GROUPS.map((g) => (
                     <option key={g} value={g}>
                       {g}
@@ -279,7 +282,7 @@ export function StoryForm({
             {storyType === "camp" && camps.length ? (
               <Field id="camp_id" label="Which camp? (optional)">
                 <select id="camp_id" className={selectClass} value={campId} onChange={(e) => setCampId(e.target.value)}>
-                  <option value="">Not listed</option>
+                  <option value="">{t("Not listed")}</option>
                   {camps.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.name} ({c.camp_date})
@@ -294,25 +297,27 @@ export function StoryForm({
         {step === 2 ? (
           <>
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-navy">Photo (optional)</p>
+              <p className="text-sm font-semibold text-navy">{t("Photo (optional)")}</p>
               {photoUrl ? (
                 <div className="relative w-full max-w-xs overflow-hidden rounded-2xl border">
-                  <Image src={photoUrl} alt="Selected photo preview" width={320} height={200} className="h-48 w-full object-cover" unoptimized />
-                  <Button type="button" size="icon-sm" variant="secondary" className="absolute top-2 right-2" onClick={removePhoto} aria-label="Remove photo">
+                  <Image src={photoUrl} alt={t("Selected photo preview")} width={320} height={200} className="h-48 w-full object-cover" unoptimized />
+                  <Button type="button" size="icon-sm" variant="secondary" className="absolute top-2 right-2" onClick={removePhoto} aria-label={t("Remove photo")}>
                     <X className="size-4" />
                   </Button>
                 </div>
               ) : (
                 <label className="flex min-h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed bg-white p-4 text-center text-sm hover:border-primary/40">
                   {processingPhoto ? <Loader2 className="size-6 animate-spin text-primary" aria-hidden="true" /> : <ImagePlus className="size-6 text-primary" aria-hidden="true" />}
-                  <span className="font-semibold text-navy">{processingPhoto ? "Preparing photo…" : "Add a photo"}</span>
-                  <span className="text-xs text-muted-foreground">JPEG, PNG or WebP. Location data is removed. Only you and reviewers see it unless you allow publication.</span>
+                  <span className="font-semibold text-navy">{processingPhoto ? t("Preparing photo…") : t("Add a photo")}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {t("JPEG, PNG or WebP. Location data is removed. Only you and reviewers see it unless you allow publication.")}
+                  </span>
                   <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => void onPhoto(e.target.files?.[0])} />
                 </label>
               )}
               {photoError ? (
                 <p className="text-xs font-medium text-destructive" role="alert">
-                  {photoError}
+                  {t(photoError)}
                 </p>
               ) : null}
             </div>
@@ -359,18 +364,18 @@ export function StoryForm({
 
         {step === 3 ? (
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">This is how your story would appear if approved and published:</p>
+            <p className="text-sm text-muted-foreground">{t("This is how your story would appear if approved and published:")}</p>
             <article className="overflow-hidden rounded-2xl border bg-white">
               {values.consent_show_photo && photoUrl ? (
                 <Image src={photoUrl} alt="" width={640} height={360} className="aspect-[16/9] w-full object-cover" unoptimized />
               ) : (
-                <div className="grid aspect-[16/9] place-items-center bg-accent/60 text-xs text-muted-foreground">No public photo</div>
+                <div className="grid aspect-[16/9] place-items-center bg-accent/60 text-xs text-muted-foreground">{t("No public photo")}</div>
               )}
               <div className="space-y-2 p-4">
-                <p className="text-xs font-semibold text-primary">{STORY_TYPE_LABELS[storyType]}</p>
-                <h3 className="text-lg font-bold">{values.title || "Your title"}</h3>
+                <p className="text-xs font-semibold text-primary">{t(STORY_TYPE_LABELS[storyType])}</p>
+                <h3 className="text-lg font-bold">{values.title || t("Your title")}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {previewName ?? "Shared anonymously"}
+                  {previewName ?? t("Shared anonymously")}
                   {values.city ? ` · ${values.city}` : ""}
                   {values.experience_period ? ` · ${values.experience_period}` : ""}
                   {values.consent_show_personal && values.blood_group ? ` · ${values.blood_group}` : ""}
@@ -379,37 +384,39 @@ export function StoryForm({
               </div>
             </article>
             <p className="text-xs text-muted-foreground">
-              Private and never published: your full name, follow-up contact, reviewer notes{photo && !values.consent_show_photo ? " and your photo" : ""}.
+              {photo && !values.consent_show_photo
+                ? t("Private and never published: your full name, follow-up contact, reviewer notes and your photo.")
+                : t("Private and never published: your full name, follow-up contact, reviewer notes.")}
             </p>
           </div>
         ) : null}
 
         {serverError ? (
           <p className="rounded-xl border border-destructive/25 bg-destructive/5 px-3.5 py-3 text-sm text-destructive" role="alert">
-            {serverError}
+            {t(serverError)}
           </p>
         ) : null}
 
         <div className="flex gap-3">
           {step > 0 ? (
             <Button type="button" variant="outline" size="lg" onClick={() => setStep((s) => s - 1)} disabled={pending}>
-              <ArrowLeft className="size-4" aria-hidden="true" /> Back
+              <ArrowLeft className="size-4" aria-hidden="true" /> {t("Back")}
             </Button>
           ) : null}
           <Button type="submit" size="lg" className="flex-1" disabled={pending || processingPhoto}>
             {step === STEPS.length - 1 ? (
               pending ? (
                 <>
-                  <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Submitting…
+                  <Loader2 className="size-4 animate-spin" aria-hidden="true" /> {t("Submitting…")}
                 </>
               ) : (
                 <>
-                  <Send className="size-4" aria-hidden="true" /> Submit for review
+                  <Send className="size-4" aria-hidden="true" /> {t("Submit for review")}
                 </>
               )
             ) : (
               <>
-                Continue <ArrowRight className="size-4" aria-hidden="true" />
+                {t("Continue")} <ArrowRight className="size-4" aria-hidden="true" />
               </>
             )}
           </Button>

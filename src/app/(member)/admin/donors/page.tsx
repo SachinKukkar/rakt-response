@@ -13,8 +13,12 @@ import { createClient } from "@/lib/supabase/server";
 import { BLOOD_GROUPS, type BloodGroup } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
 import type { ProfileRow } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Donors" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Donors") };
+}
 
 const PAGE_SIZE = 25;
 const FILTERS: Record<string, string> = {
@@ -29,6 +33,7 @@ const FILTERS: Record<string, string> = {
 
 export default async function AdminDonorsPage({ searchParams }: PageProps<"/admin/donors">) {
   const viewer = await requireAdmin();
+  const t = await getT();
   const params = await searchParams;
   const filterRaw = Array.isArray(params.filter) ? params.filter[0] : params.filter;
   const filter = filterRaw && filterRaw in FILTERS ? filterRaw : "donors";
@@ -61,7 +66,7 @@ export default async function AdminDonorsPage({ searchParams }: PageProps<"/admi
           viewer.isAdmin ? (
             <Button asChild variant="outline">
               <a download href="/api/admin/export/donors">
-                <Download className="size-4" aria-hidden="true" /> Export CSV
+                <Download className="size-4" aria-hidden="true" /> {t("Export CSV")}
               </a>
             </Button>
           ) : null
@@ -69,29 +74,29 @@ export default async function AdminDonorsPage({ searchParams }: PageProps<"/admi
       />
       <form method="get" className="surface grid gap-3 p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end" role="search">
         <label className="space-y-1 text-xs font-semibold text-navy">
-          Show
+          {t("Show")}
           <select name="filter" defaultValue={filter} className={selectClass}>
             {Object.entries(FILTERS).map(([k, label]) => (
               <option key={k} value={k}>
-                {label}
+                {t(label)}
               </option>
             ))}
           </select>
         </label>
         <label className="space-y-1 text-xs font-semibold text-navy">
-          Blood group
+          {t("Blood group")}
           <select name="group" defaultValue={group ?? ""} className={selectClass}>
-            <option value="">All</option>
+            <option value="">{t("All")}</option>
             {BLOOD_GROUPS.map((g) => (
               <option key={g}>{g}</option>
             ))}
           </select>
         </label>
         <label className="space-y-1 text-xs font-semibold text-navy">
-          Name
+          {t("Name")}
           <Input name="q" defaultValue={q} />
         </label>
-        <Button type="submit">Apply</Button>
+        <Button type="submit">{t("Apply")}</Button>
       </form>
       {profiles.length === 0 ? (
         <EmptyState icon={Users} title="No members match" />
@@ -104,12 +109,12 @@ export default async function AdminDonorsPage({ searchParams }: PageProps<"/admi
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-navy">{p.full_name}</span>
                   <span className="block text-xs text-muted-foreground">
-                    Joined {formatDate(p.created_at)} · {p.is_donor ? "Donor" : "Member"}
+                    {t("Joined {date}", { date: formatDate(p.created_at) })} · {p.is_donor ? t("Donor") : t("Member")}
                   </span>
                 </span>
                 <span className="flex flex-col items-end gap-1">
                   <ProfileVerificationBadge status={p.verification_status} />
-                  {p.requested_blood_group ? <Pill tone="warning">Correction → {p.requested_blood_group}</Pill> : null}
+                  {p.requested_blood_group ? <Pill tone="warning">{t("Correction → {group}", { group: p.requested_blood_group })}</Pill> : null}
                   {p.deletion_requested_at ? <Pill tone="danger">Deletion requested</Pill> : null}
                   {!p.is_active ? <Pill>Inactive</Pill> : null}
                 </span>

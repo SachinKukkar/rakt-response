@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Bell, LogOut } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
+import { LanguageToggle } from "@/components/layout/language-toggle";
+import { getT } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
 import type { Viewer } from "@/lib/auth";
 import { BottomNav, SideNav, type NavItem } from "./member-nav";
@@ -8,10 +10,11 @@ import { BottomNav, SideNav, type NavItem } from "./member-nav";
 function bottomItems(viewer: Viewer): NavItem[] {
   const items: NavItem[] = [{ href: "/dashboard", label: "Home", icon: "home" }];
   if (viewer.isAdmin) {
+    // Admins are donors first: their own donor tabs, plus one Admin hub.
     items.push(
-      { href: "/volunteer", label: "Volunteer", icon: "volunteer" },
-      { href: "/admin", label: "Admin", icon: "admin" },
       { href: "/requests", label: "Requests", icon: "requests" },
+      { href: "/donations", label: "Donations", icon: "donations" },
+      { href: "/admin", label: "Admin", icon: "admin" },
     );
   } else if (viewer.isStaff) {
     items.push(
@@ -44,7 +47,7 @@ function sideGroups(viewer: Viewer) {
       ],
     },
   ];
-  if (viewer.isStaff) {
+  if (viewer.isStaff && !viewer.isAdmin) {
     groups.push({
       title: "Volunteer",
       items: [
@@ -63,7 +66,10 @@ function sideGroups(viewer: Viewer) {
         { href: "/admin", label: "Overview", icon: "admin", exact: true },
         { href: "/admin/donors", label: "Donors", icon: "users" },
         { href: "/admin/requests", label: "Requests", icon: "list" },
+        { href: "/volunteer/requests", label: "Coordinate requests", icon: "requests" },
+        { href: "/volunteer/donors", label: "Donor directory", icon: "users" },
         { href: "/admin/donations", label: "Donations", icon: "donations" },
+        { href: "/admin/data-checks", label: "Data checks", icon: "audit" },
         { href: "/admin/users", label: "Users & roles", icon: "profile" },
         { href: "/admin/volunteers", label: "Volunteers", icon: "volunteer" },
         { href: "/admin/stories", label: "Stories", icon: "stories" },
@@ -77,23 +83,25 @@ function sideGroups(viewer: Viewer) {
   return groups;
 }
 
-export function MemberShell({ viewer, unread, children }: { viewer: Viewer; unread: number; children: React.ReactNode }) {
-  const name = viewer.profile?.display_name || viewer.profile?.full_name?.split(" ")[0] || "there";
+export async function MemberShell({ viewer, unread, children }: { viewer: Viewer; unread: number; children: React.ReactNode }) {
+  const t = await getT();
+  const name = viewer.profile?.display_name || viewer.profile?.full_name?.split(" ")[0] || t("there");
   return (
     <div className="flex min-h-full flex-1 flex-col bg-warm">
       <header className="sticky top-0 z-30 border-b border-border/70 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-          <Link href="/dashboard" className="flex min-h-11 items-center gap-2.5" aria-label="Rakt Response dashboard">
+          <Link href="/dashboard" className="flex min-h-11 items-center gap-2.5" aria-label={t("Rakt Response dashboard")}>
             <LogoMark size="xs" priority />
             <span className="leading-tight">
               <span className="block text-[15px] font-extrabold text-navy">
                 Rakt <span className="text-primary">Response</span>
               </span>
-              <span className="block max-w-[11rem] truncate text-xs text-muted-foreground">Hello, {name}</span>
+              <span className="block max-w-[11rem] truncate text-xs text-muted-foreground">{t("Hello, {name}", { name })}</span>
             </span>
           </Link>
           <div className="flex items-center gap-1">
-            <Button asChild variant="ghost" size="icon" className="relative" aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}>
+            <LanguageToggle className="px-2.5" />
+            <Button asChild variant="ghost" size="icon" className="relative" aria-label={unread ? t("Notifications, {count} unread", { count: unread }) : t("Notifications")}>
               <Link href="/notifications">
                 <Bell className="size-5.5" />
                 {unread > 0 ? (
@@ -104,7 +112,7 @@ export function MemberShell({ viewer, unread, children }: { viewer: Viewer; unre
               </Link>
             </Button>
             <form action="/auth/signout" method="post">
-              <Button type="submit" variant="ghost" size="icon" aria-label="Sign out">
+              <Button type="submit" variant="ghost" size="icon" aria-label={t("Sign out")}>
                 <LogOut className="size-5" />
               </Button>
             </form>

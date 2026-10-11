@@ -9,8 +9,12 @@ import { createClient } from "@/lib/supabase/server";
 import { STORY_TYPE_LABELS, type StoryStatus, type StoryType } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Story moderation" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Story moderation") };
+}
 
 const TABS: Record<string, { label: string; statuses: StoryStatus[] }> = {
   review: { label: "To review", statuses: ["submitted", "under_review", "verification_requested"] },
@@ -22,6 +26,7 @@ const PAGE_SIZE = 20;
 
 export default async function AdminStoriesPage({ searchParams }: PageProps<"/admin/stories">) {
   await requireAdmin();
+  const t = await getT();
   const params = await searchParams;
   const tabRaw = Array.isArray(params.tab) ? params.tab[0] : params.tab;
   const tab = tabRaw && tabRaw in TABS ? tabRaw : "review";
@@ -38,16 +43,16 @@ export default async function AdminStoriesPage({ searchParams }: PageProps<"/adm
   return (
     <div className="space-y-4">
       <PageHeader eyebrow="Administrator" title="Story moderation" description="Nothing is public until you publish it, and only with the contributor's consent." />
-      <nav aria-label="Moderation status" className="-mx-4 overflow-x-auto px-4">
+      <nav aria-label={t("Moderation status")} className="-mx-4 overflow-x-auto px-4">
         <ul className="flex w-max gap-2">
-          {Object.entries(TABS).map(([key, t]) => (
+          {Object.entries(TABS).map(([key, tabInfo]) => (
             <li key={key}>
               <Link
                 href={`/admin/stories?tab=${key}`}
                 aria-current={key === tab ? "page" : undefined}
                 className={cn("inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold", key === tab ? "border-primary bg-primary text-white" : "bg-white text-navy")}
               >
-                {t.label}
+                {t(tabInfo.label)}
               </Link>
             </li>
           ))}
@@ -63,9 +68,9 @@ export default async function AdminStoriesPage({ searchParams }: PageProps<"/adm
                 <span className="min-w-0">
                   <span className="block font-semibold text-navy">{s.title}</span>
                   <span className="block text-xs text-muted-foreground">
-                    {STORY_TYPE_LABELS[s.story_type]} · {s.contributor_name} · {formatDate(s.created_at)}
-                    {s.photo_path ? " · has photo" : ""}
-                    {s.withdrawn_at ? " · withdrawn" : ""}
+                    {t(STORY_TYPE_LABELS[s.story_type])} · {s.contributor_name} · {formatDate(s.created_at)}
+                    {s.photo_path ? t(" · has photo") : ""}
+                    {s.withdrawn_at ? t(" · withdrawn") : ""}
                   </span>
                 </span>
                 <StoryStatusBadge status={s.status} />

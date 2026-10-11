@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FormMessage, SubmitButton, fieldAria } from "@/components/common/form-parts";
 import { initialActionState } from "@/lib/action-result";
 import { requestPasswordReset, resendVerification, signIn, updatePassword } from "@/actions/auth";
+import { useT } from "@/i18n/client";
 
 export function PasswordInput({
   id,
@@ -21,6 +22,7 @@ export function PasswordInput({
   "type" | "id" | "name"
 >) {
   const [visible, setVisible] = useState(false);
+  const t = useT();
   return (
     <div className="relative">
       <Input
@@ -37,7 +39,7 @@ export function PasswordInput({
         size="icon"
         className="absolute top-0 right-0 text-muted-foreground"
         onClick={() => setVisible((v) => !v)}
-        aria-label={visible ? "Hide password" : "Show password"}
+        aria-label={visible ? t("Hide password") : t("Show password")}
         aria-pressed={visible}
       >
         {visible ? <EyeOff className="size-4.5" /> : <Eye className="size-4.5" />}
@@ -48,6 +50,7 @@ export function PasswordInput({
 
 export function LoginForm({ next }: { next?: string }) {
   const [state, action] = useActionState(signIn, initialActionState);
+  const t = useT();
   const errors = state.ok ? undefined : state.fieldErrors;
   return (
     <form action={action} className="space-y-4" noValidate>
@@ -60,10 +63,18 @@ export function LoginForm({ next }: { next?: string }) {
       </Field>
       <div className="flex justify-end">
         <Link href="/forgot-password" className="text-sm font-semibold text-primary hover:underline">
-          Forgot password?
+          {t("Forgot password?")}
         </Link>
       </div>
       <FormMessage state={state} />
+      {errors?._unconfirmed ? (
+        <p className="text-sm">
+          {t("Can't find it?")}{" "}
+          <Link href="/verify-email" className="font-semibold text-primary hover:underline">
+            {t("Resend the verification email")}
+          </Link>
+        </p>
+      ) : null}
       <SubmitButton className="w-full" size="lg" pendingText="Signing in…">
         Sign in
       </SubmitButton>

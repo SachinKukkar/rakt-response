@@ -4,11 +4,16 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/common/page-parts";
 import { DonationReviewList } from "@/components/volunteer/donation-review";
 import { requireAdmin } from "@/lib/auth";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Donation records" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Donation records") };
+}
 
 export default async function AdminDonationsPage({ searchParams }: PageProps<"/admin/donations">) {
   const viewer = await requireAdmin();
+  const t = await getT();
   return (
     <div>
       <PageHeader
@@ -19,7 +24,7 @@ export default async function AdminDonationsPage({ searchParams }: PageProps<"/a
           viewer.isAdmin ? (
             <Button asChild variant="outline">
               <a download href="/api/admin/export/donations">
-                <Download className="size-4" aria-hidden="true" /> Export CSV
+                <Download className="size-4" aria-hidden="true" /> {t("Export CSV")}
               </a>
             </Button>
           ) : null

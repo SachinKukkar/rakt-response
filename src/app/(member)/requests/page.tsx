@@ -13,10 +13,15 @@ import { createClient } from "@/lib/supabase/server";
 import { CLOSED_REQUEST_STATUSES, RESPONSE_LABELS } from "@/lib/constants";
 import { formatDateTime } from "@/lib/format";
 import type { BloodRequestRow } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Requests" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Requests") };
+}
 
 export default async function MyRequestsPage() {
+  const t = await getT();
   const viewer = await requireViewer("/requests");
   const supabase = await createClient();
   const [matches, ownResult] = await Promise.all([
@@ -40,7 +45,7 @@ export default async function MyRequestsPage() {
         actions={
           <Button asChild variant="outline">
             <Link href="/blood-requests/new">
-              <Plus className="size-4" aria-hidden="true" /> New request
+              <Plus className="size-4" aria-hidden="true" /> {t("New request")}
             </Link>
           </Button>
         }
@@ -59,7 +64,9 @@ export default async function MyRequestsPage() {
                     <div className="space-y-3">
                       {m.contact_request_message ? <p className="text-sm">&ldquo;{m.contact_request_message}&rdquo;</p> : null}
                       {m.contact_request_expires_at ? (
-                        <p className="text-xs text-muted-foreground">Respond by {formatDateTime(m.contact_request_expires_at)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {t("Respond by {date}", { date: formatDateTime(m.contact_request_expires_at) })}
+                        </p>
                       ) : null}
                       <div className="flex flex-wrap gap-2">
                         <ActionForm action={respondToContactRequest} fields={{ contact_request_id: m.contact_request_id!, accept: "true" }} label="Share my contact details" hideAfterSuccess />
@@ -78,7 +85,7 @@ export default async function MyRequestsPage() {
         <section aria-labelledby="matches-heading">
           <SectionHeading id="matches-heading" title="Requests that match you" description="Respond only if you can currently donate. A volunteer will confirm before you travel." />
           <Notice className="mb-3">
-            Interest is not a commitment, and it is never treated as a confirmed donation. The blood centre will check your eligibility.
+            {t("Interest is not a commitment, and it is never treated as a confirmed donation. The blood centre will check your eligibility.")}
           </Notice>
           {others.length ? (
             <ul className="grid gap-3 md:grid-cols-2">
@@ -89,9 +96,11 @@ export default async function MyRequestsPage() {
                     footer={
                       <div className="space-y-2">
                         {m.my_response && m.my_response !== "no_response" ? (
-                          <Pill tone={m.my_response === "interested" ? "success" : "neutral"}>Your response: {RESPONSE_LABELS[m.my_response]}</Pill>
+                          <Pill tone={m.my_response === "interested" ? "success" : "neutral"}>
+                            {t("Your response: {response}", { response: t(RESPONSE_LABELS[m.my_response]) })}
+                          </Pill>
                         ) : null}
-                        {m.contact_request_status === "accepted" ? <Pill tone="info">You shared contact details</Pill> : null}
+                        {m.contact_request_status === "accepted" ? <Pill tone="info">{t("You shared contact details")}</Pill> : null}
                         <div className="flex flex-wrap gap-2">
                           <ActionForm action={respondToRequest} fields={{ request_id: m.request_id, response: "interested" }} label="I can help" size="sm" />
                           <ActionForm action={respondToRequest} fields={{ request_id: m.request_id, response: "unavailable" }} label="Not available" size="sm" variant="outline" />
@@ -107,11 +116,11 @@ export default async function MyRequestsPage() {
           )}
         </section>
       ) : (
-        <Notice icon={UserRoundSearch} title="Want to respond to requests?">
+        <Notice icon={UserRoundSearch} title={t("Want to respond to requests?")}>
           <Link href="/profile/edit" className="font-semibold text-primary underline">
-            Add your blood group and area
+            {t("Add your blood group and area")}
           </Link>{" "}
-          to join the donor register.
+          {t("to join the donor register.")}
         </Notice>
       )}
 
@@ -125,7 +134,7 @@ export default async function MyRequestsPage() {
                   request={r}
                   footer={
                     CLOSED_REQUEST_STATUSES.includes(r.status) ? (
-                      r.closure_reason ? <p className="text-xs text-muted-foreground">Note: {r.closure_reason}</p> : null
+                      r.closure_reason ? <p className="text-xs text-muted-foreground">{t("Note: {reason}", { reason: t(r.closure_reason) })}</p> : null
                     ) : (
                       <ActionForm
                         action={cancelMyRequest}

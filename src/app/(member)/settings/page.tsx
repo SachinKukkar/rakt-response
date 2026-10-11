@@ -11,8 +11,12 @@ import { requireViewer } from "@/lib/auth";
 import { getDonorData } from "@/lib/data/member";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/format";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Privacy & settings" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Privacy & settings") };
+}
 
 const CONSENT_LABELS: Record<string, string> = {
   directory: "Directory visibility",
@@ -22,6 +26,7 @@ const CONSENT_LABELS: Record<string, string> = {
 };
 
 export default async function SettingsPage() {
+  const t = await getT();
   const viewer = await requireViewer("/settings");
   const supabase = await createClient();
   const [donor, eventsResult] = await Promise.all([
@@ -46,6 +51,7 @@ export default async function SettingsPage() {
             open_to_contact: prefs?.open_to_contact ?? false,
             emergency_alerts: prefs?.emergency_alerts ?? false,
             show_donation_summary: prefs?.show_donation_summary ?? false,
+            show_first_name: prefs?.show_first_name ?? false,
             notify_status_updates: prefs?.notify_status_updates ?? true,
             preferred_contact_method: prefs?.preferred_contact_method ?? "in_app",
             max_distance_km: prefs?.max_distance_km ?? null,
@@ -60,31 +66,31 @@ export default async function SettingsPage() {
             {events.map((e, i) => (
               <li key={i} className="flex justify-between gap-3 border-b border-border/60 py-1.5 last:border-0">
                 <span>
-                  {CONSENT_LABELS[e.consent_type] ?? e.consent_type}: <strong>{e.granted ? "given" : "withdrawn / not given"}</strong>
+                  {CONSENT_LABELS[e.consent_type] ? t(CONSENT_LABELS[e.consent_type]) : e.consent_type}: <strong>{e.granted ? t("given") : t("withdrawn / not given")}</strong>
                 </span>
                 <span className="shrink-0 text-xs text-muted-foreground">{formatDateTime(e.created_at)}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted-foreground">No consent changes recorded yet.</p>
+          <p className="text-sm text-muted-foreground">{t("No consent changes recorded yet.")}</p>
         )}
       </section>
 
       <section className="surface space-y-3 p-5" aria-labelledby="account-heading">
         <SectionHeading id="account-heading" title="Account" as="h3" />
         <p className="text-sm">
-          Signed in as <strong>{viewer.email}</strong>
+          {t("Signed in as")} <strong>{viewer.email}</strong>
         </p>
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="outline">
             <Link href="/forgot-password">
-              <KeyRound className="size-4" aria-hidden="true" /> Change password
+              <KeyRound className="size-4" aria-hidden="true" /> {t("Change password")}
             </Link>
           </Button>
           <form action="/auth/signout" method="post">
             <Button type="submit" variant="ghost">
-              <LogOut className="size-4" aria-hidden="true" /> Sign out
+              <LogOut className="size-4" aria-hidden="true" /> {t("Sign out")}
             </Button>
           </form>
         </div>
@@ -95,16 +101,19 @@ export default async function SettingsPage() {
         {deletionRequested ? (
           <>
             <Notice tone="warning">
-              Deletion requested on {formatDateTime(viewer.profile?.deletion_requested_at)}. You&apos;ve been removed from the directory and
-              contact lists. An administrator will anonymise your account.
+              {t(
+                "Deletion requested on {date}. You've been removed from the directory and contact lists. An administrator will anonymise your account.",
+                { date: formatDateTime(viewer.profile?.deletion_requested_at) },
+              )}
             </Notice>
             <ActionForm action={cancelDeletion} label="Cancel deletion request" variant="outline" />
           </>
         ) : (
           <>
             <p className="text-sm text-muted-foreground">
-              We&apos;ll immediately remove you from the donor directory and contact lists, then an administrator anonymises your profile,
-              contact details, location and stories. Aggregated, non-identifying donation counts may remain.
+              {t(
+                "We'll immediately remove you from the donor directory and contact lists, then an administrator anonymises your profile, contact details, location and stories. Aggregated, non-identifying donation counts may remain.",
+              )}
             </p>
             <ActionForm
               action={requestDeletion}
@@ -113,11 +122,11 @@ export default async function SettingsPage() {
               confirmText="Request deletion of your Rakt Response account?"
             >
               <label htmlFor="reason" className="block text-sm font-semibold text-navy">
-                Reason (optional)
+                {t("Reason (optional)")}
               </label>
               <Input id="reason" name="reason" maxLength={300} />
               <label htmlFor="confirm" className="block text-sm font-semibold text-navy">
-                Type DELETE to confirm
+                {t("Type DELETE to confirm")}
               </label>
               <Input id="confirm" name="confirm" autoComplete="off" required />
             </ActionForm>

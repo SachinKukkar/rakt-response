@@ -5,6 +5,7 @@ import { RequestStatusBadge, UrgencyBadge } from "@/components/common/status-bad
 import { REQUEST_TYPE_LABELS, type BloodGroup, type RequestStatus, type RequestType, type Urgency } from "@/lib/constants";
 import { formatDateTime, relativeTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
 export interface RequestCardData {
   id: string;
@@ -20,7 +21,7 @@ export interface RequestCardData {
   status: RequestStatus;
 }
 
-export function RequestCard({
+export async function RequestCard({
   request,
   href,
   footer,
@@ -31,6 +32,7 @@ export function RequestCard({
   footer?: React.ReactNode;
   className?: string;
 }) {
+  const t = await getT();
   const body = (
     <>
       <div className="flex items-start gap-3">
@@ -41,8 +43,10 @@ export function RequestCard({
             <RequestStatusBadge status={request.status} />
           </div>
           <p className="font-bold text-navy">
-            {REQUEST_TYPE_LABELS[request.request_type]}
-            {request.units_needed ? ` · ${request.units_needed} unit${request.units_needed > 1 ? "s" : ""}` : ""}
+            {t(REQUEST_TYPE_LABELS[request.request_type])}
+            {request.units_needed
+              ? ` · ${t(request.units_needed > 1 ? "{count} units" : "{count} unit", { count: request.units_needed })}`
+              : ""}
           </p>
           <p className="flex items-start gap-1.5 text-sm text-foreground/85">
             <Hospital className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -55,18 +59,23 @@ export function RequestCard({
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <CalendarClock className="size-4 shrink-0" aria-hidden="true" />
             <span>
-              Needed by {formatDateTime(request.required_by)} <span className="text-xs">({relativeTime(request.required_by)})</span>
+              {t("Needed by {date}", { date: formatDateTime(request.required_by) })}{" "}
+              <span className="text-xs">({relativeTime(request.required_by)})</span>
             </span>
           </p>
         </div>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">Ref. {request.reference_code}</p>
+      <p className="mt-2 text-xs text-muted-foreground">{t("Ref. {code}", { code: request.reference_code })}</p>
     </>
   );
   return (
     <article className={cn("surface p-4", request.urgency === "critical" && "border-primary/30", className)}>
       {href ? (
-        <Link href={href} className="block rounded-xl focus-visible:outline-offset-4" aria-label={`Request ${request.reference_code}: ${request.blood_group} at ${request.hospital_name}`}>
+        <Link href={href} className="block rounded-xl focus-visible:outline-offset-4" aria-label={t("Request {code}: {group} at {hospital}", {
+            code: request.reference_code,
+            group: request.blood_group,
+            hospital: request.hospital_name,
+          })}>
           {body}
         </Link>
       ) : (

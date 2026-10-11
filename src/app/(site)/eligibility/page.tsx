@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
 import { CalendarClock, Droplet, HeartPulse, MessageCircleQuestion, Pill, Scale, Thermometer, TriangleAlert, UserCheck, type LucideIcon } from "lucide-react";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TLDR, TopicPills } from "@/components/learn/learn-parts";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Eligibility",
-  description:
-    "General information about blood donation eligibility in India. This is not a medical assessment: the blood centre's doctor decides at every donation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return {
+    title: t("Eligibility"),
+    description: t(
+      "General information about blood donation eligibility in India. This is not a medical assessment: the blood centre's doctor decides at every donation.",
+    ),
+  };
+}
+
+/** Puts JSX into a translated sentence at its {placeholders}, so word order can follow the language. */
+function withParts(text: string, parts: Record<string, React.ReactNode>): React.ReactNode[] {
+  return text.split(/\{(\w+)\}/).map((piece, i) => (i % 2 === 1 ? <Fragment key={i}>{parts[piece] ?? `{${piece}}`}</Fragment> : piece));
+}
 
 const CHECKS: { icon: LucideIcon; title: string; usually: string; note: string }[] = [
   { icon: UserCheck, title: "Age", usually: "Usually 18–65", note: "First-timers near the top end may get extra checks." },
@@ -28,7 +39,8 @@ const TELL_THE_CENTRE = [
   "Anything else you're unsure about",
 ];
 
-export default function EligibilityPage() {
+export default async function EligibilityPage() {
+  const t = await getT();
   return (
     <>
       <PageHero
@@ -50,9 +62,10 @@ export default function EligibilityPage() {
         />
 
         <Notice title="General information, not a medical assessment" tone="warning" icon={TriangleAlert}>
-          <strong>Rakt Response doesn&apos;t decide who can donate.</strong> Donor selection in India follows national NBTC and
-          NACO guidance, and the blood centre&apos;s doctor screens you on the day. Registering or reading this page doesn&apos;t
-          mean you can donate on any particular day.
+          <strong>{t("Rakt Response doesn't decide who can donate.")}</strong>{" "}
+          {t(
+            "Donor selection in India follows national NBTC and NACO guidance, and the blood centre's doctor screens you on the day. Registering or reading this page doesn't mean you can donate on any particular day.",
+          )}
         </Notice>
 
         <section aria-labelledby="checks-heading">
@@ -64,17 +77,17 @@ export default function EligibilityPage() {
                   <c.icon className="size-5" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="leading-tight font-bold">{c.title}</h3>
-                  <p className="mt-1 inline-flex rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-primary">{c.usually}</p>
-                  <p className="mt-1.5 text-sm text-muted-foreground">{c.note}</p>
+                  <h3 className="leading-tight font-bold">{t(c.title)}</h3>
+                  <p className="mt-1 inline-flex rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-primary">{t(c.usually)}</p>
+                  <p className="mt-1.5 text-sm text-muted-foreground">{t(c.note)}</p>
                 </div>
               </li>
             ))}
           </ul>
           <p className="mt-3 text-sm text-muted-foreground">
-            Typical ranges only, not a checklist for deciding yourself.{" "}
+            {t("Typical ranges only, not a checklist for deciding yourself.")}{" "}
             <Link href="/donation-types" className="font-semibold text-primary underline underline-offset-4">
-              Compare donation types
+              {t("Compare donation types")}
             </Link>
           </p>
         </section>
@@ -82,51 +95,60 @@ export default function EligibilityPage() {
         <div className="space-y-3">
           <MoreDetails title="Who sets the rules">
             <p>
-              In India, donor selection follows national guidelines from the{" "}
-              <strong>National Blood Transfusion Council (NBTC)</strong> and the{" "}
-              <strong>National AIDS Control Organisation (NACO)</strong>, along with the rules of each licensed blood centre.
-              These guidelines are updated from time to time, and centres may apply additional checks.
+              {withParts(
+                t(
+                  "In India, donor selection follows national guidelines from the {nbtc} and the {naco}, along with the rules of each licensed blood centre. These guidelines are updated from time to time, and centres may apply additional checks.",
+                ),
+                {
+                  nbtc: <strong>{t("National Blood Transfusion Council (NBTC)")}</strong>,
+                  naco: <strong>{t("National AIDS Control Organisation (NACO)")}</strong>,
+                },
+              )}
             </p>
             <p>
-              The doctor at the blood centre applies these guidelines to you as an individual, using your answers to the donor
-              questionnaire and a short health check on the day.
+              {t(
+                "The doctor at the blood centre applies these guidelines to you as an individual, using your answers to the donor questionnaire and a short health check on the day.",
+              )}
             </p>
           </MoreDetails>
           <MoreDetails title="Tell the blood centre about">
             <ul>
               {TELL_THE_CENTRE.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item}>{t(item)}</li>
               ))}
             </ul>
           </MoreDetails>
           <MoreDetails title="Intervals, deferrals and SDP checks">
             <p>
-              Intervals differ by donation type. For whole blood, Indian guidance typically differs by sex, for example 90 days
-              for men and 120 days for women. Apheresis donations such as SDP have their own, shorter intervals set by the
-              apheresis centre.
+              {t(
+                "Intervals differ by donation type. For whole blood, Indian guidance typically differs by sex, for example 90 days for men and 120 days for women. Apheresis donations such as SDP have their own, shorter intervals set by the apheresis centre.",
+              )}
             </p>
             <p>
-              Certain medicines, vaccinations, surgeries, dental work, tattoos, piercings and some travel can each mean a waiting
-              (deferral) period. A deferral is often temporary, and the centre can tell you when you may be able to return.
+              {t(
+                "Certain medicines, vaccinations, surgeries, dental work, tattoos, piercings and some travel can each mean a waiting (deferral) period. A deferral is often temporary, and the centre can tell you when you may be able to return.",
+              )}
             </p>
             <p>
-              SDP and other apheresis donations need additional checks, such as a platelet count and vein suitability, which the
-              apheresis centre decides. Your questionnaire answers are confidential to the blood centre.
+              {t(
+                "SDP and other apheresis donations need additional checks, such as a platelet count and vein suitability, which the apheresis centre decides. Your questionnaire answers are confidential to the blood centre.",
+              )}
             </p>
           </MoreDetails>
         </div>
 
         <Notice title="Unsure about something?" icon={MessageCircleQuestion}>
-          Ask a licensed blood centre or your own doctor. Rakt Response volunteers can&apos;t give medical advice or confirm
-          whether you can donate.
+          {t(
+            "Ask a licensed blood centre or your own doctor. Rakt Response volunteers can't give medical advice or confirm whether you can donate.",
+          )}
         </Notice>
 
         <div className="surface-tint flex items-center gap-3 p-4 text-sm">
           <HeartPulse className="size-5 shrink-0 text-primary" aria-hidden="true" />
           <p>
-            Curious about the day itself?{" "}
+            {t("Curious about the day itself?")}{" "}
             <Link href="/donation-process" className="font-semibold text-primary underline underline-offset-4">
-              See what happens
+              {t("See what happens")}
             </Link>
           </p>
         </div>

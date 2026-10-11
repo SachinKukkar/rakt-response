@@ -1,7 +1,8 @@
 import { formatNumber } from "@/lib/format";
+import { getT } from "@/i18n/server";
 
 /** Lightweight horizontal bar chart (no chart library), readable on phones. */
-export function BarList({
+export async function BarList({
   items,
   label,
   emptyText = "No data yet.",
@@ -10,10 +11,11 @@ export function BarList({
   label: string;
   emptyText?: string;
 }) {
+  const t = await getT();
   const max = Math.max(1, ...items.map((i) => i.value));
-  if (!items.length || items.every((i) => i.value === 0)) return <p className="text-sm text-muted-foreground">{emptyText}</p>;
+  if (!items.length || items.every((i) => i.value === 0)) return <p className="text-sm text-muted-foreground">{t(emptyText)}</p>;
   return (
-    <ul className="space-y-2" aria-label={label}>
+    <ul className="space-y-2" aria-label={t(label)}>
       {items.map((item) => (
         <li key={item.label} className="grid grid-cols-[5.5rem_1fr_auto] items-center gap-2 text-sm">
           <span className="truncate text-muted-foreground" title={item.label}>
@@ -30,7 +32,7 @@ export function BarList({
 }
 
 /** Monthly column chart with a two-series option. */
-export function MonthlyColumns({
+export async function MonthlyColumns({
   data,
   series,
   label,
@@ -39,11 +41,12 @@ export function MonthlyColumns({
   series: Array<{ key: string; name: string; className: string }>;
   label: string;
 }) {
+  const t = await getT();
   const max = Math.max(1, ...data.flatMap((d) => series.map((s) => Number(d[s.key] ?? 0))));
   const total = data.reduce((sum, d) => sum + series.reduce((s2, s) => s2 + Number(d[s.key] ?? 0), 0), 0);
   return (
     <figure>
-      <div className="flex h-36 items-end gap-1" role="img" aria-label={`${label}: ${total} in the last 12 months`}>
+      <div className="flex h-36 items-end gap-1" role="img" aria-label={t("{label}: {total} in the last 12 months", { label: t(label), total })}>
         {data.map((d) => (
           <div key={String(d.month)} className="flex h-full flex-1 items-end justify-center gap-px" title={`${d.month}: ${series.map((s) => `${s.name} ${d[s.key]}`).join(", ")}`}>
             {series.map((s) => (
@@ -70,10 +73,10 @@ export function MonthlyColumns({
         </figcaption>
       ) : null}
       <table className="sr-only">
-        <caption>{label}</caption>
+        <caption>{t(label)}</caption>
         <thead>
           <tr>
-            <th>Month</th>
+            <th>{t("Month")}</th>
             {series.map((s) => (
               <th key={s.key}>{s.name}</th>
             ))}

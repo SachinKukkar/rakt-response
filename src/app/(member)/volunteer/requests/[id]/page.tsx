@@ -30,9 +30,13 @@ import {
 import { formatDate, formatDateTime, relativeTime } from "@/lib/format";
 import { formatPhone } from "@/lib/phone";
 import { uuidSchema } from "@/lib/validation/common";
+import { getT } from "@/i18n/server";
 import type { BloodRequestRow, MatchedDonor, RequestEventRow } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Request coordination" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Request coordination") };
+}
 
 function toIndiaLocalInput(iso: string): string {
   const d = new Date(new Date(iso).getTime() + 5.5 * 3600_000);
@@ -41,6 +45,7 @@ function toIndiaLocalInput(iso: string): string {
 
 export default async function VolunteerRequestPage({ params }: PageProps<"/volunteer/requests/[id]">) {
   const viewer = await requireStaff();
+  const t = await getT();
   const { id } = await params;
   if (!uuidSchema.safeParse(id).success) notFound();
   const supabase = await createClient();
@@ -75,7 +80,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
 
   return (
     <div className="space-y-6">
-      <PageHeader backHref="/volunteer/requests" backLabel="Request queue" eyebrow={`Request ${request.reference_code}`} title={`${request.blood_group} · ${REQUEST_TYPE_LABELS[request.request_type]}`} />
+      <PageHeader backHref="/volunteer/requests" backLabel="Request queue" eyebrow={`${t("Request")} ${request.reference_code}`} title={`${request.blood_group} · ${t(REQUEST_TYPE_LABELS[request.request_type])}`} />
 
       <section className="surface space-y-3 p-4">
         <div className="flex flex-wrap items-center gap-3">
@@ -84,7 +89,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             <div className="flex flex-wrap gap-1.5">
               <UrgencyBadge urgency={request.urgency} />
               <RequestStatusBadge status={request.status} />
-              {request.public_listing_consent ? <Pill tone="info">Public listing allowed</Pill> : <Pill>Not publicly listed</Pill>}
+              {request.public_listing_consent ? <Pill tone="info">{t("Public listing allowed")}</Pill> : <Pill>{t("Not publicly listed")}</Pill>}
             </div>
             <p className="font-semibold text-navy">{request.hospital_name}</p>
             <p className="text-sm text-muted-foreground">
@@ -92,25 +97,26 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
               {request.state ? `, ${request.state}` : ""}
             </p>
             <p className="text-sm">
-              Needed by <strong>{formatDateTime(request.required_by)}</strong> ({relativeTime(request.required_by)})
-              {request.units_needed ? ` · ${request.units_needed} unit(s)` : ""}
+              {t("Needed by")} <strong>{formatDateTime(request.required_by)}</strong> ({relativeTime(request.required_by)})
+              {request.units_needed ? ` · ${t("{count} unit(s)", { count: request.units_needed })}` : ""}
             </p>
           </div>
         </div>
-        {request.notes ? <p className="rounded-xl bg-muted p-3 text-sm">Requester notes: {request.notes}</p> : null}
+        {request.notes ? <p className="rounded-xl bg-muted p-3 text-sm">{t("Requester notes: {notes}", { notes: request.notes })}</p> : null}
         {request.possible_duplicate_of ? (
           <Notice tone="warning" icon={Copy} title="Possible duplicate">
-            A similar open request exists.{" "}
+            {t("A similar open request exists.")}{" "}
             <Link href={`/volunteer/requests/${request.possible_duplicate_of}`} className="font-semibold underline">
-              Compare requests
+              {t("Compare requests")}
             </Link>{" "}
-            before contacting donors.
+            {t("before contacting donors.")}
           </Notice>
         ) : null}
         {request.request_type === "sdp" ? (
           <Notice>
-            SDP request: prefer donors with declared SDP history, but never assume eligibility. The apheresis centre screens donors and
-            decides timing.
+            {t(
+              "SDP request: prefer donors with declared SDP history, but never assume eligibility. The apheresis centre screens donors and decides timing.",
+            )}
           </Notice>
         ) : null}
       </section>
@@ -120,9 +126,9 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           <SectionHeading id="requester-heading" title="Requester (private)" as="h3" />
           <dl>
             <KeyValue label="Name">{request.requester_name}</KeyValue>
-            <KeyValue label="Prefers">{CONTACT_METHOD_LABELS[request.requester_contact_method]}</KeyValue>
+            <KeyValue label="Prefers">{t(CONTACT_METHOD_LABELS[request.requester_contact_method])}</KeyValue>
             <KeyValue label="Submitted">{formatDateTime(request.created_at)}</KeyValue>
-            <KeyValue label="Account">{request.created_by ? "Signed-in member" : "Submitted without an account"}</KeyValue>
+            <KeyValue label="Account">{request.created_by ? t("Signed-in member") : t("Submitted without an account")}</KeyValue>
           </dl>
           <div className="mt-3 flex flex-wrap gap-2">
             {request.requester_phone ? (
@@ -134,7 +140,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
                 </Button>
                 <Button asChild size="sm" variant="outline">
                   <a href={whatsappLink(request.requester_phone)} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="size-4" aria-hidden="true" /> WhatsApp
+                    <MessageCircle className="size-4" aria-hidden="true" /> {t("WhatsApp")}
                   </a>
                 </Button>
               </>
@@ -142,7 +148,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             {request.requester_email ? (
               <Button asChild size="sm" variant="outline">
                 <a href={mailtoLink(request.requester_email, `Your blood request ${request.reference_code}`)}>
-                  <Mail className="size-4" aria-hidden="true" /> Email
+                  <Mail className="size-4" aria-hidden="true" /> {t("Email")}
                 </a>
               </Button>
             ) : null}
@@ -152,7 +158,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
         <section className="surface p-4" aria-labelledby="status-heading">
           <SectionHeading id="status-heading" title="Status" as="h3" />
           <StatusChangeForm requestId={request.id} allowed={REQUEST_TRANSITIONS[request.status]} canVerify={viewerCan(viewer, "verify_requests")} />
-          {request.closure_reason ? <p className="mt-3 text-sm text-muted-foreground">Closing note: {request.closure_reason}</p> : null}
+          {request.closure_reason ? <p className="mt-3 text-sm text-muted-foreground">{t("Closing note: {reason}", { reason: request.closure_reason })}</p> : null}
         </section>
       </div>
 
@@ -163,14 +169,14 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             {activeAssignments.map((a) => (
               <li key={a.id}>
                 <Pill tone="info" icon={UserCheck}>
-                  {names.get(a.volunteer_id) ?? "Volunteer"}
-                  {a.follow_up_at ? ` · follow up ${relativeTime(a.follow_up_at)}` : ""}
+                  {names.get(a.volunteer_id) ?? t("Volunteer")}
+                  {a.follow_up_at ? ` · ${t("follow up {when}", { when: relativeTime(a.follow_up_at) })}` : ""}
                 </Pill>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mb-3 text-sm text-muted-foreground">Nobody is coordinating this request yet.</p>
+          <p className="mb-3 text-sm text-muted-foreground">{t("Nobody is coordinating this request yet.")}</p>
         )}
         <div className="flex flex-wrap items-end gap-3">
           {!iAmAssigned && !["fulfilled", "cancelled", "expired", "rejected"].includes(request.status) ? (
@@ -179,13 +185,13 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           {viewer.isAdmin && staff.length ? (
             <ActionForm action={assignRequest} fields={{ request_id: request.id }} label="Assign" size="sm" variant="outline" className="flex items-end gap-2 space-y-0">
               <label className="space-y-1 text-xs font-semibold text-navy">
-                Assign a volunteer
+                {t("Assign a volunteer")}
                 <select name="volunteer_id" className={selectClass} required>
                   {staff
                     .filter((s) => s.user_id !== viewer.id)
                     .map((s) => (
                       <option key={s.user_id} value={s.user_id}>
-                        {s.name} ({s.role})
+                        {s.name} ({t(s.role)})
                       </option>
                     ))}
                 </select>
@@ -203,13 +209,13 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           action={
             <Button asChild variant="outline" size="sm">
               <Link href={`/volunteer/donors?request=${request.id}&groups=${encodeURIComponent(request.blood_group)}&district=${encodeURIComponent(request.district)}${request.request_type === "sdp" ? "&type=sdp" : ""}`}>
-                <Search className="size-4" aria-hidden="true" /> Search directory
+                <Search className="size-4" aria-hidden="true" /> {t("Search directory")}
               </Link>
             </Button>
           }
         />
         {!open ? (
-          <Notice>Donor contact is available only once a request is verified and active.</Notice>
+          <Notice>{t("Donor contact is available only once a request is verified and active.")}</Notice>
         ) : matches.length === 0 ? (
           <EmptyState icon={Search} title="No matching donors in this district" description="Search the directory with a wider area, or check nearby districts." />
         ) : (
@@ -223,23 +229,23 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
                       <p className="font-semibold text-navy">{m.display_name}</p>
                       <p className="text-xs text-muted-foreground">
                         {m.locality ? `${m.locality}, ` : ""}
-                        {m.city} · active {relativeTime(m.last_active_at)}
+                        {m.city} · {t("active {when}", { when: relativeTime(m.last_active_at) })}
                       </p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     <ProfileVerificationBadge status={m.verification_status} />
-                    {m.has_sdp_history ? <Pill tone="brand">SDP history</Pill> : null}
-                    {m.open_to_contact ? <Pill tone="success">Open to contact</Pill> : <Pill>Not open now</Pill>}
-                    {m.response ? <Pill tone={m.response === "interested" ? "success" : "neutral"}>{RESPONSE_LABELS[m.response]}</Pill> : null}
-                    {m.outcome && m.outcome !== "pending" ? <Pill tone="info">{OUTCOME_LABELS[m.outcome]}</Pill> : null}
+                    {m.has_sdp_history ? <Pill tone="brand">{t("SDP history")}</Pill> : null}
+                    {m.open_to_contact ? <Pill tone="success">{t("Open to contact")}</Pill> : <Pill>{t("Not open now")}</Pill>}
+                    {m.response ? <Pill tone={m.response === "interested" ? "success" : "neutral"}>{t(RESPONSE_LABELS[m.response])}</Pill> : null}
+                    {m.outcome && m.outcome !== "pending" ? <Pill tone="info">{t(OUTCOME_LABELS[m.outcome])}</Pill> : null}
                   </div>
                 </div>
                 {m.last_verified_whole_blood || m.last_verified_sdp ? (
                   <p className="text-xs text-muted-foreground">
-                    Last verified: {m.last_verified_whole_blood ? `whole blood ${formatDate(m.last_verified_whole_blood)}` : ""}
+                    {t("Last verified:")} {m.last_verified_whole_blood ? t("whole blood {date}", { date: formatDate(m.last_verified_whole_blood) }) : ""}
                     {m.last_verified_whole_blood && m.last_verified_sdp ? " · " : ""}
-                    {m.last_verified_sdp ? `SDP ${formatDate(m.last_verified_sdp)}` : ""} (not an eligibility decision)
+                    {m.last_verified_sdp ? `SDP ${formatDate(m.last_verified_sdp)}` : ""} {t("(not an eligibility decision)")}
                   </p>
                 ) : null}
                 <DonorContactPanel
@@ -250,7 +256,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
                   canAsk
                   contactRequestStatus={m.contact_request_status}
                 />
-                {m.contact_attempts ? <p className="text-xs text-muted-foreground">Contact attempts: {m.contact_attempts}</p> : null}
+                {m.contact_attempts ? <p className="text-xs text-muted-foreground">{t("Contact attempts: {count}", { count: m.contact_attempts })}</p> : null}
                 <CoordinationOutcomeForm requestId={request.id} donorId={m.donor_id} response={m.response} outcome={m.outcome} />
               </li>
             ))}
@@ -258,13 +264,13 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
         )}
         {otherResponses.length ? (
           <div className="surface mt-4 p-4">
-            <h3 className="mb-2 text-sm font-bold">Other donors on this request</h3>
+            <h3 className="mb-2 text-sm font-bold">{t("Other donors on this request")}</h3>
             <ul className="space-y-1.5 text-sm">
               {otherResponses.map((r) => (
                 <li key={r.donor_id} className="flex flex-wrap justify-between gap-2">
-                  <span>{names.get(r.donor_id) ?? "Donor"}</span>
+                  <span>{names.get(r.donor_id) ?? t("Donor")}</span>
                   <span className="text-muted-foreground">
-                    {RESPONSE_LABELS[r.response]} · {OUTCOME_LABELS[r.outcome]} · {r.contact_attempts} attempt(s)
+                    {t(RESPONSE_LABELS[r.response])} · {t(OUTCOME_LABELS[r.outcome])} · {t("{count} attempt(s)", { count: r.contact_attempts })}
                   </span>
                 </li>
               ))}
@@ -274,40 +280,40 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
       </section>
 
       <details className="surface p-4">
-        <summary className="flex min-h-11 cursor-pointer items-center font-bold text-navy">Edit request details</summary>
+        <summary className="flex min-h-11 cursor-pointer items-center font-bold text-navy">{t("Edit request details")}</summary>
         <ActionForm action={editRequestDetails} fields={{ request_id: request.id }} label="Save details" className="mt-3 grid gap-3 sm:grid-cols-2">
           <label className="space-y-1 text-sm font-semibold text-navy sm:col-span-2">
-            Hospital / blood bank
+            {t("Hospital / blood bank")}
             <Input name="hospital_name" defaultValue={request.hospital_name} required />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            City
+            {t("City")}
             <Input name="city" defaultValue={request.city} required />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            District
+            {t("District")}
             <Input name="district" defaultValue={request.district} required />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Units
+            {t("Units")}
             <Input name="units_needed" type="number" min={1} max={50} defaultValue={request.units_needed ?? ""} />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Urgency
+            {t("Urgency")}
             <select name="urgency" defaultValue={request.urgency} className={selectClass}>
               {URGENCIES.map((u) => (
                 <option key={u} value={u}>
-                  {URGENCY_LABELS[u]}
+                  {t(URGENCY_LABELS[u])}
                 </option>
               ))}
             </select>
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy sm:col-span-2">
-            Needed by (India time)
+            {t("Needed by (India time)")}
             <Input name="required_by" type="datetime-local" defaultValue={toIndiaLocalInput(request.required_by)} required />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy sm:col-span-2">
-            Notes
+            {t("Notes")}
             <Textarea name="notes" defaultValue={request.notes ?? ""} rows={2} />
           </label>
         </ActionForm>
@@ -320,13 +326,13 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             {events.map((e) => (
               <li key={e.id} className="border-l-2 border-primary/30 pl-3">
                 <p className="font-medium">
-                  {e.event_type.replaceAll("_", " ")}
-                  {e.to_status ? ` → ${e.to_status.replaceAll("_", " ")}` : ""}
+                  {t(e.event_type.replaceAll("_", " "))}
+                  {e.to_status ? ` → ${t(e.to_status.replaceAll("_", " "))}` : ""}
                 </p>
                 {e.note ? <p className="text-muted-foreground">{e.note}</p> : null}
                 <p className="text-xs text-muted-foreground">
                   {formatDateTime(e.created_at)}
-                  {e.actor_id ? ` · ${names.get(e.actor_id) ?? "Team member"}` : ""}
+                  {e.actor_id ? ` · ${names.get(e.actor_id) ?? t("Team member")}` : ""}
                 </p>
               </li>
             ))}
@@ -336,16 +342,16 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           <SectionHeading id="notes-heading" title="Internal notes" description="Visible to volunteers and admins only." as="h3" />
           <ActionForm action={addInternalNote} fields={{ subject_type: "blood_request", subject_id: request.id }} label="Add note" size="sm" variant="outline">
             <label htmlFor="note-body" className="sr-only">
-              Note
+              {t("Note")}
             </label>
-            <Textarea id="note-body" name="body" rows={2} maxLength={2000} placeholder="e.g. Spoke to blood bank, 2 units confirmed needed." required />
+            <Textarea id="note-body" name="body" rows={2} maxLength={2000} placeholder={t("e.g. Spoke to blood bank, 2 units confirmed needed.")} required />
           </ActionForm>
           <ul className="space-y-2 text-sm">
             {notes.map((n) => (
               <li key={n.id} className="rounded-xl bg-muted p-3">
                 <p className="whitespace-pre-line">{n.body}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {names.get(n.author_id) ?? "Team member"} · {formatDateTime(n.created_at)}
+                  {names.get(n.author_id) ?? t("Team member")} · {formatDateTime(n.created_at)}
                 </p>
               </li>
             ))}

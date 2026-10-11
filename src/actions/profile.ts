@@ -7,6 +7,7 @@ import { requireViewer } from "@/lib/auth";
 import { friendlyDbError } from "@/lib/errors";
 import { sanitizeImage } from "@/lib/images";
 import { normalizePhone } from "@/lib/phone";
+import { isSupabaseConfigured, siteUrl } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { donorLocationSchema, type DonorLocationInput } from "@/lib/validation/registration";
 import { bloodGroupChangeSchema, preferencesSchema, profileSchema, type PreferencesInput, type ProfileInput } from "@/lib/validation/forms";
@@ -28,6 +29,7 @@ export async function updateProfile(input: ProfileInput & { age_confirmed?: bool
     .update({
       full_name: v.full_name,
       display_name: v.display_name || null,
+      bio: v.bio || null,
       donation_experience: v.donation_experience || null,
       approx_previous_donations: v.approx_previous_donations,
       ...(typeof input.age_confirmed === "boolean" ? { age_confirmed: input.age_confirmed } : {}),
@@ -41,6 +43,27 @@ export async function updateProfile(input: ProfileInput & { age_confirmed?: bool
   if (contactError) return fail(friendlyDbError(contactError));
   refreshMemberPages();
   return success("Profile updated.");
+}
+
+/** Signed-in resend: a pending email change, or (rarely) an unconfirmed signup. */
+export async function resendMyVerification(): Promise<ActionResult> {
+  if (!isSupabaseConfigured()) return fail("This feature is not configured.");
+  await requireViewer();
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+  const user = data.user;
+  if (error || !user?.email) return fail("Please sign in again and retry.");
+  if (!user.new_email && user.email_confirmed_at) return success("Your email is already verified.");
+  const emailRedirectTo = `${siteUrl}/auth/callback?next=${encodeURIComponent("/profile")}`;
+  const { error: resendError } = user.new_email
+    ? await supabase.auth.resend({ type: "email_change", email: user.new_email, options: { emailRedirectTo } })
+    : await supabase.auth.resend({ type: "signup", email: user.email, options: { emailRedirectTo } });
+  if (resendError?.status === 429) return fail("Please wait a little before requesting another email.");
+  if (resendError) {
+    console.error("[auth] verification email resend failed", { status: resendError.status, code: resendError.code });
+    return fail("We couldn't send the email right now. Please try again in a few minutes.");
+  }
+  return success(`We've sent a new verification link to ${user.new_email ?? user.email}.`);
 }
 
 export async function updateLocation(input: DonorLocationInput): Promise<ActionResult> {
@@ -85,6 +108,7 @@ export async function updatePreferences(input: PreferencesInput): Promise<Action
       open_to_contact: isDonor && v.contact_consent && v.open_to_contact,
       emergency_alerts: isDonor && v.emergency_alerts,
       show_donation_summary: isDonor && v.show_donation_summary,
+      show_first_name: v.show_first_name,
       notify_status_updates: v.notify_status_updates,
       preferred_contact_method: v.preferred_contact_method,
       max_distance_km: v.max_distance_km,

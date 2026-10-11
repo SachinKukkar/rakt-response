@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CtaBand, LEARN_TOPICS, PageHero, SectionTitle, TLDR } from "@/components/learn/learn-parts";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Learn",
-  description:
-    "Blood 101 from Rakt Response: why donating matters, whole blood vs SDP, general eligibility information, what happens on the day, and FAQs.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return {
+    title: t("Learn"),
+    description: t(
+      "Blood 101 from Rakt Response: why donating matters, whole blood vs SDP, general eligibility information, what happens on the day, and FAQs.",
+    ),
+  };
+}
 
 const TEASERS: Record<(typeof LEARN_TOPICS)[number]["href"], { title: string; teaser: string }> = {
   "/why-donate": { title: "Why donate", teaser: "One donation, three superpowers." },
@@ -23,7 +28,8 @@ const CARDS: { href: string; emoji: string; title: string; teaser: string }[] = 
   { href: "/impact", emoji: "📈", title: "Our impact", teaser: "Only checked figures. No hype." },
 ];
 
-export default function LearnPage() {
+export default async function LearnPage() {
+  const t = await getT();
   return (
     <>
       <PageHero
@@ -56,8 +62,8 @@ export default function LearnPage() {
                     {card.emoji}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-lg leading-tight font-extrabold text-navy">{card.title}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">{card.teaser}</span>
+                    <span className="block text-lg leading-tight font-extrabold text-navy">{t(card.title)}</span>
+                    <span className="mt-1 block text-sm text-muted-foreground">{t(card.teaser)}</span>
                   </span>
                   <ArrowRight
                     className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5"

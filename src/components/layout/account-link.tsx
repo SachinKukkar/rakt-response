@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { LayoutDashboard, LogIn } from "lucide-react";
+import { useT } from "@/i18n/client";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,7 +21,8 @@ const subscribe = () => () => {};
 export function AccountLink({ className, variant = "pill" }: { className?: string; variant?: "pill" | "menu" }) {
   const signedIn = useSyncExternalStore(subscribe, hasSessionCookie, () => false);
   const href = signedIn ? "/dashboard" : "/login";
-  const label = signedIn ? "Dashboard" : "Sign in";
+  const t = useT();
+  const label = t(signedIn ? "Dashboard" : "Sign in");
   const Icon = signedIn ? LayoutDashboard : LogIn;
   return (
     <Link

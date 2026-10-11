@@ -1,0 +1,41 @@
+/** Pages visited by the smoke tests, per role. */
+export const PUBLIC_PAGES = [
+  "/",
+  "/learn",
+  "/eligibility",
+  "/donation-process",
+  "/donation-types",
+  "/why-donate",
+  "/faq",
+  "/about",
+  "/impact",
+  "/stories",
+  "/blood-requests",
+  "/blood-requests/new",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/share-your-story",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/verify-email",
+  "/offline",
+];
+export const DONOR_PAGES = ["/dashboard", "/profile", "/profile/edit", "/donations", "/donations/new", "/requests", "/notifications", "/settings", "/share-your-story", "/share-your-story/submissions"];
+export const VOLUNTEER_PAGES = ["/volunteer", "/volunteer/requests", "/volunteer/requests?tab=active", "/volunteer/donors", "/volunteer/donations", "/volunteer/coordination"];
+export const ADMIN_PAGES = [
+  "/admin",
+  "/admin/data-checks",
+  "/admin/donors",
+  "/admin/donors?filter=pending",
+  "/admin/requests",
+  "/admin/donations",
+  "/admin/users",
+  "/admin/volunteers",
+  "/admin/analytics",
+  "/admin/audit-logs",
+  "/admin/settings",
+  "/admin/stories",
+  "/admin/camps",
+];

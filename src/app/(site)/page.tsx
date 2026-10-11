@@ -25,9 +25,16 @@ import { ImpactStats } from "@/components/impact/impact-stats";
 import { StoryCard } from "@/components/stories/story-parts";
 import { BLOOD_GROUPS, SITE } from "@/lib/constants";
 import { getImpactMetrics, listPublishedStories } from "@/lib/data/public";
+import { getT } from "@/i18n/server";
 
 // Public statistics and stories are refreshed every 5 minutes.
 export const revalidate = 300;
+
+/** The eight ABO/Rh groups plus the rare Bombay phenotype (written "Oh" or "hh"). */
+const ORBIT_GROUPS: Array<{ group: string; label?: string }> = [
+  ...BLOOD_GROUPS.map((group) => ({ group })),
+  { group: "Oh", label: "Bombay blood group (Oh)" },
+];
 
 const STEPS = [
   { icon: UserPlus, title: "Register as a voluntary donor", text: "A short, private sign-up. No medical records needed." },
@@ -66,7 +73,7 @@ const FAQ_PREVIEW = [
 ];
 
 export default async function HomePage() {
-  const [metrics, stories] = await Promise.all([getImpactMetrics(), listPublishedStories(null, 3)]);
+  const [metrics, stories, t] = await Promise.all([getImpactMetrics(), listPublishedStories(null, 3), getT()]);
 
   return (
     <>
@@ -75,31 +82,31 @@ export default async function HomePage() {
         <div className="page-container grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.1fr_0.9fr] lg:py-20">
           <div className="space-y-5">
             <p className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-              <ShieldCheck className="size-3.5" aria-hidden="true" /> Rakt Response Team · Voluntary blood donors
+              <ShieldCheck className="size-3.5" aria-hidden="true" /> Rakt Response Team · {t("Voluntary blood donors")}
             </p>
             <h1 className="text-[2rem] leading-[1.1] font-extrabold sm:text-5xl">
-              Every Donor Matters. <span className="text-primary">Every Response</span> Can Save a Life.
+              {t("Every Donor Matters.")} <span className="text-primary">{t("Every Response")}</span> {t("Can Save a Life.")}
             </h1>
-            <p className="max-w-xl text-base text-muted-foreground sm:text-lg">{SITE.description}</p>
+            <p className="max-w-xl text-base text-muted-foreground sm:text-lg">{t(SITE.description)}</p>
             <div className="flex flex-col gap-3 min-[380px]:flex-row">
               <Button asChild size="lg">
                 <Link href="/register">
-                  Become a Donor <ArrowRight className="size-4" aria-hidden="true" />
+                  {t("Become a Donor")} <ArrowRight className="size-4" aria-hidden="true" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-navy/20 bg-white">
-                <Link href="/blood-requests">Find Blood</Link>
+                <Link href="/blood-requests">{t("Find Blood")}</Link>
               </Button>
             </div>
             <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-1.5">
-                <Lock className="size-4 text-navy" aria-hidden="true" /> Private by default
+                <Lock className="size-4 text-navy" aria-hidden="true" /> {t("Private by default")}
               </li>
               <li className="flex items-center gap-1.5">
-                <ShieldCheck className="size-4 text-navy" aria-hidden="true" /> Requests verified by volunteers
+                <ShieldCheck className="size-4 text-navy" aria-hidden="true" /> {t("Requests verified by volunteers")}
               </li>
               <li className="flex items-center gap-1.5">
-                <HandHeart className="size-4 text-navy" aria-hidden="true" /> Free & voluntary
+                <HandHeart className="size-4 text-navy" aria-hidden="true" /> {t("Free & voluntary")}
               </li>
             </ul>
           </div>
@@ -109,17 +116,20 @@ export default async function HomePage() {
             <LogoMark size="xl" priority className="relative shadow-xl shadow-primary/15" />
             {/* The drops orbit the logo; each counter-rotates so its label stays upright. */}
             <div className="animate-orbit absolute inset-0 [--orbit-r:122px] sm:[--orbit-r:166px]">
-              {(["A+", "O-", "AB-", "B+"] as const).map((group, i) => (
-                <div
-                  key={group}
-                  className="absolute top-1/2 left-1/2 -mt-[18px] -ml-[18px]"
-                  style={{ transform: `rotate(${i * 90 - 45}deg) translateY(calc(var(--orbit-r) * -1)) rotate(${45 - i * 90}deg)` }}
-                >
-                  <div className="animate-orbit-reverse">
-                    <BloodGroupChip group={group} size="sm" tone={i % 2 ? "outline" : "solid"} />
+              {ORBIT_GROUPS.map((item, i) => {
+                const angle = (360 / ORBIT_GROUPS.length) * i;
+                return (
+                  <div
+                    key={item.group}
+                    className="absolute top-1/2 left-1/2 -mt-[18px] -ml-[18px]"
+                    style={{ transform: `rotate(${angle}deg) translateY(calc(var(--orbit-r) * -1)) rotate(${-angle}deg)` }}
+                  >
+                    <div className="animate-orbit-reverse">
+                      <BloodGroupChip group={item.group} label={item.label} size="sm" tone={i % 2 ? "outline" : "solid"} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -136,9 +146,9 @@ export default async function HomePage() {
                 <step.icon className="size-5" aria-hidden="true" />
               </span>
               <div>
-                <p className="text-xs font-bold text-primary">Step {i + 1}</p>
-                <p className="font-semibold text-navy">{step.title}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{step.text}</p>
+                <p className="text-xs font-bold text-primary">{t("Step {n}", { n: i + 1 })}</p>
+                <p className="font-semibold text-navy">{t(step.title)}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">{t(step.text)}</p>
               </div>
             </li>
           ))}
@@ -154,7 +164,7 @@ export default async function HomePage() {
             description="Blood and its components cannot be manufactured. Hospitals rely on voluntary donors."
             action={
               <Link href="/why-donate" className="hidden shrink-0 text-sm font-semibold text-primary hover:underline sm:inline">
-                Learn more
+                {t("Learn more")}
               </Link>
             }
           />
@@ -162,16 +172,16 @@ export default async function HomePage() {
             {NEED.map((item) => (
               <li key={item.title} className="surface-tint p-4">
                 <item.icon className="mb-2 size-6 text-primary" aria-hidden="true" />
-                <p className="font-semibold text-navy">{item.title}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{item.text}</p>
+                <p className="font-semibold text-navy">{t(item.title)}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{t(item.text)}</p>
               </li>
             ))}
           </ul>
           <p className="mt-4 text-xs text-muted-foreground">
-            Whether, when and what to transfuse is always decided by the treating doctors and licensed blood banks.
+            {t("Whether, when and what to transfuse is always decided by the treating doctors and licensed blood banks.")}
           </p>
           <Link href="/why-donate" className="mt-3 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-primary sm:hidden">
-            Learn why donation matters <ArrowRight className="size-4" aria-hidden="true" />
+            {t("Learn why donation matters")} <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </div>
       </section>
@@ -179,36 +189,34 @@ export default async function HomePage() {
       {/* 4. Types of donation */}
       <section className="page-container py-10 sm:py-14" aria-labelledby="types-heading">
         <h2 id="types-heading" className="mb-1 text-lg font-bold sm:text-xl">
-          Types of donation
+          {t("Types of donation")}
         </h2>
-        <p className="mb-4 text-sm text-muted-foreground">Different procedures, different checks and intervals — they are not interchangeable.</p>
+        <p className="mb-4 text-sm text-muted-foreground">{t("Different procedures, different checks and intervals — they are not interchangeable.")}</p>
         <div className="grid gap-3 md:grid-cols-3">
           <article className="surface p-5">
-            <p className="text-xs font-bold tracking-wide text-primary uppercase">Most common</p>
-            <h3 className="mt-1 text-lg font-bold">Whole blood</h3>
+            <p className="text-xs font-bold tracking-wide text-primary uppercase">{t("Most common")}</p>
+            <h3 className="mt-1 text-lg font-bold">{t("Whole blood")}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              A single donation collected in a bag, usually in about 10–15 minutes. The blood centre can separate it into red cells,
-              plasma and platelets.
+              {t("A single donation collected in a bag, usually in about 10–15 minutes. The blood centre can separate it into red cells, plasma and platelets.")}
             </p>
           </article>
           <article className="surface border-primary/20 p-5">
-            <p className="text-xs font-bold tracking-wide text-primary uppercase">Platelets</p>
-            <h3 className="mt-1 text-lg font-bold">SDP — single donor platelets</h3>
+            <p className="text-xs font-bold tracking-wide text-primary uppercase">{t("Platelets")}</p>
+            <h3 className="mt-1 text-lg font-bold">{t("SDP — single donor platelets")}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              A machine collects platelets and returns the rest of your blood. Sessions take longer and need extra checks at an
-              apheresis centre. Often requested for cancer and dengue care.
+              {t("A machine collects platelets and returns the rest of your blood. Sessions take longer and need extra checks at an apheresis centre. Often requested for cancer and dengue care.")}
             </p>
           </article>
           <article className="surface p-5">
-            <p className="text-xs font-bold tracking-wide text-primary uppercase">Specialised</p>
-            <h3 className="mt-1 text-lg font-bold">Other apheresis</h3>
+            <p className="text-xs font-bold tracking-wide text-primary uppercase">{t("Specialised")}</p>
+            <h3 className="mt-1 text-lg font-bold">{t("Other apheresis")}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Some centres collect plasma or other specific components by apheresis. Availability and criteria vary by centre.
+              {t("Some centres collect plasma or other specific components by apheresis. Availability and criteria vary by centre.")}
             </p>
           </article>
         </div>
         <Link href="/donation-types" className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-primary hover:underline">
-          Compare donation types <ArrowRight className="size-4" aria-hidden="true" />
+          {t("Compare donation types")} <ArrowRight className="size-4" aria-hidden="true" />
         </Link>
       </section>
 
@@ -217,15 +225,13 @@ export default async function HomePage() {
         <div className="page-container grid gap-6 lg:grid-cols-2 lg:items-center">
           <div>
             <h2 id="groups-heading" className="text-lg font-bold sm:text-xl">
-              Blood groups
+              {t("Blood groups")}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Knowing your group helps volunteers reach the right donors faster. Compatibility depends on more than the ABO and Rh
-              group: hospitals always cross-match in the laboratory before a transfusion. Transfusion decisions belong to qualified
-              healthcare professionals and licensed blood banks.
+              {t("Knowing your group helps volunteers reach the right donors faster. Compatibility depends on more than the ABO and Rh group: hospitals always cross-match in the laboratory before a transfusion. Transfusion decisions belong to qualified healthcare professionals and licensed blood banks.")}
             </p>
           </div>
-          <ul className="grid grid-cols-4 gap-3" aria-label="The eight main blood groups">
+          <ul className="grid grid-cols-4 gap-3" aria-label={t("The eight main blood groups")}>
             {BLOOD_GROUPS.map((group) => (
               <li key={group} className="surface grid place-items-center py-4">
                 <BloodGroupChip group={group} size="md" />
@@ -243,7 +249,7 @@ export default async function HomePage() {
           description="Calculated live from platform records. Unverified data is never counted as verified."
           action={
             <Link href="/impact" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-              Our Impact
+              {t("Our Impact")}
             </Link>
           }
         />
@@ -259,7 +265,7 @@ export default async function HomePage() {
             description="Real experiences, published only with each contributor's consent."
             action={
               <Link href="/stories" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-                All stories
+                {t("All stories")}
               </Link>
             }
           />
@@ -276,7 +282,7 @@ export default async function HomePage() {
               description="Stories appear here after contributors share them and our team reviews them with their consent."
               action={
                 <Button asChild variant="outline">
-                  <Link href="/share-your-story">Share your story</Link>
+                  <Link href="/share-your-story">{t("Share your story")}</Link>
                 </Button>
               }
             />
@@ -287,30 +293,30 @@ export default async function HomePage() {
       {/* 8. Preparation & aftercare */}
       <section className="page-container py-10 sm:py-14" aria-labelledby="prep-heading">
         <h2 id="prep-heading" className="mb-4 text-lg font-bold sm:text-xl">
-          Preparing to donate &amp; aftercare
+          {t("Preparing to donate & aftercare")}
         </h2>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="surface p-5">
-            <h3 className="font-bold">Before you donate</h3>
+            <h3 className="font-bold">{t("Before you donate")}</h3>
             <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
-              <li>Sleep well and eat a regular meal beforehand.</li>
-              <li>Drink plenty of water; avoid alcohol the day before.</li>
-              <li>Carry a photo ID and tell staff about any medicines.</li>
-              <li>Answer the screening questions honestly — it keeps everyone safe.</li>
+              <li>{t("Sleep well and eat a regular meal beforehand.")}</li>
+              <li>{t("Drink plenty of water; avoid alcohol the day before.")}</li>
+              <li>{t("Carry a photo ID and tell staff about any medicines.")}</li>
+              <li>{t("Answer the screening questions honestly — it keeps everyone safe.")}</li>
             </ul>
           </div>
           <div className="surface p-5">
-            <h3 className="font-bold">After you donate</h3>
+            <h3 className="font-bold">{t("After you donate")}</h3>
             <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
-              <li>Rest for 10–15 minutes and have the refreshments offered.</li>
-              <li>Drink extra fluids and avoid heavy exercise for the rest of the day.</li>
-              <li>If you feel faint, lie down with your legs raised and tell staff.</li>
-              <li>Contact the blood centre if you feel unwell later.</li>
+              <li>{t("Rest for 10–15 minutes and have the refreshments offered.")}</li>
+              <li>{t("Drink extra fluids and avoid heavy exercise for the rest of the day.")}</li>
+              <li>{t("If you feel faint, lie down with your legs raised and tell staff.")}</li>
+              <li>{t("Contact the blood centre if you feel unwell later.")}</li>
             </ul>
           </div>
         </div>
         <Link href="/donation-process" className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-primary hover:underline">
-          What to expect at the centre <ArrowRight className="size-4" aria-hidden="true" />
+          {t("What to expect at the centre")} <ArrowRight className="size-4" aria-hidden="true" />
         </Link>
       </section>
 
@@ -322,7 +328,7 @@ export default async function HomePage() {
             title="Frequently asked questions"
             action={
               <Link href="/faq" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-                All FAQs
+                {t("All FAQs")}
               </Link>
             }
           />
@@ -330,12 +336,12 @@ export default async function HomePage() {
             {FAQ_PREVIEW.map((item) => (
               <details key={item.q} className="surface group p-4">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold text-navy">
-                  {item.q}
+                  {t(item.q)}
                   <span className="text-xl text-primary transition-transform group-open:rotate-45" aria-hidden="true">
                     +
                   </span>
                 </summary>
-                <p className="mt-2 text-sm text-muted-foreground">{item.a}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{t(item.a)}</p>
               </details>
             ))}
           </div>
@@ -347,25 +353,24 @@ export default async function HomePage() {
         <div className="brand-band overflow-hidden rounded-3xl p-6 text-white sm:p-10">
           <div className="grid items-center gap-6 md:grid-cols-[1fr_auto]">
             <div>
-              <p className="text-sm font-semibold text-white/85">{SITE.supporting}</p>
-              <h2 className="mt-1 text-2xl font-extrabold text-white sm:text-3xl">Be the response someone is waiting for.</h2>
+              <p className="text-sm font-semibold text-white/85">{t(SITE.supporting)}</p>
+              <h2 className="mt-1 text-2xl font-extrabold text-white sm:text-3xl">{t("Be the response someone is waiting for.")}</h2>
               <p className="mt-2 max-w-xl text-white/85">
-                Join our community of voluntary donors. Your details stay private, and you choose when you can be contacted.
+                {t("Join our community of voluntary donors. Your details stay private, and you choose when you can be contacted.")}
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
               <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
-                <Link href="/register">Become a Donor</Link>
+                <Link href="/register">{t("Become a Donor")}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white">
-                <Link href="/contact">Contact the team</Link>
+                <Link href="/contact">{t("Contact the team")}</Link>
               </Button>
             </div>
           </div>
         </div>
         <Notice tone="warning" icon={Hospital} className="mt-4" title="In a medical emergency">
-          Contact the treating hospital or the nearest licensed blood bank immediately. Rakt Response helps coordinate voluntary donors
-          but cannot reserve blood units or guarantee availability.
+          {t("Contact the treating hospital or the nearest licensed blood bank immediately. Rakt Response helps coordinate voluntary donors but cannot reserve blood units or guarantee availability.")}
         </Notice>
       </section>
     </>

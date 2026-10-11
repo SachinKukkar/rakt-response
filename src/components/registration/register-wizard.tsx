@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { LocationPickers } from "@/components/forms/location-pickers";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Controller, useFieldArray, useForm, useWatch, type FieldPath } from "react-hook-form";
@@ -18,7 +19,6 @@ import {
   DONATION_EXPERIENCE_LABELS,
   DONATION_TYPE_LABELS,
   DONATION_TYPES,
-  INDIAN_STATES,
   type ContactMethod,
   type DonationExperience,
   type DonationType,
@@ -27,22 +27,22 @@ import { findPossibleDuplicates } from "@/lib/donations";
 import { formatDate, todayInIndia } from "@/lib/format";
 import {
   accountStepSchema,
-  consentStepSchema,
   donorStepSchema,
   historyStepSchema,
   locationStepSchema,
   type RegistrationInput,
 } from "@/lib/validation/registration";
 import { cn } from "@/lib/utils";
+import { useT } from "@/i18n/client";
+import type { TFunction } from "@/i18n/translate";
 
-type StepKey = "account" | "donor" | "location" | "history" | "consent" | "review";
+type StepKey = "account" | "donor" | "location" | "history" | "review";
 
 const STEP_META: Record<StepKey, { title: string; subtitle: string }> = {
   account: { title: "Create your account", subtitle: "Your login details stay private." },
   donor: { title: "About you as a donor", subtitle: "Only what's needed to coordinate safely." },
   location: { title: "Where are you based?", subtitle: "Area details only — never your exact address." },
   history: { title: "Donation history", subtitle: "Self-reported until a volunteer verifies it." },
-  consent: { title: "Availability & consent", subtitle: "You decide who can find and contact you." },
   review: { title: "Review & confirm", subtitle: "Check everything before you register." },
 };
 
@@ -51,7 +51,6 @@ const STEP_SCHEMAS: Partial<Record<StepKey, z.ZodType>> = {
   donor: donorStepSchema,
   location: locationStepSchema,
   history: historyStepSchema,
-  consent: consentStepSchema,
 };
 
 const DEFAULTS: RegistrationInput = {
@@ -67,17 +66,20 @@ const DEFAULTS: RegistrationInput = {
   },
   location: { state: "", district: "", city: "", locality: "", pincode: "", lat: null, lng: null, max_distance_km: null },
   history: { has_donated: false, approx_previous_donations: null, donations: [] },
+  // Donors join to be reachable, so this starts on. One clear switch on the review
+  // step controls it, and each part can be changed later in Privacy & settings.
   consent: {
-    directory_visible: false,
-    contact_consent: false,
-    open_to_contact: false,
-    emergency_alerts: false,
+    directory_visible: true,
+    contact_consent: true,
+    open_to_contact: true,
+    emergency_alerts: true,
     show_donation_summary: false,
   },
 };
 
 export function RegisterWizard() {
   const router = useRouter();
+  const t = useT();
   const form = useForm<RegistrationInput>({ defaultValues: DEFAULTS, mode: "onTouched" });
   const { register, control, setError, clearErrors, getValues, setValue, formState } = form;
   const errors = formState.errors;
@@ -88,7 +90,7 @@ export function RegisterWizard() {
 
   const isDonor = useWatch({ control, name: "donor.is_donor" });
   const steps: StepKey[] = useMemo(
-    () => (isDonor ? ["account", "donor", "location", "history", "consent", "review"] : ["account", "donor", "location", "review"]),
+    () => (isDonor ? ["account", "donor", "location", "history", "review"] : ["account", "donor", "location", "review"]),
     [isDonor],
   );
   const step = steps[Math.min(stepIndex, steps.length - 1)];
@@ -192,7 +194,11 @@ export function RegisterWizard() {
     return (node as { message?: string } | undefined)?.message;
   };
 
-  const contactConsent = useWatch({ control, name: "consent.contact_consent" });
+  const reachable = useWatch({ control, name: "consent.contact_consent" });
+  const [locState, locDistrict, locCity, locPincode] = useWatch({
+    control,
+    name: ["location.state", "location.district", "location.city", "location.pincode"],
+  });
   const lat = useWatch({ control, name: "location.lat" });
   const lng = useWatch({ control, name: "location.lng" });
   const coords = lat !== null && lng !== null ? { lat, lng } : null;
@@ -204,12 +210,10 @@ export function RegisterWizard() {
       {/* Progress */}
       <div className="surface p-4">
         <div className="mb-2 flex items-center justify-between text-xs font-semibold text-muted-foreground">
-          <span>
-            Step {stepIndex + 1} of {steps.length}
-          </span>
-          <span>{meta.subtitle}</span>
+          <span>{t("Step {current} of {total}", { current: stepIndex + 1, total: steps.length })}</span>
+          <span>{t(meta.subtitle)}</span>
         </div>
-        <ol className="flex gap-1.5" aria-label="Registration progress">
+        <ol className="flex gap-1.5" aria-label={t("Registration progress")}>
           {steps.map((key, i) => (
             <li key={key} className="flex-1">
               <span
@@ -217,8 +221,8 @@ export function RegisterWizard() {
                 aria-hidden="true"
               />
               <span className="sr-only">
-                {STEP_META[key].title}
-                {i < stepIndex ? " (completed)" : i === stepIndex ? " (current)" : ""}
+                {t(STEP_META[key].title)}
+                {i < stepIndex ? ` (${t("completed")})` : i === stepIndex ? ` (${t("current")})` : ""}
               </span>
             </li>
           ))}
@@ -235,7 +239,7 @@ export function RegisterWizard() {
         }}
       >
         <h1 className="font-display text-[1.75rem] leading-tight font-extrabold" tabIndex={-1}>
-          {meta.title}
+          {t(meta.title)}
         </h1>
 
         {step === "account" ? (
@@ -274,13 +278,13 @@ export function RegisterWizard() {
                   error={e("account.accept_terms")}
                   title={
                     <>
-                      I have read and accept the{" "}
+                      {t("I have read and accept the")}{" "}
                       <Link href="/privacy" target="_blank" className="text-primary underline">
-                        privacy policy
+                        {t("privacy policy")}
                       </Link>{" "}
-                      and{" "}
+                      {t("and")}{" "}
                       <Link href="/terms" target="_blank" className="text-primary underline">
-                        terms of use
+                        {t("terms of use")}
                       </Link>
                     </>
                   }
@@ -295,7 +299,7 @@ export function RegisterWizard() {
           <div className="space-y-5">
             <div className="space-y-2">
               <p id="donor-intent" className="text-sm font-semibold text-navy">
-                Why are you joining?
+                {t("Why are you joining?")}
               </p>
               <Controller
                 control={control}
@@ -318,7 +322,7 @@ export function RegisterWizard() {
               <>
                 <div className="space-y-2">
                   <p id="bg-label" className="text-sm font-semibold text-navy">
-                    Blood group <span className="text-primary">*</span>
+                    {t("Blood group")} <span className="text-primary">*</span>
                   </p>
                   <Controller
                     control={control}
@@ -328,8 +332,9 @@ export function RegisterWizard() {
                     )}
                   />
                   <p className="text-xs text-muted-foreground">
-                    If you are unsure, you can find it on a previous donor card or blood test report. A blood centre will always
-                    test again before any transfusion.
+                    {t(
+                      "If you are unsure, you can find it on a previous donor card or blood test report. A blood centre will always test again before any transfusion.",
+                    )}
                   </p>
                 </div>
                 <Controller
@@ -348,7 +353,7 @@ export function RegisterWizard() {
                 />
                 <div className="space-y-2">
                   <p id="exp-label" className="text-sm font-semibold text-navy">
-                    Donation experience <span className="text-primary">*</span>
+                    {t("Donation experience")} <span className="text-primary">*</span>
                   </p>
                   <Controller
                     control={control}
@@ -367,7 +372,7 @@ export function RegisterWizard() {
                       />
                     )}
                   />
-                  {e("donor.donation_experience") ? <p className="text-xs font-medium text-destructive">{e("donor.donation_experience")}</p> : null}
+                  {e("donor.donation_experience") ? <p className="text-xs font-medium text-destructive">{t(e("donor.donation_experience") ?? "")}</p> : null}
                 </div>
               </>
             ) : null}
@@ -386,37 +391,27 @@ export function RegisterWizard() {
               <select {...fieldAria("preferred_contact_method", e("donor.preferred_contact_method"))} className={selectClass} {...register("donor.preferred_contact_method")}>
                 {(Object.keys(CONTACT_METHOD_LABELS) as ContactMethod[]).map((m) => (
                   <option key={m} value={m}>
-                    {CONTACT_METHOD_LABELS[m]}
+                    {t(CONTACT_METHOD_LABELS[m])}
                   </option>
                 ))}
               </select>
             </Field>
             <p className="text-xs text-muted-foreground">
-              You can add a profile photo later from your profile. We don&apos;t ask for medical history.
+              {t("You can add a profile photo later from your profile. We don't ask for medical history.")}
             </p>
           </div>
         ) : null}
 
         {step === "location" ? (
           <div className="space-y-4">
-            {!isDonor ? <p className="text-sm text-muted-foreground">Optional for members who are not registering as donors.</p> : null}
-            <Field id="state" label="State / union territory" required={isDonor} error={e("location.state")}>
-              <select {...fieldAria("state", e("location.state"))} className={selectClass} autoComplete="address-level1" {...register("location.state")}>
-                <option value="">Select…</option>
-                {INDIAN_STATES.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </Field>
+            {!isDonor ? <p className="text-sm text-muted-foreground">{t("Optional for members who are not registering as donors.")}</p> : null}
+            <LocationPickers
+              required={isDonor}
+              values={{ state: locState ?? "", district: locDistrict ?? "", city: locCity ?? "", pincode: locPincode ?? "" }}
+              onChange={(field, value) => setValue(`location.${field}`, value as never, { shouldDirty: true })}
+              errors={{ state: e("location.state"), district: e("location.district"), city: e("location.city") }}
+            />
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field id="district" label="District" required={isDonor} error={e("location.district")}>
-                <Input {...fieldAria("district", e("location.district"))} {...register("location.district")} />
-              </Field>
-              <Field id="city" label="City / town" required={isDonor} error={e("location.city")}>
-                <Input {...fieldAria("city", e("location.city"))} autoComplete="address-level2" {...register("location.city")} />
-              </Field>
               <Field id="locality" label="Locality / area" error={e("location.locality")} hint="Neighbourhood only — not your street address.">
                 <Input {...fieldAria("locality", e("location.locality"), true)} {...register("location.locality")} />
               </Field>
@@ -444,10 +439,10 @@ export function RegisterWizard() {
                         value={field.value ?? ""}
                         onChange={(ev) => field.onChange(ev.target.value ? Number(ev.target.value) : null)}
                       >
-                        <option value="">No preference</option>
+                        <option value="">{t("No preference")}</option>
                         {[5, 10, 25, 50, 100].map((km) => (
                           <option key={km} value={km}>
-                            Up to {km} km
+                            {t("Up to {km} km", { km })}
                           </option>
                         ))}
                       </select>
@@ -501,8 +496,9 @@ export function RegisterWizard() {
                   />
                 </Field>
                 <p className="text-sm text-muted-foreground">
-                  Add the donations you remember. Whole blood and SDP are recorded separately. Entries stay marked as
-                  self-reported until verified.
+                  {t(
+                    "Add the donations you remember. Whole blood and SDP are recorded separately. Entries stay marked as self-reported until verified.",
+                  )}
                 </p>
                 <ul className="space-y-3">
                   {donations.fields.map((item, index) => {
@@ -517,17 +513,17 @@ export function RegisterWizard() {
                     return (
                       <li key={item.id} className="rounded-2xl border bg-white p-4">
                         <div className="mb-3 flex items-center justify-between">
-                          <p className="text-sm font-bold text-navy">Donation {index + 1}</p>
-                          <Button type="button" variant="ghost" size="icon-sm" onClick={() => donations.remove(index)} aria-label={`Remove donation ${index + 1}`}>
+                          <p className="text-sm font-bold text-navy">{t("Donation {number}", { number: index + 1 })}</p>
+                          <Button type="button" variant="ghost" size="icon-sm" onClick={() => donations.remove(index)} aria-label={t("Remove donation {number}", { number: index + 1 })}>
                             <Trash2 className="size-4" />
                           </Button>
                         </div>
                         <div className="grid gap-3 sm:grid-cols-2">
                           <Field id={`d-type-${index}`} label="Type" error={e(`history.donations.${index}.donation_type`)}>
                             <select id={`d-type-${index}`} className={selectClass} {...register(`history.donations.${index}.donation_type` as const)}>
-                              {DONATION_TYPES.map((t) => (
-                                <option key={t} value={t}>
-                                  {DONATION_TYPE_LABELS[t as DonationType]}
+                              {DONATION_TYPES.map((type) => (
+                                <option key={type} value={type}>
+                                  {t(DONATION_TYPE_LABELS[type as DonationType])}
                                 </option>
                               ))}
                             </select>
@@ -556,8 +552,9 @@ export function RegisterWizard() {
                         {dupes.length ? (
                           <p className="mt-3 flex items-start gap-2 rounded-xl bg-warning-soft p-2.5 text-xs text-warning">
                             <AlertTriangle className="mt-px size-4 shrink-0" aria-hidden="true" />
-                            This is within a week of another {DONATION_TYPE_LABELS[entry.donation_type].toLowerCase()} entry. Please check
-                            it isn&apos;t the same donation entered twice.
+                            {t("This is within a week of another {type} entry. Please check it isn't the same donation entered twice.", {
+                              type: lowerTypeLabel(t, entry.donation_type),
+                            })}
                           </p>
                         ) : null}
                       </li>
@@ -571,7 +568,7 @@ export function RegisterWizard() {
                     className="w-full"
                     onClick={() => donations.append({ donation_type: "whole_blood", donation_date: "", centre_name: "", city: "", district: "", event_name: "" })}
                   >
-                    <Plus className="size-4" aria-hidden="true" /> Add another donation
+                    <Plus className="size-4" aria-hidden="true" /> {t("Add another donation")}
                   </Button>
                 ) : null}
               </>
@@ -579,113 +576,51 @@ export function RegisterWizard() {
           </div>
         ) : null}
 
-        {step === "consent" ? (
+        {step === "review" ? (
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              Each permission is separate and optional. You can change any of them at any time from Privacy &amp; settings.
-            </p>
-            <Controller
-              control={control}
-              name="consent.directory_visible"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="directory_visible"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  title="Show me in the volunteer donor directory"
-                  description="Authorised volunteers can see your display name, blood group and broad area (city/locality). Never your phone, email or address. Not visible to the public."
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.contact_consent"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="contact_consent"
-                  checked={field.value}
-                  onCheckedChange={(v) => {
-                    field.onChange(v);
-                    if (!v) setValue("consent.open_to_contact", false);
-                  }}
-                  title="Allow authorised volunteers to contact me about blood requests"
-                  description="Your number is revealed only to a volunteer coordinating a verified request, and every access is logged."
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.open_to_contact"
-              render={({ field }) => (
-                <div className={cn(!contactConsent && "pointer-events-none opacity-50")} aria-disabled={!contactConsent}>
-                  <ChoiceRow
-                    id="open_to_contact"
-                    checked={field.value && contactConsent}
-                    onCheckedChange={field.onChange}
-                    error={e("consent.open_to_contact")}
-                    title="I'm currently open to being contacted"
-                    description="Turn this off any time you can't donate (travel, illness, recent donation)."
-                  />
-                </div>
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.emergency_alerts"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="emergency_alerts"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  title="Send me in-app alerts for verified requests near me"
-                  description="Only verified requests matching your blood group and district. No SMS or bulk messages."
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.show_donation_summary"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="show_donation_summary"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  title="Show my verified donation summary to volunteers"
-                  description="Last verified whole blood / SDP dates and counts. Helps volunteers, but is never a medical eligibility decision."
-                />
-              )}
-            />
+            <ReviewSummary values={getValues()} isDonor={isDonor} onEdit={goTo} />
+            {isDonor ? (
+              <ChoiceRow
+                id="reachable"
+                checked={reachable}
+                onCheckedChange={(v) => {
+                  for (const key of ["directory_visible", "contact_consent", "open_to_contact", "emergency_alerts"] as const) {
+                    setValue(`consent.${key}`, v);
+                  }
+                }}
+                title="Volunteers can reach me when my blood group is needed nearby"
+                description="Only Rakt Response volunteers and admins see your name, blood group and area. Never the public or other donors. Your number is shown only for a verified request, and every view is logged. Change this any time in Privacy & settings."
+              />
+            ) : null}
           </div>
         ) : null}
 
-        {step === "review" ? <ReviewSummary values={getValues()} isDonor={isDonor} onEdit={goTo} /> : null}
-
         {serverError ? (
           <p className="rounded-xl border border-destructive/25 bg-destructive/5 px-3.5 py-3 text-sm text-destructive" role="alert">
-            {serverError}
+            {t(serverError)}
           </p>
         ) : null}
 
         <div className="sticky bottom-3 z-10 flex gap-3 pt-2">
           {stepIndex > 0 ? (
             <Button type="button" variant="outline" size="lg" onClick={back} disabled={pending} className="bg-white">
-              <ArrowLeft className="size-4" aria-hidden="true" /> Back
+              <ArrowLeft className="size-4" aria-hidden="true" /> {t("Back")}
             </Button>
           ) : null}
           <Button type="submit" size="lg" className="flex-1" disabled={pending}>
             {step === "review" ? (
               pending ? (
                 <>
-                  <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Creating your account…
+                  <Loader2 className="size-4 animate-spin" aria-hidden="true" /> {t("Creating your account…")}
                 </>
               ) : (
                 <>
-                  <Check className="size-4" aria-hidden="true" /> Register
+                  <Check className="size-4" aria-hidden="true" /> {t("Register")}
                 </>
               )
             ) : (
               <>
-                Continue <ArrowRight className="size-4" aria-hidden="true" />
+                {t("Continue")} <ArrowRight className="size-4" aria-hidden="true" />
               </>
             )}
           </Button>
@@ -695,38 +630,45 @@ export function RegisterWizard() {
   );
 }
 
+/** The donation type in running text: lowercase in English ("whole blood"), as translated otherwise. */
+function lowerTypeLabel(t: TFunction, type: DonationType): string {
+  const label = DONATION_TYPE_LABELS[type];
+  const shown = t(label);
+  return shown === label ? label.toLowerCase() : shown;
+}
+
 function ReviewSummary({ values, isDonor, onEdit }: { values: RegistrationInput; isDonor: boolean; onEdit: (step: StepKey) => void }) {
-  const yesNo = (v: boolean) => (v ? "Yes" : "No");
+  const t = useT();
   const sections: Array<{ step: StepKey; title: string; rows: Array<[string, string]> }> = [
     {
       step: "account",
-      title: "Account",
+      title: t("Account"),
       rows: [
-        ["Name", values.account.full_name],
-        ["Email", values.account.email],
+        [t("Name"), values.account.full_name],
+        [t("Email"), values.account.email],
       ],
     },
     {
       step: "donor",
-      title: "Donor details",
+      title: t("Donor details"),
       rows: isDonor
         ? [
-            ["Registering as", "Voluntary donor"],
-            ["Blood group", values.donor.blood_group || "—"],
-            ["Display name", values.donor.display_name || "—"],
-            ["Mobile", values.donor.phone || "—"],
-            ["Preferred contact", CONTACT_METHOD_LABELS[values.donor.preferred_contact_method]],
+            [t("Registering as"), t("Voluntary donor")],
+            [t("Blood group"), values.donor.blood_group || "—"],
+            [t("Display name"), values.donor.display_name || "—"],
+            [t("Mobile"), values.donor.phone || "—"],
+            [t("Preferred contact"), t(CONTACT_METHOD_LABELS[values.donor.preferred_contact_method])],
           ]
-        : [["Registering as", "Member (requests and stories)"]],
+        : [[t("Registering as"), t("Member (requests and stories)")]],
     },
     {
       step: "location",
-      title: "Area",
+      title: t("Area"),
       rows: [
-        ["State", values.location.state || "—"],
-        ["District / city", [values.location.district, values.location.city].filter(Boolean).join(", ") || "—"],
-        ["Locality / PIN", [values.location.locality, values.location.pincode].filter(Boolean).join(" · ") || "—"],
-        ["Approximate map location", values.location.lat !== null ? "Added (rounded to ~1 km)" : "Not added"],
+        [t("State"), values.location.state || "—"],
+        [t("District / city"), [values.location.district, values.location.city].filter(Boolean).join(", ") || "—"],
+        [t("Locality / PIN"), [values.location.locality, values.location.pincode].filter(Boolean).join(" · ") || "—"],
+        [t("Approximate map location"), values.location.lat !== null ? t("Added (rounded to ~1 km)") : t("Not added")],
       ],
     },
   ];
@@ -734,21 +676,10 @@ function ReviewSummary({ values, isDonor, onEdit }: { values: RegistrationInput;
     sections.push(
       {
         step: "history",
-        title: "Donation history (self-reported)",
+        title: t("Donation history (self-reported)"),
         rows: values.history.has_donated
-          ? values.history.donations.map((d, i) => [`#${i + 1} ${DONATION_TYPE_LABELS[d.donation_type]}`, `${formatDate(d.donation_date)} · ${d.centre_name}`])
-          : [["History", "No previous donations"]],
-      },
-      {
-        step: "consent",
-        title: "Your permissions",
-        rows: [
-          ["Visible in volunteer directory", yesNo(values.consent.directory_visible)],
-          ["Volunteers may contact me", yesNo(values.consent.contact_consent)],
-          ["Currently open to contact", yesNo(values.consent.contact_consent && values.consent.open_to_contact)],
-          ["In-app request alerts", yesNo(values.consent.emergency_alerts)],
-          ["Share verified donation summary", yesNo(values.consent.show_donation_summary)],
-        ],
+          ? values.history.donations.map((d, i) => [`#${i + 1} ${t(DONATION_TYPE_LABELS[d.donation_type])}`, `${formatDate(d.donation_date)} · ${d.centre_name}`])
+          : [[t("History"), t("No previous donations")]],
       },
     );
   }
@@ -759,7 +690,7 @@ function ReviewSummary({ values, isDonor, onEdit }: { values: RegistrationInput;
           <div className="mb-2 flex items-center justify-between">
             <h2 className="text-sm font-bold">{section.title}</h2>
             <Button type="button" variant="ghost" size="sm" onClick={() => onEdit(section.step)}>
-              <Pencil className="size-3.5" aria-hidden="true" /> Edit
+              <Pencil className="size-3.5" aria-hidden="true" /> {t("Edit")}
             </Button>
           </div>
           <dl className="space-y-1.5 text-sm">
@@ -773,7 +704,7 @@ function ReviewSummary({ values, isDonor, onEdit }: { values: RegistrationInput;
         </section>
       ))}
       <p className="text-xs text-muted-foreground">
-        Registering does not make you medically eligible to donate. Blood centres screen every donor at the time of donation.
+        {t("Registering does not make you medically eligible to donate. Blood centres screen every donor at the time of donation.")}
       </p>
     </div>
   );

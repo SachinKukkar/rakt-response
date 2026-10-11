@@ -10,12 +10,17 @@ import { createClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/format";
 import type { NotificationRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Notifications" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Notifications") };
+}
 
 const PAGE_SIZE = 20;
 
 export default async function NotificationsPage({ searchParams }: PageProps<"/notifications">) {
+  const t = await getT();
   await requireViewer("/notifications");
   const page = parsePage((await searchParams).page);
   const supabase = await createClient();
@@ -48,15 +53,15 @@ export default async function NotificationsPage({ searchParams }: PageProps<"/no
               <Bell className={cn("mt-0.5 size-5 shrink-0", n.read_at ? "text-muted-foreground" : "text-primary")} aria-hidden="true" />
               <div className="min-w-0 flex-1 space-y-1">
                 <p className="font-semibold text-navy">
-                  {!n.read_at ? <span className="sr-only">Unread: </span> : null}
-                  {n.title}
+                  {!n.read_at ? <span className="sr-only">{t("Unread: ")}</span> : null}
+                  {t(n.title)}
                 </p>
-                {n.body ? <p className="text-sm text-muted-foreground">{n.body}</p> : null}
+                {n.body ? <p className="text-sm text-muted-foreground">{t(n.body)}</p> : null}
                 <p className="text-xs text-muted-foreground">{formatDateTime(n.created_at)}</p>
                 <div className="flex flex-wrap items-center gap-3 pt-1">
                   {n.link ? (
                     <Link href={n.link} className="inline-flex min-h-10 items-center text-sm font-semibold text-primary underline">
-                      Open
+                      {t("Open")}
                     </Link>
                   ) : null}
                   {!n.read_at ? <ActionForm action={markNotificationsRead} fields={{ id: n.id }} label="Mark read" variant="ghost" size="sm" hideAfterSuccess /> : null}

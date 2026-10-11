@@ -5,6 +5,7 @@ import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ActionResult } from "@/lib/action-result";
+import { tx } from "@/i18n/tx";
 
 /** Label + control + help text + error, wired up for screen readers. */
 export function Field({
@@ -28,7 +29,7 @@ export function Field({
   return (
     <div className={cn("space-y-1.5", className)}>
       <label htmlFor={id} className="block text-sm font-semibold text-navy">
-        {label}
+        {tx(label)}
         {required ? (
           <span className="text-primary" aria-hidden="true">
             {" "}
@@ -39,13 +40,13 @@ export function Field({
       {children}
       {hint && !message ? (
         <p id={`${id}-hint`} className="text-xs text-muted-foreground">
-          {hint}
+          {tx(hint)}
         </p>
       ) : null}
       {message ? (
         <p id={`${id}-error`} className="flex items-start gap-1 text-xs font-medium text-destructive" role="alert">
           <AlertCircle className="mt-px size-3.5 shrink-0" aria-hidden="true" />
-          {message}
+          {tx(message)}
         </p>
       ) : null}
     </div>
@@ -83,10 +84,10 @@ export function SubmitButton({
       {pending ? (
         <>
           <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-          {pendingText}
+          {tx(pendingText)}
         </>
       ) : (
-        children
+        tx(children)
       )}
     </Button>
   );
@@ -104,7 +105,7 @@ export function FormMessage({ state, className }: { state: ActionResult<unknown>
       )}
     >
       {state.ok ? <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> : <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />}
-      <span>{state.message}</span>
+      <span>{tx(state.message)}</span>
     </div>
   );
 }
@@ -150,17 +151,17 @@ export function ChoiceRow({
           aria-invalid={error ? true : undefined}
         />
         <span className="min-w-0">
-          <span className="block text-sm font-semibold text-navy">{title}</span>
+          <span className="block text-sm font-semibold text-navy">{tx(title)}</span>
           {description ? (
             <span id={`${id}-desc`} className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
-              {description}
+              {tx(description)}
             </span>
           ) : null}
         </span>
       </label>
       {error ? (
         <p className="mt-1 text-xs font-medium text-destructive" role="alert">
-          {error}
+          {tx(error)}
         </p>
       ) : null}
     </div>

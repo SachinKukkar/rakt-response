@@ -15,9 +15,13 @@ import { createClient } from "@/lib/supabase/server";
 import { BLOOD_GROUPS, DONATION_TYPES, INDIAN_STATES, type BloodGroup, type DonationType } from "@/lib/constants";
 import { formatDate, relativeTime } from "@/lib/format";
 import { uuidSchema } from "@/lib/validation/common";
+import { getT } from "@/i18n/server";
 import type { DirectoryDonor } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Donor directory" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Donor directory") };
+}
 
 const PAGE_SIZE = 20;
 type Params = Record<string, string | string[] | undefined>;
@@ -59,6 +63,7 @@ function parseFilters(params: Params) {
 }
 
 async function Results({ params, requestContext }: { params: Params; requestContext: { id: string; reference_code: string } | null }) {
+  const t = await getT();
   const supabase = await createClient();
   const filters = parseFilters(params);
   const page = parsePage(params.page);
@@ -81,7 +86,7 @@ async function Results({ params, requestContext }: { params: Params; requestCont
   return (
     <>
       <p className="mb-3 text-sm text-muted-foreground" aria-live="polite">
-        {total} donor{total === 1 ? "" : "s"} found
+        {total === 1 ? t("{count} donor found", { count: total }) : t("{count} donors found", { count: total })}
       </p>
       <ul className="grid gap-3 md:grid-cols-2">
         {donors.map((d) => (
@@ -96,19 +101,19 @@ async function Results({ params, requestContext }: { params: Params; requestCont
                   {d.city}, {d.district}
                   {d.distance_km !== null ? ` · ~${d.distance_km} km` : ""}
                 </p>
-                <p className="text-xs text-muted-foreground">Active {relativeTime(d.last_active_at)}</p>
+                <p className="text-xs text-muted-foreground">{t("Active {when}", { when: relativeTime(d.last_active_at) })}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-1.5">
               <ProfileVerificationBadge status={d.verification_status} />
-              {d.open_to_contact ? <Pill tone="success">Open to contact</Pill> : <Pill>Not available now</Pill>}
-              {d.has_sdp_history ? <Pill tone="brand">SDP history</Pill> : null}
+              {d.open_to_contact ? <Pill tone="success">{t("Open to contact")}</Pill> : <Pill>{t("Not available now")}</Pill>}
+              {d.has_sdp_history ? <Pill tone="brand">{t("SDP history")}</Pill> : null}
             </div>
             {d.show_donation_summary ? (
               <p className="text-xs text-muted-foreground">
-                Verified: {d.verified_whole_blood_count ?? 0} whole blood
-                {d.last_verified_whole_blood ? ` (last ${formatDate(d.last_verified_whole_blood)})` : ""} · {d.verified_sdp_count ?? 0} SDP
-                {d.last_verified_sdp ? ` (last ${formatDate(d.last_verified_sdp)})` : ""}
+                {t("Verified: {count} whole blood", { count: d.verified_whole_blood_count ?? 0 })}
+                {d.last_verified_whole_blood ? ` ${t("(last {date})", { date: formatDate(d.last_verified_whole_blood) })}` : ""} · {d.verified_sdp_count ?? 0} SDP
+                {d.last_verified_sdp ? ` ${t("(last {date})", { date: formatDate(d.last_verified_sdp) })}` : ""}
               </p>
             ) : null}
             {requestContext ? (
@@ -121,7 +126,7 @@ async function Results({ params, requestContext }: { params: Params; requestCont
                 contactRequestStatus={null}
               />
             ) : (
-              <p className="text-xs text-muted-foreground">Choose an active request above to contact this donor.</p>
+              <p className="text-xs text-muted-foreground">{t("Choose an active request above to contact this donor.")}</p>
             )}
           </li>
         ))}
@@ -133,6 +138,7 @@ async function Results({ params, requestContext }: { params: Params; requestCont
 
 export default async function DonorDirectoryPage({ searchParams }: PageProps<"/volunteer/donors">) {
   await requireStaff();
+  const t = await getT();
   const params = await searchParams;
   const supabase = await createClient();
   const filters = parseFilters(params);
@@ -176,14 +182,15 @@ export default async function DonorDirectoryPage({ searchParams }: PageProps<"/v
         title="Donor directory"
         description="Only donors who opted in appear. Contact details are never listed — they are released per request, with consent, and every access is logged."
       />
-      <section className="surface p-3" aria-label="Request context">
+      <section className="surface p-3" aria-label={t("Request context")}>
         {usableContext ? (
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="text-sm">
-              Coordinating <strong className="text-navy">{usableContext.reference_code}</strong> · {usableContext.blood_group} at {usableContext.hospital_name}
+              {t("Coordinating")} <strong className="text-navy">{usableContext.reference_code}</strong> ·{" "}
+              {usableContext.blood_group} {t("at {hospital}", { hospital: usableContext.hospital_name })}
             </p>
             <Button asChild variant="ghost" size="sm">
-              <Link href={`/volunteer/requests/${usableContext.id}`}>Back to request</Link>
+              <Link href={`/volunteer/requests/${usableContext.id}`}>{t("Back to request")}</Link>
             </Button>
           </div>
         ) : (
@@ -192,10 +199,10 @@ export default async function DonorDirectoryPage({ searchParams }: PageProps<"/v
               <input key={k} type="hidden" name={k} value={v} />
             ))}
             <label className="min-w-0 flex-1 space-y-1 text-xs font-semibold text-navy">
-              Contact donors for a verified request
+              {t("Contact donors for a verified request")}
               <select name="request" className={selectClass} defaultValue="">
                 <option value="" disabled>
-                  {active.length ? "Choose a request…" : "No active verified requests"}
+                  {active.length ? t("Choose a request…") : t("No active verified requests")}
                 </option>
                 {active.map((r) => (
                   <option key={r.id} value={r.id}>
@@ -205,7 +212,7 @@ export default async function DonorDirectoryPage({ searchParams }: PageProps<"/v
               </select>
             </label>
             <Button type="submit" variant="outline" disabled={!active.length}>
-              Use request
+              {t("Use request")}
             </Button>
           </form>
         )}

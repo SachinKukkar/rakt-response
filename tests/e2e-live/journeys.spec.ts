@@ -1,6 +1,6 @@
 import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
-import { PASSWORD, latestEmailLink, localSql, login, logout, trackErrors } from "./helpers";
+import { PASSWORD, latestEmailLink, localSql, localSqlValue, login, logout, trackErrors } from "./helpers";
 
 /*
  * End-to-end journeys across roles on a local Supabase stack. Each run uses a
@@ -40,8 +40,12 @@ async function registerDonor(page: Page, email: string) {
   await page.getByRole("button", { name: /Continue/ }).click();
 
   await page.locator("#state").selectOption("Maharashtra");
-  await page.locator("#district").fill("Pune");
-  await page.locator("#city").fill("Pune");
+  // Searchable district and town lists for the chosen state.
+  await page.locator("#district").fill("pun");
+  await page.getByRole("option", { name: "Pune", exact: true }).click();
+  await page.locator("#city").fill("pune ci");
+  await page.getByRole("option", { name: /^Pune City/ }).click();
+  await expect(page.locator("#pincode")).toHaveValue("411002"); // filled from the post office
   await page.locator("#locality").fill("Baner");
   await page.locator("#pincode").fill("411045");
   await page.getByRole("button", { name: /Continue/ }).click();
@@ -51,11 +55,9 @@ async function registerDonor(page: Page, email: string) {
   await page.locator("#d-centre-0").fill(CENTRE);
   await page.getByRole("button", { name: /Continue/ }).click();
 
-  for (const id of ["directory_visible", "contact_consent", "open_to_contact", "emergency_alerts", "show_donation_summary"]) {
-    await page.locator(`#${id}`).check();
-  }
-  await page.getByRole("button", { name: /Continue/ }).click();
+  // No separate consent step: one switch on the review screen, on by default.
   await expect(page.getByRole("heading", { name: "Review & confirm" })).toBeVisible();
+  await expect(page.locator("#reachable")).toBeChecked();
   await page.getByRole("button", { name: /Register/ }).click();
   await expect(page).toHaveURL(/\/verify-email/, { timeout: 30_000 });
 }
@@ -69,6 +71,7 @@ test("a new donor registers, confirms their email and lands on the dashboard", a
   await page.locator("#password").fill(PASSWORD);
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByText(/confirm your email/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Resend the verification email" })).toBeVisible();
 
   const link = await latestEmailLink(NEW_DONOR, "/auth/");
   await page.goto(link);
@@ -79,6 +82,17 @@ test("a new donor registers, confirms their email and lands on the dashboard", a
   await page.goto("/profile");
   await expect(page.getByText("+91 98111 22334")).toBeVisible();
   await expect(page.getByText("Baner")).toBeVisible();
+  // Confirming the email verifies the donor.
+  await expect(page.getByRole("heading", { name: "Email verified" })).toBeVisible();
+  await expect(page.getByText("Verified donor")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Share your story" })).toBeVisible();
+
+  await page.goto("/profile/edit");
+  await page.locator("#bio").fill("My dad needed blood once. Now I give back.");
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.getByText("Profile updated.")).toBeVisible();
+  await page.goto("/profile");
+  await expect(page.getByText("My dad needed blood once. Now I give back.")).toBeVisible();
   await page.goto("/donations");
   await expect(page.getByText(CENTRE)).toBeVisible();
   await expect(page.getByText("Self-reported · pending").first()).toBeVisible();
@@ -219,7 +233,12 @@ test("contact requests: a volunteer asks, the donor accepts, then contact is vis
   await page.getByRole("button", { name: "Update status" }).click();
   await expect(page.getByText("Status updated.")).toBeVisible();
   await page.reload();
-  const donor = page.locator("li", { hasText: "Sana" }).first();
+  // Sana has no display name, so volunteers see only her neutral code.
+  const sanaLabel = localSqlValue(
+    "select 'Donor #' || upper(left(replace(id::text, '-', ''), 4)) from auth.users where email = 'donor3@example.test';",
+  );
+  await expect(page.getByText("Sana")).toHaveCount(0);
+  const donor = page.locator("li", { hasText: sanaLabel }).first();
   await expect(donor.getByRole("button", { name: "View contact details" })).toHaveCount(0);
   await donor.getByRole("button", { name: "Ask for permission to contact" }).click();
   await donor.locator("textarea[name=message]").fill("Platelets needed tomorrow morning.");
@@ -237,7 +256,7 @@ test("contact requests: a volunteer asks, the donor accepts, then contact is vis
   await logout(page);
   await login(page, "volunteer@example.test");
   await page.goto(requestUrl);
-  const accepted = page.locator("li", { hasText: "Sana" }).first();
+  const accepted = page.locator("li", { hasText: sanaLabel }).first();
   await accepted.getByRole("button", { name: "View contact details" }).click();
   await expect(accepted.getByRole("link", { name: /Call/ })).toHaveAttribute("href", "tel:+919000000103");
 });
@@ -347,13 +366,29 @@ test("password reset by email", async ({ page }) => {
 
 test("admins manage roles, verify donors, export, and process deletion", async ({ page }) => {
   await login(page, "admin@example.test");
+  // Admins see their donor tabs plus one Admin hub, not a separate volunteer area.
+  const tabs = page.getByRole("navigation", { name: "Primary" });
+  await expect(tabs.getByRole("link", { name: "Admin" })).toBeVisible();
+  await expect(tabs.getByRole("link", { name: "Volunteer" })).toHaveCount(0);
+  await page.goto("/admin");
+  await expect(page.getByRole("link", { name: "Coordinate requests" }).first()).toBeVisible();
+
+  // Admins can correct a donor's details (recorded in the audit log).
+  await page.goto(`/admin/users?q=${encodeURIComponent(NEW_DONOR)}`);
+  await page.getByRole("link", { name: /Live Test Donor/ }).click();
+  await page.getByText("Edit donor details").click();
+  await page.locator('input[name="locality"]').fill("Aundh");
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.getByText("Donor details saved.")).toBeVisible();
+  await page.goto(`/admin/users?q=${encodeURIComponent(NEW_DONOR)}`);
   await page.goto(`/admin/users?q=${encodeURIComponent(NEW_DONOR)}`);
   await page.getByText("Make volunteer or admin").click();
   await page.getByRole("button", { name: "Grant role" }).click();
   await expect(page.getByText("Role saved.")).toBeVisible();
 
   await page.goto("/admin/volunteers");
-  await expect(page.getByText("Live D.")).toBeVisible();
+  // Administrators see full names (volunteers would see the display name).
+  await expect(page.getByText("Live Test Donor").first()).toBeVisible();
 
   const download = page.waitForEvent("download");
   await page.goto("/admin/analytics");

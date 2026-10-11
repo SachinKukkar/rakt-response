@@ -20,11 +20,16 @@ import { formatDate, formatDateTime } from "@/lib/format";
 import { formatPhone } from "@/lib/phone";
 import { uuidSchema } from "@/lib/validation/common";
 import type { StoryRow } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Review story" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Review story") };
+}
 
 export default async function AdminStoryPage({ params }: PageProps<"/admin/stories/[id]">) {
   await requireAdmin();
+  const t = await getT();
   const { id } = await params;
   if (!uuidSchema.safeParse(id).success) notFound();
   const supabase = await createClient();
@@ -58,13 +63,13 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
         <TrustBadges identity={story.identity_verified} experience={story.experience_reviewed} donation={story.donation_verified} />
         {story.status === "published" && story.slug ? (
           <Link href={`/stories/${story.slug}`} className="text-sm font-semibold text-primary underline">
-            View public page
+            {t("View public page")}
           </Link>
         ) : null}
       </div>
       {story.withdrawn_at ? (
         <Notice tone="warning" title="Withdrawn by the contributor">
-          {formatDateTime(story.withdrawn_at)}. It cannot be republished. {story.public_photo_path ? "A public photo reference remains — remove it below." : ""}
+          {formatDateTime(story.withdrawn_at)}. {t("It cannot be republished.")} {story.public_photo_path ? t("A public photo reference remains — remove it below.") : ""}
         </Notice>
       ) : null}
       {corrections.length ? (
@@ -90,20 +95,26 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
             <KeyValue label="May contact to verify">{story.consent_contact_for_verification ? "Yes" : "No"}</KeyValue>
             <KeyValue label="Submitted">{formatDateTime(story.created_at)}</KeyValue>
           </dl>
-          {story.private_supporting_details ? <p className="mt-3 rounded-xl bg-muted p-3 text-sm">Supporting details: {story.private_supporting_details}</p> : null}
+          {story.private_supporting_details ? <p className="mt-3 rounded-xl bg-muted p-3 text-sm">{t("Supporting details:")} {story.private_supporting_details}</p> : null}
         </section>
         <section className="surface p-4" aria-labelledby="consent-heading">
           <SectionHeading id="consent-heading" title="Current consent" as="h3" />
           <div className="flex flex-wrap gap-1.5">
-            <Pill tone={story.consent_publish ? "success" : "danger"}>Publish: {story.consent_publish ? "yes" : "no"}</Pill>
-            <Pill tone={story.consent_show_name ? "success" : "neutral"}>Name: {story.consent_show_name ? "yes" : "no"}</Pill>
-            <Pill tone={story.consent_show_photo ? "success" : "neutral"}>Photo: {story.consent_show_photo ? "yes" : "no"}</Pill>
-            <Pill tone={story.consent_show_personal_details ? "success" : "neutral"}>Blood group: {story.consent_show_personal_details ? "yes" : "no"}</Pill>
+            <Pill tone={story.consent_publish ? "success" : "danger"}>{t("Publish: {value}", { value: story.consent_publish ? t("yes") : t("no") })}</Pill>
+            <Pill tone={story.consent_show_name ? "success" : "neutral"}>{t("Name: {value}", { value: story.consent_show_name ? t("yes") : t("no") })}</Pill>
+            <Pill tone={story.consent_show_photo ? "success" : "neutral"}>{t("Photo: {value}", { value: story.consent_show_photo ? t("yes") : t("no") })}</Pill>
+            <Pill tone={story.consent_show_personal_details ? "success" : "neutral"}>{t("Blood group: {value}", { value: story.consent_show_personal_details ? t("yes") : t("no") })}</Pill>
           </div>
           <ul className="mt-3 space-y-1 text-xs text-muted-foreground">
             {consents.map((c) => (
               <li key={c.id}>
-                {formatDateTime(c.created_at)} — publish {c.consent_publish ? "✓" : "✗"}, name {c.consent_show_name ? "✓" : "✗"}, photo {c.consent_show_photo ? "✓" : "✗"}, personal {c.consent_show_personal_details ? "✓" : "✗"}
+                {formatDateTime(c.created_at)} —{" "}
+                {t("publish {publish}, name {name}, photo {photo}, personal {personal}", {
+                  publish: c.consent_publish ? "✓" : "✗",
+                  name: c.consent_show_name ? "✓" : "✗",
+                  photo: c.consent_show_photo ? "✓" : "✗",
+                  personal: c.consent_show_personal_details ? "✓" : "✗",
+                })}
               </li>
             ))}
           </ul>
@@ -114,8 +125,8 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
         <SectionHeading id="original-heading" title="Original submission" description="Preserved exactly as submitted." as="h3" />
         <p className="font-semibold text-navy">{story.title}</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {story.city ?? "No city"} · {story.experience_period ?? "No period"}
-          {story.donation_type ? ` · ${DONATION_TYPE_LABELS[story.donation_type]}` : ""}
+          {story.city ?? t("No city")} · {story.experience_period ?? t("No period")}
+          {story.donation_type ? ` · ${t(DONATION_TYPE_LABELS[story.donation_type])}` : ""}
           {story.blood_group ? ` · ${story.blood_group}` : ""}
         </p>
         <p className="mt-3 text-sm whitespace-pre-line">{story.body}</p>
@@ -128,22 +139,22 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
             {transitions.length ? (
               <ActionForm action={setStoryStatus} fields={{ story_id: story.id }} label="Apply decision" className="grid gap-3 sm:grid-cols-2">
                 <label className="space-y-1 text-sm font-semibold text-navy">
-                  Move to
+                  {t("Move to")}
                   <select name="status" className={selectClass}>
                     {transitions.map((s) => (
                       <option key={s} value={s}>
-                        {STORY_STATUS_LABELS[s]}
+                        {t(STORY_STATUS_LABELS[s])}
                       </option>
                     ))}
                   </select>
                 </label>
                 <label className="space-y-1 text-sm font-semibold text-navy">
-                  Reason (required to reject, request info, unpublish or archive)
+                  {t("Reason (required to reject, request info, unpublish or archive)")}
                   <Input name="reason" maxLength={500} />
                 </label>
               </ActionForm>
             ) : (
-              <p className="text-sm text-muted-foreground">No further moderation steps.</p>
+              <p className="text-sm text-muted-foreground">{t("No further moderation steps.")}</p>
             )}
           </section>
 
@@ -151,34 +162,34 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
             <SectionHeading id="public-heading" title="Public presentation" description="Edit formatting without changing the contributor's meaning. Only consented details can be shown." as="h3" />
             <ActionForm action={updateStoryContent} fields={{ story_id: story.id }} label="Save presentation" className="space-y-3">
               <label className="block space-y-1 text-sm font-semibold text-navy">
-                Public title
+                {t("Public title")}
                 <Input name="public_title" defaultValue={story.public_title ?? story.title} maxLength={120} />
               </label>
               <label className="block space-y-1 text-sm font-semibold text-navy">
-                Short excerpt (for cards)
+                {t("Short excerpt (for cards)")}
                 <Input name="public_excerpt" defaultValue={story.public_excerpt ?? ""} maxLength={240} />
               </label>
               <label className="block space-y-1 text-sm font-semibold text-navy">
-                Public story text
+                {t("Public story text")}
                 <Textarea name="public_body" defaultValue={story.public_body ?? story.body} rows={10} maxLength={6000} />
               </label>
               <label className="block space-y-1 text-sm font-semibold text-navy">
-                Public display name
+                {t("Public display name")}
                 <Input name="public_display_name" defaultValue={story.public_display_name ?? ""} maxLength={60} />
               </label>
               <fieldset className="grid gap-1 text-sm sm:grid-cols-2">
-                <legend className="mb-1 font-semibold text-navy">Show publicly</legend>
+                <legend className="mb-1 font-semibold text-navy">{t("Show publicly")}</legend>
                 <label className={`flex min-h-11 items-center gap-2 ${!story.consent_show_name ? "opacity-50" : ""}`}>
-                  <input type="checkbox" name="show_name" defaultChecked={story.show_name} disabled={!story.consent_show_name} className="size-5 accent-primary" /> Display name
+                  <input type="checkbox" name="show_name" defaultChecked={story.show_name} disabled={!story.consent_show_name} className="size-5 accent-primary" /> {t("Display name")}
                 </label>
                 <label className={`flex min-h-11 items-center gap-2 ${!story.consent_show_photo ? "opacity-50" : ""}`}>
-                  <input type="checkbox" name="show_photo" defaultChecked={story.show_photo} disabled={!story.consent_show_photo} className="size-5 accent-primary" /> Photo
+                  <input type="checkbox" name="show_photo" defaultChecked={story.show_photo} disabled={!story.consent_show_photo} className="size-5 accent-primary" /> {t("Photo")}
                 </label>
                 <label className={`flex min-h-11 items-center gap-2 ${!story.consent_show_personal_details ? "opacity-50" : ""}`}>
-                  <input type="checkbox" name="show_personal" defaultChecked={story.show_personal_details} disabled={!story.consent_show_personal_details} className="size-5 accent-primary" /> Blood group
+                  <input type="checkbox" name="show_personal" defaultChecked={story.show_personal_details} disabled={!story.consent_show_personal_details} className="size-5 accent-primary" /> {t("Blood group")}
                 </label>
                 <label className="flex min-h-11 items-center gap-2">
-                  <input type="checkbox" name="show_city" defaultChecked={story.show_city} className="size-5 accent-primary" /> City
+                  <input type="checkbox" name="show_city" defaultChecked={story.show_city} className="size-5 accent-primary" /> {t("City")}
                 </label>
               </fieldset>
             </ActionForm>
@@ -189,24 +200,24 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
             {privateUrl ? (
               <div className="flex flex-wrap items-start gap-4">
                 <figure>
-                  <Image src={privateUrl} alt="Private upload" width={240} height={160} className="h-40 w-60 rounded-xl object-cover" unoptimized />
-                  <figcaption className="mt-1 text-xs text-muted-foreground">Private upload (link expires in 10 minutes)</figcaption>
+                  <Image src={privateUrl} alt={t("Private upload")} width={240} height={160} className="h-40 w-60 rounded-xl object-cover" unoptimized />
+                  <figcaption className="mt-1 text-xs text-muted-foreground">{t("Private upload (link expires in 10 minutes)")}</figcaption>
                 </figure>
                 {publicUrl ? (
                   <figure>
-                    <Image src={publicUrl} alt="Published copy" width={240} height={160} className="h-40 w-60 rounded-xl object-cover" unoptimized />
-                    <figcaption className="mt-1 text-xs text-muted-foreground">Public copy</figcaption>
+                    <Image src={publicUrl} alt={t("Published copy")} width={240} height={160} className="h-40 w-60 rounded-xl object-cover" unoptimized />
+                    <figcaption className="mt-1 text-xs text-muted-foreground">{t("Public copy")}</figcaption>
                   </figure>
                 ) : null}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">No photo was uploaded.</p>
+              <p className="text-sm text-muted-foreground">{t("No photo was uploaded.")}</p>
             )}
             <div className="flex flex-wrap gap-2">
               {story.photo_path && story.consent_show_photo ? (
                 <ActionForm action={publishStoryPhoto} fields={{ story_id: story.id }} label={publicUrl ? "Replace public copy" : "Approve photo for publication"} size="sm" variant="outline" />
               ) : story.photo_path ? (
-                <p className="text-xs text-muted-foreground">The contributor did not consent to a public photo.</p>
+                <p className="text-xs text-muted-foreground">{t("The contributor did not consent to a public photo.")}</p>
               ) : null}
               {story.public_photo_path ? <ActionForm action={removeStoryPhoto} fields={{ story_id: story.id }} label="Remove public photo" size="sm" variant="ghost" /> : null}
             </div>
@@ -216,27 +227,27 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
             <SectionHeading id="labels-heading" title="Verification labels" description="Only award a label after doing the check it describes." as="h3" />
             <ActionForm action={setStoryVerification} fields={{ story_id: story.id }} label="Save labels" className="space-y-2">
               <label className="flex min-h-11 items-center gap-2 text-sm">
-                <input type="checkbox" name="identity_verified" defaultChecked={story.identity_verified} className="size-5 accent-primary" /> Identity Verified — I checked who the contributor is
+                <input type="checkbox" name="identity_verified" defaultChecked={story.identity_verified} className="size-5 accent-primary" /> {t("Identity Verified — I checked who the contributor is")}
               </label>
               <label className="flex min-h-11 items-center gap-2 text-sm">
-                <input type="checkbox" name="experience_reviewed" defaultChecked={story.experience_reviewed} className="size-5 accent-primary" /> Experience Reviewed — checked for consistency and supporting details
+                <input type="checkbox" name="experience_reviewed" defaultChecked={story.experience_reviewed} className="size-5 accent-primary" /> {t("Experience Reviewed — checked for consistency and supporting details")}
               </label>
               <label className="flex min-h-11 items-center gap-2 text-sm">
-                <input type="checkbox" name="donation_verified" defaultChecked={story.donation_verified} className="size-5 accent-primary" /> Donation Verified — matched to a verified record
+                <input type="checkbox" name="donation_verified" defaultChecked={story.donation_verified} className="size-5 accent-primary" /> {t("Donation Verified — matched to a verified record")}
               </label>
               <label className="block space-y-1 text-sm font-semibold text-navy">
-                Verified donation record
+                {t("Verified donation record")}
                 <select name="donation_record_id" defaultValue={story.donation_record_id ?? ""} className={selectClass}>
-                  <option value="">None</option>
+                  <option value="">{t("None")}</option>
                   {verifiedRecords.map((r) => (
                     <option key={r.id} value={r.id}>
-                      {DONATION_TYPE_LABELS[r.donation_type]} · {formatDate(r.donation_date)} · {r.centre_name}
+                      {t(DONATION_TYPE_LABELS[r.donation_type])} · {formatDate(r.donation_date)} · {r.centre_name}
                     </option>
                   ))}
                 </select>
               </label>
               <label className="block space-y-1 text-sm font-semibold text-navy">
-                How was this checked? (internal)
+                {t("How was this checked? (internal)")}
                 <Input name="note" maxLength={300} />
               </label>
             </ActionForm>
@@ -253,11 +264,11 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
                 <p className="font-medium">
                   {e.event_type.replaceAll("_", " ")}
                   {e.to_status ? ` → ${e.to_status.replaceAll("_", " ")}` : ""}
-                  {e.is_internal ? "" : " (visible to contributor)"}
+                  {e.is_internal ? "" : t(" (visible to contributor)")}
                 </p>
                 {e.reason ? <p className="text-muted-foreground">{e.reason}</p> : null}
                 <p className="text-xs text-muted-foreground">
-                  {formatDateTime(e.created_at)} · {e.actor_id ? names.get(e.actor_id) ?? "Team member" : "System"}
+                  {formatDateTime(e.created_at)} · {e.actor_id ? names.get(e.actor_id) ?? t("Team member") : t("System")}
                 </p>
               </li>
             ))}
@@ -266,14 +277,14 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
         <section className="surface space-y-3 p-4" aria-labelledby="notes-heading">
           <SectionHeading id="notes-heading" title="Internal notes" as="h3" />
           <ActionForm action={addInternalNote} fields={{ subject_type: "story", subject_id: story.id }} label="Add note" size="sm" variant="outline">
-            <Textarea name="body" rows={2} maxLength={2000} required aria-label="Note" />
+            <Textarea name="body" rows={2} maxLength={2000} required aria-label={t("Note")} />
           </ActionForm>
           <ul className="space-y-2 text-sm">
             {notes.map((n) => (
               <li key={n.id} className="rounded-xl bg-muted p-3">
                 <p className="whitespace-pre-line">{n.body}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {names.get(n.author_id) ?? "Admin"} · {formatDateTime(n.created_at)}
+                  {names.get(n.author_id) ?? t("Admin")} · {formatDateTime(n.created_at)}
                 </p>
               </li>
             ))}

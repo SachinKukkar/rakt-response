@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { connection } from "next/server";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
@@ -35,7 +35,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     supabase
       .from("profiles")
       .select(
-        "id, full_name, display_name, is_donor, blood_group, blood_group_verified, requested_blood_group, age_confirmed, donation_experience, approx_previous_donations, verification_status, verified_at, photo_path, is_active, deletion_requested_at, last_active_at, created_at",
+        "id, full_name, display_name, bio, is_donor, blood_group, blood_group_verified, requested_blood_group, age_confirmed, donation_experience, approx_previous_donations, verification_status, verified_at, photo_path, is_active, deletion_requested_at, last_active_at, created_at",
       )
       .eq("id", id)
       .maybeSingle(),
@@ -68,13 +68,14 @@ export async function requireViewer(next?: string): Promise<Viewer> {
 
 export async function requireStaff(): Promise<Viewer & { staff: StaffRoleRow }> {
   const viewer = await requireViewer();
-  if (!viewer.staff) redirect("/dashboard?notice=staff-only");
+  // Staff areas are not advertised: anyone else gets an ordinary 404.
+  if (!viewer.staff) notFound();
   return viewer as Viewer & { staff: StaffRoleRow };
 }
 
 export async function requireAdmin(): Promise<Viewer & { staff: StaffRoleRow }> {
   const viewer = await requireStaff();
-  if (!viewer.isAdmin) redirect("/volunteer?notice=admin-only");
+  if (!viewer.isAdmin) notFound();
   return viewer;
 }
 

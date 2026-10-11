@@ -22,6 +22,7 @@ export interface ProfileRow {
   id: string;
   full_name: string;
   display_name: string | null;
+  bio: string | null;
   is_donor: boolean;
   blood_group: BloodGroup | null;
   blood_group_verified: boolean;
@@ -57,6 +58,7 @@ export interface PreferencesRow {
   emergency_consent_at: string | null;
   open_to_contact: boolean;
   show_donation_summary: boolean;
+  show_first_name: boolean;
   preferred_contact_method: ContactMethod;
   max_distance_km: number | null;
   notify_status_updates: boolean;

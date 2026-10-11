@@ -12,10 +12,15 @@ import { getDonationRecords, getDonorData } from "@/lib/data/member";
 import { getPublicSettings } from "@/lib/data/public";
 import { DONATION_TYPE_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Donation history" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Donation history") };
+}
 
 export default async function DonationsPage() {
+  const t = await getT();
   const viewer = await requireViewer("/donations");
   const [donor, records, settings] = await Promise.all([getDonorData(viewer.id), getDonationRecords(viewer.id), getPublicSettings()]);
 
@@ -28,7 +33,7 @@ export default async function DonationsPage() {
           viewer.profile?.is_donor ? (
             <Button asChild>
               <Link href="/donations/new">
-                <Plus className="size-4" aria-hidden="true" /> Record a donation
+                <Plus className="size-4" aria-hidden="true" /> {t("Record a donation")}
               </Link>
             </Button>
           ) : null
@@ -45,7 +50,7 @@ export default async function DonationsPage() {
             action={
               viewer.profile?.is_donor ? (
                 <Button asChild variant="outline">
-                  <Link href="/donations/new">Record a donation</Link>
+                  <Link href="/donations/new">{t("Record a donation")}</Link>
                 </Button>
               ) : null
             }
@@ -56,17 +61,17 @@ export default async function DonationsPage() {
               <li key={record.id} className="surface p-4">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="font-bold text-navy">{DONATION_TYPE_LABELS[record.donation_type]}</p>
+                    <p className="font-bold text-navy">{t(DONATION_TYPE_LABELS[record.donation_type])}</p>
                     <p className="text-sm text-muted-foreground">
                       {formatDate(record.donation_date)} · {record.centre_name}
                       {record.city ? `, ${record.city}` : ""}
                     </p>
-                    {record.event_name ? <p className="text-xs text-muted-foreground">Event: {record.event_name}</p> : null}
+                    {record.event_name ? <p className="text-xs text-muted-foreground">{t("Event: {name}", { name: record.event_name })}</p> : null}
                   </div>
                   <VerificationBadge status={record.verification_status} source={record.record_source} />
                 </div>
                 {record.verification_status === "rejected" && record.review_reason ? (
-                  <p className="mt-2 rounded-xl bg-destructive/5 p-2.5 text-xs text-destructive">Reviewer note: {record.review_reason}</p>
+                  <p className="mt-2 rounded-xl bg-destructive/5 p-2.5 text-xs text-destructive">{t("Reviewer note: {note}", { note: record.review_reason })}</p>
                 ) : null}
                 {record.verification_status === "pending" ? (
                   <ActionForm

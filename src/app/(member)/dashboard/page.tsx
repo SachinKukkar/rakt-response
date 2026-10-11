@@ -15,17 +15,20 @@ import { getDonorData, getRequestMatches, profileCompletion } from "@/lib/data/m
 import { getPublicSettings } from "@/lib/data/public";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/format";
+import { getT } from "@/i18n/server";
 import type { NotificationRow } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Dashboard" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Dashboard") };
+}
 
 const NOTICES: Record<string, string> = {
-  "staff-only": "That area is only for authorised volunteers.",
-  "admin-only": "That area is only for administrators.",
   "password-updated": "Your password was updated.",
 };
 
 export default async function DashboardPage({ searchParams }: PageProps<"/dashboard">) {
+  const t = await getT();
   const params = await searchParams;
   const viewer = await requireViewer("/dashboard");
   const profile = viewer.profile;
@@ -47,20 +50,26 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
       donor.summary.reported_whole_blood_count + donor.summary.reported_sdp_count > 0 || profile?.donation_experience === "first_time",
   });
   const notice = typeof params.notice === "string" ? NOTICES[params.notice] : undefined;
-  const name = profile?.display_name || profile?.full_name?.split(" ")[0] || "there";
+  const name = profile?.display_name || profile?.full_name?.split(" ")[0] || t("there");
   const pendingContact = matches.filter((m) => m.contact_request_status === "pending").length;
+  const [becomeDonorBefore, becomeDonorAfter] = t(
+    "You registered as a member. Add your blood group and area from {link} whenever you're ready to join the donor register.",
+  ).split("{link}");
 
   return (
     <div className="space-y-6">
       {params.welcome ? (
         <Notice tone="brand" icon={ShieldCheck} title="Welcome to Rakt Response">
-          Your account is active. Your profile is private by default — review your choices in Privacy &amp; settings at any time.
+          {t("Your account is active. Your profile is private by default — review your choices in Privacy & settings at any time.")}
         </Notice>
       ) : null}
       {notice ? <Notice>{notice}</Notice> : null}
       {profile?.deletion_requested_at ? (
         <Notice tone="warning" title="Account deletion requested">
-          You were removed from discovery on {formatDate(profile.deletion_requested_at)}. <Link href="/settings" className="font-semibold underline">Manage request</Link>
+          {t("You were removed from discovery on {date}.", { date: formatDate(profile.deletion_requested_at) })}{" "}
+          <Link href="/settings" className="font-semibold underline">
+            {t("Manage request")}
+          </Link>
         </Notice>
       ) : null}
 
@@ -73,7 +82,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
             </span>
           ) : null}
           <div className="min-w-0">
-            <p className="text-sm text-white/85">Welcome back,</p>
+            <p className="text-sm text-white/85">{t("Welcome back,")}</p>
             <h1 className="truncate text-2xl font-extrabold text-white">{name}</h1>
             <div className="mt-1.5">
               {profile ? <ProfileVerificationBadge status={profile.verification_status} /> : null}
@@ -83,7 +92,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
         {profile?.is_donor ? (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/10 p-3">
             <p className="text-sm">
-              {prefs?.open_to_contact ? "You're open to being contacted for requests." : "You're currently not available for contact."}
+              {prefs?.open_to_contact ? t("You're open to being contacted for requests.") : t("You're currently not available for contact.")}
             </p>
             <ActionForm
               action={setAvailability}
@@ -100,14 +109,14 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
       {/* Quick actions */}
       <section aria-labelledby="quick-actions">
         <h2 id="quick-actions" className="sr-only">
-          Quick actions
+          {t("Quick actions")}
         </h2>
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            { href: "/donations/new", label: "Record a donation", icon: Droplet },
-            { href: "/requests", label: pendingContact ? `Requests (${pendingContact} waiting)` : "Requests for me", icon: HandHeart },
-            { href: "/settings", label: "Availability & privacy", icon: SlidersHorizontal },
-            { href: "/share-your-story", label: "Share your story", icon: MessageSquareQuote },
+            { href: "/donations/new", label: t("Record a donation"), icon: Droplet },
+            { href: "/requests", label: pendingContact ? t("Requests ({count} waiting)", { count: pendingContact }) : t("Requests for me"), icon: HandHeart },
+            { href: "/settings", label: t("Availability & privacy"), icon: SlidersHorizontal },
+            { href: "/share-your-story", label: t("Share your story"), icon: MessageSquareQuote },
           ].map((item) => (
             <li key={item.href}>
               <Link href={item.href} className="surface flex h-full min-h-24 flex-col justify-between gap-2 p-4 transition-colors hover:border-primary/40">
@@ -126,19 +135,19 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
         <section className="surface p-4" aria-labelledby="completion-heading">
           <div className="flex items-center justify-between gap-3">
             <h2 id="completion-heading" className="text-base font-bold">
-              Profile {completion.percent}% complete
+              {t("Profile {percent}% complete", { percent: completion.percent })}
             </h2>
             <Button asChild variant="ghost" size="sm">
               <Link href="/profile/edit">
-                <UserRoundPen className="size-4" aria-hidden="true" /> Complete
+                <UserRoundPen className="size-4" aria-hidden="true" /> {t("Complete")}
               </Link>
             </Button>
           </div>
-          <Progress value={completion.percent} className="mt-2" aria-label="Profile completion" />
+          <Progress value={completion.percent} className="mt-2" aria-label={t("Profile completion")} />
           <ul className="mt-3 flex flex-wrap gap-2">
             {completion.missing.map((m) => (
               <li key={m} className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
-                {m}
+                {t(m)}
               </li>
             ))}
           </ul>
@@ -153,7 +162,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
             title="Your donations"
             action={
               <Link href="/donations" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-                History
+                {t("History")}
               </Link>
             }
           />
@@ -161,11 +170,11 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
         </section>
       ) : (
         <Notice title="Become a donor">
-          You registered as a member. Add your blood group and area from{" "}
+          {becomeDonorBefore}
           <Link href="/profile/edit" className="font-semibold text-primary underline">
-            your profile
-          </Link>{" "}
-          whenever you&apos;re ready to join the donor register.
+            {t("your profile")}
+          </Link>
+          {becomeDonorAfter}
         </Notice>
       )}
 
@@ -178,7 +187,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
             description="Verified requests for your blood group in your district, or ones you were asked about."
             action={
               <Link href="/requests" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-                All
+                {t("All")}
               </Link>
             }
           />
@@ -201,7 +210,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
           title="Latest notifications"
           action={
             <Link href="/notifications" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-              View all
+              {t("View all")}
             </Link>
           }
         />
@@ -211,14 +220,14 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
               <li key={n.id} className="surface flex items-start gap-3 p-3.5">
                 <Bell className={n.read_at ? "mt-0.5 size-4 text-muted-foreground" : "mt-0.5 size-4 text-primary"} aria-hidden="true" />
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-navy">{n.title}</p>
+                  <p className="text-sm font-semibold text-navy">{t(n.title)}</p>
                   <p className="text-xs text-muted-foreground">{formatDate(n.created_at, { hour: "numeric", minute: "2-digit" })}</p>
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted-foreground">No notifications yet.</p>
+          <p className="text-sm text-muted-foreground">{t("No notifications yet.")}</p>
         )}
       </section>
     </div>

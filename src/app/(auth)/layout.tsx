@@ -2,8 +2,10 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
 import { SITE } from "@/lib/constants";
+import { getT } from "@/i18n/server";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default async function AuthLayout({ children }: { children: React.ReactNode }) {
+  const t = await getT();
   return (
     <div className="flex min-h-full flex-1 flex-col bg-warm">
       <div className="brand-band relative overflow-hidden pb-24 text-white">
@@ -12,13 +14,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             href="/"
             className="-ml-2 inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium text-white/90 hover:text-white"
           >
-            <ChevronLeft className="size-4" aria-hidden="true" /> Home
+            <ChevronLeft className="size-4" aria-hidden="true" /> {t("Home")}
           </Link>
         </div>
         <div className="mx-auto flex max-w-lg flex-col items-center px-4 pt-2 text-center">
           <LogoMark size="lg" priority className="shadow-lg shadow-black/20 ring-4 ring-white/30" />
           <p className="font-display mt-3 text-2xl font-extrabold tracking-tight">Rakt Response</p>
-          <p className="text-sm text-white/85">{SITE.tagline}</p>
+          <p className="text-sm text-white/85">{t(SITE.tagline)}</p>
         </div>
         <svg aria-hidden="true" viewBox="0 0 400 40" preserveAspectRatio="none" className="absolute inset-x-0 bottom-0 h-10 w-full fill-warm">
           <path d="M0 40 C 120 0, 280 0, 400 40 Z" />

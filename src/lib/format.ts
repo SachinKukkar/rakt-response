@@ -1,4 +1,9 @@
+import { HTML_LANG } from "@/i18n/config";
+import { currentLocale } from "@/i18n/request-locale";
+
 const IST = "Asia/Kolkata";
+/** Dates and relative times follow the visitor's language (en-IN or hi-IN). */
+const lang = () => HTML_LANG[currentLocale()];
 
 function toDate(value: string | Date): Date {
   if (value instanceof Date) return value;
@@ -10,7 +15,7 @@ export function formatDate(value: string | Date | null | undefined, options: Int
   if (!value) return "—";
   const date = toDate(value);
   if (Number.isNaN(date.getTime())) return "—";
-  return new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: IST, ...options }).format(date);
+  return new Intl.DateTimeFormat(lang(), { day: "numeric", month: "short", year: "numeric", timeZone: IST, ...options }).format(date);
 }
 
 export function formatDateTime(value: string | Date | null | undefined): string {
@@ -26,7 +31,7 @@ export function relativeTime(value: string | Date, now: Date = new Date()): stri
   const date = toDate(value);
   const diffMs = date.getTime() - now.getTime();
   const abs = Math.abs(diffMs);
-  const rtf = new Intl.RelativeTimeFormat("en-IN", { numeric: "auto" });
+  const rtf = new Intl.RelativeTimeFormat(lang(), { numeric: "auto" });
   if (abs < 60 * 60_000) return rtf.format(Math.round(diffMs / 60_000), "minute");
   if (abs < 48 * 3_600_000) return rtf.format(Math.round(diffMs / 3_600_000), "hour");
   const days = Math.round(diffMs / 86_400_000);

@@ -12,6 +12,7 @@ import { profileLabels } from "@/lib/data/staff";
 import { formatDate } from "@/lib/format";
 import type { DonationRecordRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 import Link from "next/link";
 
 const PAGE_SIZE = 20;
@@ -31,6 +32,7 @@ export async function DonationReviewList({
   const statusParam = (Array.isArray(searchParams.status) ? searchParams.status[0] : searchParams.status) ?? "pending";
   const status: VerificationStatus = statusParam === "verified" || statusParam === "rejected" ? statusParam : "pending";
   const page = parsePage(searchParams.page);
+  const t = await getT();
   const supabase = await createClient();
   const { data, count } = await supabase
     .from("donation_records")
@@ -44,9 +46,9 @@ export async function DonationReviewList({
   return (
     <div className="space-y-4">
       {!canVerify ? (
-        <Notice>You can view records, but verifying them needs the &ldquo;verify donations&rdquo; permission from an administrator.</Notice>
+        <Notice>{t("You can view records, but verifying them needs the “verify donations” permission from an administrator.")}</Notice>
       ) : null}
-      <nav aria-label="Record status" className="flex gap-2">
+      <nav aria-label={t("Record status")} className="flex gap-2">
         {(["pending", "verified", "rejected"] as const).map((s) => (
           <Link
             key={s}
@@ -54,7 +56,7 @@ export async function DonationReviewList({
             aria-current={s === status ? "page" : undefined}
             className={cn("inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold capitalize", s === status ? "border-primary bg-primary text-white" : "bg-white text-navy")}
           >
-            {s === "rejected" ? "Not verified" : s}
+            {s === "rejected" ? t("Not verified") : t(s)}
           </Link>
         ))}
       </nav>
@@ -71,33 +73,33 @@ export async function DonationReviewList({
                   <div className="flex items-start gap-3">
                     {donor?.blood_group ? <BloodGroupChip group={donor.blood_group} size="sm" /> : null}
                     <div>
-                      <p className="font-semibold text-navy">{donor?.label ?? "Donor"}</p>
+                      <p className="font-semibold text-navy">{donor?.label ?? t("Donor")}</p>
                       <p className="text-sm">
-                        {DONATION_TYPE_LABELS[r.donation_type]} · {formatDate(r.donation_date)}
+                        {t(DONATION_TYPE_LABELS[r.donation_type])} · {formatDate(r.donation_date)}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {r.centre_name}
                         {r.city ? `, ${r.city}` : ""}
                         {r.district ? `, ${r.district}` : ""}
-                        {r.event_name ? ` · ${r.event_name}` : ""} · added {formatDate(r.created_at)}
+                        {r.event_name ? ` · ${r.event_name}` : ""} · {t("added {date}", { date: formatDate(r.created_at) })}
                       </p>
                     </div>
                   </div>
                   <VerificationBadge status={r.verification_status} source={r.record_source} />
                 </div>
-                {r.review_reason ? <p className="text-xs text-muted-foreground">Reviewer note: {r.review_reason}</p> : null}
+                {r.review_reason ? <p className="text-xs text-muted-foreground">{t("Reviewer note: {note}", { note: r.review_reason })}</p> : null}
                 {status === "pending" && canVerify && !own ? (
                   <div className="flex flex-wrap items-end gap-2">
                     <ActionForm action={verifyDonationRecord} fields={{ record_id: r.id, status: "verified" }} label="Verify" size="sm" hideAfterSuccess />
                     <ActionForm action={verifyDonationRecord} fields={{ record_id: r.id, status: "rejected" }} label="Not verified" size="sm" variant="outline" hideAfterSuccess className="flex flex-wrap items-end gap-2 space-y-0">
                       <label className="sr-only" htmlFor={`reason-${r.id}`}>
-                        Reason
+                        {t("Reason")}
                       </label>
-                      <Input id={`reason-${r.id}`} name="reason" placeholder="Reason (required)" className="h-9 w-48" required maxLength={300} />
+                      <Input id={`reason-${r.id}`} name="reason" placeholder={t("Reason (required)")} className="h-9 w-48" required maxLength={300} />
                     </ActionForm>
                   </div>
                 ) : null}
-                {own && status === "pending" ? <p className="text-xs text-muted-foreground">Your own record — another reviewer must verify it.</p> : null}
+                {own && status === "pending" ? <p className="text-xs text-muted-foreground">{t("Your own record — another reviewer must verify it.")}</p> : null}
               </li>
             );
           })}
@@ -105,8 +107,9 @@ export async function DonationReviewList({
       )}
       <Pagination page={page} pageSize={PAGE_SIZE} total={count ?? 0} basePath={basePath} params={{ status }} />
       <p className="text-xs text-muted-foreground">
-        Verify only with proportionate evidence (e.g. a donor card, certificate or confirmation from the blood centre). Verification
-        confirms the record, not the donor&apos;s eligibility.
+        {t(
+          "Verify only with proportionate evidence (e.g. a donor card, certificate or confirmation from the blood centre). Verification confirms the record, not the donor's eligibility.",
+        )}
       </p>
     </div>
   );

@@ -12,11 +12,16 @@ import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/format";
 import type { StaffRoleRow } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Volunteers" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Volunteers") };
+}
 
 export default async function AdminVolunteersPage() {
   const viewer = await requireAdmin();
+  const t = await getT();
   const supabase = await createClient();
   const { data } = await supabase.from("staff_roles").select("*, granted_at").order("is_active", { ascending: false }).order("role");
   const staff = (data ?? []) as Array<StaffRoleRow & { granted_at: string }>;
@@ -32,7 +37,7 @@ export default async function AdminVolunteersPage() {
         title="Volunteers & administrators"
         actions={
           <Button asChild variant="outline">
-            <Link href="/admin/users">Add someone</Link>
+            <Link href="/admin/users">{t("Add someone")}</Link>
           </Button>
         }
       />
@@ -44,13 +49,13 @@ export default async function AdminVolunteersPage() {
             <li key={s.user_id} className="surface space-y-3 p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <p className="font-semibold text-navy">{names.get(s.user_id) ?? "Team member"}</p>
+                  <p className="font-semibold text-navy">{names.get(s.user_id) ?? t("Team member")}</p>
                   <p className="text-xs text-muted-foreground">
-                    Since {formatDate(s.granted_at)} · {load.get(s.user_id) ?? 0} active assignment(s)
+                    {t("Since {date} · {count} active assignment(s)", { date: formatDate(s.granted_at), count: load.get(s.user_id) ?? 0 })}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
-                  <Pill tone={s.is_active ? "info" : "neutral"}>{s.is_active ? s.role : `${s.role} (revoked)`}</Pill>
+                  <Pill tone={s.is_active ? "info" : "neutral"}>{s.is_active ? s.role : t("{role} (revoked)", { role: t(s.role) })}</Pill>
                   {s.role === "volunteer" && s.is_active ? (
                     <>
                       {s.can_verify_requests ? <Pill tone="success">Verifies requests</Pill> : null}
@@ -61,7 +66,7 @@ export default async function AdminVolunteersPage() {
               </div>
               {s.user_id !== viewer.id ? (
                 <details>
-                  <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-primary">Edit access</summary>
+                  <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-primary">{t("Edit access")}</summary>
                   <div className="mt-2 space-y-3">
                     <RoleForm userId={s.user_id} current={s.is_active ? s : null} />
                     {s.is_active ? (
@@ -70,7 +75,7 @@ export default async function AdminVolunteersPage() {
                   </div>
                 </details>
               ) : (
-                <p className="text-xs text-muted-foreground">This is you. Another administrator must change your role.</p>
+                <p className="text-xs text-muted-foreground">{t("This is you. Another administrator must change your role.")}</p>
               )}
             </li>
           ))}

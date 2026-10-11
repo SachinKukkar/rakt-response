@@ -35,3 +35,23 @@ export async function storiesAwaitingReview(): Promise<number> {
     .in("status", ["submitted", "under_review", "verification_requested"]);
   return count ?? 0;
 }
+
+export interface DataCheck {
+  key: string;
+  total: number;
+  items: Array<{ profile_id: string; name: string; detail: string }>;
+}
+
+export interface DataChecksReport {
+  generated_at: string;
+  whole_blood_interval_days: number;
+  checks: DataCheck[];
+}
+
+/** Administrator-only consistency report (see admin_data_checks in migration 0900). */
+export async function getDataChecks(): Promise<DataChecksReport | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("admin_data_checks");
+  if (error || !data) return null;
+  return data as DataChecksReport;
+}

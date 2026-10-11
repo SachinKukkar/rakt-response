@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, ClipboardCheck, Droplet, HandHeart, HeartPulse, MessageSquareQuote, Trash2, UserCog, Users } from "lucide-react";
+import { ArrowRight, BadgeCheck, ClipboardCheck, Droplet, HandHeart, HeartPulse, MessageSquareQuote, SearchCheck, Trash2, UserCog, Users } from "lucide-react";
 import { Notice, PageHeader, SectionHeading, StatCard } from "@/components/common/page-parts";
 import { BarList } from "@/components/admin/bar-list";
-import { getAdminAnalytics, storiesAwaitingReview } from "@/lib/data/admin";
+import { getAdminAnalytics, getDataChecks, storiesAwaitingReview } from "@/lib/data/admin";
 import { formatNumber } from "@/lib/format";
 import { BLOOD_GROUPS } from "@/lib/constants";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Administration" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Administration") };
+}
+
+const TOOLS = [
+  { href: "/volunteer/requests", label: "Coordinate requests", icon: HandHeart },
+  { href: "/volunteer/donors", label: "Donor directory", icon: Users },
+  { href: "/volunteer/coordination", label: "My coordination", icon: ClipboardCheck },
+  { href: "/volunteer/donations", label: "Donation records", icon: Droplet },
+];
 
 export default async function AdminOverviewPage() {
-  const [analytics, storyQueue] = await Promise.all([getAdminAnalytics(), storiesAwaitingReview()]);
+  const [analytics, storyQueue, checks] = await Promise.all([getAdminAnalytics(), storiesAwaitingReview(), getDataChecks()]);
+  const t = await getT();
   if (!analytics) return <Notice tone="warning">Analytics could not be loaded.</Notice>;
   const queue = [
     { href: "/admin/donors?filter=pending", label: "Donor profiles to verify", value: analytics.donors.pending_verification, icon: BadgeCheck },
@@ -19,13 +31,14 @@ export default async function AdminOverviewPage() {
     { href: "/admin/donations", label: "Donation records to review", value: analytics.donations.pending, icon: Droplet },
     { href: "/admin/requests?tab=verify", label: "Requests awaiting verification", value: analytics.requests.awaiting_verification, icon: ClipboardCheck },
     { href: "/admin/stories", label: "Stories awaiting review", value: storyQueue, icon: MessageSquareQuote },
+    { href: "/admin/data-checks", label: "Data checks to look at", value: checks?.checks.reduce((n, c) => n + c.total, 0) ?? 0, icon: SearchCheck },
   ];
   const groups = BLOOD_GROUPS.map((g) => ({ label: g, value: analytics.by_blood_group.find((b) => b.blood_group === g)?.count ?? 0 }));
 
   return (
     <div className="space-y-6">
       <PageHeader eyebrow="Administrator" title="Administration" description="Every figure here is calculated from database records at the time you load the page." />
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Key figures">
+      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label={t("Key figures")}>
         <StatCard label="Registered donors" value={formatNumber(analytics.donors.registered)} icon={Users} tone="navy" hint="Active, email confirmed" />
         <StatCard label="Verified donors" value={formatNumber(analytics.donors.verified)} icon={BadgeCheck} />
         <StatCard label="Verified whole blood" value={formatNumber(analytics.donations.verified_whole_blood)} icon={Droplet} />
@@ -43,8 +56,23 @@ export default async function AdminOverviewPage() {
             <li key={item.href}>
               <Link href={item.href} className="surface flex min-h-16 items-center gap-3 p-4 hover:border-primary/40">
                 <item.icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
-                <span className="flex-1 text-sm font-semibold text-navy">{item.label}</span>
+                <span className="flex-1 text-sm font-semibold text-navy">{t(item.label)}</span>
                 <span className="rounded-full bg-accent px-2.5 py-0.5 text-sm font-bold text-accent-foreground">{formatNumber(item.value)}</span>
+                <ArrowRight className="size-4 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="tools-heading">
+        <SectionHeading id="tools-heading" title="Coordination tools" description="Everything volunteers can do, available to administrators too." />
+        <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {TOOLS.map((tool) => (
+            <li key={tool.href}>
+              <Link href={tool.href} className="surface flex min-h-14 items-center gap-3 p-4 hover:border-primary/40">
+                <tool.icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
+                <span className="flex-1 text-sm font-semibold text-navy">{t(tool.label)}</span>
                 <ArrowRight className="size-4 text-muted-foreground" aria-hidden="true" />
               </Link>
             </li>
@@ -58,7 +86,7 @@ export default async function AdminOverviewPage() {
           <BarList items={groups} label="Donors by blood group" />
         </section>
         <section className="surface p-4" aria-labelledby="district-heading">
-          <SectionHeading id="district-heading" title="Top districts" as="h3" action={<Link href="/admin/analytics" className="text-sm font-semibold text-primary hover:underline">Analytics</Link>} />
+          <SectionHeading id="district-heading" title="Top districts" as="h3" action={<Link href="/admin/analytics" className="text-sm font-semibold text-primary hover:underline">{t("Analytics")}</Link>} />
           <BarList items={analytics.by_district.map((d) => ({ label: d.district, value: d.count }))} label="Donors by district" />
         </section>
       </div>

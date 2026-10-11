@@ -11,13 +11,18 @@ import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/format";
 import type { StaffRoleRow } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Users & roles" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Users & roles") };
+}
 
 const PAGE_SIZE = 20;
 
 export default async function AdminUsersPage({ searchParams }: PageProps<"/admin/users">) {
   const viewer = await requireAdmin();
+  const t = await getT();
   const params = await searchParams;
   const q = String((Array.isArray(params.q) ? params.q[0] : params.q) ?? "").trim().slice(0, 80).replace(/[%_,()]/g, "");
   const page = parsePage(params.page);
@@ -43,10 +48,10 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
       <Notice>Roles are stored server-side and checked by the database on every action. Signup details can never grant a role.</Notice>
       <form method="get" className="surface flex gap-2 p-3" role="search">
         <label htmlFor="user-q" className="sr-only">
-          Search by name or exact email
+          {t("Search by name or exact email")}
         </label>
-        <Input id="user-q" name="q" defaultValue={q} placeholder="Name or exact email" />
-        <Button type="submit">Search</Button>
+        <Input id="user-q" name="q" defaultValue={q} placeholder={t("Name or exact email")} />
+        <Button type="submit">{t("Search")}</Button>
       </form>
       {users.length === 0 ? (
         <EmptyState icon={Users} title="No users found" />
@@ -63,7 +68,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
                       {u.full_name}
                     </Link>
                     <p className="text-xs text-muted-foreground">
-                      {u.is_donor ? "Donor" : "Member"} · joined {formatDate(u.created_at)}
+                      {u.is_donor ? t("Donor") : t("Member")} · {t("joined {date}", { date: formatDate(u.created_at) })}
                     </p>
                   </div>
                   <div className="flex gap-1.5">
@@ -72,11 +77,11 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
                   </div>
                 </div>
                 {u.id === viewer.id ? (
-                  <p className="text-xs text-muted-foreground">This is you.</p>
+                  <p className="text-xs text-muted-foreground">{t("This is you.")}</p>
                 ) : u.is_active ? (
                   <details>
                     <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-primary">
-                      {activeRole ? "Change role" : "Make volunteer or admin"}
+                      {activeRole ? t("Change role") : t("Make volunteer or admin")}
                     </summary>
                     <div className="mt-2">
                       <RoleForm userId={u.id} current={activeRole} />

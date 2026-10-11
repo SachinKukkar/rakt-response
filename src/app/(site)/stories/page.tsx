@@ -9,15 +9,20 @@ import { StoryCard, TrustLabelGuide } from "@/components/stories/story-parts";
 import { listPublishedStories } from "@/lib/data/public";
 import { STORY_CATEGORIES, type StoryCategory } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Stories",
-  description: "Experiences shared by donors, patients' families, volunteers and camp organisers — published with consent.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return {
+    title: t("Stories"),
+    description: t("Experiences shared by donors, patients' families, volunteers and camp organisers — published with consent."),
+  };
+}
 
 const PAGE_SIZE = 9;
 
 export default async function StoriesPage({ searchParams }: PageProps<"/stories">) {
+  const t = await getT();
   const params = await searchParams;
   const raw = Array.isArray(params.category) ? params.category[0] : params.category;
   const category = raw && raw in STORY_CATEGORIES ? (raw as StoryCategory) : null;
@@ -31,15 +36,21 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
 
   return (
     <>
-      <PageHero eyebrow="Stories" title="Stories that" highlight="kept us going." subtitle="Donors, families and volunteers — in their own words, published only with their consent." chips={["Reviewed before publishing", "Withdraw any time"]}>
+      <PageHero
+        eyebrow={t("Stories")}
+        title={t("Stories that")}
+        highlight={t("kept us going.")}
+        subtitle={t("Donors, families and volunteers — in their own words, published only with their consent.")}
+        chips={[t("Reviewed before publishing"), t("Withdraw any time")]}
+      >
         <Button asChild size="lg" className="press bg-white text-primary hover:bg-white/90">
           <Link href="/share-your-story">
-            <PenLine className="size-4" aria-hidden="true" /> Share your story
+            <PenLine className="size-4" aria-hidden="true" /> {t("Share your story")}
           </Link>
         </Button>
       </PageHero>
     <div className="page-container py-8">
-      <nav aria-label="Story categories" className="-mx-4 mb-5 overflow-x-auto px-4">
+      <nav aria-label={t("Story categories")} className="-mx-4 mb-5 overflow-x-auto px-4">
         <ul className="flex w-max gap-2">
           {tabs.map((tab) => {
             const active = tab.key === category;
@@ -53,7 +64,7 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
                     active ? "border-primary bg-primary text-white" : "bg-white text-navy hover:border-primary/40",
                   )}
                 >
-                  {tab.label}
+                  {t(tab.label)}
                 </Link>
               </li>
             );
@@ -62,15 +73,19 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
       </nav>
 
       {result === null ? (
-        <Notice title="Stories are unavailable right now">Please try again in a little while.</Notice>
+        <Notice title={t("Stories are unavailable right now")}>{t("Please try again in a little while.")}</Notice>
       ) : result.stories.length === 0 ? (
         <EmptyState
           icon={MessageSquareQuote}
-          title={category ? `No ${STORY_CATEGORIES[category].label.toLowerCase()} published yet` : "No stories published yet"}
-          description="We never publish example or invented stories. Real experiences will appear here after review."
+          title={
+            category
+              ? t("No {category} published yet", { category: t(STORY_CATEGORIES[category].label).toLowerCase() })
+              : t("No stories published yet")
+          }
+          description={t("We never publish example or invented stories. Real experiences will appear here after review.")}
           action={
             <Button asChild variant="outline">
-              <Link href="/share-your-story">Share your experience</Link>
+              <Link href="/share-your-story">{t("Share your experience")}</Link>
             </Button>
           }
         />

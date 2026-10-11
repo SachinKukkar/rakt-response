@@ -11,6 +11,7 @@ import { ApproxLocation } from "@/components/map/approx-location";
 import { BLOOD_GROUPS, DONATION_TYPE_LABELS, INDIAN_STATES, type DonationType } from "@/lib/constants";
 import type { LatLng } from "@/lib/geo";
 import { cn } from "@/lib/utils";
+import { useT } from "@/i18n/client";
 
 const FILTER_KEYS = ["groups", "state", "district", "city", "locality", "pincode", "type", "verified", "open", "active", "sort", "lat", "lng", "radius"] as const;
 
@@ -27,6 +28,7 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
   );
   const formRef = useRef<HTMLFormElement>(null);
   const firstRender = useRef(true);
+  const t = useT();
 
   function navigate(next: URLSearchParams) {
     next.delete("page");
@@ -90,28 +92,28 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
         <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
         <Input
           type="search"
-          aria-label="Search by name, city, locality or PIN"
-          placeholder="Name, city, locality or PIN"
+          aria-label={t("Search by name, city, locality or PIN")}
+          placeholder={t("Name, city, locality or PIN")}
           className="pl-10"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        {pending ? <Loader2 className="absolute top-1/2 right-3.5 size-4 -translate-y-1/2 animate-spin text-muted-foreground" aria-label="Loading results" /> : null}
+        {pending ? <Loader2 className="absolute top-1/2 right-3.5 size-4 -translate-y-1/2 animate-spin text-muted-foreground" aria-label={t("Loading results")} /> : null}
       </div>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" className="shrink-0 bg-white">
-            <SlidersHorizontal className="size-4" aria-hidden="true" /> Filters{activeCount ? ` (${activeCount})` : ""}
+            <SlidersHorizontal className="size-4" aria-hidden="true" /> {t("Filters")}{activeCount ? ` (${activeCount})` : ""}
           </Button>
         </SheetTrigger>
         <SheetContent side="bottom" className="max-h-[88vh] overflow-y-auto rounded-t-3xl sm:mx-auto sm:max-w-2xl">
           <SheetHeader>
-            <SheetTitle className="text-lg font-bold">Filter donors</SheetTitle>
-            <SheetDescription>Only donors who chose to be visible to volunteers are searchable.</SheetDescription>
+            <SheetTitle className="text-lg font-bold">{t("Filter donors")}</SheetTitle>
+            <SheetDescription>{t("Only donors who chose to be visible to volunteers are searchable.")}</SheetDescription>
           </SheetHeader>
           <form ref={formRef} id="directory-filters" onSubmit={apply} className="space-y-4 px-4">
             <fieldset>
-              <legend className="mb-2 text-sm font-semibold text-navy">Blood groups</legend>
+              <legend className="mb-2 text-sm font-semibold text-navy">{t("Blood groups")}</legend>
               <div className="grid grid-cols-4 gap-2">
                 {BLOOD_GROUPS.map((g) => {
                   const selected = groups.includes(g);
@@ -135,75 +137,77 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
             </fieldset>
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="space-y-1 text-sm font-semibold text-navy">
-                State
+                {t("State")}
                 <select name="state" defaultValue={searchParams.get("state") ?? ""} className={selectClass}>
-                  <option value="">Any</option>
+                  <option value="">{t("Any")}</option>
                   {INDIAN_STATES.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                District
-                <Input name="district" defaultValue={searchParams.get("district") ?? ""} />
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                City / town
-                <Input name="city" defaultValue={searchParams.get("city") ?? ""} />
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                Locality contains
-                <Input name="locality" defaultValue={searchParams.get("locality") ?? ""} />
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                PIN code
-                <Input name="pincode" inputMode="numeric" maxLength={6} defaultValue={searchParams.get("pincode") ?? ""} />
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                Donation history
-                <select name="type" defaultValue={searchParams.get("type") ?? ""} className={selectClass}>
-                  <option value="">Any</option>
-                  {(["whole_blood", "sdp", "other_apheresis"] as DonationType[]).map((t) => (
-                    <option key={t} value={t}>
-                      Has {DONATION_TYPE_LABELS[t].toLowerCase()} history
+                    <option key={s} value={s}>
+                      {t(s)}
                     </option>
                   ))}
                 </select>
               </label>
               <label className="space-y-1 text-sm font-semibold text-navy">
-                Active recently
-                <select name="active" defaultValue={searchParams.get("active") ?? ""} className={selectClass}>
-                  <option value="">Any time</option>
-                  <option value="30">Last 30 days</option>
-                  <option value="90">Last 3 months</option>
-                  <option value="365">Last year</option>
+                {t("District")}
+                <Input name="district" defaultValue={searchParams.get("district") ?? ""} />
+              </label>
+              <label className="space-y-1 text-sm font-semibold text-navy">
+                {t("City / town")}
+                <Input name="city" defaultValue={searchParams.get("city") ?? ""} />
+              </label>
+              <label className="space-y-1 text-sm font-semibold text-navy">
+                {t("Locality contains")}
+                <Input name="locality" defaultValue={searchParams.get("locality") ?? ""} />
+              </label>
+              <label className="space-y-1 text-sm font-semibold text-navy">
+                {t("PIN code")}
+                <Input name="pincode" inputMode="numeric" maxLength={6} defaultValue={searchParams.get("pincode") ?? ""} />
+              </label>
+              <label className="space-y-1 text-sm font-semibold text-navy">
+                {t("Donation history")}
+                <select name="type" defaultValue={searchParams.get("type") ?? ""} className={selectClass}>
+                  <option value="">{t("Any")}</option>
+                  {(["whole_blood", "sdp", "other_apheresis"] as DonationType[]).map((dt) => (
+                    <option key={dt} value={dt}>
+                      {t(`Has ${DONATION_TYPE_LABELS[dt].toLowerCase()} history`)}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="space-y-1 text-sm font-semibold text-navy">
-                Sort by
+                {t("Active recently")}
+                <select name="active" defaultValue={searchParams.get("active") ?? ""} className={selectClass}>
+                  <option value="">{t("Any time")}</option>
+                  <option value="30">{t("Last 30 days")}</option>
+                  <option value="90">{t("Last 3 months")}</option>
+                  <option value="365">{t("Last year")}</option>
+                </select>
+              </label>
+              <label className="space-y-1 text-sm font-semibold text-navy">
+                {t("Sort by")}
                 <select name="sort" defaultValue={searchParams.get("sort") ?? "relevance"} className={selectClass}>
-                  <option value="relevance">Relevance</option>
-                  <option value="locality">Locality</option>
-                  <option value="recent">Recently active</option>
-                  <option value="distance">Distance (needs a point)</option>
+                  <option value="relevance">{t("Relevance")}</option>
+                  <option value="locality">{t("Locality")}</option>
+                  <option value="recent">{t("Recently active")}</option>
+                  <option value="distance">{t("Distance (needs a point)")}</option>
                 </select>
               </label>
             </div>
             <div className="space-y-2">
               <label className="flex min-h-11 items-center gap-3 text-sm font-medium">
                 <input type="checkbox" name="verified" value="1" defaultChecked={searchParams.get("verified") === "1"} className="size-5 accent-primary" />
-                Verified donors only
+                {t("Verified donors only")}
               </label>
               <label className="flex min-h-11 items-center gap-3 text-sm font-medium">
                 <input type="checkbox" name="open" value="1" defaultChecked={searchParams.get("open") === "1"} className="size-5 accent-primary" />
-                Currently open to contact
+                {t("Currently open to contact")}
               </label>
             </div>
             <div className="space-y-2">
               <label className="space-y-1 text-sm font-semibold text-navy">
-                Within distance (approximate locations only)
+                {t("Within distance (approximate locations only)")}
                 <select name="radius" defaultValue={searchParams.get("radius") ?? ""} className={selectClass}>
-                  <option value="">No distance filter</option>
+                  <option value="">{t("No distance filter")}</option>
                   {[5, 10, 25, 50].map((km) => (
                     <option key={km} value={km}>
                       {km} km
@@ -216,10 +220,10 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
           </form>
           <SheetFooter className="flex-row gap-2 border-t">
             <Button type="button" variant="ghost" onClick={reset} className="flex-1">
-              <X className="size-4" aria-hidden="true" /> Reset
+              <X className="size-4" aria-hidden="true" /> {t("Reset")}
             </Button>
             <Button type="submit" form="directory-filters" className="flex-1">
-              Show donors
+              {t("Show donors")}
             </Button>
           </SheetFooter>
         </SheetContent>

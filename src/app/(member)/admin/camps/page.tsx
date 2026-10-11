@@ -10,8 +10,13 @@ import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { INDIAN_STATES } from "@/lib/constants";
 import { formatDate, formatNumber, todayInIndia } from "@/lib/format";
+import { getT } from "@/i18n/server";
+import type { TFunction } from "@/i18n/translate";
 
-export const metadata: Metadata = { title: "Camps & impact data" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Camps & impact data") };
+}
 
 interface Camp {
   id: string;
@@ -35,85 +40,87 @@ interface Camp {
   is_public: boolean;
 }
 
-function CampFields({ camp }: { camp?: Camp }) {
+function CampFields({ camp, t }: { camp?: Camp; t: TFunction }) {
   const field = "space-y-1 text-sm font-semibold text-navy";
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {camp ? <input type="hidden" name="camp_id" value={camp.id} /> : null}
       <label className={`${field} sm:col-span-2`}>
-        Camp name
+        {t("Camp name")}
         <Input name="name" defaultValue={camp?.name} required maxLength={150} />
       </label>
       <label className={field}>
-        Date
+        {t("Date")}
         <Input name="camp_date" type="date" defaultValue={camp?.camp_date} required />
       </label>
       <label className={field}>
-        Status
+        {t("Status")}
         <select name="status" defaultValue={camp?.status ?? "planned"} className={selectClass}>
-          <option value="planned">Planned</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="planned">{t("Planned")}</option>
+          <option value="completed">{t("Completed")}</option>
+          <option value="cancelled">{t("Cancelled")}</option>
         </select>
       </label>
       <label className={field}>
-        City
+        {t("City")}
         <Input name="city" defaultValue={camp?.city} required />
       </label>
       <label className={field}>
-        District
+        {t("District")}
         <Input name="district" defaultValue={camp?.district} required />
       </label>
       <label className={field}>
-        State
+        {t("State")}
         <select name="state" defaultValue={camp?.state ?? ""} className={selectClass}>
           <option value="">—</option>
           {INDIAN_STATES.map((s) => (
-            <option key={s}>{s}</option>
+            <option key={s} value={s}>
+              {t(s)}
+            </option>
           ))}
         </select>
       </label>
       <label className={field}>
-        Broad venue area
+        {t("Broad venue area")}
         <Input name="venue_area" defaultValue={camp?.venue_area ?? ""} />
       </label>
       <label className={`${field} sm:col-span-2`}>
-        Organising partners
+        {t("Organising partners")}
         <Input name="organizing_partners" defaultValue={camp?.organizing_partners ?? ""} />
       </label>
       <label className="flex min-h-11 items-center gap-2 text-sm sm:col-span-2">
-        <input type="checkbox" name="partners_confirmed" defaultChecked={camp?.partners_confirmed} className="size-5 accent-primary" /> Partners confirmed they may be named publicly
+        <input type="checkbox" name="partners_confirmed" defaultChecked={camp?.partners_confirmed} className="size-5 accent-primary" /> {t("Partners confirmed they may be named publicly")}
       </label>
       <label className={field}>
-        Registrations (not donations)
+        {t("Registrations (not donations)")}
         <Input name="registrations_count" type="number" min={0} defaultValue={camp?.registrations_count ?? ""} />
       </label>
       <label className={field}>
-        Volunteers
+        {t("Volunteers")}
         <Input name="volunteer_count" type="number" min={0} defaultValue={camp?.volunteer_count ?? ""} />
       </label>
       <label className={field}>
-        Verified donors
+        {t("Verified donors")}
         <Input name="verified_donor_count" type="number" min={0} defaultValue={camp?.verified_donor_count ?? ""} />
       </label>
       <label className={field}>
-        Verified units collected
+        {t("Verified units collected")}
         <Input name="verified_units_collected" type="number" min={0} defaultValue={camp?.verified_units_collected ?? ""} />
       </label>
       <label className={`${field} sm:col-span-2`}>
-        Source of verified figures (required if any are entered)
-        <Input name="data_source" defaultValue={camp?.data_source ?? ""} placeholder="e.g. Collection sheet signed by the blood centre" />
+        {t("Source of verified figures (required if any are entered)")}
+        <Input name="data_source" defaultValue={camp?.data_source ?? ""} placeholder={t("e.g. Collection sheet signed by the blood centre")} />
       </label>
       <label className={`${field} sm:col-span-2`}>
-        Highlights
+        {t("Highlights")}
         <Textarea name="highlights" defaultValue={camp?.highlights ?? ""} rows={2} />
       </label>
       <label className={`${field} sm:col-span-2`}>
-        Learnings & next steps
+        {t("Learnings & next steps")}
         <Textarea name="learnings" defaultValue={camp?.learnings ?? ""} rows={2} />
       </label>
       <label className="flex min-h-11 items-center gap-2 text-sm sm:col-span-2">
-        <input type="checkbox" name="is_public" defaultChecked={camp?.is_public} className="size-5 accent-primary" /> Show on Our Impact
+        <input type="checkbox" name="is_public" defaultChecked={camp?.is_public} className="size-5 accent-primary" /> {t("Show on Our Impact")}
       </label>
     </div>
   );
@@ -121,6 +128,7 @@ function CampFields({ camp }: { camp?: Camp }) {
 
 export default async function AdminCampsPage() {
   await requireAdmin();
+  const t = await getT();
   const supabase = await createClient();
   const [campsResult, metricsResult] = await Promise.all([
     supabase.from("camp_records").select("*").order("camp_date", { ascending: false }).limit(100),
@@ -136,7 +144,7 @@ export default async function AdminCampsPage() {
       <section className="surface p-4" aria-labelledby="new-camp">
         <SectionHeading id="new-camp" title="Add a camp" as="h3" />
         <ActionForm action={saveCamp} label="Add camp" className="space-y-3">
-          <CampFields />
+          <CampFields t={t} />
         </ActionForm>
       </section>
 
@@ -154,15 +162,15 @@ export default async function AdminCampsPage() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    <Pill tone={c.status === "completed" ? "success" : "neutral"}>{c.status}</Pill>
-                    {c.is_public ? <Pill tone="info">Public</Pill> : <Pill>Private</Pill>}
-                    {c.data_verified_at ? <Pill tone="success">Figures verified {formatDate(c.data_verified_at)}</Pill> : null}
+                    <Pill tone={c.status === "completed" ? "success" : "neutral"}>{t(c.status)}</Pill>
+                    {c.is_public ? <Pill tone="info">{t("Public")}</Pill> : <Pill>{t("Private")}</Pill>}
+                    {c.data_verified_at ? <Pill tone="success">{t("Figures verified {date}", { date: formatDate(c.data_verified_at) })}</Pill> : null}
                   </div>
                 </div>
                 <details className="mt-2">
-                  <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-primary">Edit</summary>
+                  <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-primary">{t("Edit")}</summary>
                   <ActionForm action={saveCamp} label="Save camp" className="mt-2 space-y-3">
-                    <CampFields camp={c} />
+                    <CampFields camp={c} t={t} />
                   </ActionForm>
                   <ActionForm action={deleteCamp} fields={{ camp_id: c.id }} label="Delete camp" variant="ghost" size="sm" confirmText="Delete this camp record?" className="mt-2" />
                 </details>
@@ -170,48 +178,48 @@ export default async function AdminCampsPage() {
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted-foreground">No camps recorded yet.</p>
+          <p className="text-sm text-muted-foreground">{t("No camps recorded yet.")}</p>
         )}
       </section>
 
       <section className="surface space-y-4 p-4" aria-labelledby="metrics-heading">
         <SectionHeading id="metrics-heading" title="Documented figures" description="For impact figures that cannot be derived from platform records. Each needs a source and verification date." as="h3" />
-        <Notice>Shown on Our Impact with an &ldquo;Impact Data Verified&rdquo; label. Only add figures you can document.</Notice>
+        <Notice>{t("Shown on Our Impact with an “Impact Data Verified” label. Only add figures you can document.")}</Notice>
         <ActionForm action={saveMetricSource} label="Add figure" className="grid gap-3 sm:grid-cols-2">
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Label
-            <Input name="label" required maxLength={120} placeholder="Units collected with partner blood centre" />
+            {t("Label")}
+            <Input name="label" required maxLength={120} placeholder={t("Units collected with partner blood centre")} />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Key
+            {t("Key")}
             <Input name="metric_key" required pattern="[a-z0-9_]{3,60}" placeholder="partner_units_2026" />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Value
+            {t("Value")}
             <Input name="value" type="number" min={0} step="any" required />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Unit
-            <Input name="unit" maxLength={30} placeholder="units" />
+            {t("Unit")}
+            <Input name="unit" maxLength={30} placeholder={t("units")} />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Period start
+            {t("Period start")}
             <Input name="period_start" type="date" />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Period end
+            {t("Period end")}
             <Input name="period_end" type="date" />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy sm:col-span-2">
-            Source
-            <Input name="source_description" required maxLength={500} placeholder="Annual letter from partner blood centre, ref. …" />
+            {t("Source")}
+            <Input name="source_description" required maxLength={500} placeholder={t("Annual letter from partner blood centre, ref. …")} />
           </label>
           <label className="space-y-1 text-sm font-semibold text-navy">
-            Verified on
+            {t("Verified on")}
             <Input name="verified_at" type="date" defaultValue={todayInIndia()} required />
           </label>
           <label className="flex min-h-11 items-center gap-2 self-end text-sm">
-            <input type="checkbox" name="is_public" className="size-5 accent-primary" /> Publish on Our Impact
+            <input type="checkbox" name="is_public" className="size-5 accent-primary" /> {t("Publish on Our Impact")}
           </label>
         </ActionForm>
         {metrics.length ? (
@@ -222,7 +230,7 @@ export default async function AdminCampsPage() {
                   <strong className="text-navy">
                     {formatNumber(Number(m.value))} {m.unit}
                   </strong>{" "}
-                  {m.label} · {m.source_description} · verified {formatDate(m.verified_at)} {m.is_public ? "· public" : "· private"}
+                  {m.label} · {m.source_description} · {t("verified {date}", { date: formatDate(m.verified_at) })} {m.is_public ? t("· public") : t("· private")}
                 </span>
                 <ActionForm action={deleteMetricSource} fields={{ metric_id: m.id }} label="Remove" size="sm" variant="ghost" confirmText="Remove this figure?" />
               </li>

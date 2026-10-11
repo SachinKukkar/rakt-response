@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AlarmClock, ClipboardCheck, Droplet, HandHeart, ShieldAlert, Siren, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ActionForm } from "@/components/common/action-form";
-import { EmptyState, Notice, PageHeader, SectionHeading, StatCard } from "@/components/common/page-parts";
+import { EmptyState, PageHeader, SectionHeading, StatCard } from "@/components/common/page-parts";
 import { RequestCard } from "@/components/requests/request-card";
 import { runCoordinationHousekeeping } from "@/actions/volunteer";
 import { requireStaff } from "@/lib/auth";
@@ -11,9 +11,13 @@ import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
 import { RESPONSE_LABELS, type ResponseStatus } from "@/lib/constants";
 import { formatDateTime, formatNumber, relativeTime } from "@/lib/format";
+import { getT } from "@/i18n/server";
 import type { BloodRequestRow, RequestEventRow } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Volunteer" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Volunteer") };
+}
 
 interface Overview {
   awaiting_verification: number;
@@ -27,9 +31,9 @@ interface Overview {
 
 const REQUEST_COLUMNS = "id, reference_code, blood_group, request_type, units_needed, hospital_name, city, district, required_by, urgency, status, created_at";
 
-export default async function VolunteerOverviewPage({ searchParams }: PageProps<"/volunteer">) {
+export default async function VolunteerOverviewPage() {
   const viewer = await requireStaff();
-  const params = await searchParams;
+  const t = await getT();
   const supabase = await createClient();
   // Housekeeping is cheap and idempotent; running it here avoids needing a scheduler.
   await Promise.all([supabase.rpc("expire_stale_requests"), supabase.rpc("generate_follow_up_reminders")]);
@@ -79,14 +83,13 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
         actions={
           <Button asChild variant="outline">
             <Link href="/volunteer/donors">
-              <Users className="size-4" aria-hidden="true" /> Donor directory
+              <Users className="size-4" aria-hidden="true" /> {t("Donor directory")}
             </Link>
           </Button>
         }
       />
-      {params.notice === "admin-only" ? <Notice>That area is only for administrators.</Notice> : null}
 
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Summary">
+      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label={t("Summary")}>
         <StatCard label="Awaiting verification" value={formatNumber(overview.awaiting_verification)} icon={ClipboardCheck} tone="brand" />
         <StatCard label="Urgent, unverified" value={formatNumber(overview.urgent_awaiting_verification)} icon={Siren} />
         <StatCard label="Active requests" value={formatNumber(overview.active_requests)} icon={HandHeart} />
@@ -102,7 +105,7 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
           title="Waiting for verification"
           action={
             <Link href="/volunteer/requests?tab=verify" className="shrink-0 text-sm font-semibold text-primary hover:underline">
-              All
+              {t("All")}
             </Link>
           }
         />
@@ -125,7 +128,7 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
             as="h3"
             action={
               <Link href="/volunteer/coordination" className="text-sm font-semibold text-primary hover:underline">
-                Manage
+                {t("Manage")}
               </Link>
             }
           />
@@ -142,7 +145,7 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
                       </span>
                       {a.follow_up_at ? (
                         <span className={due ? "shrink-0 text-xs font-semibold text-primary" : "shrink-0 text-xs text-muted-foreground"}>
-                          {due ? "Follow up now" : `Follow up ${relativeTime(a.follow_up_at)}`}
+                          {due ? t("Follow up now") : t("Follow up {when}", { when: relativeTime(a.follow_up_at) })}
                         </span>
                       ) : null}
                     </Link>
@@ -151,7 +154,7 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
               })}
             </ul>
           ) : (
-            <p className="text-sm text-muted-foreground">You aren&apos;t coordinating any requests. Take one from the queue.</p>
+            <p className="text-sm text-muted-foreground">{t("You aren't coordinating any requests. Take one from the queue.")}</p>
           )}
         </section>
 
@@ -163,7 +166,7 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
                 <li key={`${r.request_id}-${r.donor_id}`}>
                   <Link href={`/volunteer/requests/${r.request_id}`} className="flex min-h-11 items-center justify-between gap-2 rounded-xl px-2 hover:bg-muted">
                     <span className="min-w-0 truncate">
-                      {names.get(r.donor_id) ?? "Donor"} — {RESPONSE_LABELS[r.response]} · {refMap.get(r.request_id)?.reference_code}
+                      {names.get(r.donor_id) ?? t("Donor")} — {t(RESPONSE_LABELS[r.response])} · {refMap.get(r.request_id)?.reference_code}
                     </span>
                     {r.responded_at ? <span className="shrink-0 text-xs text-muted-foreground">{relativeTime(r.responded_at)}</span> : null}
                   </Link>
@@ -171,7 +174,7 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-muted-foreground">No recent responses.</p>
+            <p className="text-sm text-muted-foreground">{t("No recent responses.")}</p>
           )}
         </section>
       </div>
@@ -184,18 +187,18 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
               <li key={e.id} className="flex flex-wrap justify-between gap-x-3 border-b border-border/60 py-1.5 last:border-0">
                 <span>
                   <Link href={`/volunteer/requests/${e.request_id}`} className="font-semibold text-navy hover:underline">
-                    {refMap.get(e.request_id)?.reference_code ?? "Request"}
+                    {refMap.get(e.request_id)?.reference_code ?? t("Request")}
                   </Link>{" "}
-                  · {e.event_type.replaceAll("_", " ")}
-                  {e.to_status ? ` → ${e.to_status.replaceAll("_", " ")}` : ""}
-                  {e.actor_id ? ` · ${names.get(e.actor_id) ?? "someone"}` : ""}
+                  · {t(e.event_type.replaceAll("_", " "))}
+                  {e.to_status ? ` → ${t(e.to_status.replaceAll("_", " "))}` : ""}
+                  {e.actor_id ? ` · ${names.get(e.actor_id) ?? t("someone")}` : ""}
                 </span>
                 <span className="text-xs text-muted-foreground">{formatDateTime(e.created_at)}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted-foreground">No activity yet.</p>
+          <p className="text-sm text-muted-foreground">{t("No activity yet.")}</p>
         )}
       </section>
 

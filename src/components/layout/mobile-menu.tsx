@@ -6,15 +6,17 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { LogoMark } from "@/components/brand/logo";
+import { useT } from "@/i18n/client";
 import { AccountLink } from "./account-link";
 import { MORE_LINKS, PUBLIC_NAV } from "./nav-config";
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const t = useT();
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
+        <Button variant="ghost" size="icon" className="lg:hidden" aria-label={t("Open menu")}>
           <Menu className="size-6" />
         </Button>
       </SheetTrigger>
@@ -23,10 +25,10 @@ export function MobileMenu() {
           <LogoMark size="sm" />
           <div>
             <SheetTitle className="text-base font-extrabold text-navy">Rakt Response</SheetTitle>
-            <SheetDescription className="text-xs">We Respond, We Support, We Save Lives.</SheetDescription>
+            <SheetDescription className="text-xs">{t("We Respond, We Support, We Save Lives.")}</SheetDescription>
           </div>
         </SheetHeader>
-        <nav className="flex flex-col gap-1 p-3" aria-label="Main">
+        <nav className="flex flex-col gap-1 p-3" aria-label={t("Main")}>
           {[...PUBLIC_NAV, ...MORE_LINKS].map((item) => (
             <Link
               key={item.href}
@@ -34,14 +36,14 @@ export function MobileMenu() {
               onClick={() => setOpen(false)}
               className="flex min-h-12 items-center rounded-xl px-3 font-medium text-foreground hover:bg-muted"
             >
-              {item.label}
+              {t(item.label)}
             </Link>
           ))}
         </nav>
         <div className="mt-auto space-y-2 border-t p-4">
           <Button asChild className="w-full" size="lg">
             <Link href="/register" onClick={() => setOpen(false)}>
-              Become a Donor
+              {t("Become a Donor")}
             </Link>
           </Button>
           <div onClick={() => setOpen(false)}>

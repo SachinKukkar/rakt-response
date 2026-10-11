@@ -6,8 +6,12 @@ import { getDonorData } from "@/lib/data/member";
 import { createClient } from "@/lib/supabase/server";
 import type { DonorLocationInput } from "@/lib/validation/registration";
 import { INDIAN_STATES } from "@/lib/constants";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Edit profile" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Edit profile") };
+}
 
 export default async function EditProfilePage() {
   const viewer = await requireViewer("/profile/edit");
@@ -49,6 +53,7 @@ export default async function EditProfilePage() {
           defaults={{
             full_name: profile?.full_name ?? "",
             display_name: profile?.display_name ?? "",
+            bio: profile?.bio ?? "",
             donation_experience: profile?.donation_experience ?? "",
             approx_previous_donations: profile?.approx_previous_donations ?? null,
             phone: donor.contacts?.phone ?? "",

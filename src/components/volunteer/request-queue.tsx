@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import { BLOOD_GROUPS, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestStatus, type RequestType } from "@/lib/constants";
 import type { BloodRequestRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { getT } from "@/i18n/server";
 
 const TABS = {
   verify: { label: "Needs verification", statuses: ["submitted", "under_verification"] as RequestStatus[] },
@@ -30,6 +31,7 @@ export async function RequestQueue({ basePath, searchParams }: { basePath: strin
   const tabParam = one(searchParams.tab);
   const tab: Tab = tabParam && tabParam in TABS ? (tabParam as Tab) : "verify";
   const page = parsePage(searchParams.page);
+  const t = await getT();
   const groupParam = one(searchParams.group);
   const typeParam = one(searchParams.type);
   const group = BLOOD_GROUPS.includes(groupParam as BloodGroup) ? (groupParam as BloodGroup) : null;
@@ -50,7 +52,7 @@ export async function RequestQueue({ basePath, searchParams }: { basePath: strin
 
   return (
     <div className="space-y-4">
-      <nav aria-label="Request status" className="-mx-4 overflow-x-auto px-4">
+      <nav aria-label={t("Request status")} className="-mx-4 overflow-x-auto px-4">
         <ul className="flex w-max gap-2">
           {(Object.keys(TABS) as Tab[]).map((key) => (
             <li key={key}>
@@ -62,39 +64,39 @@ export async function RequestQueue({ basePath, searchParams }: { basePath: strin
                   key === tab ? "border-primary bg-primary text-white" : "bg-white text-navy hover:border-primary/40",
                 )}
               >
-                {TABS[key].label}
+                {t(TABS[key].label)}
               </Link>
             </li>
           ))}
         </ul>
       </nav>
-      <form method="get" className="surface grid gap-3 p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end" role="search" aria-label="Filter requests">
+      <form method="get" className="surface grid gap-3 p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end" role="search" aria-label={t("Filter requests")}>
         <input type="hidden" name="tab" value={tab} />
         <label className="space-y-1 text-xs font-semibold text-navy">
-          Blood group
+          {t("Blood group")}
           <select name="group" defaultValue={group ?? ""} className={selectClass}>
-            <option value="">All</option>
+            <option value="">{t("All")}</option>
             {BLOOD_GROUPS.map((g) => (
               <option key={g}>{g}</option>
             ))}
           </select>
         </label>
         <label className="space-y-1 text-xs font-semibold text-navy">
-          Donor type
+          {t("Donor type")}
           <select name="type" defaultValue={type ?? ""} className={selectClass}>
-            <option value="">All</option>
-            {REQUEST_TYPES.map((t) => (
-              <option key={t} value={t}>
-                {REQUEST_TYPE_LABELS[t]}
+            <option value="">{t("All")}</option>
+            {REQUEST_TYPES.map((rt) => (
+              <option key={rt} value={rt}>
+                {t(REQUEST_TYPE_LABELS[rt])}
               </option>
             ))}
           </select>
         </label>
         <label className="space-y-1 text-xs font-semibold text-navy">
-          District
+          {t("District")}
           <Input name="district" defaultValue={district} />
         </label>
-        <Button type="submit">Filter</Button>
+        <Button type="submit">{t("Filter")}</Button>
       </form>
       {requests.length ? (
         <>
@@ -107,7 +109,7 @@ export async function RequestQueue({ basePath, searchParams }: { basePath: strin
                 footer={
                   r.possible_duplicate_of ? (
                     <Pill tone="warning" icon={Copy}>
-                      Possible duplicate
+                      {t("Possible duplicate")}
                     </Pill>
                   ) : undefined
                 }

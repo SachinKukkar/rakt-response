@@ -12,8 +12,12 @@ import { requireStaff } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateTime, relativeTime } from "@/lib/format";
 import type { RequestStatus } from "@/lib/constants";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "My coordination" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("My coordination") };
+}
 
 function toLocalInput(iso: string | null): string {
   if (!iso) return "";
@@ -22,6 +26,7 @@ function toLocalInput(iso: string | null): string {
 
 export default async function CoordinationPage() {
   const viewer = await requireStaff();
+  const t = await getT();
   const supabase = await createClient();
   const { data } = await supabase
     .from("volunteer_assignments")
@@ -59,27 +64,27 @@ export default async function CoordinationPage() {
                     </Link>
                     {r ? <RequestStatusBadge status={r.status} /> : null}
                   </div>
-                  {r ? <p className="text-sm text-muted-foreground">Needed by {formatDateTime(r.required_by)}</p> : null}
+                  {r ? <p className="text-sm text-muted-foreground">{t("Needed by {date}", { date: formatDateTime(r.required_by) })}</p> : null}
                   {a.follow_up_at ? (
                     <p className={due ? "text-sm font-semibold text-primary" : "text-sm text-muted-foreground"}>
-                      {due ? "Follow-up due now" : `Follow up ${relativeTime(a.follow_up_at)}`}
+                      {due ? t("Follow-up due now") : t("Follow up {when}", { when: relativeTime(a.follow_up_at) })}
                     </p>
                   ) : null}
                   <ActionForm action={updateAssignment} fields={{ assignment_id: a.id }} label="Save" size="sm" className="grid gap-2 sm:grid-cols-[1fr_1fr] sm:items-end">
                     <label className="space-y-1 text-xs font-semibold text-navy">
-                      Status
+                      {t("Status")}
                       <select name="status" defaultValue="active" className={selectClass}>
-                        <option value="active">Still coordinating</option>
-                        <option value="completed">Completed</option>
-                        <option value="released">Release to another volunteer</option>
+                        <option value="active">{t("Still coordinating")}</option>
+                        <option value="completed">{t("Completed")}</option>
+                        <option value="released">{t("Release to another volunteer")}</option>
                       </select>
                     </label>
                     <label className="space-y-1 text-xs font-semibold text-navy">
-                      Next follow-up (India time)
+                      {t("Next follow-up (India time)")}
                       <Input name="follow_up_at" type="datetime-local" defaultValue={toLocalInput(a.follow_up_at)} />
                     </label>
                     <label className="space-y-1 text-xs font-semibold text-navy sm:col-span-2">
-                      Notes for yourself
+                      {t("Notes for yourself")}
                       <Textarea name="notes" rows={2} defaultValue={a.notes ?? ""} maxLength={1000} />
                     </label>
                   </ActionForm>
@@ -98,10 +103,10 @@ export default async function CoordinationPage() {
               return (
                 <li key={a.id} className="flex justify-between gap-2 border-b border-border/60 py-2">
                   <Link href={`/volunteer/requests/${a.request_id}`} className="font-medium text-navy hover:underline">
-                    {r?.reference_code ?? "Request"}
+                    {r?.reference_code ?? t("Request")}
                   </Link>
                   <span className="text-muted-foreground">
-                    {a.status} · {formatDateTime(a.updated_at)}
+                    {t(a.status)} · {formatDateTime(a.updated_at)}
                   </span>
                 </li>
               );

@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/common/page-parts";
 import { DonationReviewList } from "@/components/volunteer/donation-review";
 import { requireStaff, viewerCan } from "@/lib/auth";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Donation records" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Donation records") };
+}
 
 export default async function VolunteerDonationsPage({ searchParams }: PageProps<"/volunteer/donations">) {
   const viewer = await requireStaff();

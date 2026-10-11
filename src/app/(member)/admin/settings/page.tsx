@@ -5,8 +5,12 @@ import { Notice, PageHeader, SectionHeading } from "@/components/common/page-par
 import { runRetention, updateSettings } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Platform settings" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Platform settings") };
+}
 
 const NUMBER_FIELDS: Array<{ key: string; label: string; min: number; max: number; hint?: string }> = [
   { key: "whole_blood_interval_days", label: "Whole blood interval used for the informational estimate (days)", min: 56, max: 365, hint: "Shown to donors as an estimate only." },
@@ -21,6 +25,7 @@ const NUMBER_FIELDS: Array<{ key: string; label: string; min: number; max: numbe
 
 export default async function AdminSettingsPage() {
   await requireAdmin();
+  const t = await getT();
   const supabase = await createClient();
   const { data } = await supabase.from("platform_settings").select("key, value");
   const values = new Map(((data ?? []) as Array<{ key: string; value: unknown }>).map((r) => [r.key, r.value]));
@@ -34,31 +39,31 @@ export default async function AdminSettingsPage() {
         <ActionForm action={updateSettings} label="Save settings" className="space-y-4">
           <SectionHeading id="org-heading" title="Public contact details" as="h3" />
           <label className="block space-y-1 text-sm font-semibold text-navy">
-            Contact email
+            {t("Contact email")}
             <Input name="org.contact_email" type="email" defaultValue={text("org.contact_email")} />
           </label>
           <label className="block space-y-1 text-sm font-semibold text-navy">
-            Helpline number
+            {t("Helpline number")}
             <Input name="org.contact_phone" type="tel" defaultValue={text("org.contact_phone")} />
           </label>
           <label className="block space-y-1 text-sm font-semibold text-navy">
-            WhatsApp number
+            {t("WhatsApp number")}
             <Input name="org.whatsapp" type="tel" defaultValue={text("org.whatsapp")} />
           </label>
           <label className="block space-y-1 text-sm font-semibold text-navy">
-            Service area
-            <Input name="org.service_area" defaultValue={text("org.service_area")} placeholder="e.g. Pune and Pimpri-Chinchwad" />
+            {t("Service area")}
+            <Input name="org.service_area" defaultValue={text("org.service_area")} placeholder={t("e.g. Pune and Pimpri-Chinchwad")} />
           </label>
           <label className="flex min-h-11 items-center gap-3 text-sm font-medium">
             <input type="checkbox" name="registration_open" defaultChecked={values.get("registration_open") !== false} className="size-5 accent-primary" />
-            Accept new registrations
+            {t("Accept new registrations")}
           </label>
           <SectionHeading title="Limits & coordination" as="h3" className="pt-2" />
           {NUMBER_FIELDS.map((f) => (
             <label key={f.key} className="block space-y-1 text-sm font-semibold text-navy">
-              {f.label}
+              {t(f.label)}
               <Input name={f.key} type="number" min={f.min} max={f.max} required defaultValue={num(f.key)} />
-              {f.hint ? <span className="block text-xs font-normal text-muted-foreground">{f.hint}</span> : null}
+              {f.hint ? <span className="block text-xs font-normal text-muted-foreground">{t(f.hint)}</span> : null}
             </label>
           ))}
         </ActionForm>
@@ -66,8 +71,7 @@ export default async function AdminSettingsPage() {
       <section className="surface space-y-3 p-5" aria-labelledby="retention-heading">
         <SectionHeading id="retention-heading" title="Data retention" as="h3" />
         <Notice>
-          Removes requester phone numbers, emails and notes from requests closed more than 90 days ago. Schedule it with pg_cron for
-          automatic runs (see docs/OPERATIONS.md).
+          {t("Removes requester phone numbers, emails and notes from requests closed more than 90 days ago. Schedule it with pg_cron for automatic runs (see docs/OPERATIONS.md).")}
         </Notice>
         <ActionForm action={runRetention} label="Run retention clean-up now" variant="outline" confirmText="Remove requester contact details from requests closed over 90 days ago?" />
       </section>

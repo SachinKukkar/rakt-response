@@ -6,30 +6,36 @@ import { LoginForm } from "@/components/auth/auth-forms";
 import { getViewer } from "@/lib/auth";
 import { isSupabaseConfigured } from "@/lib/env";
 import { safeNextPath } from "@/lib/redirects";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Sign in" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Sign in") };
+}
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
   const next = safeNextPath(typeof params.next === "string" ? params.next : undefined, "/dashboard");
-  if (await getViewer()) redirect(next);
+  const viewer = await getViewer();
+  if (viewer) redirect(viewer.isAdmin && next === "/dashboard" ? "/admin" : next);
+  const t = await getT();
   const notice =
     params.error === "link"
-      ? "That link has expired or was already used. Please sign in or request a new link."
+      ? t("That link has expired or was already used. Please sign in or request a new link.")
       : params.notice === "confirmed"
-        ? "Your email is confirmed. Please sign in to continue."
+        ? t("Your email is confirmed. Please sign in to continue.")
         : params.signed_out
-          ? "You have signed out."
+          ? t("You have signed out.")
           : null;
   return (
     <AuthCard
-      title="Welcome back"
-      description="Sign in to manage your donor profile, donation history and requests."
+      title={t("Welcome back")}
+      description={t("Sign in to manage your donor profile, donation history and requests.")}
       footer={
         <>
-          New to Rakt Response?{" "}
+          {t("New to Rakt Response?")}{" "}
           <Link href="/register" className="font-semibold text-primary hover:underline">
-            Become a donor
+            {t("Become a donor")}
           </Link>
         </>
       }

@@ -11,8 +11,12 @@ import { createClient } from "@/lib/supabase/server";
 import { STORY_TYPE_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
 import type { StoryRow } from "@/lib/types";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "My stories" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("My stories") };
+}
 
 interface StoryEvent {
   story_id: string;
@@ -23,6 +27,7 @@ interface StoryEvent {
 }
 
 export default async function MyStoriesPage() {
+  const t = await getT();
   const viewer = await requireViewer("/share-your-story/submissions");
   const supabase = await createClient();
   const { data } = await supabase
@@ -48,7 +53,7 @@ export default async function MyStoriesPage() {
         actions={
           <Button asChild>
             <Link href="/share-your-story">
-              <PenLine className="size-4" aria-hidden="true" /> Share a story
+              <PenLine className="size-4" aria-hidden="true" /> {t("Share a story")}
             </Link>
           </Button>
         }
@@ -65,24 +70,24 @@ export default async function MyStoriesPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <StoryStatusBadge status={story.status} />
                   <span className="text-xs text-muted-foreground">
-                    {STORY_TYPE_LABELS[story.story_type]} · submitted {formatDate(story.created_at)}
+                    {t(STORY_TYPE_LABELS[story.story_type])} · {t("submitted {date}", { date: formatDate(story.created_at) })}
                   </span>
                 </div>
                 <h2 className="text-base font-bold">{story.public_title ?? story.title}</h2>
                 <TrustBadges identity={story.identity_verified} experience={story.experience_reviewed} donation={story.donation_verified} />
                 {story.status === "published" && story.slug && !withdrawn ? (
                   <Link href={`/stories/${story.slug}`} className="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline">
-                    View published story
+                    {t("View published story")}
                   </Link>
                 ) : null}
-                {withdrawn ? <p className="text-sm text-muted-foreground">Withdrawn on {formatDate(story.withdrawn_at)}. It is not public.</p> : null}
+                {withdrawn ? <p className="text-sm text-muted-foreground">{t("Withdrawn on {date}. It is not public.", { date: formatDate(story.withdrawn_at) })}</p> : null}
                 {storyEvents.length ? (
                   <div>
-                    <p className="text-xs font-semibold text-navy">Updates</p>
+                    <p className="text-xs font-semibold text-navy">{t("Updates")}</p>
                     <ul className="mt-1 space-y-1 text-xs text-muted-foreground">
                       {storyEvents.map((e, i) => (
                         <li key={i}>
-                          {formatDate(e.created_at)} — {e.event_type.replaceAll("_", " ")}
+                          {formatDate(e.created_at)} — {t(e.event_type.replaceAll("_", " "))}
                           {e.reason ? `: ${e.reason}` : ""}
                         </li>
                       ))}
@@ -91,7 +96,9 @@ export default async function MyStoriesPage() {
                 ) : null}
                 {!withdrawn ? (
                   <details className="rounded-xl border bg-white p-3">
-                    <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-navy">Manage this story</summary>
+                    <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-navy">
+                      {t("Manage this story")}
+                    </summary>
                     <div className="mt-3 grid gap-5 md:grid-cols-3">
                       <StoryConsentForm
                         storyId={story.id}

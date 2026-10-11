@@ -9,8 +9,12 @@ import { requireAdmin } from "@/lib/auth";
 import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/format";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Audit logs" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Audit logs") };
+}
 
 const PAGE_SIZE = 30;
 
@@ -27,6 +31,7 @@ interface AuditRow {
 
 export default async function AuditLogsPage({ searchParams }: PageProps<"/admin/audit-logs">) {
   await requireAdmin();
+  const t = await getT();
   const params = await searchParams;
   const action = String((Array.isArray(params.action) ? params.action[0] : params.action) ?? "").trim().replace(/[^a-z_.]/g, "").slice(0, 60);
   const page = parsePage(params.page);
@@ -46,10 +51,10 @@ export default async function AuditLogsPage({ searchParams }: PageProps<"/admin/
       />
       <form method="get" className="surface flex gap-2 p-3" role="search">
         <label htmlFor="audit-action" className="sr-only">
-          Filter by action
+          {t("Filter by action")}
         </label>
-        <Input id="audit-action" name="action" defaultValue={action} placeholder="e.g. donor_contact, staff_roles, export" />
-        <Button type="submit">Filter</Button>
+        <Input id="audit-action" name="action" defaultValue={action} placeholder={t("e.g. donor_contact, staff_roles, export")} />
+        <Button type="submit">{t("Filter")}</Button>
       </form>
       {rows.length === 0 ? (
         <EmptyState icon={FileClock} title="No audit entries" />
@@ -62,13 +67,13 @@ export default async function AuditLogsPage({ searchParams }: PageProps<"/admin/
                 <span className="text-xs text-muted-foreground">{formatDateTime(r.created_at)}</span>
               </div>
               <p className="text-muted-foreground">
-                {r.actor_id ? names.get(r.actor_id) ?? "Unknown user" : "System"} {r.actor_role ? <Pill className="ml-1">{r.actor_role}</Pill> : null}
+                {r.actor_id ? names.get(r.actor_id) ?? t("Unknown user") : t("System")} {r.actor_role ? <Pill className="ml-1">{r.actor_role}</Pill> : null}
                 {r.entity_type ? ` · ${r.entity_type}` : ""}
                 {r.entity_id ? ` · ${r.entity_id.slice(0, 8)}…` : ""}
               </p>
               {r.metadata && Object.keys(r.metadata).length ? (
                 <details>
-                  <summary className="cursor-pointer text-xs text-primary">Details</summary>
+                  <summary className="cursor-pointer text-xs text-primary">{t("Details")}</summary>
                   <pre className="mt-1 overflow-x-auto rounded-lg bg-muted p-2 text-[11px]">{JSON.stringify(r.metadata, null, 2)}</pre>
                 </details>
               ) : null}

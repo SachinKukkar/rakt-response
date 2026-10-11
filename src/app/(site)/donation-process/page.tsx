@@ -21,12 +21,17 @@ import {
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TLDR, TopicPills } from "@/components/learn/learn-parts";
 import { Button } from "@/components/ui/button";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Donation process",
-  description:
-    "What to expect when you donate blood: how to prepare, what happens at the blood centre, aftercare, and how to update your Rakt Response donation history.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return {
+    title: t("Donation process"),
+    description: t(
+      "What to expect when you donate blood: how to prepare, what happens at the blood centre, aftercare, and how to update your Rakt Response donation history.",
+    ),
+  };
+}
 
 type Step = { icon: LucideIcon; title: string; text: string };
 
@@ -68,7 +73,8 @@ const JOURNEY: { stage: string; emoji: string; steps: Step[] }[] = [
 /** Running step numbers across the whole journey. */
 const OFFSETS = JOURNEY.map((_, i) => JOURNEY.slice(0, i).reduce((n, st) => n + st.steps.length, 0));
 
-export default function DonationProcessPage() {
+export default async function DonationProcessPage() {
+  const t = await getT();
   return (
     <>
       <PageHero
@@ -95,7 +101,7 @@ export default function DonationProcessPage() {
             {JOURNEY.map((stage, s) => (
               <div key={stage.stage}>
                 <p className="sticker mb-3">
-                  <span aria-hidden="true">{stage.emoji}</span> {stage.stage}
+                  <span aria-hidden="true">{stage.emoji}</span> {t(stage.stage)}
                 </p>
                 <ol className={stage.steps.length > 4 ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-5" : "grid gap-3 sm:grid-cols-2 lg:grid-cols-4"} start={OFFSETS[s] + 1}>
                   {stage.steps.map((step, i) => (
@@ -106,9 +112,9 @@ export default function DonationProcessPage() {
                       <div className="min-w-0">
                         <h3 className="flex items-center gap-1.5 leading-tight font-bold">
                           <step.icon className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                          {step.title}
+                          {t(step.title)}
                         </h3>
-                        <p className="mt-1 text-sm text-muted-foreground">{step.text}</p>
+                        <p className="mt-1 text-sm text-muted-foreground">{t(step.text)}</p>
                       </div>
                     </li>
                   ))}
@@ -117,9 +123,9 @@ export default function DonationProcessPage() {
             ))}
           </div>
           <Notice title="SDP and apheresis take longer" tone="brand" icon={Clock} className="mt-4">
-            Typically 60–90 minutes or more on the machine, plus screening and rest. Keep a few hours free.{" "}
+            {t("Typically 60–90 minutes or more on the machine, plus screening and rest. Keep a few hours free.")}{" "}
             <Link href="/donation-types" className="font-medium text-primary underline underline-offset-4">
-              Compare types
+              {t("Compare types")}
             </Link>
           </Notice>
         </section>
@@ -131,53 +137,57 @@ export default function DonationProcessPage() {
             </span>
             <div className="min-w-0">
               <h2 id="log-heading" className="text-xl font-extrabold text-white">
-                Done? Log it.
+                {t("Done? Log it.")}
               </h2>
               <p className="mt-1 text-sm text-white/80">
-                Add the date, type and centre. It stays self-reported until a volunteer verifies it.
+                {t("Add the date, type and centre. It stays self-reported until a volunteer verifies it.")}
               </p>
             </div>
           </div>
           <Button asChild className="press mt-4 w-full sm:w-auto">
-            <Link href="/donations/new">Record a donation</Link>
+            <Link href="/donations/new">{t("Record a donation")}</Link>
           </Button>
         </section>
 
         <div className="space-y-3">
           <MoreDetails title="If you feel faint or dizzy">
             <ul>
-              <li>Sit or lie down straight away, wherever you are.</li>
-              <li>If you can, lie down and raise your legs, or sit with your head between your knees.</li>
-              <li>Stay down until the feeling passes, then get up slowly and have a drink.</li>
-              <li>If you are still at the centre, tell a staff member immediately.</li>
+              <li>{t("Sit or lie down straight away, wherever you are.")}</li>
+              <li>{t("If you can, lie down and raise your legs, or sit with your head between your knees.")}</li>
+              <li>{t("Stay down until the feeling passes, then get up slowly and have a drink.")}</li>
+              <li>{t("If you are still at the centre, tell a staff member immediately.")}</li>
             </ul>
           </MoreDetails>
           <MoreDetails title="When to contact the blood centre">
             <ul>
-              <li>You feel unwell in the hours or days after donating.</li>
-              <li>You develop a fever or other symptoms of illness soon after donating.</li>
+              <li>{t("You feel unwell in the hours or days after donating.")}</li>
+              <li>{t("You develop a fever or other symptoms of illness soon after donating.")}</li>
               <li>
-                You remember something you did not mention in the questionnaire, or something relevant changes. This helps keep
-                patients safe.
+                {t(
+                  "You remember something you did not mention in the questionnaire, or something relevant changes. This helps keep patients safe.",
+                )}
               </li>
             </ul>
-            <p>If you feel seriously unwell, seek medical help immediately.</p>
+            <p>{t("If you feel seriously unwell, seek medical help immediately.")}</p>
           </MoreDetails>
           <MoreDetails title="More about the visit and your history">
             <p>
-              For a whole-blood donation, the whole visit often takes around an hour, including waiting time. An SDP or other
-              apheresis centre may also check your platelet count and veins beforehand.
+              {t(
+                "For a whole-blood donation, the whole visit often takes around an hour, including waiting time. An SDP or other apheresis centre may also check your platelet count and veins beforehand.",
+              )}
             </p>
             <p>
-              Your Rakt Response history helps you keep track of your donations and the time since your last one. A verified
-              record does not mean you can donate again on a particular date; the blood centre always decides.
+              {t(
+                "Your Rakt Response history helps you keep track of your donations and the time since your last one. A verified record does not mean you can donate again on a particular date; the blood centre always decides.",
+              )}
             </p>
           </MoreDetails>
         </div>
 
         <Notice>
-          Every licensed blood centre follows its own procedures within national guidelines. Always follow the staff at your
-          centre.
+          {t(
+            "Every licensed blood centre follows its own procedures within national guidelines. Always follow the staff at your centre.",
+          )}
         </Notice>
 
         <TopicPills current="/donation-process" />

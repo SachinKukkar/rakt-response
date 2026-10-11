@@ -7,22 +7,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ChoiceRow, Field, FormMessage, SubmitButton, fieldAria, selectClass } from "@/components/common/form-parts";
 import { BloodGroupPicker } from "@/components/forms/pickers";
 import { ApproxLocation } from "@/components/map/approx-location";
+import { LocationPickers } from "@/components/forms/location-pickers";
 import { changeBloodGroup, removeProfilePhoto, updateLocation, updatePreferences, updateProfile, uploadProfilePhoto } from "@/actions/profile";
 import { initialActionState, type ActionResult } from "@/lib/action-result";
 import { resizeImageForUpload } from "@/lib/client-image";
 import {
   CONTACT_METHOD_LABELS,
   DONATION_EXPERIENCE_LABELS,
-  INDIAN_STATES,
   type BloodGroup,
   type ContactMethod,
   type DonationExperience,
 } from "@/lib/constants";
 import { donorLocationSchema, type DonorLocationInput } from "@/lib/validation/registration";
 import { preferencesSchema, profileSchema, type PreferencesInput, type ProfileInput } from "@/lib/validation/forms";
+import { useT } from "@/i18n/client";
 
 function applyFieldErrors<T extends FieldValues>(result: ActionResult<unknown>, setError: UseFormSetError<T>) {
   if (result.ok) return;
@@ -32,6 +34,7 @@ function applyFieldErrors<T extends FieldValues>(result: ActionResult<unknown>, 
 }
 
 export function ProfileDetailsForm({ defaults, ageConfirmed }: { defaults: ProfileInput; ageConfirmed: boolean }) {
+  const t = useT();
   const form = useForm<ProfileInput>({ resolver: zodResolver(profileSchema), defaultValues: defaults, mode: "onTouched" });
   const { register, control, handleSubmit, setError, formState } = form;
   const errors = formState.errors;
@@ -50,8 +53,16 @@ export function ProfileDetailsForm({ defaults, ageConfirmed }: { defaults: Profi
       <Field id="full_name" label="Full name" required error={errors.full_name?.message}>
         <Input {...fieldAria("full_name", errors.full_name?.message)} autoComplete="name" {...register("full_name")} />
       </Field>
-      <Field id="display_name" label="Display name for volunteers" error={errors.display_name?.message} hint="Optional — shown instead of your full name.">
+      <Field id="display_name" label="Display name for volunteers" error={errors.display_name?.message} hint="Optional. What volunteers see. Leave blank to appear as a code like “Donor #3F2A”.">
         <Input {...fieldAria("display_name", errors.display_name?.message, true)} {...register("display_name")} />
+      </Field>
+      <Field
+        id="bio"
+        label="Why I donate"
+        error={errors.bio?.message}
+        hint="Optional, up to 280 characters. Shown on your profile and to volunteers and admins."
+      >
+        <Textarea {...fieldAria("bio", errors.bio?.message, true)} rows={3} maxLength={280} {...register("bio")} />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="phone" label="Mobile number" error={errors.phone?.message} hint="Private. Only shared with consent.">
@@ -64,10 +75,10 @@ export function ProfileDetailsForm({ defaults, ageConfirmed }: { defaults: Profi
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="donation_experience" label="Donation experience">
           <select id="donation_experience" className={selectClass} {...register("donation_experience")}>
-            <option value="">Prefer not to say</option>
+            <option value="">{t("Prefer not to say")}</option>
             {(Object.keys(DONATION_EXPERIENCE_LABELS) as DonationExperience[]).map((k) => (
               <option key={k} value={k}>
-                {DONATION_EXPERIENCE_LABELS[k]}
+                {t(DONATION_EXPERIENCE_LABELS[k])}
               </option>
             ))}
           </select>
@@ -101,7 +112,7 @@ export function ProfileDetailsForm({ defaults, ageConfirmed }: { defaults: Profi
       <FormMessage state={result} />
       <Button type="submit" disabled={pending}>
         {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        Save details
+        {t("Save details")}
       </Button>
     </form>
   );
@@ -116,26 +127,28 @@ export function BloodGroupForm({
   verified: boolean;
   requested: BloodGroup | null;
 }) {
+  const t = useT();
   const [state, action] = useActionState(changeBloodGroup, initialActionState);
   const [value, setValue] = useState<BloodGroup | "">(current ?? "");
   return (
     <form action={action} className="space-y-3">
       <p id="bg-edit" className="text-sm text-muted-foreground">
         {verified
-          ? "Your blood group has been verified. If it's wrong, choose the correct group to request a review."
-          : "Choose your blood group. If you're unsure, check a previous donor card or lab report."}
+          ? t("Your blood group has been verified. If it's wrong, choose the correct group to request a review.")
+          : t("Choose your blood group. If you're unsure, check a previous donor card or lab report.")}
       </p>
       {requested ? (
-        <p className="rounded-xl bg-warning-soft p-3 text-sm text-warning">Correction to {requested} is waiting for review.</p>
+        <p className="rounded-xl bg-warning-soft p-3 text-sm text-warning">{t("Correction to {group} is waiting for review.", { group: requested })}</p>
       ) : null}
       <BloodGroupPicker name="blood_group" labelledBy="bg-edit" value={value} onChange={setValue} />
       <FormMessage state={state} />
-      <SubmitButton disabled={!value || (value === current && !requested)}>{verified ? "Request correction" : "Save blood group"}</SubmitButton>
+      <SubmitButton disabled={!value || (value === current && !requested)}>{verified ? t("Request correction") : t("Save blood group")}</SubmitButton>
     </form>
   );
 }
 
 export function LocationForm({ defaults }: { defaults: DonorLocationInput }) {
+  const t = useT();
   const form = useForm<DonorLocationInput>({ resolver: zodResolver(donorLocationSchema), defaultValues: defaults, mode: "onTouched" });
   const { register, control, handleSubmit, setError, setValue, formState } = form;
   const errors = formState.errors;
@@ -143,6 +156,7 @@ export function LocationForm({ defaults }: { defaults: DonorLocationInput }) {
   const [pending, startTransition] = useTransition();
   const lat = useWatch({ control, name: "lat" });
   const lng = useWatch({ control, name: "lng" });
+  const [locState, locDistrict, locCity, locPincode] = useWatch({ control, name: ["state", "district", "city", "pincode"] });
   const onSubmit = handleSubmit((values) =>
     startTransition(async () => {
       const r = await updateLocation(values);
@@ -152,23 +166,13 @@ export function LocationForm({ defaults }: { defaults: DonorLocationInput }) {
   );
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-4">
-      <Field id="state" label="State / union territory" required error={errors.state?.message}>
-        <select {...fieldAria("state", errors.state?.message)} className={selectClass} {...register("state")}>
-          <option value="">Select…</option>
-          {INDIAN_STATES.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <LocationPickers
+        required
+        values={{ state: locState ?? "", district: locDistrict ?? "", city: locCity ?? "", pincode: locPincode ?? "" }}
+        onChange={(field, value) => setValue(field, value as never, { shouldDirty: true })}
+        errors={{ state: errors.state?.message, district: errors.district?.message, city: errors.city?.message }}
+      />
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="district" label="District" required error={errors.district?.message}>
-          <Input {...fieldAria("district", errors.district?.message)} {...register("district")} />
-        </Field>
-        <Field id="city" label="City / town" required error={errors.city?.message}>
-          <Input {...fieldAria("city", errors.city?.message)} {...register("city")} />
-        </Field>
         <Field id="locality" label="Locality / area" error={errors.locality?.message}>
           <Input {...fieldAria("locality", errors.locality?.message)} {...register("locality")} />
         </Field>
@@ -186,13 +190,14 @@ export function LocationForm({ defaults }: { defaults: DonorLocationInput }) {
       <FormMessage state={result} />
       <Button type="submit" disabled={pending}>
         {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        Save area
+        {t("Save area")}
       </Button>
     </form>
   );
 }
 
 export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
+  const t = useT();
   const [result, setResult] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
   async function onFile(file: File | undefined) {
@@ -213,7 +218,7 @@ export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
     <div className="flex flex-wrap items-center gap-4">
       <div className="grid size-20 place-items-center overflow-hidden rounded-full bg-accent">
         {photoUrl ? (
-          <Image src={photoUrl} alt="Your profile photo" width={80} height={80} className="size-20 object-cover" unoptimized />
+          <Image src={photoUrl} alt={t("Your profile photo")} width={80} height={80} className="size-20 object-cover" unoptimized />
         ) : (
           <Camera className="size-7 text-primary" aria-hidden="true" />
         )}
@@ -221,15 +226,15 @@ export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
       <div className="space-y-2">
         <label className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border bg-white px-4 text-sm font-semibold text-navy hover:border-primary/40 has-focus-visible:ring-3 has-focus-visible:ring-ring/40">
           {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Camera className="size-4" aria-hidden="true" />}
-          {photoUrl ? "Change photo" : "Add photo"}
+          {photoUrl ? t("Change photo") : t("Add photo")}
           <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => void onFile(e.target.files?.[0])} disabled={pending} />
         </label>
         {photoUrl ? (
           <Button type="button" variant="ghost" size="sm" disabled={pending} onClick={() => startTransition(async () => setResult(await removeProfilePhoto()))}>
-            <Trash2 className="size-4" aria-hidden="true" /> Remove
+            <Trash2 className="size-4" aria-hidden="true" /> {t("Remove")}
           </Button>
         ) : null}
-        <p className="text-xs text-muted-foreground">Optional. Visible only to you and authorised volunteers. Location data is removed.</p>
+        <p className="text-xs text-muted-foreground">{t("Optional. Visible only to you and authorised volunteers. Location data is removed.")}</p>
         <FormMessage state={result} />
       </div>
     </div>
@@ -237,6 +242,7 @@ export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
 }
 
 export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesInput; isDonor: boolean }) {
+  const t = useT();
   const form = useForm<PreferencesInput>({ resolver: zodResolver(preferencesSchema), defaultValues: defaults });
   const { control, register, handleSubmit, setError, setValue, formState } = form;
   const [result, setResult] = useState<ActionResult | null>(null);
@@ -279,10 +285,15 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
           {toggle("open_to_contact", "I'm currently open to contact", "Turn off while travelling, unwell or after a recent donation.", !contact)}
           {toggle("emergency_alerts", "In-app alerts for verified requests near me", "Matching blood group and district only. No SMS or bulk messages.")}
           {toggle("show_donation_summary", "Share my verified donation summary with volunteers", "Last verified whole blood / SDP dates and counts.")}
+          {toggle(
+            "show_first_name",
+            "Show my first name to volunteers",
+            "Off: volunteers see only your display name, or a code like “Donor #3F2A”. Your full name and photo are only ever seen by Rakt Response admins.",
+          )}
         </>
       ) : (
         <p className="rounded-xl bg-secondary p-3 text-sm text-secondary-foreground">
-          Directory and contact options become available once you add a blood group to your profile.
+          {t("Directory and contact options become available once you add a blood group to your profile.")}
         </p>
       )}
       {toggle("notify_status_updates", "Notify me about updates to my requests and records", "In-app notifications only.")}
@@ -291,7 +302,7 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
           <select id="preferred_contact_method" className={selectClass} {...register("preferred_contact_method")}>
             {(Object.keys(CONTACT_METHOD_LABELS) as ContactMethod[]).map((m) => (
               <option key={m} value={m}>
-                {CONTACT_METHOD_LABELS[m]}
+                {t(CONTACT_METHOD_LABELS[m])}
               </option>
             ))}
           </select>
@@ -302,10 +313,10 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
             name="max_distance_km"
             render={({ field }) => (
               <select id="max_distance_km" className={selectClass} value={field.value ?? ""} onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}>
-                <option value="">No preference</option>
+                <option value="">{t("No preference")}</option>
                 {[5, 10, 25, 50, 100].map((km) => (
                   <option key={km} value={km}>
-                    Up to {km} km
+                    {t("Up to {km} km", { km })}
                   </option>
                 ))}
               </select>
@@ -316,7 +327,7 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
       <FormMessage state={result} />
       <Button type="submit" disabled={pending} size="lg" className="w-full sm:w-auto">
         {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        Save my choices
+        {t("Save my choices")}
       </Button>
     </form>
   );

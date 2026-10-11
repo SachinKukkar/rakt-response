@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/common/page-parts";
 import { RequestQueue } from "@/components/volunteer/request-queue";
+import { getT } from "@/i18n/server";
 
-export const metadata: Metadata = { title: "Request queue" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("Request queue") };
+}
 
 export default async function VolunteerRequestsPage({ searchParams }: PageProps<"/volunteer/requests">) {
   return (

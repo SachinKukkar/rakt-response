@@ -13,8 +13,10 @@ import { addDonation } from "@/actions/donations";
 import { DONATION_TYPE_LABELS, DONATION_TYPES, type DonationType } from "@/lib/constants";
 import { formatDate, todayInIndia } from "@/lib/format";
 import { donationRecordSchema, type DonationRecordInput } from "@/lib/validation/forms";
+import { useT } from "@/i18n/client";
 
 export function DonationForm() {
+  const t = useT();
   const router = useRouter();
   const form = useForm<DonationRecordInput>({
     resolver: zodResolver(donationRecordSchema),
@@ -26,6 +28,10 @@ export function DonationForm() {
   const [pending, startTransition] = useTransition();
   const [serverError, setServerError] = useState<string | null>(null);
   const [duplicates, setDuplicates] = useState<Array<{ donation_date: string; centre_name: string }> | null>(null);
+
+  const [selfReportedBefore, selfReportedAfter] = t(
+    "This record will be marked {status} until an authorised volunteer verifies it. Recording a donation does not determine when you can donate again.",
+  ).split("{status}");
 
   const onSubmit = handleSubmit((values) => {
     setServerError(null);
@@ -52,7 +58,7 @@ export function DonationForm() {
     <form onSubmit={onSubmit} noValidate className="surface space-y-5 p-5 sm:p-7">
       <div className="space-y-2">
         <p id="dn-type" className="text-sm font-semibold text-navy">
-          Donation type
+          {t("Donation type")}
         </p>
         <Controller
           control={control}
@@ -67,7 +73,7 @@ export function DonationForm() {
                 setDuplicates(null);
                 setValue("confirm_duplicate", false);
               }}
-              options={DONATION_TYPES.map((t) => ({ value: t, label: DONATION_TYPE_LABELS[t] }))}
+              options={DONATION_TYPES.map((type) => ({ value: type, label: t(DONATION_TYPE_LABELS[type]) }))}
             />
           )}
         />
@@ -103,9 +109,9 @@ export function DonationForm() {
       {duplicates ? (
         <div className="space-y-2 rounded-2xl border border-warning/30 bg-warning-soft p-4 text-sm" role="alert">
           <p className="flex items-center gap-2 font-semibold text-warning">
-            <AlertTriangle className="size-4" aria-hidden="true" /> This might be a duplicate
+            <AlertTriangle className="size-4" aria-hidden="true" /> {t("This might be a duplicate")}
           </p>
-          <p>You already have a record of the same type close to this date:</p>
+          <p>{t("You already have a record of the same type close to this date:")}</p>
           <ul className="list-disc pl-5">
             {duplicates.map((d) => (
               <li key={`${d.donation_date}-${d.centre_name}`}>
@@ -113,23 +119,24 @@ export function DonationForm() {
               </li>
             ))}
           </ul>
-          <p>If this is a separate donation, submit again to confirm.</p>
+          <p>{t("If this is a separate donation, submit again to confirm.")}</p>
         </div>
       ) : null}
 
       {serverError ? (
         <p className="rounded-xl border border-destructive/25 bg-destructive/5 px-3.5 py-3 text-sm text-destructive" role="alert">
-          {serverError}
+          {t(serverError)}
         </p>
       ) : null}
 
       <p className="text-xs text-muted-foreground">
-        This record will be marked <strong>self-reported</strong> until an authorised volunteer verifies it. Recording a donation does not
-        determine when you can donate again.
+        {selfReportedBefore}
+        <strong>{t("self-reported")}</strong>
+        {selfReportedAfter}
       </p>
       <Button type="submit" size="lg" className="w-full" disabled={pending}>
         {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        {duplicates ? "Yes, save it as a separate donation" : pending ? "Saving…" : "Save donation"}
+        {duplicates ? t("Yes, save it as a separate donation") : pending ? t("Saving…") : t("Save donation")}
       </Button>
     </form>
   );

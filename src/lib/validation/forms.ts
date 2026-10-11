@@ -10,6 +10,7 @@ import {
   optionalEmailSchema,
   optionalPhoneSchema,
   optionalText,
+  pincodeSchema,
   placeSchema,
   requestTypeSchema,
   stateSchema,
@@ -27,6 +28,7 @@ export const profileSchema = z.object({
   approx_previous_donations: z.number().int().min(0).max(500).nullable(),
   phone: optionalPhoneSchema,
   whatsapp: optionalPhoneSchema,
+  bio: optionalText(280, "Please keep this under 280 characters"),
 });
 export type ProfileInput = z.infer<typeof profileSchema>;
 
@@ -39,6 +41,7 @@ export const preferencesSchema = z
     open_to_contact: z.boolean(),
     emergency_alerts: z.boolean(),
     show_donation_summary: z.boolean(),
+    show_first_name: z.boolean(),
     notify_status_updates: z.boolean(),
     preferred_contact_method: contactMethodSchema,
     max_distance_km: z.number().int().min(1).max(500).nullable(),
@@ -215,6 +218,27 @@ export const metricSourceSchema = z
     message: "The period end must be after the start",
     path: ["period_end"],
   });
+
+/** Administrator corrections to a donor's record. Area fields are all-or-nothing. */
+export const adminDonorSchema = z
+  .object({
+    profile_id: uuidSchema,
+    full_name: nameSchema,
+    display_name: displayNameSchema,
+    blood_group: z.union([bloodGroupSchema, z.literal("")]),
+    phone: optionalPhoneSchema,
+    whatsapp: optionalPhoneSchema,
+    state: z.union([stateSchema, z.literal("")]),
+    district: optionalText(80),
+    city: optionalText(80),
+    locality: optionalText(120),
+    pincode: pincodeSchema,
+  })
+  .refine((v) => (v.state === "") === (v.district === "") && (v.state === "") === (v.city === ""), {
+    message: "Fill in state, district and city together",
+    path: ["city"],
+  });
+export type AdminDonorInput = z.infer<typeof adminDonorSchema>;
 
 export const staffRoleSchema = z.object({
   user_id: uuidSchema,

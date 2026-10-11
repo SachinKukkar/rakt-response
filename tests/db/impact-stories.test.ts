@@ -201,7 +201,7 @@ describe("impact metrics and camps", () => {
     const before = await as(db, null, (tx) => tx.query<{ get_impact_metrics: Record<string, unknown> }>("select public.get_impact_metrics()"));
     const metrics = before.rows[0].get_impact_metrics;
     expect(metrics.registered_donors).toBe(4);
-    expect(metrics.verified_donors).toBe(0);
+    expect(metrics.verified_donors).toBe(4); // confirmed emails count as verified donors
     expect(metrics.requests_fulfilled).toBe(0);
     expect(metrics.camp_verified_donors).toBeNull();
     expect(metrics.manual_sources).toEqual([]);
