@@ -1,0 +1,170 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Light theme only: `dark:` utilities apply solely under an explicit .dark class (never set). */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Rakt Response design system.
+ * Brand: primary red #C82032, crimson #E63946, navy #152B50,
+ * warm white #FFFDFB, white, dark text #202124.
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-crimson: var(--crimson);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warm: var(--warm);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 0.75rem;
+  --background: #fffdfb;
+  --warm: #fffdfb;
+  --foreground: #202124;
+  --card: #ffffff;
+  --card-foreground: #202124;
+  --popover: #ffffff;
+  --popover-foreground: #202124;
+  --primary: #c82032;
+  --primary-foreground: #ffffff;
+  --crimson: #e63946;
+  --navy: #152b50;
+  --navy-soft: #e9edf5;
+  --secondary: #eef1f7;
+  --secondary-foreground: #152b50;
+  --muted: #f4f1ee;
+  --muted-foreground: #5f6368;
+  --accent: #fdecee;
+  --accent-foreground: #a3172a;
+  --destructive: #b3261e;
+  --success: #17703a;
+  --success-soft: #e7f4ec;
+  --warning: #9a4b06;
+  --warning-soft: #fdf1e1;
+  --border: #ebe5e0;
+  --input: #ddd6d0;
+  --ring: #c82032;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading tracking-tight text-navy;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--ring) 55%, transparent);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+  .prose-rr {
+    @apply max-w-none text-[15px] leading-7 text-foreground/90;
+  }
+  .prose-rr h2 {
+    @apply mt-8 mb-3 text-xl font-bold;
+  }
+  .prose-rr h3 {
+    @apply mt-6 mb-2 text-lg font-semibold;
+  }
+  .prose-rr p {
+    @apply my-3;
+  }
+  .prose-rr ul {
+    @apply my-3 list-disc space-y-1.5 pl-5;
+  }
+  .prose-rr ol {
+    @apply my-3 list-decimal space-y-1.5 pl-5;
+  }
+  .prose-rr a {
+    @apply font-medium text-primary underline underline-offset-4;
+  }
+  .prose-rr strong {
+    @apply font-semibold text-navy;
+  }
+  .surface {
+    @apply rounded-2xl border border-border/70 bg-card shadow-[0_1px_2px_rgba(21,43,80,0.04),0_4px_16px_rgba(21,43,80,0.05)];
+  }
+  .surface-tint {
+    @apply rounded-2xl border border-primary/10 bg-accent/60;
+  }
+  .brand-band {
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(230, 57, 70, 0.55) 0%, transparent 55%),
+      linear-gradient(160deg, #c82032 0%, #a8192a 100%);
+  }
+  .hero-glow {
+    background:
+      radial-gradient(60% 50% at 85% 10%, rgba(200, 32, 50, 0.1) 0%, transparent 70%),
+      radial-gradient(50% 40% at 0% 100%, rgba(21, 43, 80, 0.07) 0%, transparent 70%);
+  }
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  }
+}

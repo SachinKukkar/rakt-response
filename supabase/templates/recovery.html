@@ -1,0 +1,9 @@
+<!-- Rakt Response: password recovery (token-hash link). -->
+<div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #202124;">
+  <h2 style="color: #152b50;">Reset your Rakt Response password</h2>
+  <p>We received a request to reset your password. This link can be used once and expires soon.</p>
+  <p>
+    <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery" style="display: inline-block; background: #c82032; color: #ffffff; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: bold;">Choose a new password</a>
+  </p>
+  <p style="font-size: 13px; color: #5f6368;">If you didn't ask for this, you can safely ignore this email.</p>
+</div>

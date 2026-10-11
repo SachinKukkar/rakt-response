@@ -1,0 +1,10 @@
+<!-- Rakt Response: signup confirmation. Uses the token-hash link so it works on any device. -->
+<div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #202124;">
+  <h2 style="color: #152b50;">Welcome to Rakt Response</h2>
+  <p>Thank you for registering as part of our voluntary donor community. Please confirm your email address to activate your account.</p>
+  <p>
+    <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email" style="display: inline-block; background: #c82032; color: #ffffff; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: bold;">Confirm my email</a>
+  </p>
+  <p style="font-size: 13px; color: #5f6368;">Your profile stays private until you choose otherwise. If you didn't sign up, you can ignore this email.</p>
+  <p style="font-size: 13px; color: #5f6368;">We Respond, We Support, We Save Lives.</p>
+</div>
