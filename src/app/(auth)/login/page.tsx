@@ -16,9 +16,11 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const notice =
     params.error === "link"
       ? "That link has expired or was already used. Please sign in or request a new link."
-      : params.signed_out
-        ? "You have signed out."
-        : null;
+      : params.notice === "confirmed"
+        ? "Your email is confirmed. Please sign in to continue."
+        : params.signed_out
+          ? "You have signed out."
+          : null;
   return (
     <AuthCard
       title="Welcome back"

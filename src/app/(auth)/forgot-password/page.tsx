@@ -5,7 +5,8 @@ import { ForgotPasswordForm } from "@/components/auth/auth-forms";
 
 export const metadata: Metadata = { title: "Reset your password" };
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage({ searchParams }: PageProps<"/forgot-password">) {
+  const { error } = await searchParams;
   return (
     <AuthCard
       title="Forgot your password?"
@@ -16,6 +17,12 @@ export default function ForgotPasswordPage() {
         </Link>
       }
     >
+      {error === "device" ? (
+        <p className="mb-4 rounded-xl bg-secondary px-3.5 py-3 text-sm text-secondary-foreground" role="status">
+          Reset links must be opened on the same phone or browser where you requested them. Request a new link below and open it
+          on this device.
+        </p>
+      ) : null}
       <ForgotPasswordForm />
     </AuthCard>
   );

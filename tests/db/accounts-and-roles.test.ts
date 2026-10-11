@@ -71,6 +71,20 @@ describe("signup bootstrap trigger", () => {
     expect(phone.rows[0].phone).toBe("+919800000001");
   });
 
+  it("can rebuild a missing profile for an account created before the schema existed", async () => {
+    const user = await createUser(db, donorMetadata({ full_name: "Early Bird" }));
+    await db.query("delete from public.profiles where id = $1", [user.id]);
+    await db.query("select private.create_member_from_metadata($1, $2, $3::jsonb)", [
+      user.id,
+      user.email,
+      JSON.stringify(donorMetadata({ full_name: "Early Bird" })),
+    ]);
+    const rebuilt = await db.query<{ full_name: string; blood_group: string }>("select full_name, blood_group from public.profiles where id = $1", [user.id]);
+    expect(rebuilt.rows[0]).toEqual({ full_name: "Early Bird", blood_group: "O+" });
+    const loc = await db.query("select * from public.donor_locations where profile_id = $1", [user.id]);
+    expect(loc.rows).toHaveLength(1);
+  });
+
   it("never derives roles from signup metadata", async () => {
     const user = await createUser(db, { ...donorMetadata(), role: "admin", staff_role: "admin", is_admin: true });
     const roles = await db.query("select * from public.staff_roles where user_id = $1", [user.id]);
