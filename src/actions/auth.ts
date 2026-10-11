@@ -105,6 +105,7 @@ export async function registerDonor(input: RegistrationInput): Promise<ActionRes
     },
   });
   if (error) {
+    console.error("[auth] sign-up failed", { status: error.status, code: error.code });
     if (error.status === 429) return fail("Too many sign-up attempts. Please wait a while and try again.");
     if (/password/i.test(error.message)) return fail("Please choose a stronger password.");
     return fail("We could not create your account. Please check your details and try again.");
@@ -126,6 +127,8 @@ export async function requestPasswordReset(_prev: ActionResult, formData: FormDa
     redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
   });
   if (error?.status === 429) return fail("Too many reset requests. Please wait a while and try again.");
+  // Logged server-side only (never shown) so SMTP problems are diagnosable in hosting logs.
+  if (error) console.error("[auth] password reset email failed", { status: error.status, code: error.code });
   // Always the same response, whether or not the account exists.
   return success("If an account exists for that email, a password reset link is on its way. It may take a few minutes.");
 }
@@ -141,6 +144,7 @@ export async function resendVerification(_prev: ActionResult, formData: FormData
     options: { emailRedirectTo: `${siteUrl}/auth/callback?next=${encodeURIComponent("/dashboard?welcome=1")}` },
   });
   if (error?.status === 429) return fail("Please wait a little before requesting another email.");
+  if (error) console.error("[auth] verification email resend failed", { status: error.status, code: error.code });
   return success("If that email is waiting for confirmation, we have sent a new link.");
 }
 
