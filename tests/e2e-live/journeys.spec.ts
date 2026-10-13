@@ -105,9 +105,15 @@ test("donors record donations, get duplicate warnings and manage consent", async
   await page.getByText("SDP (single donor platelets)").click();
   await page.locator("#donation_date").fill("2026-06-01");
   await page.locator("#centre_name").fill("Live Apheresis Unit");
+  // No state field here: the district search covers all of India, then that district's towns.
+  await page.locator("#district").fill("pun");
+  await page.getByRole("option", { name: /^Pune\s*Maharashtra$/ }).click();
+  await page.locator("#city").fill("kothr");
+  await page.getByRole("option", { name: /^Kothrud/ }).click();
   await page.getByRole("button", { name: "Save donation" }).click();
   await expect(page).toHaveURL(/\/donations$/);
   await expect(page.getByText("Live Apheresis Unit")).toBeVisible();
+  await expect(page.getByText(/Live Apheresis Unit, Kothrud/).first()).toBeVisible();
 
   await page.goto("/donations/new");
   await page.getByText("SDP (single donor platelets)").click();
@@ -136,8 +142,12 @@ test("a member submits a blood request; it stays private until verified", async 
   await page.locator('input[name="blood_group"][value="O+"]').locator("..").click();
   await page.locator("#required_by").fill(inHours(24));
   await page.locator("#hospital_name").fill(HOSPITAL);
-  await page.locator("#city").fill("Pune");
-  await page.locator("#district").fill("Pune");
+  // District search covers all of India until a state is chosen; picking one fills the state.
+  await page.locator("#district").fill("pune");
+  await page.getByRole("option", { name: /^Pune\s*Maharashtra$/ }).click();
+  await expect(page.locator("#state")).toHaveValue("Maharashtra");
+  await page.locator("#city").fill("pune ci");
+  await page.getByRole("option", { name: /^Pune City/ }).click();
   await page.locator("#requester_phone").fill("9822001122");
   await page.locator("#public_listing_consent").check();
   await page.locator("#acknowledge_limits").check();
@@ -158,8 +168,12 @@ test("anonymous visitors can submit a request too (rate limited server-side)", a
   await page.locator('input[name="blood_group"][value="B-"]').locator("..").click();
   await page.locator("#required_by").fill(inHours(30));
   await page.locator("#hospital_name").fill(`${HOSPITAL} Anon`);
-  await page.locator("#city").fill("Mumbai");
-  await page.locator("#district").fill("Mumbai");
+  // A state first, then that state's districts; a town not in the list can be typed.
+  await page.locator("#state").selectOption("Maharashtra");
+  await page.locator("#district").fill("mumbai");
+  await page.getByRole("option", { name: "Mumbai City", exact: true }).click();
+  await page.locator("#city").fill("Andheri East Test Area");
+  await page.getByRole("option", { name: /Use “Andheri East Test Area”/ }).click();
   await page.locator("#requester_name").fill("Anonymous Live Tester");
   await page.locator("#requester_phone").fill("9822003344");
   await page.locator("#acknowledge_limits").check();

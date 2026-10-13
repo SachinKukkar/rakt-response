@@ -5,10 +5,10 @@ import { ActionForm } from "@/components/common/action-form";
 import { Notice, PageHeader, SectionHeading } from "@/components/common/page-parts";
 import { Pill } from "@/components/common/status-badge";
 import { selectClass } from "@/components/common/form-parts";
+import { LocationFields } from "@/components/forms/location-pickers";
 import { deleteCamp, deleteMetricSource, saveCamp, saveMetricSource } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { INDIAN_STATES } from "@/lib/constants";
 import { formatDate, formatNumber, todayInIndia } from "@/lib/format";
 import { getT } from "@/i18n/server";
 import type { TFunction } from "@/i18n/translate";
@@ -61,25 +61,14 @@ function CampFields({ camp, t }: { camp?: Camp; t: TFunction }) {
           <option value="cancelled">{t("Cancelled")}</option>
         </select>
       </label>
-      <label className={field}>
-        {t("City")}
-        <Input name="city" defaultValue={camp?.city} required />
-      </label>
-      <label className={field}>
-        {t("District")}
-        <Input name="district" defaultValue={camp?.district} required />
-      </label>
-      <label className={field}>
-        {t("State")}
-        <select name="state" defaultValue={camp?.state ?? ""} className={selectClass}>
-          <option value="">—</option>
-          {INDIAN_STATES.map((s) => (
-            <option key={s} value={s}>
-              {t(s)}
-            </option>
-          ))}
-        </select>
-      </label>
+      <LocationFields
+        className="sm:col-span-2"
+        idPrefix={`camp-${camp?.id ?? "new"}-`}
+        required={{ district: true, city: true }}
+        labels={{ city: "City / town" }}
+        names={{ state: "state", district: "district", city: "city" }}
+        defaults={{ state: camp?.state ?? "", district: camp?.district ?? "", city: camp?.city ?? "" }}
+      />
       <label className={field}>
         {t("Broad venue area")}
         <Input name="venue_area" defaultValue={camp?.venue_area ?? ""} />

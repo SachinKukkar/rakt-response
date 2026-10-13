@@ -7,8 +7,10 @@ import { useT } from "@/i18n/client";
 
 export interface ComboOption {
   value: string;
-  /** Secondary text, e.g. a PIN code. */
+  /** Secondary text, e.g. a PIN code or a district's state. */
   hint?: string;
+  /** Data that travels with the option (not shown), e.g. the untranslated state name. */
+  data?: string;
 }
 
 const MAX_SHOWN = 60;

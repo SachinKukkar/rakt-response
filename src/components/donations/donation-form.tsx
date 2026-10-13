@@ -2,13 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Controller, useForm, type FieldPath } from "react-hook-form";
+import { Controller, useForm, useWatch, type FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, fieldAria } from "@/components/common/form-parts";
 import { ChipChoice } from "@/components/forms/pickers";
+import { LocationPickers } from "@/components/forms/location-pickers";
 import { addDonation } from "@/actions/donations";
 import { DONATION_TYPE_LABELS, DONATION_TYPES, type DonationType } from "@/lib/constants";
 import { formatDate, todayInIndia } from "@/lib/format";
@@ -24,6 +25,7 @@ export function DonationForm() {
     mode: "onTouched",
   });
   const { register, control, handleSubmit, setError, setValue, formState } = form;
+  const [district, city] = useWatch({ control, name: ["district", "city"] });
   const errors = formState.errors;
   const [pending, startTransition] = useTransition();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -94,14 +96,13 @@ export function DonationForm() {
       <Field id="centre_name" label="Hospital, blood bank or donation centre" required error={errors.centre_name?.message}>
         <Input {...fieldAria("centre_name", errors.centre_name?.message)} {...register("centre_name")} />
       </Field>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="city" label="City" error={errors.city?.message}>
-          <Input {...fieldAria("city", errors.city?.message)} {...register("city")} />
-        </Field>
-        <Field id="district" label="District" error={errors.district?.message}>
-          <Input {...fieldAria("district", errors.district?.message)} {...register("district")} />
-        </Field>
-      </div>
+      {/* No state is stored for a donation: the district search covers all of India. */}
+      <LocationPickers
+        labels={{ city: "City / town" }}
+        values={{ district: district ?? "", city: city ?? "" }}
+        onChange={(field, value) => setValue(field as "district" | "city", value, { shouldDirty: true })}
+        errors={{ district: errors.district?.message, city: errors.city?.message }}
+      />
       <Field id="event_name" label="Camp or event name (optional)" error={errors.event_name?.message}>
         <Input {...fieldAria("event_name", errors.event_name?.message)} {...register("event_name")} />
       </Field>

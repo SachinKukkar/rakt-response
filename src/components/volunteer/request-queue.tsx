@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { LocationFields } from "@/components/forms/location-pickers";
 import { ClipboardList, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { EmptyState } from "@/components/common/page-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
 import { Pill } from "@/components/common/status-badge";
@@ -92,10 +92,7 @@ export async function RequestQueue({ basePath, searchParams }: { basePath: strin
             ))}
           </select>
         </label>
-        <label className="space-y-1 text-xs font-semibold text-navy">
-          {t("District")}
-          <Input name="district" defaultValue={district} />
-        </label>
+        <LocationFields key={district ?? ""} idPrefix="queue-" className="min-w-56" names={{ district: "district" }} defaults={{ district: district ?? "" }} />
         <Button type="submit">{t("Filter")}</Button>
       </form>
       {requests.length ? (

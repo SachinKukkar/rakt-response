@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LocationFields } from "@/components/forms/location-pickers";
 import Link from "next/link";
 import { HandHeart, Hospital, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,6 @@ import { PageHero, SectionTitle } from "@/components/learn/learn-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
 import { RequestCard } from "@/components/requests/request-card";
 import { selectClass } from "@/components/common/form-parts";
-import { Input } from "@/components/ui/input";
 import { listPublicRequests } from "@/lib/data/public";
 import { BLOOD_GROUPS, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestType } from "@/lib/constants";
 import { getT } from "@/i18n/server";
@@ -91,12 +91,7 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
               ))}
             </select>
           </div>
-          <div className="space-y-1.5">
-            <label htmlFor="f-district" className="text-xs font-semibold text-navy">
-              {t("District")}
-            </label>
-            <Input id="f-district" name="district" defaultValue={district ?? ""} placeholder={t("e.g. Pune")} />
-          </div>
+          <LocationFields key={district ?? ""} idPrefix="f-" names={{ district: "district" }} defaults={{ district: district ?? "" }} />
           <div className="flex gap-2">
             <Button type="submit" className="flex-1 sm:flex-none">
               {t("Apply")}

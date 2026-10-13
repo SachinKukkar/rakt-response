@@ -10,6 +10,7 @@ import { BloodGroupChip } from "@/components/common/blood-group-chip";
 import { EmptyState, KeyValue, Notice, PageHeader, SectionHeading } from "@/components/common/page-parts";
 import { Pill, ProfileVerificationBadge, RequestStatusBadge, UrgencyBadge } from "@/components/common/status-badge";
 import { selectClass } from "@/components/common/form-parts";
+import { LocationFields } from "@/components/forms/location-pickers";
 import { CoordinationOutcomeForm, DonorContactPanel, StatusChangeForm } from "@/components/volunteer/coordination-forms";
 import { addInternalNote, assignRequest, editRequestDetails } from "@/actions/volunteer";
 import { requireStaff, viewerCan } from "@/lib/auth";
@@ -286,14 +287,14 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             {t("Hospital / blood bank")}
             <Input name="hospital_name" defaultValue={request.hospital_name} required />
           </label>
-          <label className="space-y-1 text-sm font-semibold text-navy">
-            {t("City")}
-            <Input name="city" defaultValue={request.city} required />
-          </label>
-          <label className="space-y-1 text-sm font-semibold text-navy">
-            {t("District")}
-            <Input name="district" defaultValue={request.district} required />
-          </label>
+          <LocationFields
+            className="sm:col-span-2"
+            idPrefix="edit-"
+            required={{ district: true, city: true }}
+            labels={{ city: "City / town" }}
+            names={{ district: "district", city: "city" }}
+            defaults={{ district: request.district, city: request.city }}
+          />
           <label className="space-y-1 text-sm font-semibold text-navy">
             {t("Units")}
             <Input name="units_needed" type="number" min={1} max={50} defaultValue={request.units_needed ?? ""} />

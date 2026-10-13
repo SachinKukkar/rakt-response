@@ -1,9 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { expectHealthyPage, login, trackErrors } from "./helpers";
+import { expectHealthyPage, localSql, login, trackErrors } from "./helpers";
 import { ADMIN_PAGES, DONOR_PAGES, VOLUNTEER_PAGES } from "./pages";
 
-
 test("public pages render live data from the seed", async ({ page }) => {
+  // Requests expire after their deadline; keep the seeded sample request current.
+  localSql(`update public.blood_requests set status = 'verified', required_by = now() + interval '20 hours'
+    where hospital_name = 'Fictional General Hospital [DEV]';`);
   const errors = trackErrors(page);
   await page.goto("/");
   await expect(page.getByText("Registered donors")).toBeVisible();

@@ -539,12 +539,15 @@ export function RegisterWizard() {
                           <Field id={`d-centre-${index}`} label="Hospital / blood bank / centre" className="sm:col-span-2" error={e(`history.donations.${index}.centre_name`)}>
                             <Input {...fieldAria(`d-centre-${index}`, e(`history.donations.${index}.centre_name`))} {...register(`history.donations.${index}.centre_name` as const)} />
                           </Field>
-                          <Field id={`d-city-${index}`} label="City">
-                            <Input id={`d-city-${index}`} {...register(`history.donations.${index}.city` as const)} />
-                          </Field>
-                          <Field id={`d-district-${index}`} label="District">
-                            <Input id={`d-district-${index}`} {...register(`history.donations.${index}.district` as const)} />
-                          </Field>
+                          <LocationPickers
+                            className="sm:col-span-2"
+                            idPrefix={`d-${index}-`}
+                            labels={{ city: "City / town" }}
+                            values={{ district: entry?.district ?? "", city: entry?.city ?? "" }}
+                            onChange={(field, value) =>
+                              setValue(`history.donations.${index}.${field as "district" | "city"}` as const, value, { shouldDirty: true })
+                            }
+                          />
                           <Field id={`d-event-${index}`} label="Camp / event name (optional)" className="sm:col-span-2">
                             <Input id={`d-event-${index}`} {...register(`history.donations.${index}.event_name` as const)} />
                           </Field>

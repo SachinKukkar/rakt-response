@@ -140,12 +140,14 @@ const outDir = join(process.cwd(), "public/data/locations");
 mkdirSync(outDir, { recursive: true });
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const index = {};
+const allDistricts = []; // [district, state] for the all-India district search
 let totalDistricts = 0;
 let totalPlaces = 0;
 for (const [state, set] of [...stateDistricts.entries()].sort()) {
   const districts = [...set].sort((a, b) => a.localeCompare(b)).map((name) => {
     const list = [...(places.get(`${state}|${name}`)?.values() ?? [])].sort((a, b) => a[0].localeCompare(b[0]));
     totalPlaces += list.length;
+    allDistricts.push([name, state]);
     return { name, places: list };
   });
   totalDistricts += districts.length;
@@ -153,6 +155,8 @@ for (const [state, set] of [...stateDistricts.entries()].sort()) {
   writeFileSync(join(outDir, `${slug(state)}.json`), JSON.stringify({ state, districts }));
 }
 writeFileSync(join(outDir, "index.json"), JSON.stringify(index));
+allDistricts.sort((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
+writeFileSync(join(outDir, "districts.json"), JSON.stringify(allDistricts));
 
 console.log(`States: ${Object.keys(index).length}, districts: ${totalDistricts}, places: ${totalPlaces}`);
 const missing = [...stateDistricts.entries()].flatMap(([s, set]) => [...set].filter((d) => !places.has(`${s}|${d}`)).map((d) => `${s} / ${d}`));

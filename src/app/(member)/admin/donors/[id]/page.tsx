@@ -8,13 +8,14 @@ import { BloodGroupChip } from "@/components/common/blood-group-chip";
 import { KeyValue, Notice, PageHeader, SectionHeading } from "@/components/common/page-parts";
 import { Pill, ProfileVerificationBadge, VerificationBadge } from "@/components/common/status-badge";
 import { selectClass } from "@/components/common/form-parts";
+import { LocationFields } from "@/components/forms/location-pickers";
 import { addInternalNote } from "@/actions/volunteer";
 import { adminUpdateDonor, processDeletion, resolveBloodGroupChange, setProfileActive, verifyProfile } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
 import { getDonationRecords, getDonorData } from "@/lib/data/member";
 import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
-import { BLOOD_GROUPS, CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, INDIAN_STATES, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
+import { BLOOD_GROUPS, CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { formatPhone } from "@/lib/phone";
 import { uuidSchema } from "@/lib/validation/common";
@@ -137,21 +138,15 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
               ))}
             </select>
           </label>
-          <label className="space-y-1 text-sm font-semibold text-navy">
-            {t("State / UT")}
-            <select name="state" defaultValue={donor.location?.state ?? ""} className={selectClass}>
-              <option value="">{t("No area")}</option>
-              {INDIAN_STATES.map((s) => (
-                <option key={s} value={s}>
-                  {t(s)}
-                </option>
-              ))}
-            </select>
-          </label>
+          <LocationFields
+            className="sm:col-span-2"
+            idPrefix="edit-"
+            labels={{ city: "City / town" }}
+            names={{ state: "state", district: "district", city: "city" }}
+            defaults={{ state: donor.location?.state ?? "", district: donor.location?.district ?? "", city: donor.location?.city ?? "" }}
+          />
           {(
             [
-              ["district", "District", donor.location?.district ?? "", 80],
-              ["city", "City / town", donor.location?.city ?? "", 80],
               ["locality", "Locality", donor.location?.locality ?? "", 120],
               ["pincode", "PIN code", donor.location?.pincode ?? "", 6],
             ] as const

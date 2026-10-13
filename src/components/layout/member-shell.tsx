@@ -94,7 +94,7 @@ export async function MemberShell({ viewer, unread, children }: { viewer: Viewer
             <LogoMark size="xs" priority />
             <span className="leading-tight">
               <span className="block text-[15px] font-extrabold text-navy">
-                Rakt <span className="text-primary">Response</span>
+                <span className="text-primary">Rakt</span> Response
               </span>
               <span className="block max-w-[11rem] truncate text-xs text-muted-foreground">{t("Hello, {name}", { name })}</span>
             </span>

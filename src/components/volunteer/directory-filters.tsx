@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { selectClass } from "@/components/common/form-parts";
 import { ApproxLocation } from "@/components/map/approx-location";
-import { BLOOD_GROUPS, DONATION_TYPE_LABELS, INDIAN_STATES, type DonationType } from "@/lib/constants";
+import { LocationFields } from "@/components/forms/location-pickers";
+import { BLOOD_GROUPS, DONATION_TYPE_LABELS, type DonationType } from "@/lib/constants";
 import type { LatLng } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n/client";
@@ -135,26 +136,16 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
                 })}
               </div>
             </fieldset>
+            {/* Re-mounts when the URL filters change, so "Clear" empties it too. */}
+            <LocationFields
+              key={searchParams.toString()}
+              idPrefix="filter-"
+              emptyStateLabel="Any"
+              labels={{ state: "State", city: "City / town" }}
+              names={{ state: "state", district: "district", city: "city" }}
+              defaults={{ state: searchParams.get("state") ?? "", district: searchParams.get("district") ?? "", city: searchParams.get("city") ?? "" }}
+            />
             <div className="grid gap-3 sm:grid-cols-2">
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                {t("State")}
-                <select name="state" defaultValue={searchParams.get("state") ?? ""} className={selectClass}>
-                  <option value="">{t("Any")}</option>
-                  {INDIAN_STATES.map((s) => (
-                    <option key={s} value={s}>
-                      {t(s)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                {t("District")}
-                <Input name="district" defaultValue={searchParams.get("district") ?? ""} />
-              </label>
-              <label className="space-y-1 text-sm font-semibold text-navy">
-                {t("City / town")}
-                <Input name="city" defaultValue={searchParams.get("city") ?? ""} />
-              </label>
               <label className="space-y-1 text-sm font-semibold text-navy">
                 {t("Locality contains")}
                 <Input name="locality" defaultValue={searchParams.get("locality") ?? ""} />
