@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Droplet, Plus } from "lucide-react";
+import { CheckCircle2, Droplet, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ActionForm } from "@/components/common/action-form";
 import { EmptyState, PageHeader, SectionHeading } from "@/components/common/page-parts";
@@ -19,10 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("Donation history") };
 }
 
-export default async function DonationsPage() {
+export default async function DonationsPage({ searchParams }: PageProps<"/donations">) {
   const t = await getT();
   const viewer = await requireViewer("/donations");
-  const [donor, records, settings] = await Promise.all([getDonorData(viewer.id), getDonationRecords(viewer.id), getPublicSettings()]);
+  const [donor, records, settings, params] = await Promise.all([getDonorData(viewer.id), getDonationRecords(viewer.id), getPublicSettings(), searchParams]);
 
   return (
     <div className="space-y-6">
@@ -39,6 +39,12 @@ export default async function DonationsPage() {
           ) : null
         }
       />
+      {params.saved ? (
+        <p className="flex items-start gap-2 rounded-xl border border-success/25 bg-success-soft px-3.5 py-3 text-sm text-success" role="status">
+          <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          {t("Donation saved. It shows as self-reported until a volunteer verifies it.")}
+        </p>
+      ) : null}
       <DonationSummaryCards summary={donor.summary} intervalDays={settings.wholeBloodIntervalDays} />
       <section aria-labelledby="records-heading">
         <SectionHeading id="records-heading" title="All records" />

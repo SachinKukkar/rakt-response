@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { MessageSquareQuote, PenLine } from "lucide-react";
@@ -13,10 +14,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Stories"),
-    description: t("Experiences shared by donors, patients' families, volunteers and camp organisers — published with consent."),
-  };
+  return pageMetadata(t("Stories"), t("Experiences shared by donors, patients' families, volunteers and camp organisers — published with consent."));
 }
 
 const PAGE_SIZE = 9;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { LocationFields } from "@/components/forms/location-pickers";
 import Link from "next/link";
 import { HandHeart, Hospital, Plus } from "lucide-react";
@@ -14,10 +15,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Find blood"),
-    description: t("Submit a blood request for volunteer coordination and see verified requests where voluntary donors can help."),
-  };
+  return pageMetadata(t("Find blood"), t("Submit a blood request for volunteer coordination and see verified requests where voluntary donors can help."));
 }
 
 const PAGE_SIZE = 12;

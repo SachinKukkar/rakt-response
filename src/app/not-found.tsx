@@ -7,7 +7,9 @@ export default async function NotFound() {
   const t = await getT();
   return (
     <main id="main" className="mx-auto flex max-w-md flex-1 flex-col items-center justify-center gap-4 px-6 py-16 text-center">
-      <LogoMark size="lg" />
+      <Link href="/" className="rounded-full" aria-label={t("Rakt Response home")}>
+        <LogoMark size="lg" />
+      </Link>
       <p className="text-sm font-bold tracking-wider text-primary uppercase">{t("Page not found")}</p>
       <h1 className="text-2xl font-extrabold">{t("We couldn't find that page")}</h1>
       <p className="text-muted-foreground">{t("It may have moved, or the link may be incomplete.")}</p>

@@ -7,6 +7,7 @@ import { ServiceWorkerRegister } from "@/components/layout/service-worker-regist
 import { LocaleProvider } from "@/i18n/client";
 import { HTML_LANG } from "@/i18n/config";
 import { getLocale, getT } from "@/i18n/server";
+import { SHARE_IMAGE } from "@/lib/metadata";
 
 const sans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -28,24 +29,22 @@ const display = Bricolage_Grotesque({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
-    template: `%s · ${SITE.name}`,
-  },
-  description: SITE.description,
-  applicationName: SITE.name,
-  appleWebApp: { capable: true, title: SITE.name, statusBarStyle: "default" },
-  openGraph: {
-    type: "website",
-    siteName: SITE.name,
-    title: SITE.name,
-    description: SITE.description,
-    images: [{ url: "/images/rakt-response-logo.jpeg", width: 640, height: 640, alt: "Rakt Response Team logo" }],
-  },
-  formatDetection: { telephone: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const [t, locale] = await Promise.all([getT(), getLocale()]);
+  const home = `${SITE.name} — ${t(SITE.tagline)}`;
+  const description = t(SITE.description);
+  return {
+    metadataBase: new URL(siteUrl),
+    title: { default: home, template: `%s · ${SITE.name}` },
+    description,
+    applicationName: SITE.name,
+    appleWebApp: { capable: true, title: SITE.name, statusBarStyle: "default" },
+    openGraph: { type: "website", siteName: SITE.name, locale: locale === "hi" ? "hi_IN" : "en_IN", title: home, description, images: [SHARE_IMAGE] },
+    twitter: { card: "summary_large_image", title: home, description, images: [SHARE_IMAGE.url] },
+    // Phone numbers are linked explicitly; don't auto-link reference codes.
+    formatDetection: { telephone: false },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#C82032",

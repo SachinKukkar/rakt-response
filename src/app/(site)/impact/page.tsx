@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import {
@@ -31,10 +32,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Our Impact"),
-    description: t("Transparent, record-based figures, real stories shared with consent, and how Rakt Response works."),
-  };
+  return pageMetadata(t("Our Impact"), t("Transparent, record-based figures, real stories shared with consent, and how Rakt Response works."));
 }
 
 export const revalidate = 300;

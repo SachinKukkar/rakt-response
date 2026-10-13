@@ -94,6 +94,13 @@
     @apply bg-background text-foreground antialiased;
     text-rendering: optimizeLegibility;
   }
+  /* A grid without explicit columns sizes its column to the widest content, so
+     one long unbroken line (a title, a reference code) could make the whole page
+     wider than a phone. Default to a single column that may shrink; grids that
+     set grid-cols-* (utilities layer) still win. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
   h1, h2, h3, h4 {
     @apply font-heading tracking-tight text-navy;
     text-wrap: balance;

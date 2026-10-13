@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Fragment } from "react";
 import Link from "next/link";
 import { CalendarClock, Droplet, HeartPulse, MessageCircleQuestion, Pill, Scale, Thermometer, TriangleAlert, UserCheck, type LucideIcon } from "lucide-react";
@@ -8,12 +9,9 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Eligibility"),
-    description: t(
+  return pageMetadata(t("Eligibility"), t(
       "General information about blood donation eligibility in India. This is not a medical assessment: the blood centre's doctor decides at every donation.",
-    ),
-  };
+    ));
 }
 
 /** Puts JSX into a translated sentence at its {placeholders}, so word order can follow the language. */

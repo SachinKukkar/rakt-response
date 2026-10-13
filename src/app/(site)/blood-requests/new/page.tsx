@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { Hospital, LogIn } from "lucide-react";
@@ -11,10 +12,7 @@ import { getLocale, getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Submit a blood request"),
-    description: t("Ask Rakt Response volunteers to help find voluntary donors for a hospital requirement."),
-  };
+  return pageMetadata(t("Submit a blood request"), t("Ask Rakt Response volunteers to help find voluntary donors for a hospital requirement."));
 }
 
 export default async function NewBloodRequestPage() {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Fragment, type ReactNode } from "react";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
@@ -7,10 +8,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Terms of use"),
-    description: t("The rules for using Rakt Response, and what the platform can and cannot do."),
-  };
+  return pageMetadata(t("Terms of use"), t("The rules for using Rakt Response, and what the platform can and cannot do."));
 }
 
 /** Puts JSX (links) into a translated sentence at its {placeholders}. */

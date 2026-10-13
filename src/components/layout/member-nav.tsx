@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -11,6 +12,8 @@ import {
   HandHeart,
   House,
   LayoutGrid,
+  LogOut,
+  Menu,
   MessageSquareQuote,
   Settings,
   ShieldCheck,
@@ -18,6 +21,8 @@ import {
   UserRound,
   Users,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useT } from "@/i18n/client";
 import { cn } from "@/lib/utils";
 
@@ -85,8 +90,10 @@ export function BottomNav({ items }: { items: NavItem[] }) {
   );
 }
 
-/** Sidebar navigation for tablets/desktops. */
-export function SideNav({ groups }: { groups: Array<{ title: string; items: NavItem[] }> }) {
+type NavGroup = { title: string; items: NavItem[] };
+
+/** Sidebar navigation for tablets/desktops (also used inside the phone menu). */
+export function SideNav({ groups, onNavigate }: { groups: NavGroup[]; onNavigate?: () => void }) {
   const pathname = usePathname();
   const t = useT();
   return (
@@ -102,6 +109,7 @@ export function SideNav({ groups }: { groups: Array<{ title: string; items: NavI
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    onClick={onNavigate}
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       "flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors",
@@ -118,5 +126,37 @@ export function SideNav({ groups }: { groups: Array<{ title: string; items: NavI
         </div>
       ))}
     </nav>
+  );
+}
+
+/**
+ * Phone menu for the member area: every page in the account (the bottom bar
+ * only fits the main four or five), plus sign out.
+ */
+export function MemberMenu({ groups }: { groups: NavGroup[] }) {
+  const [open, setOpen] = useState(false);
+  const t = useT();
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="lg:hidden" aria-label={t("Open menu")}>
+          <Menu className="size-6" aria-hidden="true" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[86vw] max-w-sm overflow-y-auto bg-warm p-0">
+        <SheetHeader className="border-b p-4 pr-14">
+          <SheetTitle className="text-base font-extrabold text-navy">{t("Menu")}</SheetTitle>
+          <SheetDescription className="text-xs">{t("Every page in your account.")}</SheetDescription>
+        </SheetHeader>
+        <div className="p-3">
+          <SideNav groups={groups} onNavigate={() => setOpen(false)} />
+        </div>
+        <form action="/auth/signout" method="post" className="mt-auto border-t p-4">
+          <Button type="submit" variant="outline" className="w-full" size="lg">
+            <LogOut className="size-4" aria-hidden="true" /> {t("Sign out")}
+          </Button>
+        </form>
+      </SheetContent>
+    </Sheet>
   );
 }

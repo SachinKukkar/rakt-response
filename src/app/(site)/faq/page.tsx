@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
 import { MessageCircleQuestion, TriangleAlert } from "lucide-react";
@@ -9,10 +10,7 @@ import type { TFunction } from "@/i18n/translate";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("FAQ"),
-    description: t("Answers to common questions about blood donation, privacy, verified requests and how Rakt Response works."),
-  };
+  return pageMetadata(t("FAQ"), t("Answers to common questions about blood donation, privacy, verified requests and how Rakt Response works."));
 }
 
 /** Puts links and bold text into a translated sentence at its {slots}. */

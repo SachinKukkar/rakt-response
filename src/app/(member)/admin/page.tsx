@@ -86,7 +86,7 @@ export default async function AdminOverviewPage() {
           <BarList items={groups} label="Donors by blood group" />
         </section>
         <section className="surface p-4" aria-labelledby="district-heading">
-          <SectionHeading id="district-heading" title="Top districts" as="h3" action={<Link href="/admin/analytics" className="text-sm font-semibold text-primary hover:underline">{t("Analytics")}</Link>} />
+          <SectionHeading id="district-heading" title="Top districts" as="h3" action={<Link href="/admin/analytics" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary hover:underline">{t("Analytics")}</Link>} />
           <BarList items={analytics.by_district.map((d) => ({ label: d.district, value: d.count }))} label="Donors by district" />
         </section>
       </div>

@@ -68,7 +68,8 @@ export default async function ProfilePage() {
             <Camera className="size-7 text-primary" aria-hidden="true" />
           )}
         </div>
-        <div className="min-w-0 flex-1">
+        {/* Phones: photo and blood group share the first row, the text gets the full width below. */}
+        <div className="order-last min-w-0 basis-full sm:order-none sm:flex-1 sm:basis-0">
           <p className="text-xl font-extrabold text-navy">{profile?.full_name}</p>
           <p className="text-sm text-muted-foreground">
             {t("Volunteers see you as “{name}”. Only admins see your full name and photo.", {
@@ -83,7 +84,7 @@ export default async function ProfilePage() {
           <div className="mt-2 flex flex-wrap gap-2">{profile ? <ProfileVerificationBadge status={profile.verification_status} /> : null}</div>
         </div>
         {profile?.blood_group ? (
-          <div className="text-center">
+          <div className="ml-auto text-center sm:ml-0">
             <BloodGroupChip group={profile.blood_group} size="lg" />
             <p className="mt-1 text-xs text-muted-foreground">{profile.blood_group_verified ? t("Verified group") : t("Self-declared")}</p>
           </div>

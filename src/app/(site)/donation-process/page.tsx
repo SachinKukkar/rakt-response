@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import {
   Armchair,
@@ -25,12 +26,9 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Donation process"),
-    description: t(
+  return pageMetadata(t("Donation process"), t(
       "What to expect when you donate blood: how to prepare, what happens at the blood centre, aftercare, and how to update your Rakt Response donation history.",
-    ),
-  };
+    ));
 }
 
 type Step = { icon: LucideIcon; title: string; text: string };

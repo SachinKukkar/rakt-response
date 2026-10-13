@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthCard, NotConfiguredNotice } from "@/components/auth/auth-card";
@@ -10,7 +11,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return { title: t("Sign in") };
+  return pageMetadata(t("Sign in"), t("Sign in to manage your donor profile, donation history and requests."));
 }
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {

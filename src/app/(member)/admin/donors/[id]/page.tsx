@@ -9,6 +9,7 @@ import { KeyValue, Notice, PageHeader, SectionHeading } from "@/components/commo
 import { Pill, ProfileVerificationBadge, VerificationBadge } from "@/components/common/status-badge";
 import { selectClass } from "@/components/common/form-parts";
 import { LocationFields } from "@/components/forms/location-pickers";
+import { EmailLink, PhoneLink, WhatsAppLink } from "@/components/common/contact-link";
 import { addInternalNote } from "@/actions/volunteer";
 import { adminUpdateDonor, processDeletion, resolveBloodGroupChange, setProfileActive, verifyProfile } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
@@ -17,7 +18,6 @@ import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
 import { BLOOD_GROUPS, CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
 import { formatDate, formatDateTime } from "@/lib/format";
-import { formatPhone } from "@/lib/phone";
 import { uuidSchema } from "@/lib/validation/common";
 import type { ProfileRow, StaffRoleRow } from "@/lib/types";
 import { getT } from "@/i18n/server";
@@ -85,8 +85,13 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
         <section className="surface p-4" aria-labelledby="contact-heading">
           <SectionHeading id="contact-heading" title="Contact & area (private)" as="h3" />
           <dl>
-            <KeyValue label="Email">{donor.contacts?.email ?? "—"}</KeyValue>
-            <KeyValue label="Mobile">{donor.contacts?.phone ? formatPhone(donor.contacts.phone) : "—"}</KeyValue>
+            <KeyValue label="Email">{donor.contacts?.email ? <EmailLink email={donor.contacts.email} icon={false} /> : "—"}</KeyValue>
+            <KeyValue label="Mobile">{donor.contacts?.phone ? <PhoneLink phone={donor.contacts.phone} icon={false} /> : "—"}</KeyValue>
+            {donor.contacts?.whatsapp || donor.contacts?.phone ? (
+              <KeyValue label="WhatsApp">
+                <WhatsAppLink phone={donor.contacts.whatsapp ?? donor.contacts.phone!} />
+              </KeyValue>
+            ) : null}
             <KeyValue label="Preferred">{donor.preferences ? CONTACT_METHOD_LABELS[donor.preferences.preferred_contact_method] : "—"}</KeyValue>
             <KeyValue label="Area">{donor.location ? `${donor.location.locality ? `${donor.location.locality}, ` : ""}${donor.location.city}, ${donor.location.district}, ${donor.location.state}` : "—"}</KeyValue>
             <KeyValue label="PIN">{donor.location?.pincode ?? "—"}</KeyValue>

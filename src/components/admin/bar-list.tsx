@@ -55,7 +55,7 @@ export async function MonthlyColumns({
           </div>
         ))}
       </div>
-      <div className="mt-1 flex gap-1 text-[10px] text-muted-foreground" aria-hidden="true">
+      <div className="mt-1 flex gap-1 text-[11px] text-muted-foreground" aria-hidden="true">
         {data.map((d) => (
           <span key={String(d.month)} className="flex-1 text-center">
             {String(d.month).slice(5)}

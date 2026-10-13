@@ -189,7 +189,7 @@ export function CardListSkeleton({ rows = 4 }: { rows?: number }) {
 
 export function KeyValue({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-border/70 py-2.5 text-sm last:border-0">
+    <div className="flex items-baseline justify-between gap-4 border-b border-border/70 py-2.5 text-sm last:border-0">
       <dt className="text-muted-foreground">{tx(label)}</dt>
       <dd className="text-right font-medium text-foreground">{tx(children)}</dd>
     </div>

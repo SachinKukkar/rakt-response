@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CtaBand, LEARN_TOPICS, PageHero, SectionTitle, TLDR } from "@/components/learn/learn-parts";
@@ -6,12 +7,9 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Learn"),
-    description: t(
+  return pageMetadata(t("Learn"), t(
       "Blood 101 from Rakt Response: why donating matters, whole blood vs SDP, general eligibility information, what happens on the day, and FAQs.",
-    ),
-  };
+    ));
 }
 
 const TEASERS: Record<(typeof LEARN_TOPICS)[number]["href"], { title: string; teaser: string }> = {

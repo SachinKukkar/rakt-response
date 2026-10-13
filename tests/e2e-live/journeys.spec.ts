@@ -111,7 +111,8 @@ test("donors record donations, get duplicate warnings and manage consent", async
   await page.locator("#city").fill("kothr");
   await page.getByRole("option", { name: /^Kothrud/ }).click();
   await page.getByRole("button", { name: "Save donation" }).click();
-  await expect(page).toHaveURL(/\/donations$/);
+  await expect(page).toHaveURL(/\/donations\?saved=1$/);
+  await expect(page.getByText(/Donation saved/)).toBeVisible();
   await expect(page.getByText("Live Apheresis Unit")).toBeVisible();
   await expect(page.getByText(/Live Apheresis Unit, Kothrud/).first()).toBeVisible();
 
@@ -122,7 +123,8 @@ test("donors record donations, get duplicate warnings and manage consent", async
   await page.getByRole("button", { name: "Save donation" }).click();
   await expect(page.getByText("This might be a duplicate")).toBeVisible();
   await page.getByRole("button", { name: /separate donation/ }).click();
-  await expect(page).toHaveURL(/\/donations$/);
+  await expect(page).toHaveURL(/\/donations\?saved=1$/);
+  await expect(page.getByText(/Donation saved/)).toBeVisible();
 
   await page.goto("/settings");
   await page.locator("#pref-emergency_alerts").uncheck();

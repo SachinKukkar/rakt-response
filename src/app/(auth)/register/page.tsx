@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { NotConfiguredNotice } from "@/components/auth/auth-card";
@@ -9,10 +10,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Become a donor"),
-    description: t("Register as a voluntary blood donor with Rakt Response in a few short steps."),
-  };
+  return pageMetadata(t("Become a donor"), t("Register as a voluntary blood donor with Rakt Response in a few short steps."));
 }
 
 export default async function RegisterPage() {

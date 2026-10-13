@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { MailCheck } from "lucide-react";
 import { AuthCard } from "@/components/auth/auth-card";
@@ -7,7 +8,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return { title: t("Confirm your email") };
+  return pageMetadata(t("Confirm your email"), t("Confirm your email address to finish registering as a Rakt Response donor."));
 }
 
 export default async function VerifyEmailPage() {

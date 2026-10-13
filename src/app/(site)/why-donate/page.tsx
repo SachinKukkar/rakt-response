@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
 import {
@@ -22,12 +23,9 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Why donate"),
-    description: t(
+  return pageMetadata(t("Why donate"), t(
       "Why voluntary blood donation matters: how red cells, platelets and plasma support patients, and why regular voluntary donors are important.",
-    ),
-  };
+    ));
 }
 
 /** Puts links and bold text into a translated sentence at its {slots}. */
