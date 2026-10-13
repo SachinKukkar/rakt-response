@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { Eye, Lock, ShieldCheck } from "lucide-react";
@@ -11,12 +12,9 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Share your story"),
-    description: t(
+  return pageMetadata(t("Share your story"), t(
       "Share your experience as a donor, family member, volunteer or camp organiser. Nothing is published without review and your consent.",
-    ),
-  };
+    ));
 }
 
 export default async function ShareYourStoryPage() {

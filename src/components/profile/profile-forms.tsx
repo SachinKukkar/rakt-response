@@ -205,7 +205,8 @@ export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
     setResult(null);
     let resized: File;
     try {
-      resized = await resizeImageForUpload(file, 800, 0.85);
+      // Shown at most 80 px wide; 320 px stays sharp on high-density screens at a fraction of the size.
+      resized = await resizeImageForUpload(file, 320, 0.85);
     } catch (error) {
       setResult({ ok: false, message: (error as Error).message });
       return;

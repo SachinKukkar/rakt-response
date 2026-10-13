@@ -104,7 +104,7 @@ export default async function VolunteerOverviewPage() {
           id="urgent-heading"
           title="Waiting for verification"
           action={
-            <Link href="/volunteer/requests?tab=verify" className="shrink-0 text-sm font-semibold text-primary hover:underline">
+            <Link href="/volunteer/requests?tab=verify" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center text-sm font-semibold text-primary hover:underline">
               {t("All")}
             </Link>
           }
@@ -127,7 +127,7 @@ export default async function VolunteerOverviewPage() {
             title="My assignments"
             as="h3"
             action={
-              <Link href="/volunteer/coordination" className="text-sm font-semibold text-primary hover:underline">
+              <Link href="/volunteer/coordination" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary hover:underline">
                 {t("Manage")}
               </Link>
             }

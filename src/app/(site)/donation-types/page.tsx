@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
 import { Clock, Droplet, Droplets, HeartHandshake, Layers, ListChecks, Microscope, Repeat, Workflow, type LucideIcon } from "lucide-react";
@@ -9,12 +10,9 @@ import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Donation types"),
-    description: t(
+  return pageMetadata(t("Donation types"), t(
       "Whole blood, Single Donor Platelet (SDP) and other apheresis donations explained: how they differ, how long they take, and why they are not interchangeable.",
-    ),
-  };
+    ));
 }
 
 /** Puts links and bold text into a translated sentence at its {slots}. */

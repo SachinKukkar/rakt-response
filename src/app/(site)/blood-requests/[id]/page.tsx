@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Hospital } from "lucide-react";
@@ -13,10 +14,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Blood request"),
-    robots: { index: false },
-  };
+  return pageMetadata(t("Blood request"), t("A verified blood request shared with consent. Only the blood group, hospital, city and time needed are shown."), { robots: { index: false } });
 }
 
 export default async function BloodRequestDetailPage({ params }: PageProps<"/blood-requests/[id]">) {

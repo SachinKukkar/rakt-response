@@ -130,7 +130,7 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
                       )}
                     >
                       {g}
-                      <span className={cn("text-[10px] font-medium", selected ? "text-white/85" : "text-muted-foreground")}>{facets[g] ?? 0}</span>
+                      <span className={cn("text-[11px] font-medium", selected ? "text-white/85" : "text-muted-foreground")}>{facets[g] ?? 0}</span>
                     </button>
                   );
                 })}

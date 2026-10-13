@@ -45,7 +45,7 @@ export function DonationForm() {
         return;
       }
       if (result.ok) {
-        router.push("/donations");
+        router.push("/donations?saved=1");
         router.refresh();
         return;
       }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
 import { BookOpen, CircleCheck, CircleX, NotebookPen, ShieldCheck, TriangleAlert, Users } from "lucide-react";
@@ -10,12 +11,9 @@ import { SITE } from "@/lib/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("About"),
-    description: t(
+  return pageMetadata(t("About"), t(
       "Rakt Response is a volunteer community team that helps voluntary blood donors and people seeking blood connect safely, with privacy and consent built in.",
-    ),
-  };
+    ));
 }
 
 /** Puts links and bold text into a translated sentence at its {slots}. */

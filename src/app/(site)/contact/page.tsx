@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
 import { FilePenLine, Hospital, Mail, MessageCircle, Phone, ShieldAlert } from "lucide-react";
@@ -11,10 +12,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return {
-    title: t("Contact"),
-    description: t("How to reach the Rakt Response team, report inaccurate information or request a correction."),
-  };
+  return pageMetadata(t("Contact"), t("How to reach the Rakt Response team, report inaccurate information or request a correction."));
 }
 
 export const revalidate = 300;

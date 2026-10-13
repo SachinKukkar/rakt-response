@@ -201,6 +201,21 @@ const hi: Catalog = {
   Uttarakhand: "उत्तराखंड",
   "West Bengal": "पश्चिम बंगाल",
 
+  // --- Footer, phone menu and page descriptions (2026-10-13) -----------------
+  "Get involved": "हमसे जुड़ें",
+  "Request blood": "खून के लिए रिक्वेस्ट करें",
+  "Blood donation basics": "रक्तदान की बुनियादी जानकारी",
+  "© {year} Rakt Response Team. All rights reserved.": "© {year} Rakt Response Team. सर्वाधिकार सुरक्षित।",
+  Menu: "मेनू",
+  "Every page in your account.": "आपके खाते के सभी पेज।",
+  "Donation saved. It shows as self-reported until a volunteer verifies it.":
+    "रक्तदान सेव हो गया। जब तक कोई स्वयंसेवक इसकी पुष्टि नहीं करता, यह \"खुद बताया गया\" दिखेगा।",
+  "Choose a new password for your Rakt Response account.": "अपने Rakt Response खाते के लिए नया पासवर्ड चुनें।",
+  "Confirm your email address to finish registering as a Rakt Response donor.":
+    "Rakt Response डोनर के रूप में रजिस्ट्रेशन पूरा करने के लिए अपने ईमेल की पुष्टि करें।",
+  "A verified blood request shared with consent. Only the blood group, hospital, city and time needed are shown.":
+    "सहमति से साझा की गई, पुष्टि वाली खून की रिक्वेस्ट। सिर्फ़ ब्लड ग्रुप, अस्पताल, शहर और ज़रूरत का समय दिखाया जाता है।",
+
   // --- Common words -------------------------------------------------------------
   On: "चालू",
   Off: "बंद",

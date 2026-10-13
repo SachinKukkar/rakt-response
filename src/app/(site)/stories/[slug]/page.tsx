@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,9 +50,10 @@ async function loadStory(slug: string): Promise<PublishedStory | null> {
 
 export async function generateMetadata({ params }: PageProps<"/stories/[slug]">): Promise<Metadata> {
   const story = await loadStory((await params).slug);
-  if (story) return { title: story.title, description: story.body.slice(0, 150) };
+  // Published stories share with their own title and opening line.
+  if (story) return pageMetadata(story.title, `${story.body.slice(0, 150).trim()}…`);
   const t = await getT();
-  return { title: t("Story not found") };
+  return { title: t("Story not found"), robots: { index: false } };
 }
 
 export default async function StoryPage({ params }: PageProps<"/stories/[slug]">) {

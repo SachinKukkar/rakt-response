@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { AuthCard } from "@/components/auth/auth-card";
 import { ResetPasswordForm } from "@/components/auth/auth-forms";
@@ -7,7 +8,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return { title: t("Choose a new password") };
+  return pageMetadata(t("Choose a new password"), t("Choose a new password for your Rakt Response account."));
 }
 
 export default async function ResetPasswordPage() {

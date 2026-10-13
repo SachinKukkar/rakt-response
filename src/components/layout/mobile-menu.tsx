@@ -22,9 +22,13 @@ export function MobileMenu() {
       </SheetTrigger>
       <SheetContent side="right" className="w-[86vw] max-w-sm overflow-y-auto bg-warm p-0">
         <SheetHeader className="flex-row items-center gap-3 border-b p-4 pr-14">
-          <LogoMark size="sm" />
+          <Link href="/" onClick={() => setOpen(false)} className="shrink-0 rounded-full" aria-label={t("Rakt Response home")}>
+            <LogoMark size="sm" />
+          </Link>
           <div>
-            <SheetTitle className="text-base font-extrabold text-navy">Rakt Response</SheetTitle>
+            <SheetTitle className="text-base font-extrabold text-navy">
+              <span className="text-primary">Rakt</span> Response
+            </SheetTitle>
             <SheetDescription className="text-xs">{t("We Respond, We Support, We Save Lives.")}</SheetDescription>
           </div>
         </SheetHeader>

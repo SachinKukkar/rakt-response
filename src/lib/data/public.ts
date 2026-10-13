@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { ImpactMetrics, PublicRequestRow, StoryCard } from "@/lib/types";
 import type { BloodGroup, RequestType, StoryType } from "@/lib/constants";
@@ -68,7 +69,8 @@ export const DEFAULT_PUBLIC_SETTINGS: PublicSettings = {
   wholeBloodIntervalDays: 90,
 };
 
-export async function getPublicSettings(): Promise<PublicSettings> {
+/** Cached per request: the footer and pages such as /contact both read it. */
+export const getPublicSettings = cache(async (): Promise<PublicSettings> => {
   const client = createPublicClient();
   if (!client) return DEFAULT_PUBLIC_SETTINGS;
   const { data } = await client.from("platform_settings").select("key, value").eq("is_public", true);
@@ -82,4 +84,4 @@ export async function getPublicSettings(): Promise<PublicSettings> {
     registrationOpen: map.get("registration_open") !== false,
     wholeBloodIntervalDays: typeof map.get("whole_blood_interval_days") === "number" ? (map.get("whole_blood_interval_days") as number) : 90,
   };
-}
+});

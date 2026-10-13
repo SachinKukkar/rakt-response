@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
  * One tap switches the whole site between English and Hindi. Each label is
  * written in its own language so people can find it without reading English.
  */
-export function LanguageToggle({ className, tone = "light" }: { className?: string; tone?: "light" | "dark" }) {
+export function LanguageToggle({ className, tone = "light", compact }: { className?: string; tone?: "light" | "dark"; compact?: boolean }) {
   const locale = useLocale();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -34,7 +34,12 @@ export function LanguageToggle({ className, tone = "light" }: { className?: stri
         className,
       )}
     >
-      {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Languages className="size-4" aria-hidden="true" />}
+      {pending ? (
+        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+      ) : (
+        // In tight headers the icon only shows from tablet width; the label always shows.
+        <Languages className={cn("size-4", compact && "hidden sm:block")} aria-hidden="true" />
+      )}
       {next === "hi" ? "हिंदी" : "English"}
     </button>
   );

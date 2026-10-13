@@ -9,6 +9,7 @@ import { KeyValue, Notice, PageHeader, SectionHeading } from "@/components/commo
 import { Pill, StoryStatusBadge } from "@/components/common/status-badge";
 import { selectClass } from "@/components/common/form-parts";
 import { TrustBadges } from "@/components/stories/story-parts";
+import { EmailLink, PhoneLink } from "@/components/common/contact-link";
 import { addInternalNote } from "@/actions/volunteer";
 import { publishStoryPhoto, removeStoryPhoto, setStoryStatus, setStoryVerification, updateStoryContent } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
@@ -17,7 +18,6 @@ import { createClient } from "@/lib/supabase/server";
 import { publicStoryPhotoUrl } from "@/lib/env";
 import { DONATION_TYPE_LABELS, STORY_STATUS_LABELS, STORY_TRANSITIONS, STORY_TYPE_LABELS } from "@/lib/constants";
 import { formatDate, formatDateTime } from "@/lib/format";
-import { formatPhone } from "@/lib/phone";
 import { uuidSchema } from "@/lib/validation/common";
 import type { StoryRow } from "@/lib/types";
 import { getT } from "@/i18n/server";
@@ -90,8 +90,8 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
           <dl>
             <KeyValue label="Name">{story.contributor_name}</KeyValue>
             <KeyValue label="Preferred public name">{story.public_display_name ?? "—"}</KeyValue>
-            <KeyValue label="Email">{story.follow_up_email ?? "—"}</KeyValue>
-            <KeyValue label="Phone">{story.follow_up_phone ? formatPhone(story.follow_up_phone) : "—"}</KeyValue>
+            <KeyValue label="Email">{story.follow_up_email ? <EmailLink email={story.follow_up_email} icon={false} /> : "—"}</KeyValue>
+            <KeyValue label="Phone">{story.follow_up_phone ? <PhoneLink phone={story.follow_up_phone} icon={false} /> : "—"}</KeyValue>
             <KeyValue label="May contact to verify">{story.consent_contact_for_verification ? "Yes" : "No"}</KeyValue>
             <KeyValue label="Submitted">{formatDateTime(story.created_at)}</KeyValue>
           </dl>

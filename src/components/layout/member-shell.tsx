@@ -5,7 +5,7 @@ import { LanguageToggle } from "@/components/layout/language-toggle";
 import { getT } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
 import type { Viewer } from "@/lib/auth";
-import { BottomNav, SideNav, type NavItem } from "./member-nav";
+import { BottomNav, MemberMenu, SideNav, type NavItem } from "./member-nav";
 
 function bottomItems(viewer: Viewer): NavItem[] {
   const items: NavItem[] = [{ href: "/dashboard", label: "Home", icon: "home" }];
@@ -93,14 +93,14 @@ export async function MemberShell({ viewer, unread, children }: { viewer: Viewer
           <Link href="/dashboard" className="flex min-h-11 items-center gap-2.5" aria-label={t("Rakt Response dashboard")}>
             <LogoMark size="xs" priority />
             <span className="leading-tight">
-              <span className="block text-[15px] font-extrabold text-navy">
+              <span className="block text-[15px] font-extrabold whitespace-nowrap text-navy">
                 <span className="text-primary">Rakt</span> Response
               </span>
               <span className="block max-w-[11rem] truncate text-xs text-muted-foreground">{t("Hello, {name}", { name })}</span>
             </span>
           </Link>
           <div className="flex items-center gap-1">
-            <LanguageToggle className="px-2.5" />
+            <LanguageToggle compact className="px-2.5" />
             <Button asChild variant="ghost" size="icon" className="relative" aria-label={unread ? t("Notifications, {count} unread", { count: unread }) : t("Notifications")}>
               <Link href="/notifications">
                 <Bell className="size-5.5" />
@@ -111,11 +111,13 @@ export async function MemberShell({ viewer, unread, children }: { viewer: Viewer
                 ) : null}
               </Link>
             </Button>
-            <form action="/auth/signout" method="post">
+            {/* On phones, sign out lives in the menu so the header fits. */}
+            <form action="/auth/signout" method="post" className="hidden lg:block">
               <Button type="submit" variant="ghost" size="icon" aria-label={t("Sign out")}>
                 <LogOut className="size-5" />
               </Button>
             </form>
+            <MemberMenu groups={sideGroups(viewer)} />
           </div>
         </div>
       </header>
