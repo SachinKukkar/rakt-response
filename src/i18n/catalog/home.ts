@@ -258,6 +258,83 @@ const hi: Catalog = {
   "You're offline": "आप ऑफ़लाइन हैं",
   "Rakt Response needs a connection to show requests and your profile. If someone needs blood urgently, contact the treating hospital or the nearest licensed blood bank by phone.":
     "रिक्वेस्ट और आपकी प्रोफ़ाइल दिखाने के लिए Rakt Response को इंटरनेट चाहिए। अगर किसी को जल्दी खून चाहिए, तो इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक को फ़ोन करें।",
+
+  // --- Redesigned homepage (2026-10-15) ---------------------------------------
+  "Blood, answered.": "खून की पुकार, हमारा जवाब।",
+  "Volunteers check every blood request, then reach donors near you who have agreed to help.":
+    "स्वयंसेवक हर रिक्वेस्ट की जाँच करते हैं, फिर आपके पास के उन डोनर तक पहुँचते हैं जो मदद के लिए राज़ी हैं।",
+  "Tap “I need blood” if someone needs blood. Tap “I want to donate” to join as a donor.":
+    "अगर किसी को खून चाहिए तो “मुझे खून चाहिए” दबाएँ। डोनर बनने के लिए “मुझे रक्तदान करना है” दबाएँ।",
+  "I need blood": "मुझे खून चाहिए",
+  "I want to donate": "मुझे रक्तदान करना है",
+  "Call us": "हमें फ़ोन करें",
+  Listen: "सुनें",
+  Stop: "रोकें",
+  "How a request is answered": "रिक्वेस्ट का जवाब कैसे मिलता है",
+  "Five steps, all by volunteers, all free. You can stop at any time.":
+    "पाँच कदम, सब स्वयंसेवकों द्वारा, सब मुफ़्त। आप कभी भी रुक सकते हैं।",
+  "You ask": "आप पूछते हैं",
+  "Fill in a short form or call us. Your request stays private.": "छोटा-सा फ़ॉर्म भरें या हमें फ़ोन करें। आपकी रिक्वेस्ट निजी रहती है।",
+  "We check": "हम जाँचते हैं",
+  "A volunteer confirms the need with the hospital before any donor is contacted.":
+    "किसी भी डोनर से संपर्क से पहले स्वयंसेवक अस्पताल से ज़रूरत की पुष्टि करते हैं।",
+  "Donors hear": "डोनर तक ख़बर",
+  "Donors nearby with the right blood group get a message, only if they agreed to be contacted.":
+    "पास के सही ब्लड ग्रुप वाले डोनर को संदेश जाता है, सिर्फ़ तब जब उन्होंने संपर्क की सहमति दी हो।",
+  "A donor says yes": "डोनर हाँ कहते हैं",
+  "Their number is shared only with their consent, and every view is logged.":
+    "उनका नंबर सिर्फ़ उनकी सहमति से दिखाया जाता है, और हर बार देखने का रिकॉर्ड रहता है।",
+  "Blood is given": "रक्तदान होता है",
+  "At the hospital or a licensed blood bank, where doctors check and cross-match.":
+    "अस्पताल या लाइसेंस वाले ब्लड बैंक में, जहाँ डॉक्टर जाँच और क्रॉस-मैच करते हैं।",
+  "Volunteers registering donors at a blood donation camp": "रक्तदान कैंप में डोनर का रजिस्ट्रेशन करते स्वयंसेवक",
+  "Volunteers at a blood donation camp": "रक्तदान कैंप में स्वयंसेवक",
+  "Donors at a blood donation camp": "रक्तदान कैंप में डोनर",
+  "A donor giving blood at a camp": "कैंप में रक्तदान करते डोनर",
+  "A donor resting while giving blood": "रक्तदान करते हुए आराम करती डोनर",
+  "Our promise": "हमारा वादा",
+  "Every request is checked first.": "हर रिक्वेस्ट पहले जाँची जाती है।",
+  "No donor is contacted until a volunteer confirms the need with the hospital, and no number is shared without the donor's yes.":
+    "जब तक स्वयंसेवक अस्पताल से ज़रूरत की पुष्टि नहीं करते, किसी डोनर से संपर्क नहीं होता, और डोनर की हाँ के बिना कोई नंबर नहीं दिखाया जाता।",
+  "How we work": "हम कैसे काम करते हैं",
+  "Blood group match": "ब्लड ग्रुप का मेल",
+  "Tap your blood group": "अपना ब्लड ग्रुप दबाएँ",
+  Bombay: "बॉम्बे",
+  "You can give red cells to": "आप इन्हें लाल रक्त कोशिकाएँ दे सकते हैं",
+  "You can receive red cells from": "आप इनसे लाल रक्त कोशिकाएँ ले सकते हैं",
+  "Everyone (all 8 groups)": "सभी को (सभी 8 ग्रुप)",
+  "Bombay (Oh) was first described in Bombay in 1952. It is very rare, so every Oh donor matters.":
+    "बॉम्बे (Oh) ब्लड ग्रुप की पहचान पहली बार 1952 में बॉम्बे में हुई थी। यह बहुत दुर्लभ है, इसलिए हर Oh डोनर बहुत कीमती है।",
+  "A general guide for red cells. The blood bank always tests and cross-matches before any transfusion.":
+    "यह लाल रक्त कोशिकाओं के लिए सामान्य जानकारी है। खून चढ़ाने से पहले ब्लड बैंक हमेशा जाँच और क्रॉस-मैच करता है।",
+  "From our records, counted live": "हमारे रिकॉर्ड से, अभी की गिनती",
+  "donors have registered": "डोनर रजिस्टर हुए हैं",
+  "verified donors": "पुष्टि वाले डोनर",
+  "requests fulfilled": "रिक्वेस्ट पूरी हुईं",
+  "Nothing here is estimated. Unverified records are never counted as verified.":
+    "यहाँ कुछ भी अंदाज़े से नहीं लिखा है। बिना जाँचे रिकॉर्ड कभी पुष्टि वाले नहीं गिने जाते।",
+  "A story from our community": "हमारे समुदाय की एक कहानी",
+  "Shared with consent": "सहमति से साझा",
+  "Read the story": "कहानी पढ़ें",
+  "Your story could help someone decide.": "आपकी कहानी किसी को फ़ैसला लेने में मदद कर सकती है।",
+  "Questions people ask": "लोग क्या पूछते हैं",
+  "All questions": "सभी सवाल",
+  "Does it cost anything?": "क्या इसका कोई पैसा लगता है?",
+  "No. Rakt Response is free and run by volunteers. Hospitals and blood banks may charge their usual processing fees.":
+    "नहीं। Rakt Response मुफ़्त है और स्वयंसेवक इसे चलाते हैं। अस्पताल और ब्लड बैंक अपनी सामान्य प्रोसेसिंग फ़ीस ले सकते हैं।",
+  "How often can I give blood?": "मैं कितनी बार रक्तदान कर सकता/सकती हूँ?",
+  "For whole blood, usually a gap of at least three months, and longer for some people. The blood bank decides on the day.":
+    "होल ब्लड के लिए आमतौर पर कम से कम तीन महीने का अंतर, और कुछ लोगों के लिए इससे ज़्यादा। उस दिन ब्लड बैंक ही तय करता है।",
+  "I'm": "मेरा ब्लड ग्रुप",
+  "Your blood group": "आपका ब्लड ग्रुप",
+  "and I'll": "है, और मैं",
+  "answer.": "हाज़िर हूँ।",
+  "Next is a short sign-up. Your details stay private, and you choose when you can be contacted.":
+    "आगे छोटा-सा रजिस्ट्रेशन है। आपकी जानकारी निजी रहती है, और संपर्क कब हो, यह आप तय करते हैं।",
+  "Rakt Response logo": "Rakt Response का लोगो",
+  "Photographs of blood donation camps in India via Wikimedia Commons:": "भारत के रक्तदान कैंपों की तस्वीरें, Wikimedia Commons से:",
+  "Baranagar Ramakrishna Mission camp, public domain": "बरानगर रामकृष्ण मिशन कैंप, पब्लिक डोमेन",
+  "Chittaranjan Bayam Samiti camp, Howrah, by Biswarup Ganguly, CC BY 3.0": "चित्तरंजन बायाम समिति कैंप, हावड़ा, फ़ोटो: बिस्वरूप गांगुली, CC BY 3.0",
 };
 
 export default hi;

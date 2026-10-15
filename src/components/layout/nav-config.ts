@@ -7,6 +7,14 @@ export const PUBLIC_NAV = [
   { href: "/about", label: "About" },
 ] as const;
 
+/** The desktop header keeps four; everything else is in the menu and footer. */
+export const HEADER_NAV = [
+  { href: "/blood-requests", label: "Find Blood" },
+  { href: "/learn", label: "Learn" },
+  { href: "/stories", label: "Stories" },
+  { href: "/about", label: "About" },
+] as const;
+
 export const MORE_LINKS = [
   { href: "/why-donate", label: "Why donate" },
   { href: "/donation-types", label: "Whole blood vs SDP" },

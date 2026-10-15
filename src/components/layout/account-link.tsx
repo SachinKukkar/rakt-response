@@ -29,7 +29,7 @@ export function AccountLink({ className, variant = "pill" }: { className?: strin
       href={href}
       className={cn(
         variant === "pill"
-          ? "inline-flex h-11 items-center gap-2 rounded-full border border-navy/15 bg-white px-4 text-sm font-semibold text-navy hover:border-navy/40"
+          ? "inline-flex h-11 items-center gap-2 whitespace-nowrap rounded-full border border-navy/15 bg-white px-4 text-sm font-semibold text-navy hover:border-navy/40"
           : "flex min-h-12 items-center gap-3 rounded-xl px-3 font-semibold text-navy hover:bg-muted",
         className,
       )}

@@ -19,6 +19,7 @@ import {
   DONATION_EXPERIENCE_LABELS,
   DONATION_TYPE_LABELS,
   DONATION_TYPES,
+  type BloodGroup,
   type ContactMethod,
   type DonationExperience,
   type DonationType,
@@ -77,10 +78,13 @@ const DEFAULTS: RegistrationInput = {
   },
 };
 
-export function RegisterWizard() {
+export function RegisterWizard({ initialBloodGroup }: { initialBloodGroup?: BloodGroup } = {}) {
   const router = useRouter();
   const t = useT();
-  const form = useForm<RegistrationInput>({ defaultValues: DEFAULTS, mode: "onTouched" });
+  const form = useForm<RegistrationInput>({
+    defaultValues: initialBloodGroup ? { ...DEFAULTS, donor: { ...DEFAULTS.donor, blood_group: initialBloodGroup } } : DEFAULTS,
+    mode: "onTouched",
+  });
   const { register, control, setError, clearErrors, getValues, setValue, formState } = form;
   const errors = formState.errors;
   const donations = useFieldArray({ control, name: "history.donations" });

@@ -273,3 +273,98 @@
     animation: none;
   }
 }
+
+/* --- Redesign (one motif: the drop-bubble from the logo) ------------------- */
+:root {
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: clamp(3.5rem, 1.6rem + 7.2vw, 9rem);
+}
+
+/* Devanagari is wider: Hindi headlines get a smaller display step so they stay on two lines. */
+html[lang="hi-IN"] {
+  --step-display: clamp(3rem, 1.2rem + 5vw, 6.25rem);
+}
+
+/* The reply bubble: round, with one square corner where the logo's tail is. */
+@utility bubble {
+  border-radius: 1.5rem 1.5rem 1.5rem 0.3rem;
+}
+
+/* A photograph inside the logo's shape. */
+@utility drop-mask {
+  -webkit-mask: url("/images/drop-mask.svg") center / 100% 100% no-repeat;
+  mask: url("/images/drop-mask.svg") center / 100% 100% no-repeat;
+}
+
+/* Section parts rise in turn as they enter (reveal.tsx adds .js-rise). */
+[data-rise] {
+  transition:
+    opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+.js-rise [data-rise]:not([data-shown]) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* First screen: the hero's parts rise once on load, no script needed. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+.hero-in > * {
+  animation: rise-in 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.hero-in > :nth-child(2) {
+  animation-delay: 80ms;
+}
+.hero-in > :nth-child(3) {
+  animation-delay: 160ms;
+}
+.hero-in > :nth-child(4) {
+  animation-delay: 240ms;
+}
+
+/* The hero photograph drifts slowly inside the drop. */
+@keyframes drift {
+  from {
+    transform: scale(1.04) translate3d(-1%, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(1.5%, -1.5%, 0);
+  }
+}
+@utility animate-drift {
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+/* The blood group swap in the matcher. */
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.match-swap {
+  animation: swap-in 260ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rise],
+  .js-rise [data-rise]:not([data-shown]) {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-in > *,
+  .match-swap,
+  .animate-drift {
+    animation: none;
+  }
+}
