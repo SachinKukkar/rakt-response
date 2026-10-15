@@ -29,7 +29,7 @@ export function BloodGroupChip({
   return (
     <span
       className={cn("relative inline-grid shrink-0 place-items-center font-extrabold", SIZE[size], className)}
-      aria-label={label ? t(label) : t("Blood group {group}", { group })}
+      aria-label={label ? t(label) : group === "Oh" ? t("Bombay blood group (Oh)") : t("Blood group {group}", { group })}
       role="img"
     >
       <svg viewBox="0 0 48 56" aria-hidden="true" className="absolute inset-0 size-full">

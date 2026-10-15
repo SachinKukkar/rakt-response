@@ -1,10 +1,15 @@
 import Link from "next/link";
-import { ArrowRight, Check, ChevronDown, type LucideIcon } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, CircleCheck, Compass, Droplet, Heart, MessageCircleQuestion, Zap, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { T } from "@/i18n/client";
 import { getT } from "@/i18n/server";
 import { tx } from "@/i18n/tx";
+
+export interface HeroChip {
+  icon: LucideIcon;
+  label: string;
+}
 
 /**
  * Building blocks for short, scannable public pages: a bold red hero, a
@@ -27,7 +32,8 @@ export function PageHero({
   /** Part of the title rendered in outline style for emphasis. */
   highlight?: string;
   subtitle?: React.ReactNode;
-  chips?: string[];
+  /** Short facts under the subtitle; give each an icon so it reads at a glance. */
+  chips?: Array<string | HeroChip>;
   children?: React.ReactNode;
 }) {
   return (
@@ -47,11 +53,18 @@ export function PageHero({
         {subtitle ? <p className="mt-3 max-w-xl text-base text-white/90 sm:text-lg">{tx(subtitle)}</p> : null}
         {chips?.length ? (
           <ul className="mt-5 flex flex-wrap gap-2">
-            {chips.map((chip) => (
-              <li key={chip} className="rounded-full border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold backdrop-blur">
-                {tx(chip)}
-              </li>
-            ))}
+            {chips.map((chip) => {
+              const { icon: Icon, label } = typeof chip === "string" ? { icon: null, label: chip } : chip;
+              return (
+                <li
+                  key={label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-semibold backdrop-blur"
+                >
+                  {Icon ? <Icon className="size-3.5 text-white/90" aria-hidden="true" /> : null}
+                  {tx(label)}
+                </li>
+              );
+            })}
           </ul>
         ) : null}
         {children ? <div className="mt-6">{children}</div> : null}
@@ -63,7 +76,7 @@ export function PageHero({
 /** Decorative floating drops used in red bands. */
 export function DropPattern() {
   return (
-    <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.13]" preserveAspectRatio="none">
+    <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.08]" preserveAspectRatio="none">
       <defs>
         <pattern id="rr-drops" width="88" height="88" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
           <path d="M22 8C22 8 12 20 12 26.5C12 32 16.5 35 22 35C27.5 35 32 32 32 26.5C32 20 22 8 22 8Z" fill="white" />
@@ -79,7 +92,9 @@ export async function TLDR({ title = "The quick version", items }: { title?: str
   const t = await getT();
   return (
     <section className="surface relative -mt-8 overflow-hidden p-5 sm:p-6" aria-label={t(title)}>
-      <p className="sticker mb-3">⚡ {t(title)}</p>
+      <p className="tag mb-4">
+        <Zap className="size-3.5" aria-hidden="true" /> {t(title)}
+      </p>
       <ul className="space-y-2.5">
         {items.map((item, i) => (
           <li key={i} className="flex gap-3 text-[15px] leading-snug text-foreground">
@@ -165,13 +180,13 @@ export function MoreDetails({ title, children, defaultOpen }: { title: string; c
   );
 }
 
-export const LEARN_TOPICS = [
-  { href: "/why-donate", label: "Why donate", emoji: "💗" },
-  { href: "/donation-types", label: "Whole blood vs SDP", emoji: "🩸" },
-  { href: "/eligibility", label: "Can I donate?", emoji: "✅" },
-  { href: "/donation-process", label: "What happens", emoji: "🧭" },
-  { href: "/faq", label: "FAQ", emoji: "💬" },
-] as const;
+export const LEARN_TOPICS: ReadonlyArray<{ href: string; label: string; icon: LucideIcon }> = [
+  { href: "/why-donate", label: "Why donate", icon: Heart },
+  { href: "/donation-types", label: "Whole blood vs SDP", icon: Droplet },
+  { href: "/eligibility", label: "Can I donate?", icon: CircleCheck },
+  { href: "/donation-process", label: "What happens", icon: Compass },
+  { href: "/faq", label: "FAQ", icon: MessageCircleQuestion },
+];
 
 export async function TopicPills({ current }: { current?: string }) {
   const t = await getT();
@@ -179,7 +194,7 @@ export async function TopicPills({ current }: { current?: string }) {
     <nav aria-label={t("More topics")} className="snap-row sm:mx-0 sm:flex-wrap sm:px-0">
       {LEARN_TOPICS.filter((topic) => topic.href !== current).map((topic) => (
         <Link key={topic.href} href={topic.href} className="press inline-flex h-11 items-center gap-2 rounded-full border bg-white px-4 text-sm font-semibold whitespace-nowrap text-navy hover:border-primary/40">
-          <span aria-hidden="true">{topic.emoji}</span>
+          <topic.icon className="size-4 text-primary" aria-hidden="true" />
           {t(topic.label)}
         </Link>
       ))}

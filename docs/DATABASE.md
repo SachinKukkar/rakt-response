@@ -9,6 +9,11 @@ All schema lives in version-controlled migrations:
 | `0300_impact_stories.sql` | Stories, consent history, moderation trail, camps, documented metric sources, public impact metrics, account anonymisation |
 | `0400_storage.sql` | Storage buckets and object policies (skipped where `storage` doesn't exist, e.g. tests) |
 | `0500_default_settings.sql` | Safe default platform settings |
+| `0600_audit_actor_deletion.sql` | Lets account deletion clear `audit_logs.actor_id` while keeping the log append-only |
+| `0700_member_bootstrap_backfill.sql` | Reusable member bootstrap from signup metadata, plus a backfill for older accounts |
+| `0800_email_verification_and_admin_edits.sql` | Donors verified on email confirmation, donor bio, administrator edits of donor details |
+| `0900_name_privacy_photos_data_checks.sql` | Display name or "Donor #XXXX" for volunteers, admin-only profile photos, `admin_data_checks()` |
+| `1000_bombay_blood_group.sql` (dated `20261015`) | Adds the Bombay blood group `'Oh'` to `blood_group`; matching stays exact, so Oh requests reach Oh donors only |
 
 ## Roles
 

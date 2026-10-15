@@ -10,7 +10,7 @@ import { Pagination, parsePage } from "@/components/common/pagination";
 import { RequestCard } from "@/components/requests/request-card";
 import { selectClass } from "@/components/common/form-parts";
 import { listPublicRequests } from "@/lib/data/public";
-import { BLOOD_GROUPS, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestType } from "@/lib/constants";
+import { BLOOD_GROUPS, bloodGroupName, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestType } from "@/lib/constants";
 import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -71,7 +71,7 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
               <option value="">{t("All groups")}</option>
               {BLOOD_GROUPS.map((g) => (
                 <option key={g} value={g}>
-                  {g}
+                  {t(bloodGroupName(g))}
                 </option>
               ))}
             </select>

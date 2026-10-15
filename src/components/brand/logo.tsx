@@ -47,10 +47,10 @@ export function LogoLockup({
     <Link href={href} className={cn("flex min-h-11 items-center gap-2.5 rounded-full", className)} aria-label={t("Rakt Response home")}>
       <LogoMark size={size} priority={priority} className="ring-1 ring-black/5" />
       <span className="flex flex-col leading-none">
-        <span className={cn("text-[17px] font-extrabold tracking-tight", tone === "light" ? "text-white" : "text-navy")}>
+        <span className={cn("text-[17px] font-extrabold tracking-tight whitespace-nowrap", tone === "light" ? "text-white" : "text-navy")}>
           <span className={tone === "light" ? "text-white" : "text-primary"}>Rakt</span> Response
         </span>
-        <span className={cn("mt-1 hidden text-[10.5px] font-medium tracking-wide sm:block", tone === "light" ? "text-white/80" : "text-muted-foreground")}>
+        <span className={cn("mt-1 hidden text-[10.5px] font-medium tracking-wide whitespace-nowrap sm:block", tone === "light" ? "text-white/80" : "text-muted-foreground")}>
           {t("We Respond · We Support · We Save Lives")}
         </span>
       </span>

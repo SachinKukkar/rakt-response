@@ -7,8 +7,18 @@ export const SITE = {
   logo: "/images/rakt-response-logo.jpeg",
 } as const;
 
-export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+/**
+ * The eight ABO/Rh groups plus the rare Bombay phenotype, written "Oh".
+ * Matching is by exact group, so an Oh request only ever reaches Oh donors
+ * (people with Oh can receive Oh blood only). Mirrors public.blood_group.
+ */
+export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Oh"] as const;
 export type BloodGroup = (typeof BLOOD_GROUPS)[number];
+
+/** Option text for lists and menus, where a bare "Oh" could be misread. */
+export function bloodGroupName(group: BloodGroup): string {
+  return group === "Oh" ? "Oh (Bombay)" : group;
+}
 
 export const DONATION_TYPES = ["whole_blood", "sdp", "other_apheresis", "unknown"] as const;
 export type DonationType = (typeof DONATION_TYPES)[number];

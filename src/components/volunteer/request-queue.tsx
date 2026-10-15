@@ -8,7 +8,7 @@ import { Pill } from "@/components/common/status-badge";
 import { RequestCard } from "@/components/requests/request-card";
 import { selectClass } from "@/components/common/form-parts";
 import { createClient } from "@/lib/supabase/server";
-import { BLOOD_GROUPS, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestStatus, type RequestType } from "@/lib/constants";
+import { BLOOD_GROUPS, bloodGroupName, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestStatus, type RequestType } from "@/lib/constants";
 import type { BloodRequestRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { getT } from "@/i18n/server";
@@ -77,7 +77,9 @@ export async function RequestQueue({ basePath, searchParams }: { basePath: strin
           <select name="group" defaultValue={group ?? ""} className={selectClass}>
             <option value="">{t("All")}</option>
             {BLOOD_GROUPS.map((g) => (
-              <option key={g}>{g}</option>
+              <option key={g} value={g}>
+                {t(bloodGroupName(g))}
+              </option>
             ))}
           </select>
         </label>

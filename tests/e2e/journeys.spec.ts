@@ -14,6 +14,7 @@ test.describe("homepage", () => {
     for (const group of ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]) {
       await expect(page.getByRole("img", { name: `Blood group ${group}` }).first()).toBeAttached();
     }
+    await expect(page.getByRole("img", { name: "Bombay blood group (Oh)" }).first()).toBeAttached();
   });
 
   test("mobile menu opens and navigates", async ({ page }) => {

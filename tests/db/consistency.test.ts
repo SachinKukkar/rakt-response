@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createTestDb, type Db } from "./harness";
-import { REQUEST_STATUSES, REQUEST_TRANSITIONS, STORY_STATUSES, STORY_TRANSITIONS } from "@/lib/constants";
+import { BLOOD_GROUPS, REQUEST_STATUSES, REQUEST_TRANSITIONS, STORY_STATUSES, STORY_TRANSITIONS } from "@/lib/constants";
 
 let db: Db;
 beforeAll(async () => {
@@ -34,7 +34,8 @@ describe("TypeScript and SQL rules stay in sync", () => {
     const { rows } = await db.query<{ label: string }>(
       "select enumlabel as label from pg_enum e join pg_type t on t.oid = e.enumtypid where t.typname = 'blood_group' order by enumsortorder",
     );
-    expect(rows.map((r) => r.label)).toEqual(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]);
+    expect(rows.map((r) => r.label)).toEqual([...BLOOD_GROUPS]);
+    expect(BLOOD_GROUPS).toContain("Oh");
   });
 
   it("every public table has row level security enabled", async () => {

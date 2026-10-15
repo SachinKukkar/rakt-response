@@ -79,6 +79,7 @@
   --border: #ebe5e0;
   --input: #ddd6d0;
   --ring: #c82032;
+  --paper: #faf6f2;
 }
 
 @layer base {
@@ -161,20 +162,51 @@
     @apply font-semibold text-navy;
   }
   .surface {
-    @apply rounded-2xl border border-border/70 bg-card shadow-[0_1px_2px_rgba(21,43,80,0.04),0_4px_16px_rgba(21,43,80,0.05)];
+    @apply rounded-2xl border border-border/70 bg-card shadow-[0_1px_2px_rgba(21,43,80,0.04),0_10px_28px_-14px_rgba(21,43,80,0.14)];
   }
   .surface-tint {
     @apply rounded-2xl border border-primary/10 bg-accent/60;
+  }
+  /* Public page sections share one generous rhythm; alternate sections sit on warm paper. */
+  .section {
+    @apply py-14 sm:py-20;
+  }
+  .section-paper {
+    background-color: var(--paper);
+  }
+  /* A red tile holding a white icon, the same on every page. */
+  .icon-tile {
+    @apply grid size-11 shrink-0 place-items-center rounded-2xl text-white shadow-[0_8px_18px_-8px_rgba(200,32,50,0.6)];
+    background: linear-gradient(150deg, #e63946 0%, #c82032 55%, #a8192a 100%);
+  }
+  /* Drawn covers for stories without a photo. */
+  .cover-red {
+    background:
+      radial-gradient(110% 90% at 100% 0%, rgba(255, 140, 150, 0.35) 0%, transparent 55%),
+      linear-gradient(150deg, #e63946 0%, #c82032 50%, #9e1426 100%);
+  }
+  .cover-navy {
+    background:
+      radial-gradient(110% 90% at 100% 0%, rgba(120, 150, 210, 0.3) 0%, transparent 55%),
+      linear-gradient(150deg, #2a4a7f 0%, #152b50 100%);
+  }
+  .cover-mix {
+    background: linear-gradient(150deg, #c82032 0%, #6b2140 52%, #152b50 100%);
+  }
+  /* Short label above a card's content (e.g. "Most common", "Sample"). */
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold tracking-wide text-accent-foreground uppercase;
   }
   .brand-band {
     background:
       radial-gradient(120% 90% at 100% 0%, rgba(230, 57, 70, 0.55) 0%, transparent 55%),
       linear-gradient(160deg, #c82032 0%, #a8192a 100%);
   }
+  /* The glow fades out before the section ends, so no hard line shows under the hero. */
   .hero-glow {
     background:
       radial-gradient(60% 50% at 85% 10%, rgba(200, 32, 50, 0.1) 0%, transparent 70%),
-      radial-gradient(50% 40% at 0% 100%, rgba(21, 43, 80, 0.07) 0%, transparent 70%);
+      radial-gradient(45% 38% at 0% 72%, rgba(21, 43, 80, 0.06) 0%, transparent 70%);
   }
   /* Horizontal swipe rows (no JS): cards snap on phones, wrap into grids on desktop. */
   .snap-row {
@@ -194,9 +226,6 @@
   }
   .lift {
     @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/10 motion-reduce:transition-none motion-reduce:hover:translate-y-0;
-  }
-  .sticker {
-    @apply inline-flex items-center gap-1.5 rounded-full border-2 border-navy bg-white px-3 py-1 text-xs font-extrabold tracking-wide text-navy uppercase shadow-[3px_3px_0_0_var(--navy)];
   }
   .hero-red {
     background:
@@ -271,5 +300,31 @@
   animation: float-y 5s ease-in-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Cards rise gently into place as they scroll into view. Pure CSS: browsers
+ * without scroll-driven animations, and anyone who prefers reduced motion,
+ * simply see the content in place.
+ */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
   }
 }
