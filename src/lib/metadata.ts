@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
 
-/** The card shown when a link is shared (1200×630, ~115 KB, under WhatsApp's 300 KB limit). */
+/** The card shown when a link is shared (1200×630, ~50 KB, under WhatsApp's 300 KB limit). */
 export const SHARE_IMAGE = {
   url: "/images/share-card.jpg",
   width: 1200,

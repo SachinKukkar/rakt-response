@@ -81,7 +81,7 @@ export default async function DonationProcessPage() {
   return (
     <>
       <PageHero
-        photo={PHOTOS.hero}
+        photo={PHOTOS.clinic}
         eyebrow="What happens"
         title="Your donation,"
         highlight="step by step."

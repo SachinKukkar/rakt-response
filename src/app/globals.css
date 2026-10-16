@@ -7,10 +7,11 @@
 
 /*
  * Rakt Response design system (2026 redesign).
- * Night #120407 and cream #F4F3EF sections, the logo's reds (#D93B3B to #961616,
- * maroon #5A0909) as accents, Geist for text and Geist Mono for small labels.
- * The token name "navy" is kept for compatibility: it now holds the deep ink
- * colour used for headings and dark surfaces across the app.
+ * Night #2b1217 (a deep maroon) and cream #F4F3EF sections, the logo's reds
+ * (#D93B3B to #961616, maroon #5A0909) as accents, Geist for text and Geist Mono
+ * for small labels. The token name "navy" is kept for compatibility: it holds the
+ * same deep maroon, used for headings and dark surfaces across the app.
+ * To make every dark area lighter or darker, change --night, --night-2 and --navy.
  */
 
 @theme inline {
@@ -76,10 +77,10 @@
   --primary-foreground: #ffffff;
   --crimson: #e2453f;
   --maroon: #5a0909;
-  --navy: #1d0b0e;
+  --navy: #2b1217;
   --navy-soft: #eee8e2;
-  --night: #120407;
-  --night-2: #1f0a0e;
+  --night: #2b1217;
+  --night-2: #3a1a20;
   --blush: #f4a99f;
   --secondary: #ebe5df;
   --secondary-foreground: #1d0b0e;
@@ -223,7 +224,7 @@
   /* Frosted dark card that floats on photographs. */
   .glass {
     @apply rounded-2xl border border-white/12;
-    background: rgba(18, 4, 7, 0.62);
+    background: color-mix(in srgb, var(--night) 70%, transparent);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
     backdrop-filter: blur(14px) saturate(140%);
   }
@@ -236,8 +237,39 @@
   }
   .photo-wash {
     background:
-      linear-gradient(90deg, rgba(18, 4, 7, 0.88) 0%, rgba(18, 4, 7, 0.55) 45%, rgba(18, 4, 7, 0.15) 100%),
-      linear-gradient(0deg, rgba(18, 4, 7, 0.6) 0%, transparent 40%);
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--night) 88%, transparent) 0%,
+        color-mix(in srgb, var(--night) 55%, transparent) 45%,
+        color-mix(in srgb, var(--night) 15%, transparent) 100%
+      ),
+      linear-gradient(0deg, color-mix(in srgb, var(--night) 60%, transparent) 0%, transparent 40%);
+  }
+  /* Homepage photo: shaded only behind the words (left and bottom), so the photo stays bright. */
+  .hero-shade {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--night) 80%, transparent) 0%,
+        color-mix(in srgb, var(--night) 50%, transparent) 34%,
+        color-mix(in srgb, var(--night) 8%, transparent) 68%,
+        transparent 100%
+      ),
+      linear-gradient(0deg, color-mix(in srgb, var(--night) 88%, transparent) 0%, transparent 46%),
+      linear-gradient(180deg, color-mix(in srgb, var(--night) 38%, transparent) 0%, transparent 18%);
+  }
+  /* On phones the words cover most of the photo, so the shade rises higher. */
+  @media (max-width: 639px) {
+    .hero-shade {
+      background:
+        linear-gradient(
+          0deg,
+          color-mix(in srgb, var(--night) 92%, transparent) 0%,
+          color-mix(in srgb, var(--night) 72%, transparent) 42%,
+          color-mix(in srgb, var(--night) 22%, transparent) 72%,
+          color-mix(in srgb, var(--night) 45%, transparent) 100%
+        );
+    }
   }
 
   .prose-rr {
@@ -290,10 +322,10 @@
   .cover-navy {
     background:
       radial-gradient(110% 90% at 100% 0%, rgba(226, 69, 63, 0.35) 0%, transparent 55%),
-      linear-gradient(150deg, #2b0e13 0%, #120407 100%);
+      linear-gradient(150deg, #44202a 0%, var(--night) 100%);
   }
   .cover-mix {
-    background: linear-gradient(150deg, #c62a2a 0%, #5a0909 55%, #120407 100%);
+    background: linear-gradient(150deg, #c62a2a 0%, #5a0909 55%, var(--night) 100%);
   }
   /* Short label on a card ("Most common", "Sample"). */
   .tag {

@@ -1,6 +1,7 @@
 /**
- * Photographs used on public pages (public/images/photos). All are from
- * Unsplash under the Unsplash License (free to use; credit given anyway).
+ * Photographs used on public pages (public/images/photos), from Unsplash
+ * (Unsplash License) and Pexels (Pexels License). Both are free to use and need
+ * no credit, so the site doesn't show one; `credit` is kept here for our records.
  * Replace any of them with the team's own photos by keeping the file name.
  */
 export interface Photo {
@@ -14,7 +15,14 @@ export interface Photo {
 
 export const PHOTOS = {
   hero: {
-    src: "/images/photos/hero-donation.jpg",
+    src: "/images/photos/hero-donor-arm.jpg",
+    width: 3840,
+    height: 2559,
+    alt: "A donor giving blood: the needle line taped to the arm, a red thread on the wrist and a soft ball in the hand",
+    credit: "Rahul Sapra / Pexels",
+  },
+  clinic: {
+    src: "/images/photos/donor-prep.jpg",
     width: 2880,
     height: 1645,
     alt: "A health worker in gloves preparing a donor's arm for a blood donation",
@@ -57,4 +65,3 @@ export const PHOTOS = {
   },
 } as const satisfies Record<string, Photo>;
 
-export const PHOTO_CREDITS = "Nguyễn Hiệp, Aman Chaturvedi, Anirudh, LuAnn Hunt and Tim Marshall on Unsplash";

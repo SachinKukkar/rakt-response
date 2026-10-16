@@ -14,6 +14,7 @@ All schema lives in version-controlled migrations:
 | `0800_email_verification_and_admin_edits.sql` | Donors verified on email confirmation, donor bio, administrator edits of donor details |
 | `0900_name_privacy_photos_data_checks.sql` | Display name or "Donor #XXXX" for volunteers, admin-only profile photos, `admin_data_checks()` |
 | `1000_bombay_blood_group.sql` (dated `20261015`) | Adds the Bombay blood group `'Oh'` to `blood_group`; matching stays exact, so Oh requests reach Oh donors only |
+| `1100_record_editing.sql` (dated `20261016`) | Donors edit and remove their own donation records at any status (editing a checked record sends it back to self-reported + pending); volunteers with `verify_donations` correct any record; admins edit and delete any record; `admin_delete_blood_request()` and `admin_delete_story()`; record edits and deletes are audited |
 
 ## Roles
 
@@ -32,8 +33,8 @@ Roles are only changed by `grant_staff_role` / `revoke_staff_role` (admin-only, 
 | `donor_preferences` | Directory visibility, contact consent, open-to-contact, alerts, summary sharing, preferred method | Owner write; admin read; consent timestamps set by trigger; `open_to_contact` forced off without contact consent |
 | `consent_events` | Append-only consent history | Owner/admin read; written by trigger |
 | `donor_locations` | State/district/city/locality/PIN + optional coordinates rounded to 2 decimals (~1 km) | Owner write; admin read; volunteers see broad area only via directory RPCs; never public |
-| `donation_records` | Type (whole blood / SDP / other apheresis / unknown), date, centre, source, verification | Donor inserts are forced to self-reported + pending; only `verify_donation_record()` changes verification; exact duplicates blocked by unique index; no future dates |
-| `blood_requests` | Request with private requester contact, lifecycle status, duplicate pointer | Creator/staff read; inserts only via `submit_blood_request()`; status only via `set_request_status()` / `cancel_my_blood_request()` |
+| `donation_records` | Type (whole blood / SDP / other apheresis / unknown), date, centre, source, verification | Donor inserts are forced to self-reported + pending; only `verify_donation_record()` changes verification; a donor's edit to a checked record resets it to self-reported + pending; owner, `verify_donations` staff and admins can edit; owner and admins can delete; edits and deletes audited; exact duplicates blocked by unique index; no future dates |
+| `blood_requests` | Request with private requester contact, lifecycle status, duplicate pointer | Creator/staff read; inserts only via `submit_blood_request()`; status only via `set_request_status()` / `cancel_my_blood_request()`; permanent deletion only via `admin_delete_blood_request()` (admin, audited) |
 | `request_events` | Request history | Staff and creator read |
 | `request_responses` | Donor response, coordination outcome, contact attempts | Donor/staff read; writes via RPC |
 | `contact_requests` | Consent request from a volunteer to a donor for a specific request | Donor, requester volunteer and staff read; writes via RPC |
@@ -43,7 +44,7 @@ Roles are only changed by `grant_staff_role` / `revoke_staff_role` (admin-only, 
 | `audit_logs` | Privileged actions (changed column names, never values) | Admin read; no writes from API roles; update/delete blocked by trigger |
 | `platform_settings` | Contact details, limits, interval for estimates | Public keys readable by all; admin update; audited |
 | `rate_limits` | Fixed-window counters | No API access |
-| `impact_stories` | Submission (private fields), consents, moderated public fields, trust labels, status | Contributor/admin read; all writes via RPC; CHECK constraints tie each displayed detail to consent and publication to publish consent |
+| `impact_stories` | Submission (private fields), consents, moderated public fields, trust labels, status | Contributor/admin read; all writes via RPC; CHECK constraints tie each displayed detail to consent and publication to publish consent; permanent deletion only via `admin_delete_story()` (admin, audited) |
 | `story_consents` | Consent snapshots | Contributor/admin read |
 | `story_verification_events` | Moderation trail (`is_internal` flag) | Admin read; contributor reads non-internal events |
 | `camp_records` | Camps; verified figures need a source + verification date; only completed camps can have them | Public rows readable; admin write |

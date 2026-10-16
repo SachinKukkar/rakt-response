@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CheckCircle2, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ActionForm } from "@/components/common/action-form";
@@ -10,6 +13,7 @@ import { Pill, ProfileVerificationBadge, VerificationBadge } from "@/components/
 import { selectClass } from "@/components/common/form-parts";
 import { LocationFields } from "@/components/forms/location-pickers";
 import { EmailLink, PhoneLink, WhatsAppLink } from "@/components/common/contact-link";
+import { deleteDonation } from "@/actions/donations";
 import { addInternalNote } from "@/actions/volunteer";
 import { adminUpdateDonor, processDeletion, resolveBloodGroupChange, setProfileActive, verifyProfile } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
@@ -27,10 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("Donor record") };
 }
 
-export default async function AdminDonorPage({ params }: PageProps<"/admin/donors/[id]">) {
+export default async function AdminDonorPage({ params, searchParams }: PageProps<"/admin/donors/[id]">) {
   const viewer = await requireAdmin();
   const t = await getT();
-  const { id } = await params;
+  const [{ id }, query] = await Promise.all([params, searchParams]);
   if (!uuidSchema.safeParse(id).success) notFound();
   const supabase = await createClient();
   const { data } = await supabase.from("profiles").select("*").eq("id", id).maybeSingle();
@@ -55,6 +59,12 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
   return (
     <div className="space-y-6">
       <PageHeader backHref="/admin/donors" backLabel="Donors" eyebrow="Donor record" title={profile.full_name} />
+      {query.saved || query.removed ? (
+        <p className="flex items-start gap-2 rounded-xl border border-success/25 bg-success-soft px-3.5 py-3 text-sm text-success" role="status">
+          <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          {query.removed ? t("Record removed.") : t("Changes saved.")}
+        </p>
+      ) : null}
       <section className="surface flex flex-wrap items-center gap-4 p-4">
         {photoUrl ? (
           <Image src={photoUrl} alt={t("Photo of {name}", { name: profile.full_name })} width={64} height={64} className="size-16 rounded-full object-cover" unoptimized />
@@ -208,15 +218,33 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
       )}
 
       <section className="surface p-4" aria-labelledby="records-heading">
-        <SectionHeading id="records-heading" title="Donation records" description="Verify from the donation queue." as="h3" />
+        <SectionHeading id="records-heading" title="Donation records" description="Verify from the donation queue. Edit or delete any record here." as="h3" />
         {records.length ? (
           <ul className="space-y-1.5 text-sm">
             {records.map((r) => (
-              <li key={r.id} className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 py-2 last:border-0">
-                <span>
-                  {t(DONATION_TYPE_LABELS[r.donation_type])} · {formatDate(r.donation_date)} · {r.centre_name}
-                </span>
-                <VerificationBadge status={r.verification_status} source={r.record_source} />
+              <li key={r.id} className="space-y-2 border-b border-border/60 py-2.5 last:border-0">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span>
+                    {t(DONATION_TYPE_LABELS[r.donation_type])} · {formatDate(r.donation_date)} · {r.centre_name}
+                  </span>
+                  <VerificationBadge status={r.verification_status} source={r.record_source} />
+                </div>
+                <div className="flex flex-wrap items-start gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/donations/${r.id}/edit?from=${encodeURIComponent(`/admin/donors/${profile.id}`)}`}>
+                      <Pencil className="size-3.5" aria-hidden="true" /> {t("Edit")}
+                    </Link>
+                  </Button>
+                  <ActionForm
+                    action={deleteDonation}
+                    fields={{ record_id: r.id, return_to: `/admin/donors/${profile.id}` }}
+                    label="Delete"
+                    variant="ghost"
+                    size="sm"
+                    confirmText="Delete this donation record permanently?"
+                    hideAfterSuccess
+                  />
+                </div>
               </li>
             ))}
           </ul>

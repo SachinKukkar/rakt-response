@@ -16,7 +16,7 @@ if (!existsSync(SOURCE)) {
 }
 mkdirSync("public/icons", { recursive: true });
 
-const NIGHT = { r: 18, g: 4, b: 7, alpha: 1 }; // the site's dark background
+const NIGHT = { r: 43, g: 18, b: 23, alpha: 1 }; // the site's dark background (--night, #2b1217)
 const CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
 
 /** The mark centred on a square, `padding` as a share of the side. */

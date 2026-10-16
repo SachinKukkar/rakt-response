@@ -6,12 +6,13 @@ export const SITE = {
   description: "Connecting voluntary blood donors with people who need help, one response at a time.",
   /** The logo mark (a drop held in a hand), cut from the supplied logo file. */
   logo: "/brand/logo-mark.png",
-  since: 2026,
+  /** The year Rakt Response started. */
+  since: 2022,
 } as const;
 
 /** Team members visitors can call directly (contact page, homepage and footer). */
 export const TEAM_CONTACTS = [
-  { name: "Abhilash Singh", phone: "+917426943985" },
+  { name: "Abhilash Singh Rathore", phone: "+917426943985" },
   { name: "Sachin Kukkar", phone: "+918766633316" },
 ] as const;
 

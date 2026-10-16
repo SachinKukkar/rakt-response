@@ -2,6 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { fail, success, validationFailure, type ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
 import { friendlyDbError } from "@/lib/errors";
@@ -343,6 +344,38 @@ export async function removeStoryPhoto(_prev: ActionResult, fd: FormData): Promi
   if (error) return fail(friendlyDbError(error));
   refreshStory(id.data);
   return success("Public photo removed.");
+}
+
+// --- Permanent deletion (administrators only, audit-logged in the database) ---
+export async function adminDeleteRequest(_prev: ActionResult, fd: FormData): Promise<ActionResult> {
+  await requireAdmin();
+  const id = uuidSchema.safeParse(fd.get("request_id"));
+  if (!id.success) return fail("Invalid request.");
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_delete_blood_request", { p_request: id.data });
+  if (error) return fail(friendlyDbError(error));
+  for (const path of ["/volunteer", "/volunteer/requests", "/admin", "/admin/requests", "/blood-requests", "/requests"]) revalidatePath(path);
+  redirect("/admin/requests?deleted=1");
+}
+
+export async function adminDeleteStory(_prev: ActionResult, fd: FormData): Promise<ActionResult> {
+  await requireAdmin();
+  const id = uuidSchema.safeParse(fd.get("story_id"));
+  if (!id.success) return fail("Invalid story.");
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("admin_delete_story", { p_story: id.data });
+  if (error) return fail(friendlyDbError(error));
+  const paths = (data ?? {}) as { photo_path?: string | null; public_photo_path?: string | null };
+  // The story is gone; remove its files too (the public copy must not linger).
+  const removals = await Promise.all([
+    paths.photo_path ? supabase.storage.from("story-uploads").remove([paths.photo_path]) : null,
+    paths.public_photo_path ? supabase.storage.from("story-public").remove([paths.public_photo_path]) : null,
+  ]);
+  for (const path of ["/stories", "/admin/stories", "/admin", "/"]) revalidatePath(path);
+  if (removals.some((r) => r?.error)) {
+    return fail("The story was deleted, but its photo could not be removed. Remove it in Supabase Storage (story-uploads / story-public).");
+  }
+  redirect("/admin/stories?deleted=1");
 }
 
 // --- Camps and manual metric sources ------------------------------------------

@@ -17,14 +17,10 @@ export async function HomeHero() {
         fill
         priority
         sizes="100vw"
-        className="animate-settle -z-20 object-cover object-[62%_40%]"
+        className="animate-settle -z-20 object-cover object-[24%_45%] sm:object-[45%_50%] lg:object-[60%_50%]"
       />
-      {/* Warm, dark grade so white text reads on any part of the photo. */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[#3a0a10]/45 mix-blend-multiply" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(18,4,7,0.92)_0%,rgba(18,4,7,0.7)_38%,rgba(18,4,7,0.2)_75%),linear-gradient(0deg,rgba(18,4,7,0.95)_0%,rgba(18,4,7,0)_45%),linear-gradient(180deg,rgba(18,4,7,0.55)_0%,rgba(18,4,7,0)_25%)]"
-      />
+      {/* Shade only where the words sit, so white text reads and the photo stays bright. */}
+      <div aria-hidden="true" className="hero-shade absolute inset-0 -z-10" />
 
       {/* Floating cards: facts about the two most common donations. */}
       <div aria-hidden="true" className="pointer-events-none absolute top-[calc(var(--header-h)+2.5rem)] right-8 hidden xl:[@media(min-height:740px)]:block">

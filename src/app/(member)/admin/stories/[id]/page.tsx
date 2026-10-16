@@ -11,7 +11,7 @@ import { selectClass } from "@/components/common/form-parts";
 import { TrustBadges } from "@/components/stories/story-parts";
 import { EmailLink, PhoneLink } from "@/components/common/contact-link";
 import { addInternalNote } from "@/actions/volunteer";
-import { publishStoryPhoto, removeStoryPhoto, setStoryStatus, setStoryVerification, updateStoryContent } from "@/actions/admin";
+import { adminDeleteStory, publishStoryPhoto, removeStoryPhoto, setStoryStatus, setStoryVerification, updateStoryContent } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
 import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
@@ -289,6 +289,22 @@ export default async function AdminStoryPage({ params }: PageProps<"/admin/stori
               </li>
             ))}
           </ul>
+        </section>
+        <section className="surface space-y-3 border-destructive/30 p-4" aria-labelledby="delete-heading">
+          <SectionHeading
+            id="delete-heading"
+            title="Delete this story"
+            description="Removes the story, its photos, consents and review history for good. To take a story off the site but keep its record, unpublish or archive it instead."
+            as="h3"
+          />
+          <ActionForm
+            action={adminDeleteStory}
+            fields={{ story_id: story.id }}
+            label="Delete story permanently"
+            variant="destructive"
+            size="sm"
+            confirmText="Delete this story, its photos and history permanently? This cannot be undone."
+          />
         </section>
       </div>
     </div>

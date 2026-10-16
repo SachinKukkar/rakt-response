@@ -7,7 +7,7 @@ import { LanguageToggle } from "./language-toggle";
 import { MobileMenu } from "./mobile-menu";
 
 /** Frosted pill, readable over photographs, dark sections and cream sections alike. */
-const PILL = "border border-white/12 bg-[rgba(18,4,7,0.74)] text-cream shadow-[0_8px_24px_-12px_rgba(18,4,7,0.5)] backdrop-blur-xl";
+const PILL = "border border-white/12 bg-night/75 text-cream shadow-[0_8px_24px_-12px_rgba(18,4,7,0.5)] backdrop-blur-xl";
 
 /**
  * Floating header: the page scrolls underneath it. Gaps between the pills let
