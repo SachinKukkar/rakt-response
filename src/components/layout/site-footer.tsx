@@ -1,13 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { EmailLink } from "@/components/common/contact-link";
 import { ArrowLink } from "@/components/site/arrow-link";
 import { LiveClock } from "@/components/site/live-clock";
-import { SITE, TEAM_CONTACTS } from "@/lib/constants";
+import { TEAM_CONTACTS } from "@/lib/constants";
 import { telLink } from "@/lib/contact-links";
 import { getPublicSettings } from "@/lib/data/public";
 import { formatPhone } from "@/lib/phone";
-import { PHOTO_CREDITS } from "@/lib/photos";
 import { getT } from "@/i18n/server";
 import { FOOTER_GROUPS } from "./nav-config";
 
@@ -70,30 +68,14 @@ export async function SiteFooter() {
       </div>
 
       <div className="wide">
-        <div className="label-mono flex flex-col gap-3 border-t border-white/10 py-6 text-cream/55 md:flex-row md:items-center md:justify-between">
+        <div className="label-mono flex flex-col gap-3 border-t border-white/10 pt-6 pb-10 text-cream/55 md:flex-row md:items-center md:justify-between">
           <p>{t("© {year} Rakt Response Team", { year: new Date().getFullYear() })}</p>
           <p>
             {t("India")} · <LiveClock />
           </p>
           <p className="md:text-right">{t("Not an emergency service. In an emergency call 112.")}</p>
         </div>
-        <p className="pb-6 font-mono text-[10px] leading-relaxed tracking-wide text-cream/35 uppercase">
-          {t("Photos: {credits}", { credits: PHOTO_CREDITS })}
-        </p>
       </div>
-
-      {/* The wordmark from the logo, set huge and cropped by the page edge. */}
-      <div className="wide pointer-events-none select-none" aria-hidden="true">
-        <Image
-          src="/brand/logo-wordmark-cream.png"
-          alt=""
-          width={2367}
-          height={240}
-          sizes="(min-width: 1400px) 1336px, 100vw"
-          className="-mb-[2.4%] h-auto w-full translate-y-[18%] opacity-[0.96]"
-        />
-      </div>
-      <span className="sr-only">{SITE.name}</span>
     </footer>
   );
 }

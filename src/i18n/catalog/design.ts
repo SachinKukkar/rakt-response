@@ -131,7 +131,7 @@ const hi: Catalog = {
   "No family should have to make fifty calls at night to find a donor. So we built a calmer way: requests checked by volunteers, and donors who already said yes.":
     "किसी भी परिवार को रात में डोनर ढूँढने के लिए पचास फ़ोन नहीं करने चाहिए। इसलिए हमने एक आसान रास्ता बनाया: वॉलंटियर जिन रिक्वेस्ट की जाँच करते हैं, और ऐसे डोनर जो पहले से हाँ कह चुके हैं।",
   "Rakt Response Team": "Rakt Response टीम",
-  "Volunteers · India · Since 2026": "वॉलंटियर · भारत · 2026 से",
+  "Volunteers · India · Since 2022": "वॉलंटियर · भारत · 2022 से",
   "The team": "टीम",
   "Core team · Volunteer": "मुख्य टीम · वॉलंटियर",
 
@@ -190,13 +190,51 @@ const hi: Catalog = {
   "© {year} Rakt Response Team": "© {year} Rakt Response टीम",
   India: "भारत",
   "Not an emergency service. In an emergency call 112.": "यह इमरजेंसी सेवा नहीं है। इमरजेंसी में 112 पर फ़ोन करें।",
-  "Photos: {credits}": "फ़ोटो: {credits}",
   "Rakt Response logo": "Rakt Response का लोगो",
   "Rakt Response, since 2026": "Rakt Response, 2026 से",
   "SDP.": "SDP।",
 
+  // --- Editing and removing records ----------------------------------------------------
+  "Edit donation": "डोनेशन बदलें",
+  "Fix anything that was typed wrong, then save.": "जो भी गलत लिखा गया हो उसे ठीक करें, फिर सेव करें।",
+  "Correcting a record for {name}.": "{name} का रिकॉर्ड ठीक किया जा रहा है।",
+  "Save changes": "बदलाव सेव करें",
+  "Changes saved.": "बदलाव सेव हो गए।",
+  "Changes saved. The record will be checked again by a volunteer.": "बदलाव सेव हो गए। वॉलंटियर इस रिकॉर्ड की फिर से जाँच करेंगे।",
+  "This record has already been checked. If you save changes, it goes back to self-reported until a volunteer checks it again.":
+    "इस रिकॉर्ड की जाँच हो चुकी है। अगर आप बदलाव सेव करेंगे, तो वॉलंटियर के दोबारा जाँचने तक यह 'खुद बताया गया' हो जाएगा।",
+  "Your correction keeps the record's verification status. Every change is logged.": "आपके सुधार से रिकॉर्ड की जाँच वाली स्थिति नहीं बदलती। हर बदलाव का रिकॉर्ड रहता है।",
+  "You can't edit this record.": "आप यह रिकॉर्ड नहीं बदल सकते।",
+  "You can't remove this record.": "आप यह रिकॉर्ड नहीं हटा सकते।",
+  "There is already a record of this type on this date.": "इस तारीख पर इसी तरह का एक रिकॉर्ड पहले से है।",
+  "Remove this record?": "क्या यह रिकॉर्ड हटाना है?",
+  "This record is verified. Remove it? It will no longer count towards your verified donations.":
+    "यह रिकॉर्ड जाँचा हुआ है। क्या इसे हटाना है? यह आपके जाँचे हुए डोनेशन में नहीं गिना जाएगा।",
+  Delete: "हटाएँ",
+  "Delete this donation record permanently?": "क्या यह डोनेशन रिकॉर्ड हमेशा के लिए हटाना है?",
+  "Verify from the donation queue. Edit or delete any record here.": "डोनेशन की सूची से जाँच करें। कोई भी रिकॉर्ड यहाँ बदलें या हटाएँ।",
+  "Delete this request": "यह रिक्वेस्ट हटाएँ",
+  "Administrators only. Removes the request and its history for good. Use it for test, spam or duplicate requests; to close a real request, change its status instead.":
+    "सिर्फ़ एडमिन के लिए। रिक्वेस्ट और उसका पूरा इतिहास हमेशा के लिए हट जाता है। इसे टेस्ट, स्पैम या दोहराई गई रिक्वेस्ट के लिए इस्तेमाल करें; असली रिक्वेस्ट बंद करनी हो, तो उसका स्टेटस बदलें।",
+  "Delete request permanently": "रिक्वेस्ट हमेशा के लिए हटाएँ",
+  "Delete this request and its history permanently? This cannot be undone.": "क्या यह रिक्वेस्ट और इसका इतिहास हमेशा के लिए हटाना है? यह वापस नहीं होगा।",
+  "The request was deleted.": "रिक्वेस्ट हटा दी गई।",
+  "Delete this story": "यह कहानी हटाएँ",
+  "Removes the story, its photos, consents and review history for good. To take a story off the site but keep its record, unpublish or archive it instead.":
+    "कहानी, उसकी फ़ोटो, सहमतियाँ और जाँच का इतिहास हमेशा के लिए हट जाते हैं। कहानी को साइट से हटाकर उसका रिकॉर्ड रखना हो, तो उसे अनपब्लिश या आर्काइव करें।",
+  "Delete story permanently": "कहानी हमेशा के लिए हटाएँ",
+  "Delete this story, its photos and history permanently? This cannot be undone.": "क्या यह कहानी, इसकी फ़ोटो और इतिहास हमेशा के लिए हटाना है? यह वापस नहीं होगा।",
+  "The story was deleted.": "कहानी हटा दी गई।",
+  "The story was deleted, but its photo could not be removed. Remove it in Supabase Storage (story-uploads / story-public).":
+    "कहानी हट गई, लेकिन उसकी फ़ोटो नहीं हट पाई। इसे Supabase Storage (story-uploads / story-public) में जाकर हटाएँ।",
+  "Only administrators can delete requests": "सिर्फ़ एडमिन ही रिक्वेस्ट हटा सकते हैं",
+  "Only administrators can delete stories": "सिर्फ़ एडमिन ही कहानियाँ हटा सकते हैं",
+  "Request not found": "रिक्वेस्ट नहीं मिली",
+
   // --- Photo descriptions (alt text) --------------------------------------------------
   "A health worker in gloves preparing a donor's arm for a blood donation": "दस्ताने पहने एक स्वास्थ्यकर्मी, ब्लड डोनेशन के लिए डोनर का हाथ तैयार करते हुए",
+  "A donor giving blood: the needle line taped to the arm, a red thread on the wrist and a soft ball in the hand":
+    "रक्तदान करते डोनर का हाथ: बाँह पर टेप से लगी नली, कलाई पर लाल धागा और हाथ में नरम गेंद",
   "A bag of donated blood hanging from a stand": "स्टैंड पर टंगा दान किए गए खून का बैग",
   "Red blood cells, magnified": "बड़ी करके दिखाई गईं लाल रक्त कोशिकाएँ",
   "A donor's arm during a donation, the hand squeezing a soft ball": "डोनेशन के दौरान डोनर का हाथ, नरम गेंद दबाते हुए",

@@ -13,6 +13,7 @@ import { selectClass } from "@/components/common/form-parts";
 import { LocationFields } from "@/components/forms/location-pickers";
 import { CoordinationOutcomeForm, DonorContactPanel, StatusChangeForm } from "@/components/volunteer/coordination-forms";
 import { addInternalNote, assignRequest, editRequestDetails } from "@/actions/volunteer";
+import { adminDeleteRequest } from "@/actions/admin";
 import { requireStaff, viewerCan } from "@/lib/auth";
 import { activeStaff, displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
@@ -358,6 +359,24 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             ))}
           </ul>
         </section>
+        {viewer.isAdmin ? (
+          <section className="surface space-y-3 border-destructive/30 p-4" aria-labelledby="delete-heading">
+            <SectionHeading
+              id="delete-heading"
+              title="Delete this request"
+              description="Administrators only. Removes the request and its history for good. Use it for test, spam or duplicate requests; to close a real request, change its status instead."
+              as="h3"
+            />
+            <ActionForm
+              action={adminDeleteRequest}
+              fields={{ request_id: request.id }}
+              label="Delete request permanently"
+              variant="destructive"
+              size="sm"
+              confirmText="Delete this request and its history permanently? This cannot be undone."
+            />
+          </section>
+        ) : null}
       </div>
     </div>
   );

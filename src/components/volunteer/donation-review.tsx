@@ -1,10 +1,12 @@
-import { Droplet } from "lucide-react";
+import { CheckCircle2, Droplet, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ActionForm } from "@/components/common/action-form";
 import { BloodGroupChip } from "@/components/common/blood-group-chip";
 import { EmptyState, Notice } from "@/components/common/page-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
 import { VerificationBadge } from "@/components/common/status-badge";
+import { deleteDonation } from "@/actions/donations";
 import { verifyDonationRecord } from "@/actions/volunteer";
 import { createClient } from "@/lib/supabase/server";
 import { DONATION_TYPE_LABELS, type VerificationStatus } from "@/lib/constants";
@@ -23,11 +25,14 @@ export async function DonationReviewList({
   searchParams,
   canVerify,
   viewerId,
+  isAdmin = false,
 }: {
   basePath: string;
   searchParams: Record<string, string | string[] | undefined>;
   canVerify: boolean;
   viewerId: string;
+  /** Administrators can also delete records. */
+  isAdmin?: boolean;
 }) {
   const statusParam = (Array.isArray(searchParams.status) ? searchParams.status[0] : searchParams.status) ?? "pending";
   const status: VerificationStatus = statusParam === "verified" || statusParam === "rejected" ? statusParam : "pending";
@@ -47,6 +52,12 @@ export async function DonationReviewList({
     <div className="space-y-4">
       {!canVerify ? (
         <Notice>{t("You can view records, but verifying them needs the “verify donations” permission from an administrator.")}</Notice>
+      ) : null}
+      {searchParams.saved || searchParams.removed ? (
+        <p className="flex items-start gap-2 rounded-xl border border-success/25 bg-success-soft px-3.5 py-3 text-sm text-success" role="status">
+          <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          {searchParams.removed ? t("Record removed.") : t("Changes saved.")}
+        </p>
       ) : null}
       <nav aria-label={t("Record status")} className="flex gap-2">
         {(["pending", "verified", "rejected"] as const).map((s) => (
@@ -100,6 +111,26 @@ export async function DonationReviewList({
                   </div>
                 ) : null}
                 {own && status === "pending" ? <p className="text-xs text-muted-foreground">{t("Your own record — another reviewer must verify it.")}</p> : null}
+                {canVerify || isAdmin ? (
+                  <div className="flex flex-wrap items-start gap-2 border-t border-border/70 pt-3">
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/donations/${r.id}/edit?from=${encodeURIComponent(`${basePath}?status=${status}`)}`}>
+                        <Pencil className="size-3.5" aria-hidden="true" /> {t("Edit")}
+                      </Link>
+                    </Button>
+                    {isAdmin ? (
+                      <ActionForm
+                        action={deleteDonation}
+                        fields={{ record_id: r.id, return_to: `${basePath}?status=${status}` }}
+                        label="Delete"
+                        variant="ghost"
+                        size="sm"
+                        confirmText="Delete this donation record permanently?"
+                        hideAfterSuccess
+                      />
+                    ) : null}
+                  </div>
+                ) : null}
               </li>
             );
           })}

@@ -10,18 +10,28 @@ import { Input } from "@/components/ui/input";
 import { Field, fieldAria } from "@/components/common/form-parts";
 import { ChipChoice } from "@/components/forms/pickers";
 import { LocationPickers } from "@/components/forms/location-pickers";
-import { addDonation } from "@/actions/donations";
-import { DONATION_TYPE_LABELS, DONATION_TYPES, type DonationType } from "@/lib/constants";
+import { addDonation, updateDonation } from "@/actions/donations";
+import { DONATION_TYPE_LABELS, DONATION_TYPES, type DonationType, type VerificationStatus } from "@/lib/constants";
 import { formatDate, todayInIndia } from "@/lib/format";
 import { donationRecordSchema, type DonationRecordInput } from "@/lib/validation/forms";
 import { useT } from "@/i18n/client";
 
-export function DonationForm() {
+/** An existing record being edited (owner, verifying volunteer or administrator). */
+export interface EditableDonation {
+  id: string;
+  values: DonationRecordInput;
+  status: VerificationStatus;
+  isOwner: boolean;
+}
+
+/** Adds a new donation, or edits one when `record` is given; `returnTo` is where to go after saving. */
+export function DonationForm({ record, returnTo = "/donations" }: { record?: EditableDonation; returnTo?: string } = {}) {
   const t = useT();
   const router = useRouter();
+  const editing = Boolean(record);
   const form = useForm<DonationRecordInput>({
     resolver: zodResolver(donationRecordSchema),
-    defaultValues: { donation_type: "whole_blood", donation_date: "", centre_name: "", city: "", district: "", event_name: "", confirm_duplicate: false },
+    defaultValues: record?.values ?? { donation_type: "whole_blood", donation_date: "", centre_name: "", city: "", district: "", event_name: "", confirm_duplicate: false },
     mode: "onTouched",
   });
   const { register, control, handleSubmit, setError, setValue, formState } = form;
@@ -38,6 +48,21 @@ export function DonationForm() {
   const onSubmit = handleSubmit((values) => {
     setServerError(null);
     startTransition(async () => {
+      if (record) {
+        const updated = await updateDonation(record.id, values);
+        if (updated.ok) {
+          const next = new URL(returnTo, window.location.origin);
+          next.searchParams.set("saved", updated.data?.recheck ? "recheck" : "edited");
+          router.push(next.pathname + next.search);
+          router.refresh();
+          return;
+        }
+        setServerError(updated.message);
+        for (const [path, messages] of Object.entries(updated.fieldErrors ?? {})) {
+          if (messages?.[0]) setError(path as FieldPath<DonationRecordInput>, { message: messages[0] });
+        }
+        return;
+      }
       const result = await addDonation(values);
       if (result.ok && result.data?.needsDuplicateConfirmation) {
         setDuplicates(result.data.duplicates ?? []);
@@ -130,14 +155,22 @@ export function DonationForm() {
         </p>
       ) : null}
 
-      <p className="text-xs text-muted-foreground">
-        {selfReportedBefore}
-        <strong>{t("self-reported")}</strong>
-        {selfReportedAfter}
-      </p>
+      {!record ? (
+        <p className="text-xs text-muted-foreground">
+          {selfReportedBefore}
+          <strong>{t("self-reported")}</strong>
+          {selfReportedAfter}
+        </p>
+      ) : record.isOwner && record.status !== "pending" ? (
+        <p className="rounded-xl border border-warning/30 bg-warning-soft px-3.5 py-3 text-sm" role="note">
+          {t("This record has already been checked. If you save changes, it goes back to self-reported until a volunteer checks it again.")}
+        </p>
+      ) : !record.isOwner ? (
+        <p className="text-xs text-muted-foreground">{t("Your correction keeps the record's verification status. Every change is logged.")}</p>
+      ) : null}
       <Button type="submit" size="lg" className="w-full" disabled={pending}>
         {pending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        {duplicates ? t("Yes, save it as a separate donation") : pending ? t("Saving…") : t("Save donation")}
+        {editing ? (pending ? t("Saving…") : t("Save changes")) : duplicates ? t("Yes, save it as a separate donation") : pending ? t("Saving…") : t("Save donation")}
       </Button>
     </form>
   );

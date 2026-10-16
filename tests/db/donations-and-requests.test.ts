@@ -184,17 +184,22 @@ describe("donation records", () => {
     expect(message).toMatch(/reason/);
   });
 
-  it("donors cannot edit or delete a verified record", async () => {
+  it("donors editing a verified record send it back for checking (rolled back here)", async () => {
     const rec = await db.query<{ id: string }>(
       "select id from public.donation_records where donor_id = $1 and verification_status = 'verified'",
       [donor.id],
     );
-    const update = await as(db, donor, (tx) =>
-      tx.query("update public.donation_records set centre_name = 'Changed' where id = $1", [rec.rows[0].id]),
+    const status = await as(
+      db,
+      donor,
+      async (tx) => {
+        await tx.query("update public.donation_records set centre_name = 'Changed' where id = $1", [rec.rows[0].id]);
+        const after = await tx.query<{ verification_status: string }>("select verification_status from public.donation_records where id = $1", [rec.rows[0].id]);
+        return after.rows[0].verification_status;
+      },
+      { commit: false },
     );
-    expect(update.affectedRows).toBe(0);
-    const del = await as(db, donor, (tx) => tx.query("delete from public.donation_records where id = $1", [rec.rows[0].id]));
-    expect(del.affectedRows).toBe(0);
+    expect(status).toBe("pending");
   });
 
   it("donors cannot self-verify through a direct update of a pending record", async () => {

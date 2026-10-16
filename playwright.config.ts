@@ -12,9 +12,12 @@ const channel = process.env.PLAYWRIGHT_CHANNEL || undefined;
 
 export default defineConfig({
   testDir: "tests/e2e",
+  // Prepares the large homepage photo before the first test (see warmup.ts).
+  globalSetup: "./tests/e2e/warmup.ts",
   timeout: 30_000,
   fullyParallel: true,
-  workers: process.env.CI ? 2 : 4,
+  // Two browsers at a time: more overloads a typical laptop (first-time image optimisation is heavy) and tests time out.
+  workers: 2,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
   use: {

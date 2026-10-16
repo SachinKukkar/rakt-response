@@ -30,7 +30,7 @@ export default async function AdminDonationsPage({ searchParams }: PageProps<"/a
           ) : null
         }
       />
-      <DonationReviewList basePath="/admin/donations" searchParams={await searchParams} canVerify viewerId={viewer.id} />
+      <DonationReviewList basePath="/admin/donations" searchParams={await searchParams} canVerify viewerId={viewer.id} isAdmin />
     </div>
   );
 }

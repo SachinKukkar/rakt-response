@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MessageSquareQuote } from "lucide-react";
+import { CheckCircle2, MessageSquareQuote } from "lucide-react";
 import { EmptyState, PageHeader } from "@/components/common/page-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
 import { StoryStatusBadge } from "@/components/common/status-badge";
@@ -43,6 +43,12 @@ export default async function AdminStoriesPage({ searchParams }: PageProps<"/adm
   return (
     <div className="space-y-4">
       <PageHeader eyebrow="Administrator" title="Story moderation" description="Nothing is public until you publish it, and only with the contributor's consent." />
+      {params.deleted ? (
+        <p className="flex items-start gap-2 rounded-xl border border-success/25 bg-success-soft px-3.5 py-3 text-sm text-success" role="status">
+          <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          {t("The story was deleted.")}
+        </p>
+      ) : null}
       <nav aria-label={t("Moderation status")} className="-mx-4 overflow-x-auto px-4">
         <ul className="flex w-max gap-2">
           {Object.entries(TABS).map(([key, tabInfo]) => (

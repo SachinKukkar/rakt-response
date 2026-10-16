@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2, Droplet, Plus } from "lucide-react";
+import { CheckCircle2, Droplet, Pencil, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ActionForm } from "@/components/common/action-form";
 import { EmptyState, PageHeader, SectionHeading } from "@/components/common/page-parts";
@@ -39,10 +39,16 @@ export default async function DonationsPage({ searchParams }: PageProps<"/donati
           ) : null
         }
       />
-      {params.saved ? (
+      {params.saved || params.removed ? (
         <p className="flex items-start gap-2 rounded-xl border border-success/25 bg-success-soft px-3.5 py-3 text-sm text-success" role="status">
           <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          {t("Donation saved. It shows as self-reported until a volunteer verifies it.")}
+          {params.removed
+            ? t("Record removed.")
+            : params.saved === "edited"
+            ? t("Changes saved.")
+            : params.saved === "recheck"
+              ? t("Changes saved. The record will be checked again by a volunteer.")
+              : t("Donation saved. It shows as self-reported until a volunteer verifies it.")}
         </p>
       ) : null}
       <DonationSummaryCards summary={donor.summary} intervalDays={settings.wholeBloodIntervalDays} />
@@ -79,18 +85,26 @@ export default async function DonationsPage({ searchParams }: PageProps<"/donati
                 {record.verification_status === "rejected" && record.review_reason ? (
                   <p className="mt-2 rounded-xl bg-destructive/5 p-2.5 text-xs text-destructive">{t("Reviewer note: {note}", { note: record.review_reason })}</p>
                 ) : null}
-                {record.verification_status === "pending" ? (
+                <div className="mt-3 flex flex-wrap items-start gap-2 border-t border-border/70 pt-3">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/donations/${record.id}/edit`}>
+                      <Pencil className="size-3.5" aria-hidden="true" /> {t("Edit")}
+                    </Link>
+                  </Button>
                   <ActionForm
                     action={deleteDonation}
-                    fields={{ record_id: record.id }}
+                    fields={{ record_id: record.id, return_to: "/donations" }}
                     label="Remove"
                     variant="ghost"
                     size="sm"
-                    confirmText="Remove this self-reported record?"
-                    className="mt-2"
+                    confirmText={
+                      record.verification_status === "verified"
+                        ? "This record is verified. Remove it? It will no longer count towards your verified donations."
+                        : "Remove this record?"
+                    }
                     hideAfterSuccess
                   />
-                ) : null}
+                </div>
               </li>
             ))}
           </ul>

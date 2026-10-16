@@ -116,40 +116,41 @@ export default async function HomePage() {
     <>
       <HomeHero />
 
-      {/* Facts */}
-      <section className="on-night" aria-label={t("Facts about donating")}>
-        <ul className="wide grid grid-cols-2 gap-x-6 gap-y-12 border-t border-white/10 pt-14 pb-20 lg:grid-cols-4 lg:pt-20 lg:pb-28">
+      {/* After the photo, sections alternate light and dark, starting with light (hope):
+          facts + (01) light, (02) dark, (03) light, (04) dark, (05) light, (06) dark, (07) light, (08) dark, (09) light. */}
+      <section className="on-cream" aria-label={t("Facts about donating")}>
+        <ul className="wide grid grid-cols-2 gap-x-6 gap-y-12 pt-16 pb-20 lg:grid-cols-4 lg:pt-24 lg:pb-28">
           {FACTS.map((fact) => (
             <li key={fact.label} className="reveal min-w-0">
-              <p className="display-lg tabular-nums">{fact.value}</p>
-              <p className="label-mono mt-4 text-blush">{t(fact.label)}</p>
-              <p className="mt-2.5 max-w-[16rem] text-[15px] leading-snug text-cream/62">{t(fact.text)}</p>
+              <p className="display-lg text-navy tabular-nums">{fact.value}</p>
+              <p className="label-mono mt-4 text-primary">{t(fact.label)}</p>
+              <p className="mt-2.5 max-w-[16rem] text-[15px] leading-snug text-muted-foreground">{t(fact.text)}</p>
             </li>
           ))}
         </ul>
       </section>
 
       {/* (01) The donation, step by step */}
-      <section className="on-night pb-24 sm:pb-32" aria-labelledby="visit-heading">
+      <section className="on-cream pb-24 sm:pb-32" aria-labelledby="visit-heading">
         <div className="wide grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionLabel n={1}>The donation</SectionLabel>
             <Headline id="visit-heading" className="mt-5" lead="One visit, about an hour," rest="step by step." />
-            <p className="mt-6 max-w-md text-[17px] leading-relaxed text-cream/65">
+            <p className="mt-6 max-w-md text-[17px] leading-relaxed text-muted-foreground">
               {t("Eat a light meal, drink water and carry a photo ID. Most of the visit is checks and rest; the donation itself takes about 10–15 minutes.")}
             </p>
-            <p className="display-lg mt-10 flex items-center gap-4 text-crimson tabular-nums">
-              0:00 <ArrowRight className="size-8 text-cream/40" aria-hidden="true" /> 1:00
+            <p className="display-lg mt-10 flex items-center gap-4 text-primary tabular-nums">
+              0:00 <ArrowRight className="size-8 text-navy/30" aria-hidden="true" /> 1:00
             </p>
-            <p className="label-mono mt-4 text-cream/50">{t("A typical whole blood visit")}</p>
+            <p className="label-mono mt-4 text-muted-foreground">{t("A typical whole blood visit")}</p>
           </div>
           <div>
-            <ol className="border-t border-white/10">
+            <ol className="border-t border-navy/12">
               {VISIT.map((step) => (
-                <li key={step.at} className="reveal grid grid-cols-[3.5rem_1fr] items-baseline gap-x-4 gap-y-1 border-b border-white/10 py-5 sm:grid-cols-[4.5rem_1fr_auto] sm:py-6">
-                  <span className="label-mono text-cream/60 tabular-nums">{step.at}</span>
+                <li key={step.at} className="reveal grid grid-cols-[3.5rem_1fr] items-baseline gap-x-4 gap-y-1 border-b border-navy/12 py-5 sm:grid-cols-[4.5rem_1fr_auto] sm:py-6">
+                  <span className="label-mono text-navy/55 tabular-nums">{step.at}</span>
                   <span className="text-lg leading-snug font-medium sm:text-[1.4rem]">{t(step.title)}</span>
-                  <span className="label-mono col-start-2 text-cream/50 sm:col-start-auto sm:text-right">{t(step.takes)}</span>
+                  <span className="label-mono col-start-2 text-navy/55 sm:col-start-auto sm:text-right">{t(step.takes)}</span>
                 </li>
               ))}
             </ol>
@@ -157,33 +158,33 @@ export default async function HomePage() {
               <p className="text-xl font-medium sm:text-2xl">{t("You leave in about an hour")}</p>
               <p className="label-mono text-white/85">{t("Then log it in your profile")}</p>
             </div>
-            <p className="label-mono mt-5 text-cream/45">{t("Times are typical and vary by centre.")}</p>
+            <p className="label-mono mt-5 text-navy/50">{t("Times are typical and vary by centre.")}</p>
           </div>
         </div>
       </section>
 
       {/* (02) How it works */}
-      <section className="on-cream section" aria-labelledby="parts-heading">
+      <section className="on-night section" aria-labelledby="parts-heading">
         <div className="wide">
           <SectionLabel n={2}>How it works</SectionLabel>
           <div className="mt-5 flex flex-wrap items-end justify-between gap-6">
             <Headline id="parts-heading" lead="Four parts." rest="One response." />
-            <ArrowLink href="/about" tone="night">
+            <ArrowLink href="/about" tone="cream">
               {t("How we work")}
             </ArrowLink>
           </div>
-          <ol className="mt-14 border-t border-navy/12">
+          <ol className="mt-14 border-t border-white/10">
             {PARTS.map((part, i) => (
-              <li key={part.title} className="reveal grid gap-x-8 gap-y-4 border-b border-navy/12 py-8 md:grid-cols-[3rem_16rem_1fr] md:py-10">
-                <span className="label-mono pt-2 text-navy/45 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+              <li key={part.title} className="reveal grid gap-x-8 gap-y-4 border-b border-white/10 py-8 md:grid-cols-[3rem_16rem_1fr] md:py-10">
+                <span className="label-mono pt-2 text-cream/45 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <h3 className="text-2xl font-medium tracking-[-0.03em] sm:text-[1.75rem]">{t(part.title)}</h3>
-                  <p className="label-mono mt-3 text-primary">{t(part.note)}</p>
+                  <p className="label-mono mt-3 text-blush">{t(part.note)}</p>
                 </div>
                 <ul className="grid gap-x-8 gap-y-3 pt-1 sm:grid-cols-2">
                   {part.items.map((item) => (
-                    <li key={item} className="flex gap-3 text-[16px] leading-snug text-navy/80">
-                      <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                    <li key={item} className="flex gap-3 text-[16px] leading-snug text-cream/80">
+                      <Check className="mt-0.5 size-4 shrink-0 text-blush" aria-hidden="true" />
                       {t(item)}
                     </li>
                   ))}
@@ -195,7 +196,7 @@ export default async function HomePage() {
       </section>
 
       {/* (03) Can I donate? */}
-      <section className="on-cream pb-24 sm:pb-32" aria-labelledby="check-heading">
+      <section className="on-cream section" aria-labelledby="check-heading">
         <div className="wide grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>
             <SectionLabel n={3}>Can I donate?</SectionLabel>
@@ -271,7 +272,7 @@ export default async function HomePage() {
             </span>
             <div>
               <p className="text-lg font-medium">{t("Rakt Response Team")}</p>
-              <p className="label-mono mt-1.5 text-muted-foreground">{t("Volunteers · India · Since 2026")}</p>
+              <p className="label-mono mt-1.5 text-muted-foreground">{t("Volunteers · India · Since 2022")}</p>
             </div>
           </div>
           <h2 id="team-heading" className="sr-only">
@@ -403,31 +404,31 @@ export default async function HomePage() {
       </section>
 
       {/* (08) Questions */}
-      <section className="on-cream pb-24 sm:pb-32" aria-labelledby="faq-heading">
+      <section className="on-night section" aria-labelledby="faq-heading">
         <div className="wide grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionLabel n={8}>Questions</SectionLabel>
             <Headline id="faq-heading" className="mt-5" size="md" lead="Asked before every first donation." />
-            <p className="mt-5 max-w-sm text-[17px] leading-relaxed text-muted-foreground">{t("Anything else? Ask us. A volunteer replies, usually within a day.")}</p>
+            <p className="mt-5 max-w-sm text-[17px] leading-relaxed text-cream/65">{t("Anything else? Ask us. A volunteer replies, usually within a day.")}</p>
             <div className="mt-8 flex flex-wrap gap-2.5">
-              <ArrowLink href="/contact" tone="night">
+              <ArrowLink href="/contact" tone="cream">
                 {t("Ask a question")}
               </ArrowLink>
-              <ArrowLink href="/faq" tone="line" arrow={false}>
+              <ArrowLink href="/faq" tone="ghost" arrow={false}>
                 {t("All FAQs")}
               </ArrowLink>
             </div>
           </div>
-          <div className="border-t border-navy/12">
+          <div className="border-t border-white/10">
             {QUESTIONS.map((item) => (
-              <details key={item.q} className="group border-b border-navy/12">
+              <details key={item.q} className="group border-b border-white/10">
                 <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 text-lg font-medium sm:text-xl [&::-webkit-details-marker]:hidden">
                   {t(item.q)}
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-navy/6 transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
                     <Plus className="size-4" />
                   </span>
                 </summary>
-                <p className="max-w-2xl pb-6 text-[16px] leading-relaxed text-muted-foreground">{t(item.a)}</p>
+                <p className="max-w-2xl pb-6 text-[16px] leading-relaxed text-cream/65">{t(item.a)}</p>
               </details>
             ))}
           </div>
@@ -435,9 +436,9 @@ export default async function HomePage() {
       </section>
 
       {/* (09) Talk to us */}
-      <section className="on-night pt-24 sm:pt-32" aria-labelledby="talk-heading">
+      <section className="on-cream section" aria-labelledby="talk-heading">
         <div className="wide">
-          <div className="photo-panel px-6 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
+          <div className="photo-panel on-night px-6 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
             <Image src={PHOTOS.holdingHand.src} alt="" fill sizes="(min-width: 1400px) 1336px, 100vw" className="-z-10 object-cover object-[60%_50%]" />
             <div aria-hidden="true" className="photo-wash absolute inset-0 -z-10" />
             <div className="max-w-2xl">
