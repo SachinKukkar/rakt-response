@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/learn/learn-parts";
 import Link from "next/link";
-import { MessageSquareQuote, PenLine } from "lucide-react";
+import { MessageSquareQuote } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EmptyState, Notice } from "@/components/common/page-parts";
+import { EmptyState, Notice, SampleNote } from "@/components/common/page-parts";
 import { Pagination, parsePage } from "@/components/common/pagination";
-import { StoryCard, TrustLabelGuide } from "@/components/stories/story-parts";
+import { SampleStoryCard, StoryCard, TrustLabelGuide } from "@/components/stories/story-parts";
 import { listPublishedStories } from "@/lib/data/public";
-import { STORY_CATEGORIES, type StoryCategory } from "@/lib/constants";
+import { STORY_CATEGORIES, type StoryCategory, type StoryType } from "@/lib/constants";
+import { SAMPLE_STORIES, SHOW_SAMPLES, type SampleStory } from "@/lib/samples";
 import { cn } from "@/lib/utils";
+import { PHOTOS } from "@/lib/photos";
+import { ArrowLink } from "@/components/site/arrow-link";
 import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,6 +30,16 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
   const page = parsePage(params.page);
   const result = await listPublishedStories(category ? STORY_CATEGORIES[category].types : null, PAGE_SIZE, (page - 1) * PAGE_SIZE);
 
+  // Sample stories stand in only while nothing real has been published at all.
+  let samples: SampleStory[] = [];
+  if (SHOW_SAMPLES && result && result.stories.length === 0 && page === 1) {
+    const anything = category ? await listPublishedStories(null, 1) : result;
+    if (anything && anything.stories.length === 0) {
+      const types: readonly StoryType[] | null = category ? STORY_CATEGORIES[category].types : null;
+      samples = SAMPLE_STORIES.filter((story) => !types || types.includes(story.story_type));
+    }
+  }
+
   const tabs: Array<{ key: StoryCategory | null; label: string }> = [
     { key: null, label: "All" },
     ...(Object.keys(STORY_CATEGORIES) as StoryCategory[]).map((key) => ({ key, label: STORY_CATEGORIES[key].label })),
@@ -35,17 +48,16 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
   return (
     <>
       <PageHero
+        photo={PHOTOS.donorChair}
         eyebrow={t("Stories")}
         title={t("Stories that")}
         highlight={t("kept us going.")}
         subtitle={t("Donors, families and volunteers — in their own words, published only with their consent.")}
         chips={[t("Reviewed before publishing"), t("Withdraw any time")]}
       >
-        <Button asChild size="lg" className="press bg-white text-primary hover:bg-white/90">
-          <Link href="/share-your-story">
-            <PenLine className="size-4" aria-hidden="true" /> {t("Share your story")}
-          </Link>
-        </Button>
+        <ArrowLink href="/share-your-story" size="lg">
+          {t("Share your story")}
+        </ArrowLink>
       </PageHero>
     <div className="page-container py-8">
       <nav aria-label={t("Story categories")} className="-mx-4 mb-5 overflow-x-auto px-4">
@@ -72,6 +84,15 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
 
       {result === null ? (
         <Notice title={t("Stories are unavailable right now")}>{t("Please try again in a little while.")}</Notice>
+      ) : samples.length ? (
+        <>
+          <SampleNote className="mb-5">Sample stories, shown until real ones are published.</SampleNote>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {samples.map((story) => (
+              <SampleStoryCard key={story.slug} story={story} />
+            ))}
+          </div>
+        </>
       ) : result.stories.length === 0 ? (
         <EmptyState
           icon={MessageSquareQuote}
@@ -80,7 +101,7 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
               ? t("No {category} published yet", { category: t(STORY_CATEGORIES[category].label).toLowerCase() })
               : t("No stories published yet")
           }
-          description={t("We never publish example or invented stories. Real experiences will appear here after review.")}
+          description={t("Stories appear here after contributors share them and our team reviews them with their consent.")}
           action={
             <Button asChild variant="outline">
               <Link href="/share-your-story">{t("Share your experience")}</Link>
@@ -89,7 +110,7 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
         />
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {result.stories.map((story) => (
               <StoryCard key={story.slug} story={story} />
             ))}

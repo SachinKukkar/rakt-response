@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
-import { Clock, Droplet, Droplets, HeartHandshake, Layers, ListChecks, Microscope, Repeat, Workflow, type LucideIcon } from "lucide-react";
+import { Bandage, Clock, Droplet, Droplets, HeartHandshake, Layers, ListChecks, Microscope, Repeat, Workflow, type LucideIcon } from "lucide-react";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TileRow, TLDR, TopicPills, type Tile } from "@/components/learn/learn-parts";
 import { getT } from "@/i18n/server";
@@ -24,7 +24,6 @@ type Stat = { icon: LucideIcon; label: string; value: string };
 
 const TYPES: {
   id: string;
-  emoji: string;
   name: string;
   vibe: string;
   icon: LucideIcon;
@@ -33,7 +32,6 @@ const TYPES: {
 }[] = [
   {
     id: "whole-blood",
-    emoji: "🩸",
     name: "Whole blood",
     vibe: "The classic. Most donors start here.",
     icon: Droplet,
@@ -46,7 +44,6 @@ const TYPES: {
   },
   {
     id: "sdp",
-    emoji: "🩹",
     name: "SDP (Single Donor Platelets)",
     vibe: "Platelets only. A machine returns the rest to you.",
     icon: Droplets,
@@ -59,7 +56,6 @@ const TYPES: {
   },
   {
     id: "other-apheresis",
-    emoji: "💧",
     name: "Other apheresis",
     vibe: "One component, such as plasma. Only at some centres.",
     icon: Layers,
@@ -73,9 +69,9 @@ const TYPES: {
 ];
 
 const GOOD_TO_KNOW: Tile[] = [
-  { icon: Repeat, title: "Different gaps", text: "Red cells take weeks to rebuild, so whole blood needs the longest gap.", tag: "⏳ Intervals" },
-  { icon: Microscope, title: "Extra checks for SDP", text: "Usually a platelet count and a vein check. The centre decides.", tag: "🔬 Screening" },
-  { icon: ListChecks, title: "Block your time", text: "Saying yes to SDP? Keep a few hours free.", tag: "🗓️ Plan" },
+  { icon: Repeat, title: "Different gaps", text: "Red cells take weeks to rebuild, so whole blood needs the longest gap.", tag: "Intervals" },
+  { icon: Microscope, title: "Extra checks for SDP", text: "Usually a platelet count and a vein check. The centre decides.", tag: "Screening" },
+  { icon: ListChecks, title: "Block your time", text: "Saying yes to SDP? Keep a few hours free.", tag: "Plan" },
 ];
 
 export default async function DonationTypesPage() {
@@ -94,7 +90,11 @@ export default async function DonationTypesPage() {
         title={t("Whole blood vs")}
         highlight={t("SDP.")}
         subtitle={t("Same you, different ways to give. Here's the quick compare.")}
-        chips={[t("🩸 Whole blood"), t("🩹 SDP"), t("💧 Apheresis")]}
+        chips={[
+          { icon: Droplet, label: t("Whole blood") },
+          { icon: Bandage, label: t("SDP") },
+          { icon: Droplets, label: t("Apheresis") },
+        ]}
       />
 
       <div className="page-container space-y-10 pb-4">
@@ -127,17 +127,9 @@ export default async function DonationTypesPage() {
                   type.tone === "navy" && "bg-navy text-white",
                 )}
               >
-                <div className="mb-4 flex items-start justify-between gap-3">
-                  <span
-                    className={cn(
-                      "grid size-12 shrink-0 place-items-center rounded-2xl",
-                      type.tone === "light" ? "bg-primary text-white" : "bg-white/15 text-white",
-                    )}
-                  >
+                <div className="mb-4">
+                  <span className={cn("grid size-12 shrink-0 place-items-center rounded-2xl", type.tone === "light" ? "icon-tile size-12" : "bg-white/15 text-white")}>
                     <type.icon className="size-6" aria-hidden="true" />
-                  </span>
-                  <span className="text-2xl" aria-hidden="true">
-                    {type.emoji}
                   </span>
                 </div>
                 <h3 id={`${type.id}-title`} className={cn("text-xl leading-tight font-extrabold", type.tone !== "light" && "text-white")}>

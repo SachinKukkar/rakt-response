@@ -29,7 +29,7 @@ for (const path of PUBLIC_PAGES) {
     expect(response?.status()).toBe(200);
     await expect(page).toHaveTitle(/Rakt Response/);
     await expect(page.locator("h1").first()).toBeVisible();
-    await expect(page.getByAltText("Rakt Response Team logo").first()).toBeVisible();
+    await expect(page.getByAltText("Rakt Response logo").first()).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(1);
   });

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Noto_Sans_Devanagari, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/constants";
 import { siteUrl } from "@/lib/env";
@@ -9,23 +9,25 @@ import { HTML_LANG } from "@/i18n/config";
 import { getLocale, getT } from "@/i18n/server";
 import { SHARE_IMAGE } from "@/lib/metadata";
 
-const sans = Plus_Jakarta_Sans({
-  variable: "--font-sans",
+const sans = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Hindi text. Latin glyphs still come from Plus Jakarta Sans.
+// Small uppercase labels, times and figures.
+const mono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
+
+// Hindi text. Latin glyphs still come from Geist.
 const devanagari = Noto_Sans_Devanagari({
   variable: "--font-devanagari",
   subsets: ["devanagari"],
   weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
-
-const display = Bricolage_Grotesque({
-  variable: "--font-bricolage",
-  subsets: ["latin"],
   display: "swap",
 });
 
@@ -47,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#C82032",
+  themeColor: "#120407",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -57,7 +59,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
   const t = await getT();
   return (
-    <html lang={HTML_LANG[locale]} className={`${sans.variable} ${devanagari.variable} ${display.variable} h-full`}>
+    <html lang={HTML_LANG[locale]} className={`${sans.variable} ${mono.variable} ${devanagari.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <LocaleProvider locale={locale}>
         <a

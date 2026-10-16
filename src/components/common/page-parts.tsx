@@ -34,8 +34,8 @@ export function PageHeader({
       ) : null}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          {eyebrow ? <p className="text-xs font-semibold tracking-wider text-primary uppercase">{tx(eyebrow)}</p> : null}
-          <h1 className="font-display text-[1.75rem] leading-tight font-extrabold sm:text-4xl">{tx(title)}</h1>
+          {eyebrow ? <p className="label-mono text-primary">{tx(eyebrow)}</p> : null}
+          <h1 className="text-[2rem] leading-[1.05] font-medium tracking-[-0.04em] sm:text-[2.6rem]">{tx(title)}</h1>
           {description ? <div className="max-w-2xl text-[15px] text-muted-foreground">{tx(description)}</div> : null}
         </div>
         {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
@@ -51,6 +51,7 @@ export function SectionHeading({
   as: Tag = "h2",
   id,
   className,
+  size = "default",
 }: {
   title: string;
   description?: React.ReactNode;
@@ -58,7 +59,22 @@ export function SectionHeading({
   as?: "h2" | "h3";
   id?: string;
   className?: string;
+  /** "lg" is for public page sections; dashboards keep the compact default. */
+  size?: "default" | "lg";
 }) {
+  if (size === "lg") {
+    return (
+      <div className={cn("mb-7 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 sm:mb-9", className)}>
+        <div className="min-w-0 max-w-2xl">
+          <Tag id={id} className="display-md">
+            {tx(title)}
+          </Tag>
+          {description ? <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground sm:text-base">{tx(description)}</p> : null}
+        </div>
+        {action}
+      </div>
+    );
+  }
   return (
     <div className={cn("mb-3 flex items-end justify-between gap-3", className)}>
       <div className="min-w-0">
@@ -168,6 +184,16 @@ export function Notice({
         <div className="leading-relaxed">{tx(children)}</div>
       </div>
     </div>
+  );
+}
+
+/** Says plainly that the content next to it is placeholder sample content. */
+export function SampleNote({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <p className={cn("flex items-start gap-2 text-sm text-muted-foreground", className)}>
+      <Info className="mt-0.5 size-4 shrink-0 text-navy/60" aria-hidden="true" />
+      <span>{tx(children)}</span>
+    </p>
   );
 }
 

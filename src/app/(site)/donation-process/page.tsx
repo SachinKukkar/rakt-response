@@ -10,11 +10,15 @@ import {
   Clock,
   Coffee,
   Droplet,
+  Hospital,
   Dumbbell,
   GlassWater,
   IdCard,
+  Moon,
   NotebookPen,
+  Sofa,
   Stethoscope,
+  Syringe,
   Utensils,
   Wine,
   type LucideIcon,
@@ -22,6 +26,7 @@ import {
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TLDR, TopicPills } from "@/components/learn/learn-parts";
 import { Button } from "@/components/ui/button";
+import { PHOTOS } from "@/lib/photos";
 import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,10 +38,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type Step = { icon: LucideIcon; title: string; text: string };
 
-const JOURNEY: { stage: string; emoji: string; steps: Step[] }[] = [
+const JOURNEY: { stage: string; icon: LucideIcon; steps: Step[] }[] = [
   {
     stage: "Before",
-    emoji: "🌙",
+    icon: Moon,
     steps: [
       { icon: Bed, title: "Sleep well", text: "A good night's rest helps." },
       { icon: Utensils, title: "Eat a light meal", text: "A few hours before. Never on an empty stomach." },
@@ -47,7 +52,7 @@ const JOURNEY: { stage: string; emoji: string; steps: Step[] }[] = [
   },
   {
     stage: "At the centre",
-    emoji: "🏥",
+    icon: Hospital,
     steps: [
       { icon: ClipboardList, title: "Register", text: "Staff confirm who you are." },
       { icon: ClipboardCheck, title: "Questionnaire", text: "Confidential. Answer every question honestly." },
@@ -58,7 +63,7 @@ const JOURNEY: { stage: string; emoji: string; steps: Step[] }[] = [
   },
   {
     stage: "After",
-    emoji: "🛋️",
+    icon: Sofa,
     steps: [
       { icon: Armchair, title: "Rest 10–15 min", text: "Stay seated at the centre, longer if staff advise." },
       { icon: GlassWater, title: "Drink extra", text: "Keep sipping fluids for the rest of the day." },
@@ -76,11 +81,15 @@ export default async function DonationProcessPage() {
   return (
     <>
       <PageHero
+        photo={PHOTOS.hero}
         eyebrow="What happens"
         title="Your donation,"
         highlight="step by step."
         subtitle="No surprises. Here's the whole journey, from the night before to the snack after."
-        chips={["⏱️ ~1 hr visit (whole blood)", "🩸 One needle"]}
+        chips={[
+          { icon: Clock, label: "~1 hr visit (whole blood)" },
+          { icon: Syringe, label: "One needle" },
+        ]}
       />
 
       <div className="page-container space-y-10 pb-4">
@@ -98,8 +107,8 @@ export default async function DonationProcessPage() {
           <div className="space-y-6">
             {JOURNEY.map((stage, s) => (
               <div key={stage.stage}>
-                <p className="sticker mb-3">
-                  <span aria-hidden="true">{stage.emoji}</span> {t(stage.stage)}
+                <p className="tag mb-3">
+                  <stage.icon className="size-3.5" aria-hidden="true" /> {t(stage.stage)}
                 </p>
                 <ol className={stage.steps.length > 4 ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-5" : "grid gap-3 sm:grid-cols-2 lg:grid-cols-4"} start={OFFSETS[s] + 1}>
                   {stage.steps.map((step, i) => (

@@ -21,8 +21,8 @@ const hi: Catalog = {
   "101.": "की बुनियादी बातें।",
   "Everything you wanted to know about donating, in bite-size bits. No lecture, promise.":
     "रक्तदान के बारे में आप जो जानना चाहते थे, सब छोटी-छोटी बातों में। कोई लंबा भाषण नहीं, वादा।",
-  "⏱️ 2-min reads": "⏱️ 2 मिनट में पढ़ें",
-  "📱 Made for phones": "📱 फ़ोन के लिए बना",
+  "2-min reads": "2 मिनट में पढ़ें",
+  "Made for phones": "फ़ोन के लिए बना",
   "Blood can't be manufactured. It comes from people like you.": "खून बनाया नहीं जा सकता। यह आप जैसे लोगों से ही आता है।",
   "Whole blood and SDP are different, and not interchangeable.": "होल ब्लड और SDP अलग हैं। एक की जगह दूसरा नहीं चलता।",
   "The blood centre decides who can donate, every time.": "कौन रक्तदान कर सकता है, यह हर बार ब्लड बैंक तय करता है।",
@@ -46,10 +46,6 @@ const hi: Catalog = {
   "check.": "जाँच।",
   "Here's what blood centres usually look at. They make the final call, every time.":
     "ब्लड बैंक आमतौर पर ये चीज़ें देखते हैं। आखिरी फ़ैसला हर बार वही करते हैं।",
-  "🎂 Age": "🎂 उम्र",
-  "⚖️ Weight": "⚖️ वज़न",
-  "🙂 Feeling well": "🙂 तबीयत ठीक हो",
-  "📅 Last donation": "📅 पिछला रक्तदान",
   "These are typical ranges, not a yes or no.": "ये आम सीमाएँ हैं, हाँ या ना का जवाब नहीं।",
   "The blood centre screens you at every donation. Their call is final.":
     "हर रक्तदान पर ब्लड बैंक आपकी जाँच करता है। उनका फ़ैसला ही आखिरी है।",
@@ -120,8 +116,8 @@ const hi: Catalog = {
   "step by step.": "कदम-दर-कदम।",
   "No surprises. Here's the whole journey, from the night before to the snack after.":
     "कोई हैरानी नहीं। यह रहा पूरा सफ़र, एक रात पहले से लेकर बाद के नाश्ते तक।",
-  "⏱️ ~1 hr visit (whole blood)": "⏱️ लगभग 1 घंटे की विज़िट (होल ब्लड)",
-  "🩸 One needle": "🩸 एक ही सुई",
+  "~1 hr visit (whole blood)": "लगभग 1 घंटे की विज़िट (होल ब्लड)",
+  "One needle": "एक ही सुई",
   "Sleep, eat, hydrate. Bring ID.": "सोएँ, खाएँ, पानी पिएँ। पहचान पत्र लाएँ।",
   "Register, questionnaire, quick health check, then donate.": "रजिस्ट्रेशन, सवालों वाला फ़ॉर्म, छोटी सेहत जाँच, फिर रक्तदान।",
   "Whole blood takes ~10–15 min in the chair. SDP takes much longer.": "होल ब्लड में कुर्सी पर लगभग 10–15 मिनट लगते हैं। SDP में काफ़ी ज़्यादा समय लगता है।",

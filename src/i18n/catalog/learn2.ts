@@ -29,17 +29,16 @@ const hi: Catalog = {
   "Different gaps": "बीच का अंतर अलग-अलग",
   "Red cells take weeks to rebuild, so whole blood needs the longest gap.":
     "रेड सेल्स को दोबारा बनने में कई हफ़्ते लगते हैं, इसलिए होल ब्लड के बाद सबसे लंबा अंतर चाहिए।",
-  "⏳ Intervals": "⏳ अंतर",
+  "Intervals": "अंतर",
   "Extra checks for SDP": "SDP के लिए ज़्यादा जाँच",
   "Usually a platelet count and a vein check. The centre decides.": "आमतौर पर प्लेटलेट काउंट और नसों की जाँच। फ़ैसला ब्लड बैंक करता है।",
-  "🔬 Screening": "🔬 जाँच",
+  "Screening": "जाँच",
   "Block your time": "समय निकालकर रखें",
   "Saying yes to SDP? Keep a few hours free.": "SDP के लिए हाँ कह रहे हैं? कुछ घंटे खाली रखें।",
-  "🗓️ Plan": "🗓️ प्लान",
+  "Plan": "प्लान",
   "Whole blood vs": "होल ब्लड या",
   "Same you, different ways to give. Here's the quick compare.": "आप वही, देने के तरीके अलग। यहाँ जल्दी से फ़र्क देखें।",
-  "🩸 Whole blood": "🩸 होल ब्लड",
-  "💧 Apheresis": "💧 एफ़ेरेसिस",
+  "Apheresis": "एफ़ेरेसिस",
   "Whole blood: one bag, split into parts later at the blood centre.":
     "होल ब्लड: एक बैग, जिसे बाद में ब्लड बैंक में अलग-अलग हिस्सों में बाँटा जाता है।",
   "SDP: a machine keeps your platelets and gives the rest back.": "SDP: मशीन आपके प्लेटलेट्स रख लेती है और बाकी खून वापस कर देती है।",
@@ -78,15 +77,15 @@ const hi: Catalog = {
   "Red cells": "रेड सेल्स (लाल कोशिकाएँ)",
   "Carry oxygen. Often used after injury, surgery, childbirth or severe anaemia.":
     "शरीर में ऑक्सीजन पहुँचाते हैं। अक्सर चोट, ऑपरेशन, डिलीवरी या गंभीर खून की कमी (एनीमिया) के बाद काम आते हैं।",
-  "🫁 Oxygen": "🫁 ऑक्सीजन",
+  "Oxygen": "ऑक्सीजन",
   Platelets: "प्लेटलेट्स",
   "Help blood clot. Often needed when counts drop, like in some cancer care or severe dengue.":
     "खून जमने में मदद करते हैं। अक्सर तब ज़रूरत होती है जब इनकी गिनती गिर जाए, जैसे कैंसर के कुछ इलाज में या गंभीर डेंगू में।",
-  "🩹 Clotting": "🩹 खून जमना",
+  "Clotting": "खून जमना",
   Plasma: "प्लाज़्मा",
   "The liquid part, full of clotting proteins. Some medicines are made from it.":
     "खून का तरल हिस्सा, जिसमें खून जमाने वाले प्रोटीन भरे होते हैं। इससे कुछ दवाइयाँ भी बनती हैं।",
-  "💧 Proteins": "💧 प्रोटीन",
+  "Proteins": "प्रोटीन",
   Emergencies: "इमरजेंसी",
   "Road accidents and trauma.": "सड़क हादसे और गंभीर चोटें।",
   Surgery: "ऑपरेशन",
@@ -112,9 +111,6 @@ const hi: Catalog = {
   "someone's big day.": "किसी के लिए बड़ा दिन।",
   "Around 15 minutes in the chair. One needle. A big deal for someone you may never meet.":
     "कुर्सी पर लगभग 15 मिनट। एक सुई। और किसी ऐसे इंसान के लिए बड़ी बात, जिनसे आप शायद कभी न मिलें।",
-  "🩸 Red cells": "🩸 रेड सेल्स",
-  "🩹 Platelets": "🩹 प्लेटलेट्स",
-  "💧 Plasma": "💧 प्लाज़्मा",
   "One donation is usually split into parts, so it can help in different ways.":
     "एक रक्तदान को आमतौर पर हिस्सों में बाँटा जाता है, ताकि वह अलग-अलग तरह से मदद कर सके।",
   "Blood can't be manufactured. Every unit comes from a person who chose to give.":
@@ -224,16 +220,16 @@ const hi: Catalog = {
   "Donor registry": "डोनर रजिस्टर",
   "Your blood group, rough area and availability. Private by default.":
     "आपका ब्लड ग्रुप, मोटे तौर पर आपका इलाका और आप कब उपलब्ध हैं। शुरू से ही प्राइवेट।",
-  "🫶 Donors": "🫶 डोनर",
+  "Donors": "डोनर",
   "Verified requests": "जाँची गई रिक्वेस्ट",
   "Volunteers check every request with the requester or hospital first.":
     "स्वयंसेवक हर रिक्वेस्ट को पहले रिक्वेस्ट करने वाले या अस्पताल से जाँचते हैं।",
-  "✅ Checked": "✅ जाँचा गया",
+  "Checked": "जाँचा गया",
   "Log your donations and keep track of the gaps between them.": "अपने रक्तदान दर्ज करें और उनके बीच के अंतर का ध्यान रखें।",
-  "📒 Yours": "📒 आपका",
+  "Yours": "आपका",
   "Blood 101": "खून की बुनियादी बातें",
   "Plain-language guides to donating. No jargon.": "रक्तदान पर आसान भाषा में जानकारी। कोई मुश्किल शब्द नहीं।",
-  "📚 Learn": "📚 जानें",
+  "Learn": "जानें",
   "Connect voluntary donors and people seeking blood via authorised volunteers":
     "अधिकृत स्वयंसेवकों के ज़रिए स्वैच्छिक डोनर और खून ढूँढ रहे लोगों को जोड़ते हैं",
   "Check requests before showing them as verified": "रिक्वेस्ट को पुष्टि हुई दिखाने से पहले उनकी जाँच करते हैं",
@@ -259,9 +255,9 @@ const hi: Catalog = {
   "people.": "लोग।",
   "Rakt Response is a volunteer community team. We help donors and people seeking blood find each other, safely.":
     "Rakt Response स्वयंसेवकों की एक सामुदायिक टीम है। हम डोनर और खून ढूँढ रहे लोगों को सुरक्षित तरीके से एक-दूसरे तक पहुँचने में मदद करते हैं।",
-  "🤝 Volunteer-run": "🤝 स्वयंसेवकों द्वारा",
-  "🔒 Privacy first": "🔒 प्राइवेसी सबसे पहले",
-  "💸 Never paid": "💸 कभी पैसे नहीं",
+  "Volunteer-run": "स्वयंसेवकों द्वारा",
+  "Privacy first": "प्राइवेसी सबसे पहले",
+  "Never paid": "कभी पैसे नहीं",
   "We coordinate. Licensed blood centres collect and supply blood.": "हम तालमेल करते हैं। खून लेने और देने का काम लाइसेंस वाले ब्लड बैंक करते हैं।",
   "Every request is checked by a volunteer before it shows as verified.":
     "पुष्टि हुई दिखने से पहले हर रिक्वेस्ट को एक स्वयंसेवक जाँचता है।",

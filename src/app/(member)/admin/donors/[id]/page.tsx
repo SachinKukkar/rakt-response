@@ -16,7 +16,7 @@ import { requireAdmin } from "@/lib/auth";
 import { getDonationRecords, getDonorData } from "@/lib/data/member";
 import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
-import { BLOOD_GROUPS, CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
+import { BLOOD_GROUPS, bloodGroupName, CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { uuidSchema } from "@/lib/validation/common";
 import type { ProfileRow, StaffRoleRow } from "@/lib/types";
@@ -138,7 +138,7 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
               <option value="">{t("Not known")}</option>
               {BLOOD_GROUPS.map((g) => (
                 <option key={g} value={g}>
-                  {g}
+                  {t(bloodGroupName(g))}
                 </option>
               ))}
             </select>

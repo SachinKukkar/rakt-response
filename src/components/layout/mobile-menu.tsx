@@ -2,56 +2,97 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { LogoMark } from "@/components/brand/logo";
+import { usePathname } from "next/navigation";
+import { ArrowRight, X } from "lucide-react";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { LogoLockup } from "@/components/brand/logo";
+import { cn } from "@/lib/utils";
 import { useT } from "@/i18n/client";
 import { AccountLink } from "./account-link";
+import { LanguageToggle } from "./language-toggle";
 import { MORE_LINKS, PUBLIC_NAV } from "./nav-config";
 
-export function MobileMenu() {
+/** The "Menu" pill and the full-screen menu it opens (below desktop width). */
+export function MobileMenu({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const t = useT();
+  const close = () => setOpen(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-label={t("Open menu")}>
-          <Menu className="size-6" />
-        </Button>
+        <button
+          type="button"
+          className={cn("press inline-flex h-12 items-center rounded-full px-4 text-sm font-medium xl:hidden", className)}
+          aria-label={t("Open menu")}
+        >
+          {t("Menu")}
+        </button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[86vw] max-w-sm overflow-y-auto bg-warm p-0">
-        <SheetHeader className="flex-row items-center gap-3 border-b p-4 pr-14">
-          <Link href="/" onClick={() => setOpen(false)} className="shrink-0 rounded-full" aria-label={t("Rakt Response home")}>
-            <LogoMark size="sm" />
-          </Link>
-          <div>
-            <SheetTitle className="text-base font-extrabold text-navy">
-              <span className="text-primary">Rakt</span> Response
-            </SheetTitle>
-            <SheetDescription className="text-xs">{t("We Respond, We Support, We Save Lives.")}</SheetDescription>
+      <SheetContent side="top" showCloseButton={false} className="h-dvh max-h-dvh gap-0 overflow-y-auto border-0 bg-night p-0 text-cream">
+        <div className="wide flex h-[var(--header-h)] shrink-0 items-center justify-between">
+          <div onClick={close}>
+            <LogoLockup wordmarkHeight={12} />
           </div>
-        </SheetHeader>
-        <nav className="flex flex-col gap-1 p-3" aria-label={t("Main")}>
-          {[...PUBLIC_NAV, ...MORE_LINKS].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className="flex min-h-12 items-center rounded-xl px-3 font-medium text-foreground hover:bg-muted"
-            >
-              {t(item.label)}
-            </Link>
-          ))}
+          <SheetClose asChild>
+            <button type="button" className="press inline-flex h-12 items-center gap-2 rounded-full border border-white/15 px-4 text-sm font-medium">
+              <X className="size-4" aria-hidden="true" />
+              {t("Close")}
+            </button>
+          </SheetClose>
+        </div>
+        <SheetTitle className="sr-only">{t("Menu")}</SheetTitle>
+        <SheetDescription className="sr-only">{t("All pages of Rakt Response")}</SheetDescription>
+        <nav className="wide flex-1 pt-4 pb-6" aria-label={t("Main")}>
+          <ul className="divide-y divide-white/10 border-y border-white/10">
+            {PUBLIC_NAV.map((item, i) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={close}
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  className="group flex min-h-16 items-center gap-4 py-3"
+                >
+                  <span className="label-mono w-7 text-cream/45 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="display-sm flex-1">{t(item.label)}</span>
+                  <ArrowRight className="size-5 text-crimson transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-1">
+            {MORE_LINKS.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} onClick={close} className="flex min-h-11 items-center text-[15px] text-cream/75 hover:text-cream">
+                  {t(item.label)}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
-        <div className="mt-auto space-y-2 border-t p-4">
-          <Button asChild className="w-full" size="lg">
-            <Link href="/register" onClick={() => setOpen(false)}>
-              {t("Become a Donor")}
-            </Link>
-          </Button>
-          <div onClick={() => setOpen(false)}>
-            <AccountLink variant="menu" />
+        <div className="wide safe-bottom grid shrink-0 gap-2.5 border-t border-white/10 pt-4 pb-6">
+          <Link
+            href="/register"
+            onClick={close}
+            className="press inline-flex h-14 items-center justify-between rounded-full bg-primary pr-2 pl-6 text-base font-medium text-white"
+          >
+            {t("Become a Donor")}
+            <span className="grid size-10 place-items-center rounded-full bg-white text-primary" aria-hidden="true">
+              <ArrowRight className="size-4" />
+            </span>
+          </Link>
+          <Link
+            href="/blood-requests/new"
+            onClick={close}
+            className="press inline-flex h-14 items-center justify-center rounded-full border border-white/20 text-base font-medium"
+          >
+            {t("Request blood")}
+          </Link>
+          <div className="flex items-center justify-between gap-2 pt-1">
+            <div onClick={close}>
+              <AccountLink variant="menu" className="text-cream hover:bg-white/5" />
+            </div>
+            <LanguageToggle tone="dark" className="h-11 border-white/20" />
           </div>
         </div>
       </SheetContent>

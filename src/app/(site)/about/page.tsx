@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
-import { BookOpen, CircleCheck, CircleX, NotebookPen, ShieldCheck, TriangleAlert, Users } from "lucide-react";
+import { BadgeIndianRupee, BookOpen, CircleCheck, CircleX, Handshake, Lock, NotebookPen, ShieldCheck, TriangleAlert, Users } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TileRow, TLDR, TopicPills, type Tile } from "@/components/learn/learn-parts";
 import { getT } from "@/i18n/server";
 import { SITE } from "@/lib/constants";
+import { PHOTOS } from "@/lib/photos";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
@@ -22,10 +23,10 @@ function rich(text: string, slots: Record<string, React.ReactNode>) {
 }
 
 const WHAT_WE_BUILD: Tile[] = [
-  { icon: Users, title: "Donor registry", text: "Your blood group, rough area and availability. Private by default.", tag: "🫶 Donors" },
-  { icon: ShieldCheck, title: "Verified requests", text: "Volunteers check every request with the requester or hospital first.", tag: "✅ Checked" },
-  { icon: NotebookPen, title: "Donation history", text: "Log your donations and keep track of the gaps between them.", tag: "📒 Yours" },
-  { icon: BookOpen, title: "Blood 101", text: "Plain-language guides to donating. No jargon.", tag: "📚 Learn" },
+  { icon: Users, title: "Donor registry", text: "Your blood group, rough area and availability. Private by default.", tag: "Donors" },
+  { icon: ShieldCheck, title: "Verified requests", text: "Volunteers check every request with the requester or hospital first.", tag: "Checked" },
+  { icon: NotebookPen, title: "Donation history", text: "Log your donations and keep track of the gaps between them.", tag: "Yours" },
+  { icon: BookOpen, title: "Blood 101", text: "Plain-language guides to donating. No jargon.", tag: "Learn" },
 ];
 
 const WE_DO = [
@@ -63,11 +64,16 @@ export default async function AboutPage() {
   return (
     <>
       <PageHero
+        photo={PHOTOS.handsHeart}
         eyebrow={t("About us")}
         title={t("People helping")}
         highlight={t("people.")}
         subtitle={t("Rakt Response is a volunteer community team. We help donors and people seeking blood find each other, safely.")}
-        chips={[t("🤝 Volunteer-run"), t("🔒 Privacy first"), t("💸 Never paid")]}
+        chips={[
+          { icon: Handshake, label: t("Volunteer-run") },
+          { icon: Lock, label: t("Privacy first") },
+          { icon: BadgeIndianRupee, label: t("Never paid") },
+        ]}
       />
 
       <div className="page-container space-y-10 pb-4">

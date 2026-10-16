@@ -1,14 +1,21 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronDown, type LucideIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check, CircleCheck, Compass, Droplet, Heart, MessageCircleQuestion, Plus, type LucideIcon } from "lucide-react";
+import { ArrowLink } from "@/components/site/arrow-link";
+import type { Photo } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 import { T } from "@/i18n/client";
 import { getT } from "@/i18n/server";
 import { tx } from "@/i18n/tx";
 
+export interface HeroChip {
+  icon: LucideIcon;
+  label: string;
+}
+
 /**
- * Building blocks for short, scannable public pages: a bold red hero, a
- * "quick version" summary, swipeable fact tiles and collapsible detail.
+ * Building blocks for short, scannable public pages: a dark editorial hero,
+ * a "quick version" summary, fact tiles and collapsible detail.
  * Keep visible copy short — put depth inside <MoreDetails>.
  *
  * Plain-string props are translated here, so callers pass English.
@@ -20,69 +27,73 @@ export function PageHero({
   highlight,
   subtitle,
   chips,
+  photo,
   children,
 }: {
   eyebrow?: string;
   title: string;
-  /** Part of the title rendered in outline style for emphasis. */
+  /** The quieter second half of the headline. */
   highlight?: string;
   subtitle?: React.ReactNode;
-  chips?: string[];
+  /** Short facts under the subtitle; give each an icon so it reads at a glance. */
+  chips?: Array<string | HeroChip>;
+  /** Optional photograph behind the heading, darkened for legibility. */
+  photo?: Photo;
   children?: React.ReactNode;
 }) {
   return (
-    <section className="hero-red curve-bottom relative overflow-hidden text-white">
-      <DropPattern />
-      <div className="page-container relative py-9 sm:py-14">
-        {eyebrow ? <p className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur">{tx(eyebrow)}</p> : null}
-        <h1 className="font-display max-w-3xl text-[2.35rem] leading-[1.02] font-extrabold text-white sm:text-6xl">
+    <section className="on-night under-header relative isolate overflow-hidden">
+      {photo ? (
+        <>
+          <Image src={photo.src} alt="" fill priority sizes="100vw" className="animate-settle -z-20 object-cover" />
+          <div aria-hidden="true" className="photo-wash absolute inset-0 -z-10" />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-night/40" />
+        </>
+      ) : (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_85%_0%,rgba(226,69,63,0.28)_0%,transparent_60%),radial-gradient(50%_70%_at_0%_100%,rgba(90,9,9,0.55)_0%,transparent_65%)]"
+        />
+      )}
+      <div className="page-container relative pt-14 pb-16 sm:pt-20 sm:pb-24">
+        {eyebrow ? <p className="label-mono animate-lift text-blush">{tx(eyebrow)}</p> : null}
+        <h1 className="display-lg animate-lift mt-5 max-w-4xl [--d:80]">
           {tx(title)}
           {highlight ? (
             <>
               {" "}
-              <span className="text-[#ffd5d9]">{tx(highlight)}</span>
+              <span className="text-cream/50">{tx(highlight)}</span>
             </>
           ) : null}
         </h1>
-        {subtitle ? <p className="mt-3 max-w-xl text-base text-white/90 sm:text-lg">{tx(subtitle)}</p> : null}
+        {subtitle ? <p className="animate-lift mt-6 max-w-2xl text-lg leading-relaxed text-cream/75 [--d:180] sm:text-xl">{tx(subtitle)}</p> : null}
         {chips?.length ? (
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {chips.map((chip) => (
-              <li key={chip} className="rounded-full border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold backdrop-blur">
-                {tx(chip)}
-              </li>
-            ))}
+          <ul className="animate-lift mt-8 flex flex-wrap gap-2 [--d:260]">
+            {chips.map((chip) => {
+              const { icon: Icon, label } = typeof chip === "string" ? { icon: null, label: chip } : chip;
+              return (
+                <li key={label} className="label-mono inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-2.5 text-cream/85 backdrop-blur">
+                  {Icon ? <Icon className="size-3.5 text-blush" aria-hidden="true" /> : null}
+                  {tx(label)}
+                </li>
+              );
+            })}
           </ul>
         ) : null}
-        {children ? <div className="mt-6">{children}</div> : null}
+        {children ? <div className="animate-lift mt-9 [--d:320]">{children}</div> : null}
       </div>
     </section>
-  );
-}
-
-/** Decorative floating drops used in red bands. */
-export function DropPattern() {
-  return (
-    <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.13]" preserveAspectRatio="none">
-      <defs>
-        <pattern id="rr-drops" width="88" height="88" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
-          <path d="M22 8C22 8 12 20 12 26.5C12 32 16.5 35 22 35C27.5 35 32 32 32 26.5C32 20 22 8 22 8Z" fill="white" />
-          <path d="M66 52C66 52 60 59 60 63C60 66.3 62.7 68 66 68C69.3 68 72 66.3 72 63C72 59 66 52 66 52Z" fill="white" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#rr-drops)" />
-    </svg>
   );
 }
 
 export async function TLDR({ title = "The quick version", items }: { title?: string; items: React.ReactNode[] }) {
   const t = await getT();
   return (
-    <section className="surface relative -mt-8 overflow-hidden p-5 sm:p-6" aria-label={t(title)}>
-      <p className="sticker mb-3">⚡ {t(title)}</p>
-      <ul className="space-y-2.5">
+    <section className="reveal mt-10 rounded-[1.5rem] border border-navy/10 bg-paper p-6 sm:mt-14 sm:p-8" aria-label={t(title)}>
+      <p className="label-mono text-primary">{t(title)}</p>
+      <ul className="mt-5 grid gap-x-10 gap-y-3.5 md:grid-cols-2">
         {items.map((item, i) => (
-          <li key={i} className="flex gap-3 text-[15px] leading-snug text-foreground">
+          <li key={i} className="flex gap-3 text-[16px] leading-snug text-foreground">
             <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-primary text-white">
               <Check className="size-3.5" aria-hidden="true" strokeWidth={3} />
             </span>
@@ -106,7 +117,7 @@ export function TileRow({ tiles, tone = "light", columns = 3 }: { tiles: Tile[];
   return (
     <ul
       className={cn(
-        "snap-row sm:mx-0 sm:grid sm:overflow-visible sm:px-0",
+        "snap-row sm:mx-0 sm:grid sm:gap-4 sm:overflow-visible sm:px-0",
         columns === 2 && "sm:grid-cols-2",
         columns === 3 && "sm:grid-cols-3",
         columns === 4 && "sm:grid-cols-2 lg:grid-cols-4",
@@ -116,22 +127,20 @@ export function TileRow({ tiles, tone = "light", columns = 3 }: { tiles: Tile[];
         <li
           key={tile.title}
           className={cn(
-            "w-[72%] rounded-3xl p-5 min-[420px]:w-[58%] sm:w-auto",
+            "w-[78%] rounded-[1.5rem] p-6 min-[420px]:w-[60%] sm:w-auto",
             tone === "light" && "surface",
-            tone === "tint" && "border border-primary/10 bg-accent",
-            tone === "navy" && "bg-navy text-white",
+            tone === "tint" && "border border-primary/10 bg-accent/70",
+            tone === "navy" && "on-night",
           )}
         >
-          <div className="mb-4 flex items-center justify-between">
-            <span className={cn("grid size-11 place-items-center rounded-2xl", tone === "navy" ? "bg-white/10 text-white" : "bg-primary text-white")}>
+          <div className="mb-6 flex items-center justify-between gap-3">
+            <span className={cn("grid size-11 place-items-center rounded-2xl", tone === "navy" ? "bg-white/10 text-cream" : "icon-tile")}>
               <tile.icon className="size-5" aria-hidden="true" />
             </span>
-            {tile.tag ? (
-              <span className={cn("rounded-full px-2.5 py-1 text-[11px] font-bold", tone === "navy" ? "bg-white/15" : "bg-white text-primary")}>{tx(tile.tag)}</span>
-            ) : null}
+            {tile.tag ? <span className={cn("tag", tone === "navy" && "bg-white/10 text-blush")}>{tx(tile.tag)}</span> : null}
           </div>
-          <h3 className={cn("font-display text-lg leading-tight font-bold", tone === "navy" && "text-white")}>{tx(tile.title)}</h3>
-          <p className={cn("mt-1.5 text-sm leading-relaxed", tone === "navy" ? "text-white/80" : "text-muted-foreground")}>{tx(tile.text)}</p>
+          <h3 className={cn("text-xl leading-tight font-medium tracking-[-0.02em]", tone === "navy" && "text-cream")}>{tx(tile.title)}</h3>
+          <p className={cn("mt-2 text-[15px] leading-relaxed", tone === "navy" ? "text-cream/70" : "text-muted-foreground")}>{tx(tile.text)}</p>
         </li>
       ))}
     </ul>
@@ -140,10 +149,10 @@ export function TileRow({ tiles, tone = "light", columns = 3 }: { tiles: Tile[];
 
 export function SectionTitle({ kicker, title, action, id }: { kicker?: string; title: string; action?: React.ReactNode; id?: string }) {
   return (
-    <div className="mb-4 flex items-end justify-between gap-3">
+    <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
-        {kicker ? <p className="text-xs font-bold tracking-wider text-primary uppercase">{tx(kicker)}</p> : null}
-        <h2 id={id} className="font-display text-2xl leading-tight font-extrabold sm:text-3xl">
+        {kicker ? <p className="label-mono text-primary">{tx(kicker)}</p> : null}
+        <h2 id={id} className="display-md mt-4">
           {tx(title)}
         </h2>
       </div>
@@ -155,31 +164,37 @@ export function SectionTitle({ kicker, title, action, id }: { kicker?: string; t
 /** Collapsible detail for readers who want more. */
 export function MoreDetails({ title, children, defaultOpen }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   return (
-    <details className="surface group overflow-hidden" open={defaultOpen}>
-      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-5 py-3 font-bold text-navy [&::-webkit-details-marker]:hidden">
+    <details className="group border-b border-navy/12 first:border-t" open={defaultOpen}>
+      <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 text-lg font-medium text-navy sm:text-xl [&::-webkit-details-marker]:hidden">
         {tx(title)}
-        <ChevronDown className="size-5 shrink-0 text-primary transition-transform group-open:rotate-180" aria-hidden="true" />
+        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-navy/6 transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
+          <Plus className="size-4" />
+        </span>
       </summary>
-      <div className="prose-rr border-t border-border/70 px-5 pt-1 pb-5 text-[15px]">{children}</div>
+      <div className="prose-rr max-w-3xl pb-6">{children}</div>
     </details>
   );
 }
 
-export const LEARN_TOPICS = [
-  { href: "/why-donate", label: "Why donate", emoji: "💗" },
-  { href: "/donation-types", label: "Whole blood vs SDP", emoji: "🩸" },
-  { href: "/eligibility", label: "Can I donate?", emoji: "✅" },
-  { href: "/donation-process", label: "What happens", emoji: "🧭" },
-  { href: "/faq", label: "FAQ", emoji: "💬" },
-] as const;
+export const LEARN_TOPICS: ReadonlyArray<{ href: string; label: string; icon: LucideIcon }> = [
+  { href: "/why-donate", label: "Why donate", icon: Heart },
+  { href: "/donation-types", label: "Whole blood vs SDP", icon: Droplet },
+  { href: "/eligibility", label: "Can I donate?", icon: CircleCheck },
+  { href: "/donation-process", label: "What happens", icon: Compass },
+  { href: "/faq", label: "FAQ", icon: MessageCircleQuestion },
+];
 
 export async function TopicPills({ current }: { current?: string }) {
   const t = await getT();
   return (
     <nav aria-label={t("More topics")} className="snap-row sm:mx-0 sm:flex-wrap sm:px-0">
       {LEARN_TOPICS.filter((topic) => topic.href !== current).map((topic) => (
-        <Link key={topic.href} href={topic.href} className="press inline-flex h-11 items-center gap-2 rounded-full border bg-white px-4 text-sm font-semibold whitespace-nowrap text-navy hover:border-primary/40">
-          <span aria-hidden="true">{topic.emoji}</span>
+        <Link
+          key={topic.href}
+          href={topic.href}
+          className="press inline-flex h-12 items-center gap-2 rounded-full border border-navy/15 px-5 text-[15px] font-medium whitespace-nowrap text-navy transition-colors hover:bg-navy/5"
+        >
+          <topic.icon className="size-4 text-primary" aria-hidden="true" />
           {t(topic.label)}
         </Link>
       ))}
@@ -190,25 +205,24 @@ export async function TopicPills({ current }: { current?: string }) {
 /** The closing call-to-action used on every public page. */
 export function CtaBand({ title = "Ready to be someone's hero?", text = "Join in two minutes. Your details stay private until you say otherwise." }: { title?: string; text?: string }) {
   return (
-    <section className="page-container py-10">
-      <div className="relative overflow-hidden rounded-[2rem] bg-navy p-6 text-white sm:p-10">
-        <div className="absolute -top-16 -right-10 size-48 rounded-full bg-primary/40 blur-3xl" aria-hidden="true" />
-        <div className="relative grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+    <section className="page-container py-14 sm:py-20">
+      <div className="on-night relative isolate overflow-hidden rounded-[1.75rem] px-7 py-12 sm:px-12 sm:py-16">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-[radial-gradient(55%_90%_at_100%_0%,rgba(226,69,63,0.35)_0%,transparent_60%),radial-gradient(40%_80%_at_0%_100%,rgba(90,9,9,0.6)_0%,transparent_60%)]"
+        />
+        <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
           <div>
-            <h2 className="font-display text-3xl leading-tight font-extrabold text-white sm:text-4xl">{tx(title)}</h2>
-            <p className="mt-2 max-w-lg text-white/80">{tx(text)}</p>
+            <h2 className="display-md max-w-2xl">{tx(title)}</h2>
+            <p className="mt-4 max-w-lg text-lg text-cream/70">{tx(text)}</p>
           </div>
-          <div className="flex flex-col gap-2.5 sm:flex-row md:flex-col">
-            <Button asChild size="lg" className="press">
-              <Link href="/register">
-                <T>Become a Donor</T> <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="press border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white">
-              <Link href="/blood-requests">
-                <T>Find Blood</T>
-              </Link>
-            </Button>
+          <div className="flex flex-wrap gap-2.5">
+            <ArrowLink href="/register">
+              <T>Become a Donor</T>
+            </ArrowLink>
+            <ArrowLink href="/blood-requests" tone="ghost">
+              <T>Find Blood</T>
+            </ArrowLink>
           </div>
         </div>
       </div>

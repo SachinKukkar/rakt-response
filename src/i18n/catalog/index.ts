@@ -2,6 +2,7 @@ import type { Catalog } from "./types";
 import admin from "./admin";
 import auth from "./auth";
 import common from "./common";
+import design from "./design";
 import home from "./home";
 import learn from "./learn";
 import learn2 from "./learn2";
@@ -36,4 +37,5 @@ export const HINDI: Catalog = {
   ...stories,
   ...volunteer,
   ...admin,
+  ...design,
 };

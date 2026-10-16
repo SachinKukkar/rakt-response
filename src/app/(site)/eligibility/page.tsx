@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { Fragment } from "react";
 import Link from "next/link";
-import { CalendarClock, Droplet, HeartPulse, MessageCircleQuestion, Pill, Scale, Thermometer, TriangleAlert, UserCheck, type LucideIcon } from "lucide-react";
+import { Cake, CalendarClock, Droplet, HeartPulse, MessageCircleQuestion, Pill, Scale, Smile, Thermometer, TriangleAlert, UserCheck, type LucideIcon } from "lucide-react";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TLDR, TopicPills } from "@/components/learn/learn-parts";
 import { getT } from "@/i18n/server";
@@ -46,7 +46,12 @@ export default async function EligibilityPage() {
         title="The quick"
         highlight="check."
         subtitle="Here's what blood centres usually look at. They make the final call, every time."
-        chips={["🎂 Age", "⚖️ Weight", "🙂 Feeling well", "📅 Last donation"]}
+        chips={[
+          { icon: Cake, label: "Age" },
+          { icon: Scale, label: "Weight" },
+          { icon: Smile, label: "Feeling well" },
+          { icon: CalendarClock, label: "Last donation" },
+        ]}
       />
 
       <div className="page-container space-y-10 pb-4">

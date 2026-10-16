@@ -34,14 +34,16 @@ export async function ImpactStats({ metrics, items = HOME_METRICS, showDefinitio
   const allZero = items.every((item) => Number(metrics[item.key] ?? 0) === 0);
   return (
     <div className="space-y-3">
-      <dl className="grid grid-cols-2 gap-3 lg:grid-cols-3">
+      <dl className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         {items.map((item) => (
-          <div key={item.key} className="surface p-4">
+          <div key={item.key} className="surface reveal p-4 sm:p-5">
             <dt className="flex items-start justify-between gap-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
               <span>{t(item.label)}</span>
-              <item.icon className="size-4 shrink-0 text-primary" aria-hidden="true" />
+              <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-accent text-primary">
+                <item.icon className="size-4" aria-hidden="true" />
+              </span>
             </dt>
-            <dd className="mt-1.5 text-2xl font-extrabold text-navy tabular-nums sm:text-3xl">{formatNumber(Number(metrics[item.key] ?? 0))}</dd>
+            <dd className="mt-3 text-4xl font-medium tracking-[-0.04em] text-navy tabular-nums sm:text-5xl">{formatNumber(Number(metrics[item.key] ?? 0))}</dd>
             {showDefinitions ? <dd className="mt-1 text-xs leading-relaxed text-muted-foreground">{t(item.definition)}</dd> : null}
           </div>
         ))}

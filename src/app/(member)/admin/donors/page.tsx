@@ -10,7 +10,7 @@ import { Pill, ProfileVerificationBadge } from "@/components/common/status-badge
 import { selectClass } from "@/components/common/form-parts";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { BLOOD_GROUPS, type BloodGroup } from "@/lib/constants";
+import { BLOOD_GROUPS, bloodGroupName, type BloodGroup } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
 import type { ProfileRow } from "@/lib/types";
 import { getT } from "@/i18n/server";
@@ -88,7 +88,9 @@ export default async function AdminDonorsPage({ searchParams }: PageProps<"/admi
           <select name="group" defaultValue={group ?? ""} className={selectClass}>
             <option value="">{t("All")}</option>
             {BLOOD_GROUPS.map((g) => (
-              <option key={g}>{g}</option>
+              <option key={g} value={g}>
+                {t(bloodGroupName(g))}
+              </option>
             ))}
           </select>
         </label>
