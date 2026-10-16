@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Bell, LogOut } from "lucide-react";
-import { LogoMark } from "@/components/brand/logo";
+import { LogoMark, LogoWordmark } from "@/components/brand/logo";
 import { LanguageToggle } from "@/components/layout/language-toggle";
 import { getT } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
@@ -88,15 +88,13 @@ export async function MemberShell({ viewer, unread, children }: { viewer: Viewer
   const name = viewer.profile?.display_name || viewer.profile?.full_name?.split(" ")[0] || t("there");
   return (
     <div className="flex min-h-full flex-1 flex-col bg-warm">
-      <header className="sticky top-0 z-30 border-b border-border/70 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-border/70 bg-cream/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link href="/dashboard" className="flex min-h-11 items-center gap-2.5" aria-label={t("Rakt Response dashboard")}>
             <LogoMark size="xs" priority />
             <span className="leading-tight">
-              <span className="block text-[15px] font-extrabold whitespace-nowrap text-navy">
-                <span className="text-primary">Rakt</span> Response
-              </span>
-              <span className="block max-w-[11rem] truncate text-xs text-muted-foreground">{t("Hello, {name}", { name })}</span>
+              <LogoWordmark height={11} className="block" />
+              <span className="mt-1.5 block max-w-[11rem] truncate text-xs text-muted-foreground">{t("Hello, {name}", { name })}</span>
             </span>
           </Link>
           <div className="flex items-center gap-1">

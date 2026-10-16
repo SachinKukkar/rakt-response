@@ -4,11 +4,32 @@ export const SITE = {
   supporting: "Together We Can. Save a Life. Be a Hero.",
   headline: "Every Donor Matters. Every Response Can Save a Life.",
   description: "Connecting voluntary blood donors with people who need help, one response at a time.",
-  logo: "/images/rakt-response-logo.jpeg",
+  /** The logo mark (a drop held in a hand), cut from the supplied logo file. */
+  logo: "/brand/logo-mark.png",
+  since: 2026,
 } as const;
 
-export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+/** Team members visitors can call directly (contact page, homepage and footer). */
+export const TEAM_CONTACTS = [
+  { name: "Abhilash Singh", phone: "+917426943985" },
+  { name: "Sachin Kukkar", phone: "+918766633316" },
+] as const;
+
+/** The volunteers who run Rakt Response. */
+export const CORE_TEAM = ["Sachin Kukkar", "Abhilash Singh Rathore", "Priyanka Virwani"] as const;
+
+/**
+ * The eight ABO/Rh groups plus the rare Bombay phenotype, written "Oh".
+ * Matching is by exact group, so an Oh request only ever reaches Oh donors
+ * (people with Oh can receive Oh blood only). Mirrors public.blood_group.
+ */
+export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Oh"] as const;
 export type BloodGroup = (typeof BLOOD_GROUPS)[number];
+
+/** Option text for lists and menus, where a bare "Oh" could be misread. */
+export function bloodGroupName(group: BloodGroup): string {
+  return group === "Oh" ? "Oh (Bombay)" : group;
+}
 
 export const DONATION_TYPES = ["whole_blood", "sdp", "other_apheresis", "unknown"] as const;
 export type DonationType = (typeof DONATION_TYPES)[number];

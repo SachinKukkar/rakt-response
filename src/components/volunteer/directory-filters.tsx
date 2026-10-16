@@ -115,7 +115,7 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
           <form ref={formRef} id="directory-filters" onSubmit={apply} className="space-y-4 px-4">
             <fieldset>
               <legend className="mb-2 text-sm font-semibold text-navy">{t("Blood groups")}</legend>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {BLOOD_GROUPS.map((g) => {
                   const selected = groups.includes(g);
                   return (

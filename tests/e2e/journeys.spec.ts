@@ -3,10 +3,10 @@ import { expect, test } from "@playwright/test";
 test.describe("homepage", () => {
   test("shows the mission, CTAs and honest statistics", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Every Donor Matters");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Every donor matters");
     await expect(page.getByRole("link", { name: /Become a Donor/ }).first()).toHaveAttribute("href", "/register");
     await expect(page.getByRole("link", { name: "Find Blood" }).first()).toHaveAttribute("href", "/blood-requests");
-    for (const section of ["How Rakt Response works", "Why blood donation matters", "Types of donation", "Blood groups", "Community impact"]) {
+    for (const section of [/One visit, about an hour/, /Four parts/, /Pick a check/, /Nine blood groups/, /Give blood/, /Talk to a person/]) {
       await expect(page.getByRole("heading", { name: section })).toBeVisible();
     }
     // Without a database no numbers are invented.
@@ -14,6 +14,7 @@ test.describe("homepage", () => {
     for (const group of ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]) {
       await expect(page.getByRole("img", { name: `Blood group ${group}` }).first()).toBeAttached();
     }
+    await expect(page.getByRole("img", { name: "Bombay blood group (Oh)" }).first()).toBeAttached();
   });
 
   test("mobile menu opens and navigates", async ({ page }) => {
@@ -47,7 +48,7 @@ test.describe("registration wizard", () => {
     await page.locator("#confirm_password").fill("Stronger1");
     await page.getByRole("button", { name: /Continue/ }).click();
     await expect(page.getByRole("heading", { name: "About you as a donor" })).toBeVisible();
-    await expect(page.getByText("Step 2 of 6")).toBeVisible();
+    await expect(page.getByText("Step 2 of 5")).toBeVisible();
 
     // Donor details are required for donors…
     await page.getByRole("button", { name: /Continue/ }).click();
@@ -57,7 +58,7 @@ test.describe("registration wizard", () => {
     await expect(page.getByText("Step 2 of 4")).toBeVisible();
   });
 
-  test("consent choices are separate and default to off", async ({ page }) => {
+  test("walks a donor through every step to review", async ({ page }) => {
     await page.goto("/register");
     await page.locator("#full_name").fill("Test Person");
     await page.locator("#email").fill("person@example.test");
@@ -72,19 +73,20 @@ test.describe("registration wizard", () => {
     await page.getByText("I donate regularly").click();
     await page.getByRole("button", { name: /Continue/ }).click();
 
+    // Area: state from a list, then district and town from searchable lists.
     await page.locator("#state").selectOption("Maharashtra");
     await page.locator("#district").fill("Pune");
+    await expect(page.getByRole("option", { name: /Pune/ }).first()).toBeVisible();
+    await page.locator("#district").press("Enter");
+    await expect(page.locator("#city")).toBeEnabled();
     await page.locator("#city").fill("Pune");
+    await expect(page.getByRole("option", { name: /Pune/ }).first()).toBeVisible();
+    await page.locator("#city").press("Enter");
     await page.getByRole("button", { name: /Continue/ }).click();
     await page.getByRole("button", { name: /Continue/ }).click(); // history: none
 
-    await expect(page.getByRole("heading", { name: "Availability & consent" })).toBeVisible();
-    for (const label of ["directory_visible", "contact_consent", "open_to_contact", "emergency_alerts", "show_donation_summary"]) {
-      await expect(page.locator(`#${label}`)).not.toBeChecked();
-    }
-    await page.getByRole("button", { name: /Continue/ }).click();
     await expect(page.getByRole("heading", { name: "Review & confirm" })).toBeVisible();
-    await expect(page.getByText("Visible in volunteer directory")).toBeVisible();
+    await expect(page.getByText("Step 5 of 5")).toBeVisible();
 
     // Submitting without a configured database fails safely with a clear message.
     await page.getByRole("button", { name: /Register/ }).click();
@@ -101,16 +103,25 @@ test.describe("authentication and access control", () => {
     await expect(page.getByRole("alert").filter({ hasText: /not available yet/ })).toBeVisible();
   });
 
-  for (const path of ["/dashboard", "/profile", "/donations/new", "/requests", "/settings", "/volunteer", "/volunteer/donors", "/admin", "/admin/audit-logs", "/share-your-story/submissions"]) {
+  for (const path of ["/dashboard", "/profile", "/donations/new", "/requests", "/settings", "/share-your-story/submissions"]) {
     test(`${path} is not reachable without signing in`, async ({ page }) => {
       await page.goto(path);
       await expect(page).toHaveURL(/\/login/);
     });
   }
 
+  // Staff areas are hidden altogether: signed-out visitors get a plain "not found".
+  for (const path of ["/volunteer", "/volunteer/donors", "/admin", "/admin/audit-logs"]) {
+    test(`${path} looks like a missing page without signing in`, async ({ page }) => {
+      const response = await page.goto(path);
+      expect(response?.status()).toBe(404);
+      await expect(page.getByRole("heading", { name: "We couldn't find that page" })).toBeVisible();
+    });
+  }
+
   test("CSV exports are forbidden without staff permissions", async ({ request }) => {
     const response = await request.get("/api/admin/export/donors", { maxRedirects: 0 });
-    expect([302, 303, 307, 403]).toContain(response.status());
+    expect([302, 303, 307, 403, 404]).toContain(response.status());
   });
 
   test("sign-out only accepts POST", async ({ request }) => {
@@ -167,8 +178,9 @@ test.describe("platform", () => {
     expect(await sw.text()).toContain("never caches HTML of private pages");
   });
 
-  test("robots.txt keeps private areas out of search engines", async ({ request }) => {
+  test("robots.txt keeps private areas out of search engines without naming staff areas", async ({ request }) => {
     const text = await (await request.get("/robots.txt")).text();
-    for (const path of ["/admin", "/volunteer", "/dashboard"]) expect(text).toContain(`Disallow: ${path}`);
+    for (const path of ["/dashboard", "/profile", "/settings"]) expect(text).toContain(`Disallow: ${path}`);
+    for (const path of ["/admin", "/volunteer"]) expect(text).not.toContain(path);
   });
 });

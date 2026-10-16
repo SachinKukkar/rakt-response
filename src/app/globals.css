@@ -6,17 +6,20 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Rakt Response design system.
- * Brand: primary red #C82032, crimson #E63946, navy #152B50,
- * warm white #FFFDFB, white, dark text #202124.
+ * Rakt Response design system (2026 redesign).
+ * Night #120407 and cream #F4F3EF sections, the logo's reds (#D93B3B to #961616,
+ * maroon #5A0909) as accents, Geist for text and Geist Mono for small labels.
+ * The token name "navy" is kept for compatibility: it now holds the deep ink
+ * colour used for headings and dark surfaces across the app.
  */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans), var(--font-devanagari);
-  --font-heading: var(--font-sans), var(--font-devanagari);
-  --font-display: var(--font-bricolage), var(--font-sans), var(--font-devanagari);
+  --font-sans: var(--font-geist), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-geist), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), var(--font-devanagari), ui-monospace, monospace;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -36,11 +39,17 @@
   --color-navy: var(--navy);
   --color-navy-soft: var(--navy-soft);
   --color-crimson: var(--crimson);
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-cream: var(--cream);
+  --color-blush: var(--blush);
+  --color-maroon: var(--maroon);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
   --color-warm: var(--warm);
+  --color-paper: var(--paper);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -53,32 +62,39 @@
 :root {
   color-scheme: light;
   --radius: 0.75rem;
-  --background: #fffdfb;
-  --warm: #fffdfb;
-  --foreground: #202124;
-  --card: #ffffff;
-  --card-foreground: #202124;
-  --popover: #ffffff;
-  --popover-foreground: #202124;
-  --primary: #c82032;
+  --header-h: 4.75rem;
+  --background: #f4f3ef;
+  --warm: #f4f3ef;
+  --cream: #f4f3ef;
+  --paper: #fbfaf7;
+  --foreground: #1d0b0e;
+  --card: #fbfaf7;
+  --card-foreground: #1d0b0e;
+  --popover: #fbfaf7;
+  --popover-foreground: #1d0b0e;
+  --primary: #c62a2a;
   --primary-foreground: #ffffff;
-  --crimson: #e63946;
-  --navy: #152b50;
-  --navy-soft: #e9edf5;
-  --secondary: #eef1f7;
-  --secondary-foreground: #152b50;
-  --muted: #f4f1ee;
-  --muted-foreground: #5f6368;
-  --accent: #fdecee;
-  --accent-foreground: #a3172a;
+  --crimson: #e2453f;
+  --maroon: #5a0909;
+  --navy: #1d0b0e;
+  --navy-soft: #eee8e2;
+  --night: #120407;
+  --night-2: #1f0a0e;
+  --blush: #f4a99f;
+  --secondary: #ebe5df;
+  --secondary-foreground: #1d0b0e;
+  --muted: #ebe5df;
+  --muted-foreground: #6b5d5a;
+  --accent: #f7e1dc;
+  --accent-foreground: #9e1d1f;
   --destructive: #b3261e;
-  --success: #17703a;
-  --success-soft: #e7f4ec;
-  --warning: #9a4b06;
-  --warning-soft: #fdf1e1;
-  --border: #ebe5e0;
-  --input: #ddd6d0;
-  --ring: #c82032;
+  --success: #1d7442;
+  --success-soft: #e4f1e8;
+  --warning: #93480a;
+  --warning-soft: #f9ecd8;
+  --border: #e1d9d2;
+  --input: #d3c9c1;
+  --ring: #c62a2a;
 }
 
 @layer base {
@@ -90,9 +106,17 @@
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
   body {
     @apply bg-background text-foreground antialiased;
     text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--crimson) 30%, transparent);
   }
   /* A grid without explicit columns sizes its column to the widest content, so
      one long unbroken line (a title, a reference code) could make the whole page
@@ -102,12 +126,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
   h1, h2, h3, h4 {
-    @apply font-heading tracking-tight text-navy;
+    @apply font-heading text-navy;
+    letter-spacing: -0.03em;
     text-wrap: balance;
-    font-optical-sizing: auto;
-  }
-  h1, h2 {
-    letter-spacing: -0.025em;
   }
   p {
     text-wrap: pretty;
@@ -134,16 +155,99 @@
 
 @layer components {
   .page-container {
-    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+    @apply mx-auto w-full max-w-[1400px] px-4 sm:px-8;
   }
+  /* Public pages use the full width of the screen, like an editorial layout. */
+  .wide {
+    @apply mx-auto w-full max-w-[1400px] px-4 sm:px-8;
+  }
+  /* Pages whose first section is dark slide it up under the floating header. */
+  .under-header {
+    margin-top: calc(var(--header-h) * -1);
+    padding-top: var(--header-h);
+  }
+
+  /* Type scale: large, quiet headlines with tight tracking. */
+  .display-xl {
+    font-size: clamp(2.9rem, 8.2vw, 8.5rem);
+    line-height: 0.93;
+    letter-spacing: -0.055em;
+    font-weight: 500;
+  }
+  .display-lg {
+    font-size: clamp(2.3rem, 5vw, 4.6rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+  }
+  .display-md {
+    font-size: clamp(1.85rem, 3.3vw, 3rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+  .display-sm {
+    font-size: clamp(1.35rem, 2.1vw, 1.75rem);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+  /* Hindi needs a little more room than Latin at display sizes. */
+  html[lang="hi-IN"] :is(.display-xl, .display-lg, .display-md) {
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+  }
+  /* Small uppercase labels: "(01) THE DONATION", "WHOLE BLOOD", "15 MIN". */
+  .label-mono {
+    @apply font-mono text-[11px] leading-none font-medium tracking-[0.08em] uppercase;
+  }
+  /* Letter-spacing breaks up joined Devanagari letters, and 11px is too small to read them. */
+  html[lang="hi-IN"] .label-mono {
+    font-size: 12.5px;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
+  /* Dark sections. Headings and links inside switch to cream. */
+  .on-night {
+    background-color: var(--night);
+    color: var(--cream);
+  }
+  .on-night :is(h1, h2, h3, h4) {
+    color: var(--cream);
+  }
+  .on-cream {
+    background-color: var(--cream);
+    color: var(--foreground);
+  }
+  /* Frosted dark card that floats on photographs. */
+  .glass {
+    @apply rounded-2xl border border-white/12;
+    background: rgba(18, 4, 7, 0.62);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+  /* Photo panels: rounded, with a warm dark wash so text on them stays readable. */
+  .photo-panel {
+    @apply relative isolate overflow-hidden rounded-[1.75rem];
+  }
+  .photo-panel > img {
+    @apply absolute inset-0 -z-10 size-full object-cover;
+  }
+  .photo-wash {
+    background:
+      linear-gradient(90deg, rgba(18, 4, 7, 0.88) 0%, rgba(18, 4, 7, 0.55) 45%, rgba(18, 4, 7, 0.15) 100%),
+      linear-gradient(0deg, rgba(18, 4, 7, 0.6) 0%, transparent 40%);
+  }
+
   .prose-rr {
-    @apply max-w-none text-[15px] leading-7 text-foreground/90;
+    @apply max-w-none text-base leading-7 text-foreground/90;
   }
   .prose-rr h2 {
-    @apply mt-8 mb-3 text-xl font-bold;
+    @apply mt-9 mb-3 text-2xl font-medium;
   }
   .prose-rr h3 {
-    @apply mt-6 mb-2 text-lg font-semibold;
+    @apply mt-6 mb-2 text-lg font-medium;
   }
   .prose-rr p {
     @apply my-3;
@@ -161,20 +265,55 @@
     @apply font-semibold text-navy;
   }
   .surface {
-    @apply rounded-2xl border border-border/70 bg-card shadow-[0_1px_2px_rgba(21,43,80,0.04),0_4px_16px_rgba(21,43,80,0.05)];
+    @apply rounded-[1.25rem] border border-border bg-card shadow-[0_1px_2px_rgba(18,4,7,0.04),0_14px_32px_-22px_rgba(18,4,7,0.28)];
   }
   .surface-tint {
-    @apply rounded-2xl border border-primary/10 bg-accent/60;
+    @apply rounded-[1.25rem] border border-primary/10 bg-accent/60;
   }
+  .section {
+    @apply py-16 sm:py-24;
+  }
+  .section-paper {
+    background-color: var(--paper);
+  }
+  /* A red tile holding a white icon, the same on every page. */
+  .icon-tile {
+    @apply grid size-11 shrink-0 place-items-center rounded-2xl text-white shadow-[0_10px_22px_-10px_rgba(198,42,42,0.7)];
+    background: linear-gradient(150deg, #e2453f 0%, #c62a2a 55%, #961616 100%);
+  }
+  /* Drawn covers for stories without a photo. */
+  .cover-red {
+    background:
+      radial-gradient(110% 90% at 100% 0%, rgba(255, 150, 140, 0.32) 0%, transparent 55%),
+      linear-gradient(150deg, #e2453f 0%, #c62a2a 50%, #8f1515 100%);
+  }
+  .cover-navy {
+    background:
+      radial-gradient(110% 90% at 100% 0%, rgba(226, 69, 63, 0.35) 0%, transparent 55%),
+      linear-gradient(150deg, #2b0e13 0%, #120407 100%);
+  }
+  .cover-mix {
+    background: linear-gradient(150deg, #c62a2a 0%, #5a0909 55%, #120407 100%);
+  }
+  /* Short label on a card ("Most common", "Sample"). */
+  .tag {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 font-mono text-[10.5px] leading-none font-medium tracking-[0.06em] text-accent-foreground uppercase;
+  }
+  /* Dark banner used by the sign-in pages and the dashboard welcome. */
   .brand-band {
     background:
-      radial-gradient(120% 90% at 100% 0%, rgba(230, 57, 70, 0.55) 0%, transparent 55%),
-      linear-gradient(160deg, #c82032 0%, #a8192a 100%);
+      radial-gradient(90% 120% at 100% 0%, rgba(226, 69, 63, 0.42) 0%, transparent 55%),
+      radial-gradient(70% 90% at 0% 100%, rgba(90, 9, 9, 0.6) 0%, transparent 60%),
+      var(--night);
   }
-  .hero-glow {
+  .hero-red {
     background:
-      radial-gradient(60% 50% at 85% 10%, rgba(200, 32, 50, 0.1) 0%, transparent 70%),
-      radial-gradient(50% 40% at 0% 100%, rgba(21, 43, 80, 0.07) 0%, transparent 70%);
+      radial-gradient(90% 70% at 100% 0%, rgba(255, 150, 140, 0.35) 0%, transparent 60%),
+      linear-gradient(165deg, #e2453f 0%, #c62a2a 45%, #8f1515 100%);
+  }
+  .curve-bottom {
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
   }
   /* Horizontal swipe rows (no JS): cards snap on phones, wrap into grids on desktop. */
   .snap-row {
@@ -193,20 +332,7 @@
     @apply transition-transform duration-150 active:scale-[0.97] motion-reduce:transition-none;
   }
   .lift {
-    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/10 motion-reduce:transition-none motion-reduce:hover:translate-y-0;
-  }
-  .sticker {
-    @apply inline-flex items-center gap-1.5 rounded-full border-2 border-navy bg-white px-3 py-1 text-xs font-extrabold tracking-wide text-navy uppercase shadow-[3px_3px_0_0_var(--navy)];
-  }
-  .hero-red {
-    background:
-      radial-gradient(90% 70% at 100% 0%, rgba(255, 140, 150, 0.45) 0%, transparent 60%),
-      radial-gradient(70% 60% at 0% 100%, rgba(21, 43, 80, 0.35) 0%, transparent 60%),
-      linear-gradient(165deg, #e63946 0%, #c82032 45%, #9e1426 100%);
-  }
-  .curve-bottom {
-    border-bottom-left-radius: 2.5rem;
-    border-bottom-right-radius: 2.5rem;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-28px_rgba(18,4,7,0.45)] motion-reduce:transition-none motion-reduce:hover:translate-y-0;
   }
   .text-outline {
     -webkit-text-stroke: 2px currentColor;
@@ -242,7 +368,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
   }
 }
 
@@ -254,22 +380,132 @@
 
 /* Logo orbit: the ring spins, each drop counter-spins so its label stays upright. */
 @utility animate-orbit {
-  animation: orbit-spin 36s linear infinite;
+  animation: orbit-spin 40s linear infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
 }
 
 @utility animate-orbit-reverse {
-  animation: orbit-spin 36s linear infinite reverse;
+  animation: orbit-spin 40s linear infinite reverse;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
 }
 
 @utility animate-float {
-  animation: float-y 5s ease-in-out infinite;
+  animation: float-y 6s ease-in-out infinite;
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+}
+
+/* The hero photograph settles into place once, slowly. */
+@keyframes settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@utility animate-settle {
+  animation: settle 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* Headline lines lift in one after another on first paint. */
+@keyframes lift-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@utility animate-lift {
+  animation: lift-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 1ms);
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* The hero's step bars fill one after another, then start again (16 s loop). */
+@keyframes step-1 {
+  0% { transform: scaleX(0); }
+  25%, 98% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+@keyframes step-2 {
+  0%, 25% { transform: scaleX(0); }
+  50%, 98% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+@keyframes step-3 {
+  0%, 50% { transform: scaleX(0); }
+  75%, 98% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+@keyframes step-4 {
+  0%, 75% { transform: scaleX(0); }
+  98% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+@utility step-bar {
+  transform-origin: left;
+  animation: step-1 16s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Content rises gently into place as it scrolls into view. Pure CSS: browsers
+ * without scroll-driven animations, and anyone who prefers reduced motion,
+ * simply see the content in place.
+ */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+/* Words of a quote darken one by one as the reader scrolls past them. */
+@keyframes ink-in {
+  from {
+    color: color-mix(in srgb, currentColor 28%, transparent);
+  }
+  to {
+    color: currentColor;
+  }
+}
+@utility ink-word {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: ink-in linear both;
+      animation-timeline: view();
+      animation-range: entry 80% cover 42%;
+    }
   }
 }

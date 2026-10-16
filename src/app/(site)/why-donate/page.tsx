@@ -5,7 +5,9 @@ import { Fragment } from "react";
 import {
   Ambulance,
   Baby,
+  Bandage,
   Droplet,
+  Droplets,
   FlaskConical,
   HandHeart,
   HeartPulse,
@@ -19,6 +21,7 @@ import {
 } from "lucide-react";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TileRow, TLDR, TopicPills, type Tile } from "@/components/learn/learn-parts";
+import { PHOTOS } from "@/lib/photos";
 import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,9 +37,9 @@ function rich(text: string, slots: Record<string, React.ReactNode>) {
 }
 
 const COMPONENTS: Tile[] = [
-  { icon: Wind, title: "Red cells", text: "Carry oxygen. Often used after injury, surgery, childbirth or severe anaemia.", tag: "🫁 Oxygen" },
-  { icon: Shield, title: "Platelets", text: "Help blood clot. Often needed when counts drop, like in some cancer care or severe dengue.", tag: "🩹 Clotting" },
-  { icon: Droplet, title: "Plasma", text: "The liquid part, full of clotting proteins. Some medicines are made from it.", tag: "💧 Proteins" },
+  { icon: Wind, title: "Red cells", text: "Carry oxygen. Often used after injury, surgery, childbirth or severe anaemia.", tag: "Oxygen" },
+  { icon: Shield, title: "Platelets", text: "Help blood clot. Often needed when counts drop, like in some cancer care or severe dengue.", tag: "Clotting" },
+  { icon: Droplet, title: "Plasma", text: "The liquid part, full of clotting proteins. Some medicines are made from it.", tag: "Proteins" },
 ];
 
 const NEEDS: Tile[] = [
@@ -66,11 +69,16 @@ export default async function WhyDonatePage() {
   return (
     <>
       <PageHero
+        photo={PHOTOS.redCells}
         eyebrow={t("Why donate")}
         title={t("Your blood,")}
         highlight={t("someone's big day.")}
         subtitle={t("Around 15 minutes in the chair. One needle. A big deal for someone you may never meet.")}
-        chips={[t("🩸 Red cells"), t("🩹 Platelets"), t("💧 Plasma")]}
+        chips={[
+          { icon: Droplet, label: t("Red cells") },
+          { icon: Bandage, label: t("Platelets") },
+          { icon: Droplets, label: t("Plasma") },
+        ]}
       />
 
       <div className="page-container space-y-10 pb-4">

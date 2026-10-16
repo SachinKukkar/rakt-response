@@ -42,6 +42,11 @@ describe("registration", () => {
     ).toBe(true);
   });
 
+  it("accepts the Bombay blood group (Oh)", () => {
+    expect(donorStepSchema.safeParse({ ...validRegistration.donor, blood_group: "Oh" }).success).toBe(true);
+    expect(donorStepSchema.safeParse({ ...validRegistration.donor, blood_group: "oh" }).success).toBe(false);
+  });
+
   it("requires a phone number when phone or WhatsApp contact is preferred", () => {
     expect(donorStepSchema.safeParse({ ...validRegistration.donor, phone: "" }).success).toBe(false);
   });
@@ -98,6 +103,10 @@ describe("blood requests", () => {
 
   it("accepts a valid SDP request", () => {
     expect(bloodRequestSchema.safeParse(request).success).toBe(true);
+  });
+
+  it("accepts a request for the Bombay blood group (Oh)", () => {
+    expect(bloodRequestSchema.safeParse({ ...request, blood_group: "Oh", request_type: "whole_blood" }).success).toBe(true);
   });
 
   it("requires acknowledging what the platform cannot guarantee", () => {
@@ -196,5 +205,6 @@ describe("profile and admin edits", () => {
   it("requires the area fields together and a valid blood group", () => {
     expect(adminDonorSchema.safeParse({ ...admin, city: "" }).success).toBe(false);
     expect(adminDonorSchema.safeParse({ ...admin, blood_group: "Z+" }).success).toBe(false);
+    expect(adminDonorSchema.safeParse({ ...admin, blood_group: "Oh" }).success).toBe(true);
   });
 });

@@ -1,68 +1,41 @@
 import Link from "next/link";
-import { LogoMark } from "@/components/brand/logo";
-import { EmailLink, PhoneLink, WhatsAppLink } from "@/components/common/contact-link";
-import { SITE } from "@/lib/constants";
+import Image from "next/image";
+import { EmailLink } from "@/components/common/contact-link";
+import { ArrowLink } from "@/components/site/arrow-link";
+import { LiveClock } from "@/components/site/live-clock";
+import { SITE, TEAM_CONTACTS } from "@/lib/constants";
+import { telLink } from "@/lib/contact-links";
 import { getPublicSettings } from "@/lib/data/public";
+import { formatPhone } from "@/lib/phone";
+import { PHOTO_CREDITS } from "@/lib/photos";
 import { getT } from "@/i18n/server";
 import { FOOTER_GROUPS } from "./nav-config";
 
 export async function SiteFooter() {
   const [t, settings] = await Promise.all([getT(), getPublicSettings()]);
-  const hasContact = Boolean(settings.contactEmail || settings.contactPhone || settings.whatsapp);
-  const contactLink = "text-white hover:text-white min-h-11";
   return (
-    <footer className="mt-16 bg-navy text-white">
-      <div className="page-container grid gap-10 py-10 lg:grid-cols-[1.3fr_2fr]">
-        <div className="space-y-4">
-          <Link href="/" className="inline-flex min-h-11 items-center gap-3 rounded-full" aria-label={t("Rakt Response home")}>
-            <LogoMark size="md" />
-            <span>
-              {/* On navy, "Response" is white; navy text would disappear. */}
-              <span className="block text-xl font-extrabold">
-                <span className="text-crimson">Rakt</span> Response
-              </span>
-              <span className="block text-sm text-white/75">{t(SITE.tagline)}</span>
-            </span>
-          </Link>
-          <p className="max-w-md text-sm leading-relaxed text-white/75">{t(SITE.description)}</p>
-          {hasContact ? (
-            <ul className="space-y-1 text-sm" aria-label={t("Contact the team")}>
-              {settings.contactPhone ? (
-                <li>
-                  <PhoneLink phone={settings.contactPhone} className={contactLink} />
-                </li>
-              ) : null}
-              {settings.whatsapp ? (
-                <li>
-                  <WhatsAppLink phone={settings.whatsapp} label={t("WhatsApp")} className={contactLink} />
-                </li>
-              ) : null}
-              {settings.contactEmail ? (
-                <li>
-                  <EmailLink email={settings.contactEmail} className={contactLink} />
-                </li>
-              ) : null}
-            </ul>
-          ) : (
-            <Link href="/contact" className="inline-flex min-h-11 items-center text-sm font-semibold underline-offset-2 hover:underline">
-              {t("Contact the team")}
-            </Link>
-          )}
-          <p className="max-w-md text-xs leading-relaxed text-white/60">
+    <footer className="on-night relative overflow-hidden">
+      <div className="wide grid gap-12 pt-20 pb-14 lg:grid-cols-[1fr_1.6fr] lg:gap-16 lg:pt-28">
+        <div className="max-w-md">
+          <p className="display-sm text-cream">{t("Every donor matters. Every response can save a life.")}</p>
+          <ArrowLink href="/register" className="mt-7">
+            {t("Become a Donor")}
+          </ArrowLink>
+          <p className="mt-8 text-xs leading-relaxed text-cream/55">
             {t(
               "Rakt Response is a volunteer coordination platform. It does not store blood, certify compatibility or replace a hospital or licensed blood bank. In an emergency, contact the treating hospital or the nearest licensed blood bank immediately.",
             )}
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
           {FOOTER_GROUPS.map((group) => (
             <nav key={group.title} aria-label={t(group.title)}>
-              <p className="mb-2 text-sm font-bold">{t(group.title)}</p>
-              <ul className="text-sm text-white/80">
+              <p className="label-mono mb-4 text-cream/50">{t(group.title)}</p>
+              <ul className="space-y-0.5 text-[15px]">
                 {group.links.map((item) => (
                   <li key={item.href}>
-                    <Link className="flex min-h-11 items-center hover:text-white hover:underline" href={item.href}>
+                    <Link className="inline-flex min-h-9 items-center text-cream/80 transition-colors hover:text-cream" href={item.href}>
                       {t(item.label)}
                     </Link>
                   </li>
@@ -70,16 +43,57 @@ export async function SiteFooter() {
               </ul>
             </nav>
           ))}
+          <div>
+            <p className="label-mono mb-4 text-cream/50">{t("Contact")}</p>
+            <ul className="space-y-3 text-[15px]">
+              {TEAM_CONTACTS.map((person) => (
+                <li key={person.phone}>
+                  <span className="block text-cream/80">{person.name}</span>
+                  <a href={telLink(person.phone)} className="inline-flex min-h-9 items-center font-mono text-sm text-cream tabular-nums hover:underline">
+                    {formatPhone(person.phone)}
+                  </a>
+                </li>
+              ))}
+              {settings.contactEmail ? (
+                <li>
+                  <EmailLink email={settings.contactEmail} icon={false} className="text-cream/80 hover:text-cream" />
+                </li>
+              ) : null}
+              <li>
+                <Link href="/contact" className="inline-flex min-h-9 items-center text-cream/80 hover:text-cream">
+                  {t("All contact options")}
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="page-container flex flex-col gap-1 py-4 text-xs text-white/60 sm:flex-row sm:justify-between">
-          <p>{t("© {year} Rakt Response Team. All rights reserved.", { year: new Date().getFullYear() })}</p>
+
+      <div className="wide">
+        <div className="label-mono flex flex-col gap-3 border-t border-white/10 py-6 text-cream/55 md:flex-row md:items-center md:justify-between">
+          <p>{t("© {year} Rakt Response Team", { year: new Date().getFullYear() })}</p>
           <p>
-            {t(SITE.supporting)} · {t("Built by volunteers, for voluntary donors.")}
+            {t("India")} · <LiveClock />
           </p>
+          <p className="md:text-right">{t("Not an emergency service. In an emergency call 112.")}</p>
         </div>
+        <p className="pb-6 font-mono text-[10px] leading-relaxed tracking-wide text-cream/35 uppercase">
+          {t("Photos: {credits}", { credits: PHOTO_CREDITS })}
+        </p>
       </div>
+
+      {/* The wordmark from the logo, set huge and cropped by the page edge. */}
+      <div className="wide pointer-events-none select-none" aria-hidden="true">
+        <Image
+          src="/brand/logo-wordmark-cream.png"
+          alt=""
+          width={2367}
+          height={240}
+          sizes="(min-width: 1400px) 1336px, 100vw"
+          className="-mb-[2.4%] h-auto w-full translate-y-[18%] opacity-[0.96]"
+        />
+      </div>
+      <span className="sr-only">{SITE.name}</span>
     </footer>
   );
 }

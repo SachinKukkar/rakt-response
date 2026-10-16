@@ -13,7 +13,7 @@ import { ChoiceRow, Field, fieldAria, selectClass } from "@/components/common/fo
 import { ChipChoice } from "@/components/forms/pickers";
 import { submitStory } from "@/actions/stories";
 import { resizeImageForUpload } from "@/lib/client-image";
-import { BLOOD_GROUPS, DONATION_TYPE_LABELS, DONATION_TYPES, STORY_TYPE_LABELS, type DonationType, type StoryType } from "@/lib/constants";
+import { BLOOD_GROUPS, bloodGroupName, DONATION_TYPE_LABELS, DONATION_TYPES, STORY_TYPE_LABELS, type DonationType, type StoryType } from "@/lib/constants";
 import { storySchema, type StoryInput } from "@/lib/validation/forms";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n/client";
@@ -273,7 +273,7 @@ export function StoryForm({
                   <option value="">{t("Prefer not to say")}</option>
                   {BLOOD_GROUPS.map((g) => (
                     <option key={g} value={g}>
-                      {g}
+                      {t(bloodGroupName(g))}
                     </option>
                   ))}
                 </select>

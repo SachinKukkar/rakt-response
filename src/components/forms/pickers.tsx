@@ -37,6 +37,8 @@ export function BloodGroupPicker({
               "relative flex h-14 cursor-pointer items-center justify-center rounded-2xl border-2 bg-white text-lg font-extrabold text-primary transition-all",
               "hover:border-primary/40 has-checked:border-primary has-checked:bg-primary has-checked:text-white has-checked:shadow-md has-checked:shadow-primary/25",
               "has-focus-visible:ring-3 has-focus-visible:ring-ring/40",
+              // The rare Bombay group gets its own row, with its name spelled out.
+              group === "Oh" && "col-span-4 gap-2",
             )}
           >
             <input
@@ -48,6 +50,7 @@ export function BloodGroupPicker({
               className="sr-only"
             />
             {group}
+            {group === "Oh" ? <span className="text-sm font-semibold opacity-85">{t("Bombay blood group (rare)")}</span> : null}
           </label>
         ))}
       </div>

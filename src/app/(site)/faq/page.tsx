@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
-import { MessageCircleQuestion, TriangleAlert } from "lucide-react";
+import { Droplet, Lock, MessageCircleQuestion, NotebookPen, Siren, TriangleAlert, type LucideIcon } from "lucide-react";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TLDR, TopicPills } from "@/components/learn/learn-parts";
 import { getT } from "@/i18n/server";
@@ -20,10 +20,10 @@ function rich(text: string, slots: Record<string, React.ReactNode>) {
 
 type Faq = { q: string; a: React.ReactNode };
 
-const groups = (t: TFunction): { id: string; emoji: string; kicker: string; title: string; items: Faq[] }[] => [
+const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; title: string; items: Faq[] }[] => [
   {
     id: "donating",
-    emoji: "🩸",
+    icon: Droplet,
     kicker: t("Donating"),
     title: t("About donating"),
     items: [
@@ -77,6 +77,16 @@ const groups = (t: TFunction): { id: string; emoji: string; kicker: string; titl
         ),
       },
       {
+        q: t("What is the Bombay (Oh) blood group?"),
+        a: (
+          <p>
+            {t(
+              "A rare blood group, first identified in Bombay (now Mumbai). Routine tests can mistake it for O, and people with it can receive only Oh blood. If you know your group is Oh, please register: you may be one of very few donors who can help.",
+            )}
+          </p>
+        ),
+      },
+      {
         q: t("Does Rakt Response pay donors?"),
         a: (
           <p>
@@ -90,7 +100,7 @@ const groups = (t: TFunction): { id: string; emoji: string; kicker: string; titl
   },
   {
     id: "privacy",
-    emoji: "🔒",
+    icon: Lock,
     kicker: t("Privacy"),
     title: t("Privacy and your profile"),
     items: [
@@ -141,7 +151,7 @@ const groups = (t: TFunction): { id: string; emoji: string; kicker: string; titl
   },
   {
     id: "requests",
-    emoji: "🚨",
+    icon: Siren,
     kicker: t("Requests"),
     title: t("Blood requests and emergencies"),
     items: [
@@ -179,7 +189,7 @@ const groups = (t: TFunction): { id: string; emoji: string; kicker: string; titl
   },
   {
     id: "records",
-    emoji: "📒",
+    icon: NotebookPen,
     kicker: t("Records"),
     title: t("Donation records and stories"),
     items: [
@@ -222,7 +232,7 @@ export default async function FaqPage() {
               href={`#${g.id}`}
               className="press inline-flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 text-sm font-semibold whitespace-nowrap text-white backdrop-blur hover:bg-white/20"
             >
-              <span aria-hidden="true">{g.emoji}</span>
+              <g.icon className="size-4" aria-hidden="true" />
               {g.kicker}
             </a>
           ))}

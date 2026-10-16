@@ -238,7 +238,7 @@ export function RegisterWizard() {
           else next();
         }}
       >
-        <h1 className="font-display text-[1.75rem] leading-tight font-extrabold" tabIndex={-1}>
+        <h1 className="text-[2rem] leading-[1.05] font-medium tracking-[-0.04em]" tabIndex={-1}>
           {t(meta.title)}
         </h1>
 

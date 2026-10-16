@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { LocationFields } from "@/components/forms/location-pickers";
 import Link from "next/link";
-import { HandHeart, Hospital, Plus } from "lucide-react";
+import { HandHeart, Hospital } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyState, Notice } from "@/components/common/page-parts";
 import { PageHero, SectionTitle } from "@/components/learn/learn-parts";
@@ -10,7 +10,9 @@ import { Pagination, parsePage } from "@/components/common/pagination";
 import { RequestCard } from "@/components/requests/request-card";
 import { selectClass } from "@/components/common/form-parts";
 import { listPublicRequests } from "@/lib/data/public";
-import { BLOOD_GROUPS, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestType } from "@/lib/constants";
+import { BLOOD_GROUPS, bloodGroupName, REQUEST_TYPE_LABELS, REQUEST_TYPES, type BloodGroup, type RequestType } from "@/lib/constants";
+import { PHOTOS } from "@/lib/photos";
+import { ArrowLink } from "@/components/site/arrow-link";
 import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -39,17 +41,16 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
   return (
     <>
       <PageHero
+        photo={PHOTOS.bloodBag}
         eyebrow={t("Find blood")}
         title={t("Need blood?")}
         highlight={t("We'll rally donors.")}
         subtitle={t("Tell us what's needed. A volunteer verifies it, then reaches out to matching donors who said yes to being contacted.")}
         chips={[t("Verified before sharing"), t("Free, always"), t("Your details stay private")]}
       >
-        <Button asChild size="lg" className="press bg-white text-primary hover:bg-white/90">
-          <Link href="/blood-requests/new">
-            <Plus className="size-4" aria-hidden="true" /> {t("Submit a request")}
-          </Link>
-        </Button>
+        <ArrowLink href="/blood-requests/new" size="lg">
+          {t("Submit a request")}
+        </ArrowLink>
       </PageHero>
     <div className="page-container space-y-6 py-8">
       <Notice tone="warning" icon={Hospital} title={t("Emergency? Call the hospital first")}>
@@ -71,7 +72,7 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
               <option value="">{t("All groups")}</option>
               {BLOOD_GROUPS.map((g) => (
                 <option key={g} value={g}>
-                  {g}
+                  {t(bloodGroupName(g))}
                 </option>
               ))}
             </select>

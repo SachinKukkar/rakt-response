@@ -5,7 +5,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <SiteHeader />
-      <main id="main" className="flex-1">
+      {/* The header floats over the page; dark first sections slide under it (.under-header). */}
+      <main id="main" className="flex-1 pt-[var(--header-h)]">
         {children}
       </main>
       <SiteFooter />

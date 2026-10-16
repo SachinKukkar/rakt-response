@@ -17,7 +17,7 @@ export function AuthCard({
   return (
     <div className={cn("space-y-4", className)}>
       <section className="surface p-5 sm:p-7">
-        <h1 className="font-display text-[1.75rem] leading-tight font-extrabold">{title}</h1>
+        <h1 className="text-[2rem] leading-[1.05] font-medium tracking-[-0.04em]">{title}</h1>
         {description ? <div className="mt-1 mb-5 text-sm text-muted-foreground">{description}</div> : <div className="mb-5" />}
         {children}
       </section>
