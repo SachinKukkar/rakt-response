@@ -45,7 +45,7 @@ export function PageHero({
     <section className="on-night under-header relative isolate overflow-hidden">
       {photo ? (
         <>
-          <Image src={photo.src} alt="" fill priority sizes="100vw" className="animate-settle -z-20 object-cover" />
+          <Image src={photo.src} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
           <div aria-hidden="true" className="photo-wash absolute inset-0 -z-10" />
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-night/40" />
         </>
@@ -56,8 +56,8 @@ export function PageHero({
         />
       )}
       <div className="page-container relative pt-14 pb-16 sm:pt-20 sm:pb-24">
-        {eyebrow ? <p className="label-mono animate-lift text-blush">{tx(eyebrow)}</p> : null}
-        <h1 className="display-lg animate-lift mt-5 max-w-4xl [--d:80]">
+        {eyebrow ? <p className="label-mono text-blush">{tx(eyebrow)}</p> : null}
+        <h1 className="display-lg mt-5 max-w-4xl">
           {tx(title)}
           {highlight ? (
             <>
@@ -66,9 +66,9 @@ export function PageHero({
             </>
           ) : null}
         </h1>
-        {subtitle ? <p className="animate-lift mt-6 max-w-2xl text-lg leading-relaxed text-cream/75 [--d:180] sm:text-xl">{tx(subtitle)}</p> : null}
+        {subtitle ? <p className="mt-6 max-w-2xl text-lg leading-relaxed text-cream/75 sm:text-xl">{tx(subtitle)}</p> : null}
         {chips?.length ? (
-          <ul className="animate-lift mt-8 flex flex-wrap gap-2 [--d:260]">
+          <ul className="mt-8 flex flex-wrap gap-2">
             {chips.map((chip) => {
               const { icon: Icon, label } = typeof chip === "string" ? { icon: null, label: chip } : chip;
               return (
@@ -80,7 +80,7 @@ export function PageHero({
             })}
           </ul>
         ) : null}
-        {children ? <div className="animate-lift mt-9 [--d:320]">{children}</div> : null}
+        {children ? <div className="mt-9">{children}</div> : null}
       </div>
     </section>
   );

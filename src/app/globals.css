@@ -7,11 +7,11 @@
 
 /*
  * Rakt Response design system (2026 redesign).
- * Night #2b1217 (a deep maroon) and cream #F4F3EF sections, the logo's reds
- * (#D93B3B to #961616, maroon #5A0909) as accents, Geist for text and Geist Mono
- * for small labels. The token name "navy" is kept for compatibility: it holds the
- * same deep maroon, used for headings and dark surfaces across the app.
- * To make every dark area lighter or darker, change --night, --night-2 and --navy.
+ * Brand red #990000 ("night", the colour sections) and cream #F4F3EF sections,
+ * the logo's reds as accents, Geist for text and Geist Mono for small labels.
+ * "navy" is the near-black ink for headings, text and small dark cards (the name
+ * is kept for compatibility). To change the colour sections, change --night and
+ * --night-2 (and the same colour in layout.tsx themeColor and manifest.ts).
  */
 
 @theme inline {
@@ -77,10 +77,10 @@
   --primary-foreground: #ffffff;
   --crimson: #e2453f;
   --maroon: #5a0909;
-  --navy: #2b1217;
+  --navy: #1d0b0e;
   --navy-soft: #eee8e2;
-  --night: #2b1217;
-  --night-2: #3a1a20;
+  --night: #990000;
+  --night-2: #a81010;
   --blush: #f4a99f;
   --secondary: #ebe5df;
   --secondary-foreground: #1d0b0e;
@@ -245,30 +245,36 @@
       ),
       linear-gradient(0deg, color-mix(in srgb, var(--night) 60%, transparent) 0%, transparent 40%);
   }
-  /* Homepage photo: shaded only behind the words (left and bottom), so the photo stays bright. */
+  /* Homepage photo melting into the red. Phones and tablets: the photo sits on top
+     and fades into the red the words sit on. Laptops: it fills the right and fades
+     into the red on the left, with a little red at the bottom for the four steps. */
   .hero-shade {
-    background:
-      linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--night) 80%, transparent) 0%,
-        color-mix(in srgb, var(--night) 50%, transparent) 34%,
-        color-mix(in srgb, var(--night) 8%, transparent) 68%,
-        transparent 100%
-      ),
-      linear-gradient(0deg, color-mix(in srgb, var(--night) 88%, transparent) 0%, transparent 46%),
-      linear-gradient(180deg, color-mix(in srgb, var(--night) 38%, transparent) 0%, transparent 18%);
+    background: linear-gradient(
+      0deg,
+      var(--night) 0%,
+      var(--night) 14%,
+      color-mix(in srgb, var(--night) 55%, transparent) 32%,
+      transparent 58%
+    );
   }
-  /* On phones the words cover most of the photo, so the shade rises higher. */
-  @media (max-width: 639px) {
+  @media (min-width: 1024px) {
     .hero-shade {
       background:
-        linear-gradient(
-          0deg,
-          color-mix(in srgb, var(--night) 92%, transparent) 0%,
-          color-mix(in srgb, var(--night) 72%, transparent) 42%,
-          color-mix(in srgb, var(--night) 22%, transparent) 72%,
-          color-mix(in srgb, var(--night) 45%, transparent) 100%
-        );
+        linear-gradient(90deg, var(--night) 0%, color-mix(in srgb, var(--night) 55%, transparent) 16%, transparent 40%),
+        linear-gradient(0deg, color-mix(in srgb, var(--night) 75%, transparent) 0%, transparent 26%);
+    }
+  }
+  /* Laptops: the two hero headline sizes also shrink with the screen height, so the
+     whole hero, four steps included, fits one screen even on a 1366x768 laptop. */
+  @media (min-width: 1024px) {
+    .hero-xl {
+      font-size: clamp(2.9rem, min(8.2vw, 12.5svh), 8.5rem);
+    }
+    .hero-lg {
+      font-size: clamp(2.3rem, min(5vw, 7.4svh), 4.6rem);
+    }
+    html[lang="hi-IN"] .hero-xl {
+      font-size: clamp(2.6rem, min(7.4vw, 10svh), 7.6rem);
     }
   }
 
@@ -394,16 +400,6 @@
   }
 }
 
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
 @keyframes orbit-spin {
   to {
     transform: rotate(360deg);
@@ -420,48 +416,6 @@
 
 @utility animate-orbit-reverse {
   animation: orbit-spin 40s linear infinite reverse;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-@utility animate-float {
-  animation: float-y 6s ease-in-out infinite;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-/* The hero photograph settles into place once, slowly. */
-@keyframes settle {
-  from {
-    transform: scale(1.08);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-@utility animate-settle {
-  animation: settle 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-/* Headline lines lift in one after another on first paint. */
-@keyframes lift-in {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@utility animate-lift {
-  animation: lift-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--d, 0) * 1ms);
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -521,6 +475,48 @@
       animation-range: entry 0% entry 60%;
     }
   }
+}
+
+/*
+ * On the red sections (.on-night) faint cream text and the quiet half of headlines
+ * would be too hard to read, and red buttons would melt into the red, so they get
+ * lighter there. Unlayered on purpose: it must win over the utility classes.
+ */
+:is(.on-night, .brand-band)
+  :is(
+    .text-cream\/45,
+    .text-cream\/50,
+    .text-cream\/55,
+    .text-cream\/60,
+    .text-cream\/62,
+    .text-cream\/65,
+    .text-cream\/70,
+    .text-cream\/75
+  ) {
+  color: color-mix(in srgb, var(--cream) 80%, transparent);
+}
+.on-night .opacity-45 {
+  opacity: 0.6;
+}
+.on-night .opacity-60 {
+  opacity: 1;
+}
+.on-night .opacity-70 {
+  opacity: 0.88;
+}
+.on-night .text-blush {
+  color: #f9c4bc;
+}
+.on-night .al-red {
+  background-color: var(--cream);
+  color: var(--primary);
+}
+.on-night .al-red:hover {
+  background-color: #ffffff;
+}
+.on-night .al-red .al-disc {
+  background-color: var(--primary);
+  color: #ffffff;
 }
 
 /* Words of a quote darken one by one as the reader scrolls past them. */

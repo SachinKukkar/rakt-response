@@ -71,7 +71,7 @@ const hi: Catalog = {
 
   // --- Slogans (SITE) -------------------------------------------------------
   "We Respond, We Support, We Save Lives.": "हम जवाब देते हैं, हम साथ देते हैं, हम जान बचाते हैं।",
-  "Together We Can. Save a Life. Be a Hero.": "साथ मिलकर हम कर सकते हैं। एक जान बचाइए। हीरो बनिए।",
+  "A Wish to Bring a Special Smile": "एक ख़ास मुस्कान लाने की ख़्वाहिश",
   "Every Donor Matters. Every Response Can Save a Life.": "हर डोनर मायने रखता है। हर जवाब एक जान बचा सकता है।",
   "Connecting voluntary blood donors with people who need help, one response at a time.":
     "स्वैच्छिक रक्तदाताओं को ज़रूरतमंद लोगों से जोड़ना, एक-एक जवाब के साथ।",

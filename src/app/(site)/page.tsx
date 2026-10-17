@@ -226,7 +226,7 @@ export default async function HomePage() {
                 <ul className="mt-8 flex flex-wrap gap-2" aria-label={t("Blood groups, including the rare Bombay group")}>
                   {BLOOD_GROUPS.map((group) => (
                     <li key={group}>
-                      <BloodGroupChip group={group} size="md" tone={group === "Oh" ? "outline" : "solid"} />
+                      <BloodGroupChip group={group} size="md" tone={group === "Oh" ? "ghost" : "light"} />
                     </li>
                   ))}
                 </ul>
@@ -267,7 +267,7 @@ export default async function HomePage() {
             </p>
           </blockquote>
           <div className="mt-8 flex items-center gap-4">
-            <span className="grid size-14 place-items-center rounded-full bg-night">
+            <span className="grid size-14 place-items-center rounded-full bg-white ring-1 ring-navy/10">
               <LogoMark size="xs" />
             </span>
             <div>
@@ -323,20 +323,20 @@ export default async function HomePage() {
                 {t("Become a Donor")}
               </ArrowLink>
             </article>
-            <article className="reveal flex flex-col rounded-[1.75rem] bg-primary p-7 text-white sm:p-9">
+            <article className="reveal flex flex-col rounded-[1.75rem] bg-cream p-7 text-navy sm:p-9">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <h3 className="text-2xl font-medium text-white sm:text-3xl">{t("Need blood?")}</h3>
+                <h3 className="text-2xl font-medium text-navy sm:text-3xl">{t("Need blood?")}</h3>
                 <span className="label-mono rounded-full bg-night px-3 py-2 text-cream">{t("Emergency? Call the hospital first")}</span>
               </div>
-              <p className="mt-3 text-white/80">{t("For patients' families and hospitals.")}</p>
-              <p className="mt-8 flex items-baseline gap-3 border-b border-white/20 pb-8">
+              <p className="mt-3 text-muted-foreground">{t("For patients' families and hospitals.")}</p>
+              <p className="mt-8 flex items-baseline gap-3 border-b border-navy/12 pb-8">
                 <span className="display-lg">{t("Free")}</span>
-                <span className="label-mono text-white/70">{t("Always")}</span>
+                <span className="label-mono text-muted-foreground">{t("Always")}</span>
               </p>
               <ul className="mt-7 space-y-3.5">
                 {REQUEST_POINTS.map((point) => (
                   <li key={point} className="flex gap-3 text-[16px]">
-                    <Check className="mt-0.5 size-4 shrink-0 text-white" aria-hidden="true" />
+                    <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
                     {t(point)}
                   </li>
                 ))}

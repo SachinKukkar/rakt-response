@@ -32,7 +32,10 @@ export async function ContactPeople({ tone = "night", className }: { tone?: "nig
             <a
               href={telLink(person.phone)}
               aria-label={t("Call {name}", { name: person.name })}
-              className="press inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary text-[15px] font-medium text-white transition-colors hover:bg-[#b32323]"
+              className={cn(
+                "press inline-flex h-12 items-center justify-center gap-2 rounded-full text-[15px] font-medium transition-colors",
+                night ? "bg-cream text-primary hover:bg-white" : "bg-primary text-white hover:bg-[#b32323]",
+              )}
             >
               <Phone className="size-4" aria-hidden="true" />
               {t("Call")}

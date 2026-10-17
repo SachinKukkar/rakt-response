@@ -52,6 +52,9 @@ const nextConfig: NextConfig = {
     serverActions: {
       // Story photos are resized in the browser before upload; this leaves headroom.
       bodySizeLimit: "4mb",
+      // Dev only: a VS Code dev tunnel rewrites the browser's Origin to localhost:3000 but
+      // forwards the tunnel's own host, so without this every action through it is refused.
+      ...(isDev ? { allowedOrigins: ["localhost:3000"] } : {}),
     },
   },
   images: {

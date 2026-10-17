@@ -20,7 +20,8 @@ export function BloodGroupChip({
 }: {
   group: BloodGroup | string;
   size?: keyof typeof SIZE;
-  tone?: "solid" | "soft" | "outline";
+  /** "light" and "ghost" are for red backgrounds. */
+  tone?: "solid" | "soft" | "outline" | "light" | "ghost";
   /** Accessible name override (e.g. "Bombay blood group (Oh)"). */
   label?: string;
   className?: string;
@@ -39,11 +40,13 @@ export function BloodGroupChip({
             tone === "solid" && "fill-primary",
             tone === "soft" && "fill-accent stroke-primary/25",
             tone === "outline" && "fill-white stroke-primary",
+            tone === "light" && "fill-cream",
+            tone === "ghost" && "fill-white/10 stroke-cream",
           )}
-          strokeWidth={tone === "solid" ? 0 : 2}
+          strokeWidth={tone === "solid" || tone === "light" ? 0 : 2}
         />
       </svg>
-      <span className={cn("relative mt-[18%]", tone === "solid" ? "text-white" : "text-primary")}>{group}</span>
+      <span className={cn("relative mt-[18%]", tone === "solid" ? "text-white" : tone === "ghost" ? "text-cream" : "text-primary")}>{group}</span>
     </span>
   );
 }

@@ -95,7 +95,7 @@ docs/               setup, deployment, database, security, operations, free tier
 
 The official logo was supplied by the Rakt Response Team (`public/brand/logo-original-supplied.png`). It is cut out without redrawing into `public/brand/`: `logo-mark.png` (the drop held in a hand), `logo-wordmark.png` / `logo-wordmark-cream.png` ("RAKT RESPONSE") and `logo-full.png`. `npm run icons` builds the favicon and app icons from the mark. The older badge `public/images/rakt-response-logo.jpeg` is kept only because existing auth emails may link to it.
 
-Design (2026): deep maroon night `#2B1217` and cream `#F4F3EF` sections, red `#C62A2A` / `#E2453F`, maroon `#5A0909`, Geist and Geist Mono type. Tokens and classes live in `src/app/globals.css`; photographs and their credits in `src/lib/photos.ts`.
+Design (2026): brand red `#990000` ("night") and cream `#F4F3EF` sections, near-black ink `#1D0B0E` ("navy"), red `#C62A2A` / `#E2453F`, maroon `#5A0909`, Geist and Geist Mono type. Tokens and classes live in `src/app/globals.css`; photographs and where they came from in `src/lib/photos.ts`.
 
 ## Important
 

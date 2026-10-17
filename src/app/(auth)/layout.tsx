@@ -18,7 +18,10 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
         </div>
         <div className="mx-auto flex max-w-lg flex-col items-center px-4 pt-3 text-center">
           <Link href="/" className="flex flex-col items-center gap-4 rounded-3xl" aria-label={t("Rakt Response home")}>
-            <LogoMark size="lg" priority />
+            {/* Cream disc so the red mark stands out on the red band. */}
+            <span className="grid size-28 place-items-center rounded-full bg-cream shadow-lg shadow-black/15">
+              <LogoMark size="lg" priority />
+            </span>
             <LogoWordmark tone="cream" height={17} />
           </Link>
           <p className="label-mono mt-4 text-cream/60">{t(SITE.tagline)}</p>

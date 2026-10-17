@@ -15,11 +15,11 @@ export interface Photo {
 
 export const PHOTOS = {
   hero: {
-    src: "/images/photos/hero-donor-arm.jpg",
-    width: 3840,
-    height: 2559,
-    alt: "A donor giving blood: the needle line taped to the arm, a red thread on the wrist and a soft ball in the hand",
-    credit: "Rahul Sapra / Pexels",
+    src: "/images/photos/hero-donor-nurse.jpg",
+    width: 2064,
+    height: 1152,
+    alt: "A smiling young woman gives blood in a bright donation centre while a smiling nurse checks her arm",
+    credit: "Generated for Rakt Response with Figma AI (original image)",
   },
   clinic: {
     src: "/images/photos/donor-prep.jpg",

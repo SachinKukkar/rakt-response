@@ -65,7 +65,7 @@ export function BottomNav({ items }: { items: NavItem[] }) {
       aria-label={t("Primary")}
       className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border/70 bg-white/95 px-2 pt-2 backdrop-blur lg:hidden"
     >
-      <ul className="mx-auto flex max-w-md items-stretch justify-between gap-1 rounded-full bg-navy p-1.5 shadow-lg shadow-navy/20">
+      <ul className="mx-auto flex max-w-md items-stretch justify-between gap-1 rounded-full bg-night p-1.5 shadow-lg shadow-night/25">
         {items.map((item) => {
           const Icon = ICONS[item.icon];
           const active = isActive(pathname, item);
@@ -76,7 +76,7 @@ export function BottomNav({ items }: { items: NavItem[] }) {
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "flex h-12 flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-semibold transition-colors",
-                  active ? "bg-white text-primary" : "text-white/80 hover:text-white",
+                  active ? "bg-white text-primary" : "text-white/90 hover:text-white",
                 )}
               >
                 <Icon className="size-5" aria-hidden="true" />

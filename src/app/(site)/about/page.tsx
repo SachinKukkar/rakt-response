@@ -79,9 +79,9 @@ export default async function AboutPage() {
       <div className="page-container space-y-10 pb-4">
         <TLDR
           items={[
-            t("We coordinate. Licensed blood centres collect and supply blood."),
             t("Every request is checked by a volunteer before it shows as verified."),
-            t("Your number stays private. Contact happens only with your consent."),
+            t("We connect people in need with potential blood donors."),
+            t("We respect your privacy and handle shared information responsibly."),
             t("Emergency? Go straight to the treating hospital or a licensed blood bank."),
           ]}
         />
@@ -96,7 +96,8 @@ export default async function AboutPage() {
               {t("A calmer path to blood. A donor who feels respected.")}
             </h2>
             <p className="text-lg font-bold text-primary">{t(SITE.tagline)}</p>
-            <p className="text-sm font-semibold text-navy">{t(SITE.supporting)}</p>
+            {/* The signature tagline closes the mission, a size up so it is remembered. */}
+            <p className="text-xl font-semibold tracking-tight text-navy sm:text-2xl">“{t(SITE.signature)}”</p>
           </div>
         </section>
 

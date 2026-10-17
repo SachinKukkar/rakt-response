@@ -12,7 +12,8 @@ const hi: Catalog = {
 
   // --- Homepage: hero ---------------------------------------------------------------
   "Every donor matters.": "हर डोनर मायने रखता है।",
-  "Every response can save a life.": "हर जवाब एक जान बचा सकता है।",
+  "Every response": "हर जवाब",
+  "can save a life.": "एक जान बचा सकता है।",
   "Free, private and checked by volunteers.": "मुफ़्त, निजी, और वॉलंटियर द्वारा जाँचा गया।",
   "How it works in four steps": "चार कदमों में पूरी प्रक्रिया",
   "Volunteer checks": "वॉलंटियर जाँचते हैं",
@@ -233,8 +234,8 @@ const hi: Catalog = {
 
   // --- Photo descriptions (alt text) --------------------------------------------------
   "A health worker in gloves preparing a donor's arm for a blood donation": "दस्ताने पहने एक स्वास्थ्यकर्मी, ब्लड डोनेशन के लिए डोनर का हाथ तैयार करते हुए",
-  "A donor giving blood: the needle line taped to the arm, a red thread on the wrist and a soft ball in the hand":
-    "रक्तदान करते डोनर का हाथ: बाँह पर टेप से लगी नली, कलाई पर लाल धागा और हाथ में नरम गेंद",
+  "A smiling young woman gives blood in a bright donation centre while a smiling nurse checks her arm":
+    "रोशनी से भरे ब्लड डोनेशन सेंटर में मुस्कुराती हुई एक युवती रक्तदान कर रही है, और मुस्कुराती नर्स उसका हाथ देख रही है",
   "A bag of donated blood hanging from a stand": "स्टैंड पर टंगा दान किए गए खून का बैग",
   "Red blood cells, magnified": "बड़ी करके दिखाई गईं लाल रक्त कोशिकाएँ",
   "A donor's arm during a donation, the hand squeezing a soft ball": "डोनेशन के दौरान डोनर का हाथ, नरम गेंद दबाते हुए",

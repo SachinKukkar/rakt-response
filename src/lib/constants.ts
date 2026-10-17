@@ -1,7 +1,8 @@
 export const SITE = {
   name: "Rakt Response",
   tagline: "We Respond, We Support, We Save Lives.",
-  supporting: "Together We Can. Save a Life. Be a Hero.",
+  /** Signature tagline; closes the mission on the About page. */
+  signature: "A Wish to Bring a Special Smile",
   headline: "Every Donor Matters. Every Response Can Save a Life.",
   description: "Connecting voluntary blood donors with people who need help, one response at a time.",
   /** The logo mark (a drop held in a hand), cut from the supplied logo file. */

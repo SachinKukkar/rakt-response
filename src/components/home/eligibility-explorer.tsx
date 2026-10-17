@@ -141,7 +141,7 @@ export function EligibilityExplorer({ className }: { className?: string }) {
           value={value}
           aria-valuetext={`${value} ${t(check.unit)}: ${t(check.verdicts[range])}`}
           onChange={(e) => setValues((prev) => prev.map((v, i) => (i === active ? Number(e.target.value) : v)))}
-          className="mt-3 h-11 w-full cursor-pointer accent-[#e2453f]"
+          className="mt-3 h-11 w-full cursor-pointer accent-white"
         />
 
         <p className="mt-4 text-lg font-medium sm:text-xl">{t(check.verdicts[range])}</p>

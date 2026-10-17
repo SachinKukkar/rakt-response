@@ -258,10 +258,11 @@ const hi: Catalog = {
   "Volunteer-run": "स्वयंसेवकों द्वारा",
   "Privacy first": "प्राइवेसी सबसे पहले",
   "Never paid": "कभी पैसे नहीं",
-  "We coordinate. Licensed blood centres collect and supply blood.": "हम तालमेल करते हैं। खून लेने और देने का काम लाइसेंस वाले ब्लड बैंक करते हैं।",
   "Every request is checked by a volunteer before it shows as verified.":
     "पुष्टि हुई दिखने से पहले हर रिक्वेस्ट को एक स्वयंसेवक जाँचता है।",
-  "Your number stays private. Contact happens only with your consent.": "आपका नंबर प्राइवेट रहता है। संपर्क सिर्फ़ आपकी सहमति से होता है।",
+  "We connect people in need with potential blood donors.": "हम ज़रूरतमंद लोगों को संभावित रक्तदाताओं से जोड़ते हैं।",
+  "We respect your privacy and handle shared information responsibly.":
+    "हम आपकी प्राइवेसी का सम्मान करते हैं और साझा की गई जानकारी को ज़िम्मेदारी से संभालते हैं।",
   "Emergency? Go straight to the treating hospital or a licensed blood bank.":
     "इमरजेंसी है? सीधे इलाज करने वाले अस्पताल या लाइसेंस वाले ब्लड बैंक जाएँ।",
   "Our mission": "हमारा मिशन",

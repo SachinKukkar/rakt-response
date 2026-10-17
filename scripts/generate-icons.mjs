@@ -16,7 +16,8 @@ if (!existsSync(SOURCE)) {
 }
 mkdirSync("public/icons", { recursive: true });
 
-const NIGHT = { r: 43, g: 18, b: 23, alpha: 1 }; // the site's dark background (--night, #2b1217)
+// Cream behind the mark: on the brand red (#990000) the red drop and maroon hand would disappear.
+const NIGHT = { r: 244, g: 243, b: 239, alpha: 1 }; // --cream, #f4f3ef
 const CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
 
 /** The mark centred on a square, `padding` as a share of the side. */
@@ -51,7 +52,7 @@ function ico(images) {
   return Buffer.concat([header, ...images.map((image) => image.png)]);
 }
 
-// App icons sit on the dark brand background; maskable ones keep the mark in the 80% safe zone.
+// App icons sit on the cream background; maskable ones keep the mark in the 80% safe zone.
 writeFileSync("public/icons/icon-192.png", await square(192, NIGHT, 0.12));
 writeFileSync("public/icons/icon-512.png", await square(512, NIGHT, 0.12));
 writeFileSync("public/icons/maskable-512.png", await square(512, NIGHT, 0.2));

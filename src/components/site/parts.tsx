@@ -68,7 +68,7 @@ export function RangeBar({
           style={{ flexGrow: s / total }}
           className={cn(
             "h-full basis-0 rounded-full transition-colors duration-500",
-            i === active ? "bg-crimson" : tone === "night" ? "bg-white/14" : "bg-navy/12",
+            i === active ? (tone === "night" ? "bg-cream" : "bg-crimson") : tone === "night" ? "bg-white/20" : "bg-navy/12",
           )}
         />
       ))}
@@ -76,58 +76,10 @@ export function RangeBar({
         <span
           className={cn(
             "absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full ring-3 transition-[left] duration-500",
-            tone === "night" ? "bg-cream ring-night" : "bg-night ring-cream",
+            tone === "night" ? "bg-navy ring-cream" : "bg-night ring-cream",
           )}
           style={{ left: `${Math.min(1, Math.max(0, marker)) * 100}%` }}
         />
-      ) : null}
-    </div>
-  );
-}
-
-/**
- * A small frosted data card, as in the hero: a label, a big figure and a range bar.
- * Plain-string labels are translated.
- */
-export function DataCard({
-  label,
-  meta,
-  value,
-  unit,
-  segments,
-  active,
-  marker,
-  footLeft,
-  footRight,
-  className,
-}: {
-  label: string;
-  meta?: React.ReactNode;
-  value: React.ReactNode;
-  unit?: string;
-  segments?: number[];
-  active?: number;
-  marker?: number;
-  footLeft?: React.ReactNode;
-  footRight?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("glass w-64 p-4 text-cream", className)}>
-      <div className="flex items-center justify-between gap-3 text-cream/70">
-        <span className="label-mono">{tx(label)}</span>
-        {meta ? <span className="label-mono text-cream/60">{tx(meta)}</span> : null}
-      </div>
-      <p className="mt-3 flex items-baseline gap-1.5">
-        <span className="text-[2rem] leading-none font-medium tracking-[-0.04em] tabular-nums">{value}</span>
-        {unit ? <span className="text-sm text-cream/70">{tx(unit)}</span> : null}
-      </p>
-      {segments ? <RangeBar segments={segments} active={active} marker={marker} className="mt-4" /> : null}
-      {footLeft || footRight ? (
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <span className="label-mono text-cream/55">{tx(footLeft)}</span>
-          <span className="label-mono text-blush">{tx(footRight)}</span>
-        </div>
       ) : null}
     </div>
   );

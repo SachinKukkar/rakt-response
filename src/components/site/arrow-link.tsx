@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 
 const TONES = {
   /** Red pill, white arrow disc: the main action on any background. */
-  red: { pill: "bg-primary text-white hover:bg-[#b32323]", disc: "bg-white text-primary" },
+  /** On a red (.on-night) section it turns cream automatically (see globals.css). */
+  red: { pill: "al-red bg-primary text-white hover:bg-[#b32323]", disc: "al-disc bg-white text-primary" },
   /** Cream pill for dark sections. */
   cream: { pill: "bg-cream text-night hover:bg-white", disc: "bg-primary text-white" },
   /** Dark pill for cream sections. */

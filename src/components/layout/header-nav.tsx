@@ -21,7 +21,7 @@ export function HeaderNav({ className }: { className?: string }) {
             aria-current={active ? "page" : undefined}
             className={cn(
               "relative inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium whitespace-nowrap transition-colors duration-200",
-              active ? "bg-white/10 text-cream" : "text-cream/70 hover:bg-white/5 hover:text-cream",
+              active ? "bg-navy/6 text-navy" : "text-navy/70 hover:bg-navy/5 hover:text-navy",
             )}
           >
             {active ? <span className="mr-2 size-1.5 rounded-full bg-crimson" aria-hidden="true" /> : null}
