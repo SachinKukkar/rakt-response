@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Fragment } from "react";
-import { Bandage, Clock, Droplet, Droplets, HeartHandshake, Layers, ListChecks, Microscope, Repeat, Workflow, type LucideIcon } from "lucide-react";
+import { Clock, Droplet, Droplets, HeartHandshake, Layers, ListChecks, Microscope, Repeat, ShieldPlus, Timer, Workflow, type LucideIcon } from "lucide-react";
 import { Notice } from "@/components/common/page-parts";
 import { CtaBand, MoreDetails, PageHero, SectionTitle, TileRow, TLDR, TopicPills, type Tile } from "@/components/learn/learn-parts";
 import { getT } from "@/i18n/server";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return pageMetadata(t("Donation types"), t(
-      "Whole blood, Single Donor Platelet (SDP) and other apheresis donations explained: how they differ, how long they take, and why they are not interchangeable.",
+      "Whole blood, Single Donor Platelet (SDP), WBC (granulocyte) and other apheresis donations explained: how they differ, how long they take, and why each is as important as the others.",
     ));
 }
 
@@ -22,12 +22,15 @@ function rich(text: string, slots: Record<string, React.ReactNode>) {
 
 type Stat = { icon: LucideIcon; label: string; value: string };
 
+/** Cards on a light background use dark text; the red and navy cards use white. */
+const onLight = (tone: string) => tone === "light" || tone === "outline";
+
 const TYPES: {
   id: string;
   name: string;
   vibe: string;
   icon: LucideIcon;
-  tone: "light" | "red" | "navy";
+  tone: "light" | "red" | "navy" | "outline";
   stats: Stat[];
 }[] = [
   {
@@ -55,11 +58,23 @@ const TYPES: {
     ],
   },
   {
+    id: "wbc",
+    name: "WBC (granulocytes)",
+    vibe: "White blood cells for one patient, arranged at short notice.",
+    icon: ShieldPlus,
+    tone: "navy",
+    stats: [
+      { icon: Clock, label: "Time", value: "A few hours at the centre" },
+      { icon: Workflow, label: "How", value: "Cell separator keeps white cells" },
+      { icon: HeartHandshake, label: "Helps", value: "Patients with very low white cells and a serious infection" },
+    ],
+  },
+  {
     id: "other-apheresis",
     name: "Other apheresis",
     vibe: "One component, such as plasma. Only at some centres.",
     icon: Layers,
-    tone: "navy",
+    tone: "outline",
     stats: [
       { icon: Clock, label: "Time", value: "Longer than whole blood" },
       { icon: Workflow, label: "How", value: "Machine collects one component" },
@@ -71,7 +86,8 @@ const TYPES: {
 const GOOD_TO_KNOW: Tile[] = [
   { icon: Repeat, title: "Different gaps", text: "Red cells take weeks to rebuild, so whole blood needs the longest gap.", tag: "Intervals" },
   { icon: Microscope, title: "Extra checks for SDP", text: "Usually a platelet count and a vein check. The centre decides.", tag: "Screening" },
-  { icon: ListChecks, title: "Block your time", text: "Saying yes to SDP? Keep a few hours free.", tag: "Plan" },
+  { icon: Timer, title: "WBC can't wait", text: "White cells must be given within about a day, so the centre plans each WBC donation with the donor.", tag: "WBC" },
+  { icon: ListChecks, title: "Block your time", text: "Saying yes to SDP or WBC? Keep a few hours free.", tag: "Plan" },
 ];
 
 export default async function DonationTypesPage() {
@@ -87,13 +103,13 @@ export default async function DonationTypesPage() {
     <>
       <PageHero
         eyebrow={t("Donation types")}
-        title={t("Whole blood vs")}
-        highlight={t("SDP.")}
-        subtitle={t("Same you, different ways to give. Here's the quick compare.")}
+        title={t("Whole blood, SDP")}
+        highlight={t("and WBC.")}
+        subtitle={t("Same you, different ways to give. Each is as important as the others; here's the quick compare.")}
         chips={[
           { icon: Droplet, label: t("Whole blood") },
-          { icon: Bandage, label: t("SDP") },
-          { icon: Droplets, label: t("Apheresis") },
+          { icon: Droplets, label: t("SDP") },
+          { icon: ShieldPlus, label: t("WBC") },
         ]}
       />
 
@@ -102,20 +118,21 @@ export default async function DonationTypesPage() {
           items={[
             t("Whole blood: one bag, split into parts later at the blood centre."),
             t("SDP: a machine keeps your platelets and gives the rest back."),
-            t("SDP takes much longer and needs extra checks."),
-            t("They're not interchangeable. Always check which type a request needs."),
+            t("WBC: a machine collects white blood cells for one patient, usually at short notice."),
+            t("SDP and WBC take longer and need extra checks."),
+            t("Each is as important as the others, and they're not interchangeable. Always check which type a request needs."),
           ]}
         />
 
         <Notice title={t("Not interchangeable")} tone="brand">
           {t(
-            "A whole-blood donation can't meet an SDP request, and a whole-blood request isn't a platelet request. Check the type before you respond.",
+            "A whole-blood donation can't meet an SDP or WBC request, and the other way round. Check the type before you respond.",
           )}
         </Notice>
 
         <section aria-labelledby="compare-heading">
           <SectionTitle kicker={t("Side by side")} title={t("Pick your type")} id="compare-heading" />
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {TYPES.map((type) => (
               <article
                 key={type.id}
@@ -123,31 +140,32 @@ export default async function DonationTypesPage() {
                 className={cn(
                   "flex flex-col rounded-3xl p-5",
                   type.tone === "light" && "surface",
+                  type.tone === "outline" && "border border-border",
                   type.tone === "red" && "hero-red text-white",
                   type.tone === "navy" && "bg-navy text-white",
                 )}
               >
                 <div className="mb-4">
-                  <span className={cn("grid size-12 shrink-0 place-items-center rounded-2xl", type.tone === "light" ? "icon-tile size-12" : "bg-white/15 text-white")}>
+                  <span className={cn("grid size-12 shrink-0 place-items-center rounded-2xl", onLight(type.tone) ? "icon-tile size-12" : "bg-white/15 text-white")}>
                     <type.icon className="size-6" aria-hidden="true" />
                   </span>
                 </div>
-                <h3 id={`${type.id}-title`} className={cn("text-xl leading-tight font-extrabold", type.tone !== "light" && "text-white")}>
+                <h3 id={`${type.id}-title`} className={cn("text-xl leading-tight font-extrabold", !onLight(type.tone) && "text-white")}>
                   {t(type.name)}
                 </h3>
-                <p className={cn("mt-1 text-sm", type.tone === "light" ? "text-muted-foreground" : "text-white/85")}>{t(type.vibe)}</p>
+                <p className={cn("mt-1 text-sm", onLight(type.tone) ? "text-muted-foreground" : "text-white/85")}>{t(type.vibe)}</p>
                 <dl className="mt-4 space-y-2">
                   {type.stats.map((s) => (
                     <div
                       key={s.label}
                       className={cn(
                         "flex items-start gap-2.5 rounded-2xl px-3 py-2 text-sm",
-                        type.tone === "light" ? "bg-accent" : "bg-white/12",
+                        onLight(type.tone) ? "bg-accent" : "bg-white/12",
                       )}
                     >
-                      <s.icon className={cn("mt-0.5 size-4 shrink-0", type.tone === "light" ? "text-primary" : "text-white")} aria-hidden="true" />
+                      <s.icon className={cn("mt-0.5 size-4 shrink-0", onLight(type.tone) ? "text-primary" : "text-white")} aria-hidden="true" />
                       <div className="min-w-0">
-                        <dt className={cn("text-[11px] font-bold tracking-wider uppercase", type.tone === "light" ? "text-primary" : "text-white/75")}>
+                        <dt className={cn("text-[11px] font-bold tracking-wider uppercase", onLight(type.tone) ? "text-primary" : "text-white/75")}>
                           {t(s.label)}
                         </dt>
                         <dd className="font-semibold">{t(s.value)}</dd>
@@ -165,7 +183,7 @@ export default async function DonationTypesPage() {
 
         <section aria-labelledby="know-heading">
           <SectionTitle kicker={t("Good to know")} title={t("Before you say yes")} id="know-heading" />
-          <TileRow tiles={localTiles(GOOD_TO_KNOW)} tone="tint" />
+          <TileRow tiles={localTiles(GOOD_TO_KNOW)} tone="tint" columns={4} />
         </section>
 
         <div className="space-y-3">
@@ -184,6 +202,23 @@ export default async function DonationTypesPage() {
                   "In an {term}, a machine separates your blood during the donation, keeps one component (such as platelets or plasma) and returns the rest to you through the same or a second needle. Because it collects a larger amount of one component from a single person, one SDP donation can provide a platelet dose that would otherwise need to be pooled from several whole-blood donations. This can mean fewer donor exposures for the patient.",
                 ),
                 { term: <strong>{t("apheresis donation")}</strong> },
+              )}
+            </p>
+          </MoreDetails>
+          <MoreDetails title={t("WBC (granulocyte) donation")}>
+            <p>
+              {t(
+                "Granulocytes are white blood cells that fight bacterial and fungal infections. Some patients, often during cancer treatment, have so few that an infection becomes very dangerous. Their doctors may ask for granulocyte (WBC) donations.",
+              )}
+            </p>
+            <p>
+              {t(
+                "Like SDP, a machine collects them and returns the rest of your blood. The centre may ask you to take a medicine beforehand to raise your white cell count; it explains this and checks that it suits you.",
+              )}
+            </p>
+            <p>
+              {t(
+                "White cells must be transfused within about a day of collection, so a WBC donation is arranged for one patient at a time, often at short notice. Your blood group usually needs to match the patient's, because the bag also holds some red cells. Only some centres collect WBC.",
               )}
             </p>
           </MoreDetails>
@@ -219,7 +254,7 @@ export default async function DonationTypesPage() {
         <TopicPills current="/donation-types" />
       </div>
 
-      <CtaBand text={t("Every request on Rakt Response says which type it needs, and your history logs whole blood and SDP separately.")} />
+      <CtaBand text={t("Every request on Rakt Response says which type it needs, and your history keeps whole blood, SDP and WBC donations apart.")} />
     </>
   );
 }

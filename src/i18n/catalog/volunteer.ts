@@ -5,7 +5,7 @@ const hi: Catalog = {
   // --- Volunteer overview (src/app/(member)/volunteer/page.tsx) ---------------
   "Coordination overview": "तालमेल का सारांश",
   "Verify requests, coordinate with donors and follow up after donation.":
-    "रिक्वेस्ट जाँचें, डोनरों से तालमेल करें और रक्तदान के बाद उनका हाल-चाल लें।",
+    "रिक्वेस्ट जाँचें, डोनरों से तालमेल करें और डोनेशन के बाद उनका हाल-चाल लें।",
   Summary: "सारांश",
   "Awaiting verification": "पुष्टि का इंतज़ार",
   "Urgent, unverified": "जल्दी ज़रूरत, पुष्टि नहीं हुई",
@@ -250,17 +250,17 @@ const hi: Catalog = {
 
   // --- After donation (Rakt Mitras) --------------------------------------------------
   "Follow up after donation":
-    "रक्तदान के बाद हाल-चाल",
-  "Donors who gave blood for a request. Call or message them: thank them and ask how they feel. Then mark it done. Their contact opens for this (logged) even after the request closes.":
-    "जिन डोनरों ने किसी रिक्वेस्ट के लिए रक्तदान किया। उन्हें कॉल या मैसेज करें: धन्यवाद दें और पूछें कि वे कैसा महसूस कर रहे हैं। फिर इसे पूरा मार्क करें। इसके लिए उनका संपर्क रिक्वेस्ट बंद होने के बाद भी खुलता है (हर बार दर्ज होता है)।",
+    "डोनेशन के बाद हाल-चाल",
+  "Donors who donated for a request: whole blood, SDP or WBC. Call or message them: thank them and ask how they feel. Then mark it done. Their contact opens for this (logged) even after the request closes.":
+    "जिन डोनरों ने किसी रिक्वेस्ट के लिए डोनेट किया: होल ब्लड, SDP या WBC। उन्हें कॉल या मैसेज करें: धन्यवाद दें और पूछें कि वे कैसा महसूस कर रहे हैं। फिर इसे पूरा मार्क करें। इसके लिए उनका संपर्क रिक्वेस्ट बंद होने के बाद भी खुलता है (हर बार दर्ज होता है)।",
   "No donors waiting for a follow-up":
     "किसी डोनर का हाल-चाल बाकी नहीं",
-  "When a donor tells us they gave blood, or you record it, they appear here.":
-    "जब कोई डोनर बताता है कि उसने रक्तदान किया, या आप इसे दर्ज करते हैं, तो वह यहाँ दिखता है।",
+  "When a donor tells us they donated, or you record it, they appear here.":
+    "जब कोई डोनर बताता है कि उसने डोनेट किया, या आप इसे दर्ज करते हैं, तो वह यहाँ दिखता है।",
   "Donated on {date}":
-    "{date} को रक्तदान किया",
+    "{date} को डोनेट किया",
   "Donated":
-    "रक्तदान किया",
+    "डोनेट किया",
   "Reported by the donor":
     "डोनर ने बताया",
   "Recorded by a Rakt Mitra":
@@ -280,9 +280,9 @@ const hi: Catalog = {
   "Follow-up recorded. Thank you.":
     "हाल-चाल दर्ज हो गया। धन्यवाद।",
   "Days after a request closes in which a donor can still say they donated":
-    "रिक्वेस्ट बंद होने के बाद कितने दिन तक डोनर बता सकता है कि उसने रक्तदान किया",
+    "रिक्वेस्ट बंद होने के बाद कितने दिन तक डोनर बता सकता है कि उसने डोनेट किया",
   "Days a Rakt Mitra can open a donor's contact to follow up after their donation":
-    "रक्तदान के बाद हाल-चाल के लिए रक्त मित्र कितने दिन तक डोनर का संपर्क खोल सकता है",
+    "डोनेशन के बाद हाल-चाल के लिए रक्त मित्र कितने दिन तक डोनर का संपर्क खोल सकता है",
 
   // --- After donation (recently done) ------------------------------------------------
   "Followed up recently":

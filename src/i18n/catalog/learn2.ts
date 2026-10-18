@@ -8,8 +8,6 @@ const hi: Catalog = {
 
   // --- Donation types (src/app/(site)/donation-types/page.tsx) ----------------------
   "Donation types": "रक्तदान के प्रकार",
-  "Whole blood, Single Donor Platelet (SDP) and other apheresis donations explained: how they differ, how long they take, and why they are not interchangeable.":
-    "होल ब्लड, सिंगल डोनर प्लेटलेट (SDP) और दूसरे एफ़ेरेसिस रक्तदान की आसान जानकारी: इनमें क्या फ़र्क है, कितना समय लगता है, और एक की जगह दूसरा क्यों नहीं चल सकता।",
   "The classic. Most donors start here.": "सबसे आम तरीका। ज़्यादातर डोनर यहीं से शुरू करते हैं।",
   "SDP (Single Donor Platelets)": "SDP (एक डोनर से प्लेटलेट्स)",
   "Platelets only. A machine returns the rest to you.": "सिर्फ़ प्लेटलेट्स। बाकी खून मशीन आपको वापस लौटा देती है।",
@@ -34,20 +32,12 @@ const hi: Catalog = {
   "Usually a platelet count and a vein check. The centre decides.": "आमतौर पर प्लेटलेट काउंट और नसों की जाँच। फ़ैसला ब्लड बैंक करता है।",
   "Screening": "जाँच",
   "Block your time": "समय निकालकर रखें",
-  "Saying yes to SDP? Keep a few hours free.": "SDP के लिए हाँ कह रहे हैं? कुछ घंटे खाली रखें।",
   "Plan": "प्लान",
-  "Whole blood vs": "होल ब्लड या",
-  "Same you, different ways to give. Here's the quick compare.": "आप वही, देने के तरीके अलग। यहाँ जल्दी से फ़र्क देखें।",
   "Apheresis": "एफ़ेरेसिस",
   "Whole blood: one bag, split into parts later at the blood centre.":
     "होल ब्लड: एक बैग, जिसे बाद में ब्लड बैंक में अलग-अलग हिस्सों में बाँटा जाता है।",
   "SDP: a machine keeps your platelets and gives the rest back.": "SDP: मशीन आपके प्लेटलेट्स रख लेती है और बाकी खून वापस कर देती है।",
-  "SDP takes much longer and needs extra checks.": "SDP में बहुत ज़्यादा समय लगता है और ज़्यादा जाँच होती है।",
-  "They're not interchangeable. Always check which type a request needs.":
-    "एक की जगह दूसरा नहीं चलता। हमेशा देखें कि रिक्वेस्ट में किस प्रकार की ज़रूरत है।",
   "Not interchangeable": "एक की जगह दूसरा नहीं चलता",
-  "A whole-blood donation can't meet an SDP request, and a whole-blood request isn't a platelet request. Check the type before you respond.":
-    "होल ब्लड रक्तदान से SDP रिक्वेस्ट पूरी नहीं होती, और होल ब्लड की रिक्वेस्ट प्लेटलेट की रिक्वेस्ट नहीं है। जवाब देने से पहले प्रकार देख लें।",
   "Side by side": "आमने-सामने",
   "Pick your type": "अपना प्रकार चुनें",
   "Rough guide only. Exact times, amounts and gaps depend on the centre and national guidelines.":
@@ -68,8 +58,6 @@ const hi: Catalog = {
     "होल ब्लड में सामान्य जाँच होती है: सवालों की सूची, हीमोग्लोबिन, वज़न, नब्ज़, ब्लड प्रेशर और शरीर का तापमान। एफ़ेरेसिस सेंटर आमतौर पर आपका प्लेटलेट काउंट भी जाँचते हैं, और यह भी कि आपकी नसें मशीन के लिए ठीक हैं या नहीं। कुछ लोग जो होल ब्लड दे सकते हैं, शायद SDP के लिए ठीक न हों, और यह फ़ैसला एफ़ेरेसिस सेंटर करता है। दूसरे एफ़ेरेसिस रक्तदान में, खून के हिस्से के हिसाब से और जाँचें भी हो सकती हैं।",
   "General information, not medical advice. Rakt Response doesn't decide who can donate; the blood or apheresis centre's doctor does, every time. See {link}.":
     "यह आम जानकारी है, डॉक्टरी सलाह नहीं। कौन रक्तदान कर सकता है, यह Rakt Response तय नहीं करता; हर बार ब्लड बैंक या एफ़ेरेसिस सेंटर के डॉक्टर तय करते हैं। देखें: {link}।",
-  "Every request on Rakt Response says which type it needs, and your history logs whole blood and SDP separately.":
-    "Rakt Response पर हर रिक्वेस्ट में लिखा होता है कि किस प्रकार की ज़रूरत है, और आपके रिकॉर्ड में होल ब्लड और SDP अलग-अलग दर्ज होते हैं।",
 
   // --- Why donate (src/app/(site)/why-donate/page.tsx) ------------------------------
   "Why voluntary blood donation matters: how red cells, platelets and plasma support patients, and why regular voluntary donors are important.":
@@ -290,6 +278,54 @@ const hi: Catalog = {
   "We share only figures that have been checked. See {impact}. To learn who can see your information and how we look after it, read our {privacy}.":
     "हम सिर्फ़ जाँचे गए आँकड़े ही शेयर करते हैं। देखें: {impact}। आपकी जानकारी कौन देख सकता है और हम उसका ध्यान कैसे रखते हैं, यह जानने के लिए हमारी {privacy} पढ़ें।",
   "Together we can.": "साथ मिलकर हम कर सकते हैं।",
+
+  // --- SDP and WBC (18 October 2026) -------------------------------------------------
+  "Whole blood, Single Donor Platelet (SDP), WBC (granulocyte) and other apheresis donations explained: how they differ, how long they take, and why each is as important as the others.":
+    "होल ब्लड, सिंगल डोनर प्लेटलेट (SDP), WBC (ग्रैन्युलोसाइट) और दूसरे एफ़ेरेसिस डोनेशन की जानकारी: इनमें क्या फ़र्क है, कितना समय लगता है, और हर एक बाकियों जितना ही ज़रूरी क्यों है।",
+  "White blood cells for one patient, arranged at short notice.":
+    "एक मरीज़ के लिए सफ़ेद रक्त कोशिकाएँ, कम समय की सूचना पर।",
+  "Cell separator keeps white cells":
+    "सेल सेपरेटर सफ़ेद कोशिकाएँ रखता है",
+  "Patients with very low white cells and a serious infection":
+    "बहुत कम सफ़ेद कोशिकाओं और गंभीर संक्रमण वाले मरीज़",
+  "WBC can't wait":
+    "WBC इंतज़ार नहीं कर सकता",
+  "White cells must be given within about a day, so the centre plans each WBC donation with the donor.":
+    "सफ़ेद कोशिकाएँ लगभग एक दिन के अंदर चढ़ानी होती हैं, इसलिए सेंटर हर WBC डोनेशन डोनर के साथ मिलकर तय करता है।",
+  "Saying yes to SDP or WBC? Keep a few hours free.":
+    "SDP या WBC के लिए हाँ कह रहे हैं? कुछ घंटे खाली रखें।",
+  "Whole blood, SDP":
+    "होल ब्लड, SDP",
+  "and WBC.":
+    "और WBC।",
+  "Same you, different ways to give. Each is as important as the others; here's the quick compare.":
+    "आप वही, देने के तरीके अलग। हर एक बाकियों जितना ही ज़रूरी है; यह रही छोटी तुलना।",
+  "WBC: a machine collects white blood cells for one patient, usually at short notice.":
+    "WBC: मशीन एक मरीज़ के लिए सफ़ेद रक्त कोशिकाएँ लेती है, आम तौर पर कम समय की सूचना पर।",
+  "SDP and WBC take longer and need extra checks.":
+    "SDP और WBC में ज़्यादा समय लगता है और अतिरिक्त जाँच होती है।",
+  "Each is as important as the others, and they're not interchangeable. Always check which type a request needs.":
+    "हर एक बाकियों जितना ही ज़रूरी है, और ये एक-दूसरे की जगह नहीं ले सकते। हमेशा देखें कि रिक्वेस्ट को किस तरह का डोनेशन चाहिए।",
+  "A whole-blood donation can't meet an SDP or WBC request, and the other way round. Check the type before you respond.":
+    "होल ब्लड डोनेशन से SDP या WBC रिक्वेस्ट पूरी नहीं हो सकती, और न ही इसका उल्टा। जवाब देने से पहले प्रकार देख लें।",
+  "WBC (granulocyte) donation":
+    "WBC (ग्रैन्युलोसाइट) डोनेशन",
+  "Granulocytes are white blood cells that fight bacterial and fungal infections. Some patients, often during cancer treatment, have so few that an infection becomes very dangerous. Their doctors may ask for granulocyte (WBC) donations.":
+    "ग्रैन्युलोसाइट्स वे सफ़ेद रक्त कोशिकाएँ हैं जो बैक्टीरिया और फ़ंगस के संक्रमण से लड़ती हैं। कुछ मरीज़ों में, अक्सर कैंसर के इलाज के दौरान, ये इतनी कम हो जाती हैं कि संक्रमण बहुत ख़तरनाक हो जाता है। उनके डॉक्टर ग्रैन्युलोसाइट (WBC) डोनेशन माँग सकते हैं।",
+  "Like SDP, a machine collects them and returns the rest of your blood. The centre may ask you to take a medicine beforehand to raise your white cell count; it explains this and checks that it suits you.":
+    "SDP की तरह, मशीन इन्हें लेती है और बाकी खून आपको लौटा देती है। सेंटर आपसे पहले से एक दवा लेने को कह सकता है जिससे सफ़ेद कोशिकाओं की गिनती बढ़े; वह इसके बारे में समझाता है और जाँचता है कि यह आपके लिए ठीक है।",
+  "White cells must be transfused within about a day of collection, so a WBC donation is arranged for one patient at a time, often at short notice. Your blood group usually needs to match the patient's, because the bag also holds some red cells. Only some centres collect WBC.":
+    "सफ़ेद कोशिकाएँ लेने के लगभग एक दिन के अंदर चढ़ानी होती हैं, इसलिए WBC डोनेशन एक बार में एक मरीज़ के लिए, अक्सर कम समय की सूचना पर तय होता है। आम तौर पर आपका ब्लड ग्रुप मरीज़ से मिलना चाहिए, क्योंकि बैग में कुछ लाल कोशिकाएँ भी होती हैं। WBC सिर्फ़ कुछ ही सेंटर लेते हैं।",
+  "Every request on Rakt Response says which type it needs, and your history keeps whole blood, SDP and WBC donations apart.":
+    "Rakt Response पर हर रिक्वेस्ट बताती है कि उसे किस तरह का डोनेशन चाहिए, और आपका इतिहास होल ब्लड, SDP और WBC डोनेशन अलग-अलग रखता है।",
+  "Are SDP and WBC donations as important as whole blood?":
+    "क्या SDP और WBC डोनेशन होल ब्लड जितने ही ज़रूरी हैं?",
+  "Yes. Each helps different patients, and a patient needs the type their doctor asks for. Platelets (SDP) help patients with very low platelets, for example in dengue or during cancer treatment. White cells (WBC) help patients with very low white cells and a serious infection.":
+    "हाँ। हर एक अलग मरीज़ों की मदद करता है, और मरीज़ को वही चाहिए जो उसका डॉक्टर कहे। प्लेटलेट्स (SDP) बहुत कम प्लेटलेट्स वाले मरीज़ों की मदद करते हैं, जैसे डेंगू में या कैंसर के इलाज के दौरान। सफ़ेद कोशिकाएँ (WBC) बहुत कम सफ़ेद कोशिकाओं और गंभीर संक्रमण वाले मरीज़ों की मदद करती हैं।",
+  "What is WBC (granulocyte) donation?":
+    "WBC (ग्रैन्युलोसाइट) डोनेशन क्या है?",
+  "A machine collects white blood cells (granulocytes) for one patient, usually someone with very low white cells and a serious infection, often during cancer treatment. White cells must be given within about a day, so the donation is arranged at short notice, and the centre may ask you to take a medicine beforehand ({link}).":
+    "मशीन एक मरीज़ के लिए सफ़ेद रक्त कोशिकाएँ (ग्रैन्युलोसाइट्स) लेती है, आम तौर पर ऐसे मरीज़ के लिए जिसकी सफ़ेद कोशिकाएँ बहुत कम हों और गंभीर संक्रमण हो, अक्सर कैंसर के इलाज के दौरान। सफ़ेद कोशिकाएँ लगभग एक दिन के अंदर चढ़ानी होती हैं, इसलिए डोनेशन कम समय की सूचना पर तय होता है, और सेंटर आपसे पहले से एक दवा लेने को कह सकता है ({link})।",
 };
 
 export default hi;

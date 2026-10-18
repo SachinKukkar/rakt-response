@@ -38,7 +38,7 @@ export default async function CoordinationPage() {
     .order("follow_up_at", { ascending: true, nullsFirst: false })
     .limit(50);
   const assignments = (data ?? []) as Array<{ id: string; request_id: string; status: string; follow_up_at: string | null; notes: string | null; updated_at: string }>;
-  // Donors who gave blood and haven't been followed up yet, for every request (any Rakt Mitra can do it).
+  // Donors who donated and haven't been followed up yet, for every request (any Rakt Mitra can do it).
   const { data: followUpData } = await supabase
     .from("request_responses")
     .select("request_id, donor_id, donated_on, follow_up_due_at, donation_record_id")
@@ -72,10 +72,10 @@ export default async function CoordinationPage() {
         <SectionHeading
           id="after-donation-heading"
           title="Follow up after donation"
-          description="Donors who gave blood for a request. Call or message them: thank them and ask how they feel. Then mark it done. Their contact opens for this (logged) even after the request closes."
+          description="Donors who donated for a request: whole blood, SDP or WBC. Call or message them: thank them and ask how they feel. Then mark it done. Their contact opens for this (logged) even after the request closes."
         />
         {followUps.length === 0 ? (
-          <EmptyState icon={HeartHandshake} title="No donors waiting for a follow-up" description="When a donor tells us they gave blood, or you record it, they appear here." />
+          <EmptyState icon={HeartHandshake} title="No donors waiting for a follow-up" description="When a donor tells us they donated, or you record it, they appear here." />
         ) : (
           <ul className="space-y-3">
             {followUps.map((f) => {

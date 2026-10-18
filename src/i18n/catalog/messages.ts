@@ -585,19 +585,19 @@ const hi: Catalog = {
 
   // --- After donation (database, 18 October 2026) ------------------------------------
   "Follow up after donation: {code}":
-    "रक्तदान के बाद हाल-चाल: {code}",
-  "A donor gave blood for this request. Check on them and thank them, then mark it done.":
-    "एक डोनर ने इस रिक्वेस्ट के लिए रक्तदान किया। उनका हाल-चाल लें और धन्यवाद दें, फिर इसे पूरा मार्क करें।",
-  "Thank you for giving blood for {code}. Add it to your donation record so we know when you can give again.":
-    "{code} के लिए रक्तदान करने का धन्यवाद। इसे अपने रक्तदान रिकॉर्ड में जोड़ें, ताकि पता रहे कि आप फिर कब रक्तदान कर सकते हैं।",
-  "Thank you for giving blood for {code}. It is in your donation record. A Rakt Mitra may check in with you.":
-    "{code} के लिए रक्तदान करने का धन्यवाद। यह आपके रक्तदान रिकॉर्ड में है। कोई रक्त मित्र आपका हाल-चाल ले सकता है।",
+    "डोनेशन के बाद हाल-चाल: {code}",
+  "A donor donated for this request. Check on them and thank them, then mark it done.":
+    "एक डोनर ने इस रिक्वेस्ट के लिए डोनेट किया। उनका हाल-चाल लें और धन्यवाद दें, फिर इसे पूरा मार्क करें।",
+  "Thank you for donating for {code}. Add it to your donation record so we know when you can give again.":
+    "{code} के लिए डोनेट करने का धन्यवाद। इसे अपने रक्तदान रिकॉर्ड में जोड़ें, ताकि पता रहे कि आप फिर कब डोनेट कर सकते हैं।",
+  "Thank you for donating for {code}. It is in your donation record. A Rakt Mitra may check in with you.":
+    "{code} के लिए डोनेट करने का धन्यवाद। यह आपके रक्तदान रिकॉर्ड में है। कोई रक्त मित्र आपका हाल-चाल ले सकता है।",
   "You can only tell us about requests you joined":
     "आप सिर्फ़ उन्हीं रिक्वेस्ट के बारे में बता सकते हैं जिनसे आप जुड़े थे",
   "This request has closed. Add the donation from your donation history instead.":
     "यह रिक्वेस्ट बंद हो चुकी है। रक्तदान को अपने रक्तदान इतिहास में खुद जोड़ें।",
   "You already told us you donated for this request":
-    "आप पहले ही बता चुके हैं कि आपने इस रिक्वेस्ट के लिए रक्तदान किया",
+    "आप पहले ही बता चुके हैं कि आपने इस रिक्वेस्ट के लिए डोनेट किया",
   "That date is before this request was made":
     "यह तारीख रिक्वेस्ट बनने से पहले की है",
   "Only authorised Rakt Mitras can record follow-ups":
@@ -611,7 +611,15 @@ const hi: Catalog = {
   "Donor said they did not donate":
     "डोनर ने बताया कि रक्तदान नहीं किया",
   "Followed up with a donor after their donation":
-    "रक्तदान के बाद डोनर का हाल-चाल लिया",
+    "डोनेशन के बाद डोनर का हाल-चाल लिया",
+
+  // --- Earlier wording, for notifications sent before 20261018000300 -----------------
+  "A donor gave blood for this request. Check on them and thank them, then mark it done.":
+    "एक डोनर ने इस रिक्वेस्ट के लिए रक्तदान किया। उनका हाल-चाल लें और धन्यवाद दें, फिर इसे पूरा मार्क करें।",
+  "Thank you for giving blood for {code}. Add it to your donation record so we know when you can give again.":
+    "{code} के लिए रक्तदान करने का धन्यवाद। इसे अपने रक्तदान रिकॉर्ड में जोड़ें, ताकि पता रहे कि आप फिर कब रक्तदान कर सकते हैं।",
+  "Thank you for giving blood for {code}. It is in your donation record. A Rakt Mitra may check in with you.":
+    "{code} के लिए रक्तदान करने का धन्यवाद। यह आपके रक्तदान रिकॉर्ड में है। कोई रक्त मित्र आपका हाल-चाल ले सकता है।",
 };
 
 export default hi;

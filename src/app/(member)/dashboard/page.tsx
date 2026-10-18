@@ -78,7 +78,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
 
       {askDonated.length ? (
         <Notice tone="brand" icon={HandHeart} title="Did you donate?">
-          <p>{t("You joined these requests. Tell us if you gave blood, so we can thank you and keep your record right.")}</p>
+          <p>{t("You joined these requests. Tell us if you donated, so we can thank you and keep your record right.")}</p>
           <ul className="mt-1">
             {askDonated.slice(0, 3).map((c) => (
               <li key={c.request_id}>

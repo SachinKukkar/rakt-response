@@ -327,37 +327,37 @@ const hi: Catalog = {
 
   // --- After donation (donors) -------------------------------------------------------
   "Did you donate?":
-    "क्या आपने रक्तदान किया?",
+    "क्या आपने डोनेट किया?",
   "Thank you for donating":
-    "रक्तदान के लिए धन्यवाद",
+    "डोनेट करने के लिए धन्यवाद",
   "See my donation history":
     "मेरा रक्तदान इतिहास देखें",
   "Day you donated":
-    "रक्तदान का दिन",
+    "डोनेट करने का दिन",
   "This request has closed. Thank you for offering to help.":
     "यह रिक्वेस्ट बंद हो चुकी है। मदद की पेशकश के लिए धन्यवाद।",
   "The request":
     "रिक्वेस्ट",
   "{code} at {hospital}":
     "{hospital} की रिक्वेस्ट {code}",
-  "You gave blood for this request on {date}. It's in your donation record, and a Rakt Mitra may check in with you.":
-    "आपने {date} को इस रिक्वेस्ट के लिए रक्तदान किया। यह आपके रक्तदान रिकॉर्ड में दर्ज है, और कोई रक्त मित्र आपका हाल-चाल ले सकता है।",
-  "Tell us after you give blood for this request. We add it to your donation record, which updates when you can give again, and a Rakt Mitra checks in on you.":
-    "इस रिक्वेस्ट के लिए रक्तदान करने के बाद हमें बताइए। हम इसे आपके रक्तदान रिकॉर्ड में जोड़ देंगे, जिससे आपकी अगली रक्तदान की तारीख भी तय होगी, और कोई रक्त मित्र आपका हाल-चाल लेगा।",
+  "You donated for this request on {date}. It's in your donation record, and a Rakt Mitra may check in with you.":
+    "आपने {date} को इस रिक्वेस्ट के लिए डोनेट किया। यह आपके रक्तदान रिकॉर्ड में दर्ज है, और कोई रक्त मित्र आपका हाल-चाल ले सकता है।",
+  "Tell us after you donate for this request. We add it to your donation record, which updates when you can give again, and a Rakt Mitra checks in on you.":
+    "इस रिक्वेस्ट के लिए डोनेट करने के बाद हमें बताइए। हम इसे आपके रक्तदान रिकॉर्ड में जोड़ देंगे, जिससे आपकी अगली डोनेशन की तारीख भी तय होगी, और कोई रक्त मित्र आपका हाल-चाल लेगा।",
   "Yes, I donated":
-    "हाँ, मैंने रक्तदान किया",
+    "हाँ, मैंने डोनेट किया",
   "No, I didn't donate":
-    "नहीं, मैंने रक्तदान नहीं किया",
-  "You joined these requests. Tell us if you gave blood, so we can thank you and keep your record right.":
-    "आप इन रिक्वेस्ट से जुड़े थे। अगर आपने रक्तदान किया हो तो हमें बताइए, ताकि हम आपको धन्यवाद दे सकें और आपका रिकॉर्ड सही रहे।",
+    "नहीं, मैंने डोनेट नहीं किया",
+  "You joined these requests. Tell us if you donated, so we can thank you and keep your record right.":
+    "आप इन रिक्वेस्ट से जुड़े थे। अगर आपने डोनेट किया हो तो हमें बताइए, ताकि हम आपको धन्यवाद दे सकें और आपका रिकॉर्ड सही रहे।",
   "Thank you for donating. It's now in your donation record.":
-    "रक्तदान के लिए धन्यवाद। यह अब आपके रक्तदान रिकॉर्ड में है।",
+    "डोनेट करने के लिए धन्यवाद। यह अब आपके रक्तदान रिकॉर्ड में है।",
   "Choose the day you donated (not a future date)":
     "रक्तदान का दिन चुनें (आगे की तारीख नहीं)",
 
   // --- After donation (recorded by a Rakt Mitra) -------------------------------------
   "A Rakt Mitra recorded your donation for this request. Add it to your donation record so we know when you can give again.":
-    "रक्त मित्र ने इस रिक्वेस्ट के लिए आपका रक्तदान दर्ज किया है। इसे अपने रक्तदान रिकॉर्ड में जोड़ें, ताकि पता रहे कि आप फिर कब रक्तदान कर सकते हैं।",
+    "रक्त मित्र ने इस रिक्वेस्ट के लिए आपका डोनेशन दर्ज किया है। इसे अपने रक्तदान रिकॉर्ड में जोड़ें, ताकि पता रहे कि आप फिर कब रक्तदान कर सकते हैं।",
   "Add to my record":
     "मेरे रिकॉर्ड में जोड़ें",
 };

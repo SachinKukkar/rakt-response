@@ -111,9 +111,6 @@ const hi: Catalog = {
   "Does registering mean I'm eligible to donate?": "क्या रजिस्टर करने का मतलब है कि मैं रक्तदान कर सकता/सकती हूँ?",
   "No. Eligibility is decided by the blood centre's screening on the day. Rakt Response never makes medical decisions.":
     "नहीं। आप रक्तदान कर सकते हैं या नहीं, यह उसी दिन ब्लड बैंक की जाँच से तय होता है। Rakt Response कभी कोई मेडिकल फ़ैसला नहीं लेता।",
-  "Is whole blood the same as SDP?": "क्या होल ब्लड और SDP एक ही हैं?",
-  "No. SDP (single donor platelets) is collected by a machine over a longer session and has different checks and intervals.":
-    "नहीं। SDP (एक डोनर से प्लेटलेट्स) मशीन से लिया जाता है, इसमें ज़्यादा समय लगता है, और इसकी जाँच और अंतराल अलग होते हैं।",
   "What should I do in an emergency?": "इमरजेंसी में मुझे क्या करना चाहिए?",
   "Contact the treating hospital or the nearest licensed blood bank immediately. You can also submit a request here for Rakt Mitra support.":
     "तुरंत इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से संपर्क करें। रक्त मित्रों की मदद के लिए आप यहाँ रिक्वेस्ट भी भेज सकते हैं।",
@@ -258,6 +255,34 @@ const hi: Catalog = {
   "You're offline": "आप ऑफ़लाइन हैं",
   "Rakt Response needs a connection to show requests and your profile. If someone needs blood urgently, contact the treating hospital or the nearest licensed blood bank by phone.":
     "रिक्वेस्ट और आपकी प्रोफ़ाइल दिखाने के लिए Rakt Response को इंटरनेट चाहिए। अगर किसी को जल्दी खून चाहिए, तो इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक को फ़ोन करें।",
+
+  // --- Three ways to give (18 October 2026) ------------------------------------------
+  "One bag, separated later into red cells, plasma and platelets. Used in surgery, accidents, childbirth and anaemia.":
+    "एक बैग, जिसे बाद में लाल कोशिकाओं, प्लाज़्मा और प्लेटलेट्स में अलग किया जाता है। ऑपरेशन, दुर्घटना, प्रसव और खून की कमी में काम आता है।",
+  "About 10–15 minutes in the chair":
+    "कुर्सी पर लगभग 10–15 मिनट",
+  "A machine keeps your platelets and returns the rest. For patients with very low platelets, for example in dengue or during cancer treatment.":
+    "मशीन आपके प्लेटलेट्स रख लेती है और बाकी खून लौटा देती है। बहुत कम प्लेटलेट्स वाले मरीज़ों के लिए, जैसे डेंगू में या कैंसर के इलाज के दौरान।",
+  "About 60–90 minutes on the machine":
+    "मशीन पर लगभग 60–90 मिनट",
+  "White blood cells":
+    "सफ़ेद रक्त कोशिकाएँ",
+  "WBC (granulocytes)":
+    "WBC (ग्रैन्युलोसाइट्स)",
+  "A machine collects white blood cells for one patient with a very low count and a serious infection. Arranged at short notice; the centre tells you how to prepare.":
+    "मशीन एक ऐसे मरीज़ के लिए सफ़ेद रक्त कोशिकाएँ लेती है जिसकी गिनती बहुत कम हो और गंभीर संक्रमण हो। यह कम समय की सूचना पर तय होता है; सेंटर बताता है कि कैसे तैयारी करें।",
+  "A few hours at the centre":
+    "सेंटर पर कुछ घंटे",
+  "Is whole blood the same as SDP or WBC?":
+    "क्या होल ब्लड, SDP और WBC एक ही हैं?",
+  "No. SDP (platelets) and WBC (white blood cells) are collected by a machine over a longer session, with their own checks and intervals. Each is as important as whole blood: a patient needs the type their doctor asks for.":
+    "नहीं। SDP (प्लेटलेट्स) और WBC (सफ़ेद रक्त कोशिकाएँ) मशीन से, ज़्यादा लंबे समय में ली जाती हैं, और इनकी अपनी जाँच और अंतराल होते हैं। हर एक उतना ही ज़रूरी है जितना होल ब्लड: मरीज़ को वही चाहिए जो उसका डॉक्टर कहे।",
+  "Three ways to give.":
+    "देने के तीन तरीके।",
+  "All equally important.":
+    "तीनों बराबर ज़रूरी।",
+  "A patient needs the type their doctor asks for. The blood centre checks which you can give.":
+    "मरीज़ को वही चाहिए जो उसका डॉक्टर कहे। आप कौन-सा दे सकते हैं, यह ब्लड सेंटर जाँचता है।",
 };
 
 export default hi;

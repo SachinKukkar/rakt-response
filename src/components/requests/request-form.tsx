@@ -235,7 +235,7 @@ export function BloodRequestForm({ defaultName }: { defaultName?: string }) {
                 options={[
                   { value: "whole_blood", label: t(REQUEST_TYPE_LABELS.whole_blood), description: t("Standard blood donation (the hospital may separate components).") },
                   { value: "sdp", label: t(REQUEST_TYPE_LABELS.sdp), description: t("Single donor platelets collected by apheresis at the hospital's platelet unit.") },
-                  { value: "other_apheresis", label: t(REQUEST_TYPE_LABELS.other_apheresis), description: t("Another specific apheresis component, as advised by the hospital.") },
+                  { value: "other_apheresis", label: t(REQUEST_TYPE_LABELS.other_apheresis), description: t("White blood cells (granulocytes), or another component such as plasma, collected by a machine as the hospital advises.") },
                 ]}
               />
             )}
