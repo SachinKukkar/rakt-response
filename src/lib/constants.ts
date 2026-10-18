@@ -39,7 +39,7 @@ export type DonationType = (typeof DONATION_TYPES)[number];
 export const DONATION_TYPE_LABELS: Record<DonationType, string> = {
   whole_blood: "Whole blood",
   sdp: "SDP (single donor platelets)",
-  other_apheresis: "Other apheresis",
+  other_apheresis: "WBC or other apheresis",
   unknown: "Not sure",
 };
 
@@ -55,7 +55,7 @@ export type RequestType = (typeof REQUEST_TYPES)[number];
 export const REQUEST_TYPE_LABELS: Record<RequestType, string> = {
   whole_blood: "Whole blood donors",
   sdp: "SDP / platelet donors",
-  other_apheresis: "Other apheresis donors",
+  other_apheresis: "WBC or other apheresis donors",
 };
 
 export const URGENCIES = ["routine", "urgent", "critical"] as const;

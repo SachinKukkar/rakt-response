@@ -86,7 +86,6 @@ const hi: Catalog = {
   "Unknown type": "प्रकार पता नहीं",
   "Whole blood donors": "होल ब्लड डोनर",
   "SDP / platelet donors": "SDP / प्लेटलेट डोनर",
-  "Other apheresis donors": "दूसरे एफ़ेरेसिस डोनर",
 
   // --- Urgency & request status ----------------------------------------------
   Planned: "पहले से तय",
@@ -230,6 +229,12 @@ const hi: Catalog = {
   Manage: "बदलें",
   "View all": "सब देखें",
   Optional: "ज़रूरी नहीं",
+
+  // --- Donation types with WBC -------------------------------------------------------
+  "WBC or other apheresis":
+    "WBC या दूसरा एफ़ेरेसिस",
+  "WBC or other apheresis donors":
+    "WBC या दूसरे एफ़ेरेसिस डोनर",
 };
 
 export default hi;

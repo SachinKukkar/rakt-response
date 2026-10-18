@@ -29,7 +29,7 @@ export async function DonationReport({ check }: { check: DonationCheck }) {
       <Notice tone="brand" icon={HeartHandshake} title={t("Thank you for donating")}>
         <p>
           {inRecord
-            ? t("You gave blood for this request on {date}. It's in your donation record, and a Rakt Mitra may check in with you.", {
+            ? t("You donated for this request on {date}. It's in your donation record, and a Rakt Mitra may check in with you.", {
                 date: formatDate(check.donated_on),
               })
             : t("A Rakt Mitra recorded your donation for this request. Add it to your donation record so we know when you can give again.")}
@@ -70,7 +70,7 @@ export async function DonationReport({ check }: { check: DonationCheck }) {
       <SectionHeading
         id="donated-heading"
         title="Did you donate?"
-        description="Tell us after you give blood for this request. We add it to your donation record, which updates when you can give again, and a Rakt Mitra checks in on you."
+        description="Tell us after you donate for this request. We add it to your donation record, which updates when you can give again, and a Rakt Mitra checks in on you."
         as="h3"
       />
       <ActionForm

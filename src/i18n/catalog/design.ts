@@ -193,7 +193,6 @@ const hi: Catalog = {
   "Not an emergency service. In an emergency call 112.": "यह इमरजेंसी सेवा नहीं है। इमरजेंसी में 112 पर फ़ोन करें।",
   "Rakt Response logo": "Rakt Response का लोगो",
   "Rakt Response, since 2026": "Rakt Response, 2026 से",
-  "SDP.": "SDP।",
 
   // --- Editing and removing records ----------------------------------------------------
   "Edit donation": "डोनेशन बदलें",

@@ -94,7 +94,6 @@ const hi: Catalog = {
   "Standard blood donation (the hospital may separate components).": "आम रक्तदान (अस्पताल खून के हिस्से अलग कर सकता है)।",
   "Single donor platelets collected by apheresis at the hospital's platelet unit.":
     "एक ही डोनर से प्लेटलेट्स, जो अस्पताल की प्लेटलेट यूनिट में एफ़ेरेसिस से लिए जाते हैं।",
-  "Another specific apheresis component, as advised by the hospital.": "अस्पताल की सलाह के अनुसार कोई दूसरा एफ़ेरेसिस हिस्सा।",
   "SDP donors need additional screening at the apheresis centre (for example a platelet count). The hospital decides suitability and timing — we only help find willing donors.":
     "SDP डोनर की एफ़ेरेसिस सेंटर पर अलग से जाँच होती है (जैसे प्लेटलेट काउंट)। डोनर सही है या नहीं, और कब देना है, यह अस्पताल तय करता है — हम सिर्फ़ तैयार डोनर ढूँढने में मदद करते हैं।",
   "Units / donors needed (if known)": "कितनी यूनिट / कितने डोनर चाहिए (अगर पता हो)",
@@ -347,6 +346,10 @@ const hi: Catalog = {
     "{hospital} में {group} खून के लिए।",
   "Thank you. Here is what you need at the blood bank.":
     "धन्यवाद। ब्लड बैंक में आपको यह जानकारी चाहिए होगी।",
+
+  // --- WBC requests ------------------------------------------------------------------
+  "White blood cells (granulocytes), or another component such as plasma, collected by a machine as the hospital advises.":
+    "सफ़ेद रक्त कोशिकाएँ (ग्रैन्युलोसाइट्स), या प्लाज़्मा जैसा कोई दूसरा हिस्सा, जो अस्पताल की सलाह पर मशीन से लिया जाता है।",
 };
 
 export default hi;

@@ -29,6 +29,28 @@ const FACTS = [
   { value: "3", label: "Parts from one donation", text: "Red cells, plasma and platelets." },
 ];
 
+/** The three ways to give, shown with equal weight: each helps different patients. */
+const WAYS = [
+  {
+    tag: "Most common",
+    title: "Whole blood",
+    text: "One bag, separated later into red cells, plasma and platelets. Used in surgery, accidents, childbirth and anaemia.",
+    time: "About 10–15 minutes in the chair",
+  },
+  {
+    tag: "Platelets",
+    title: "SDP (single donor platelets)",
+    text: "A machine keeps your platelets and returns the rest. For patients with very low platelets, for example in dengue or during cancer treatment.",
+    time: "About 60–90 minutes on the machine",
+  },
+  {
+    tag: "White blood cells",
+    title: "WBC (granulocytes)",
+    text: "A machine collects white blood cells for one patient with a very low count and a serious infection. Arranged at short notice; the centre tells you how to prepare.",
+    time: "A few hours at the centre",
+  },
+];
+
 /** A typical whole blood visit (times vary by centre). */
 const VISIT = [
   { at: "0:00", title: "Register and show your ID", takes: "5 min" },
@@ -80,8 +102,8 @@ const QUESTIONS = [
     a: "No. Eligibility is decided by the blood centre's screening on the day. Rakt Response never makes medical decisions.",
   },
   {
-    q: "Is whole blood the same as SDP?",
-    a: "No. SDP (single donor platelets) is collected by a machine over a longer session and has different checks and intervals.",
+    q: "Is whole blood the same as SDP or WBC?",
+    a: "No. SDP (platelets) and WBC (white blood cells) are collected by a machine over a longer session, with their own checks and intervals. Each is as important as whole blood: a patient needs the type their doctor asks for.",
   },
   {
     q: "What is the Bombay (Oh) blood group?",
@@ -166,6 +188,29 @@ export default async function HomePage() {
             </div>
             <p className="label-mono mt-5 text-navy/50">{t("Times are typical and vary by centre.")}</p>
           </div>
+        </div>
+
+        {/* Whole blood is not the only way: SDP and WBC matter just as much. */}
+        <div className="wide mt-20 sm:mt-24">
+          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-navy/12 pt-10">
+            <h3 className="max-w-2xl text-3xl font-medium tracking-[-0.03em] sm:text-[2.5rem] sm:leading-[1.05]">
+              {t("Three ways to give.")} <span className="text-navy/40">{t("All equally important.")}</span>
+            </h3>
+            <ArrowLink href="/donation-types" tone="line">
+              {t("Compare donation types")}
+            </ArrowLink>
+          </div>
+          <ul className="mt-8 grid gap-4 md:grid-cols-3">
+            {WAYS.map((way) => (
+              <li key={way.title} className="reveal flex flex-col rounded-[1.75rem] border border-navy/12 p-7">
+                <p className="label-mono text-primary">{t(way.tag)}</p>
+                <h4 className="mt-3 text-2xl font-medium tracking-[-0.02em]">{t(way.title)}</h4>
+                <p className="mt-3 text-[16px] leading-relaxed text-muted-foreground">{t(way.text)}</p>
+                <p className="label-mono mt-auto pt-6 text-navy/55">{t(way.time)}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-sm text-navy/55">{t("A patient needs the type their doctor asks for. The blood centre checks which you can give.")}</p>
         </div>
       </section>
 

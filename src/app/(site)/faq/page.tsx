@@ -67,6 +67,29 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
         ),
       },
       {
+        q: t("Are SDP and WBC donations as important as whole blood?"),
+        a: (
+          <p>
+            {t(
+              "Yes. Each helps different patients, and a patient needs the type their doctor asks for. Platelets (SDP) help patients with very low platelets, for example in dengue or during cancer treatment. White cells (WBC) help patients with very low white cells and a serious infection.",
+            )}
+          </p>
+        ),
+      },
+      {
+        q: t("What is WBC (granulocyte) donation?"),
+        a: (
+          <p>
+            {rich(
+              t(
+                "A machine collects white blood cells (granulocytes) for one patient, usually someone with very low white cells and a serious infection, often during cancer treatment. White cells must be given within about a day, so the donation is arranged at short notice, and the centre may ask you to take a medicine beforehand ({link}).",
+              ),
+              { link: <Link href="/donation-types">{t("compare types")}</Link> },
+            )}
+          </p>
+        ),
+      },
+      {
         q: t("Does registering mean I am eligible to donate?"),
         a: (
           <p>
