@@ -179,8 +179,49 @@ const hi: Catalog = {
     "कोई रिक्वेस्ट, कहानी या आँकड़ा गलत लगा? हमें पेज का लिंक और क्या गलत है, यह बताएँ। कृपया मरीज़ की मेडिकल जानकारी न डालें।",
   "Email a report": "ईमेल से शिकायत भेजें",
   "Corrections, withdrawals & privacy": "सुधार, वापसी और प्राइवेसी",
-  "Manage your consent, correct your profile or request deletion from your account. Story contributors can withdraw or request corrections from My stories.":
-    "अपने खाते से अपनी सहमति बदलें, प्रोफ़ाइल सुधारें या खाता मिटाने की रिक्वेस्ट करें। कहानी भेजने वाले “मेरी कहानियाँ” से अपनी कहानी वापस ले सकते हैं या सुधार माँग सकते हैं।",
+  "Choose how patients can reach you, correct your profile or request deletion from your account. Story contributors can withdraw or request corrections from My stories.":
+    "अपने खाते से चुनें कि मरीज़ आप तक कैसे पहुँचें, प्रोफ़ाइल सुधारें या खाता मिटाने की रिक्वेस्ट करें। कहानी भेजने वाले “मेरी कहानियाँ” से अपनी कहानी वापस ले सकते हैं या सुधार माँग सकते हैं।",
+
+  // --- Privacy & terms: patients reach eligible donors (18 October 2026) -------------
+  "What we collect, who sees it, and how to change your mind. Last updated 18 October 2026.":
+    "हम क्या जानकारी लेते हैं, उसे कौन देखता है, और आप अपना फ़ैसला कैसे बदल सकते हैं। आख़िरी बार 18 अक्टूबर 2026 को अपडेट किया गया।",
+  "How Rakt Response works, and what it can and can't do. Last updated 18 October 2026.":
+    "Rakt Response कैसे काम करता है, और यह क्या कर सकता है और क्या नहीं। आख़िरी बार 18 अक्टूबर 2026 को अपडेट किया गया।",
+  "Mobile / WhatsApp number (or email, if that is your chosen channel)": "मोबाइल / WhatsApp नंबर (या ईमेल, अगर आपने वही तरीका चुना है)",
+  "You; administrators; authorised volunteers coordinating a verified request. A patient whose blood request a volunteer has verified, if you match their blood group, are nearby, can give now and haven't hidden your number: one donor at a time, and every opening is recorded and logged. If you join a request yourself, that patient sees that you are ready to donate.":
+    "आप; एडमिन; जाँची हुई रिक्वेस्ट पर तालमेल कर रहे अधिकृत स्वयंसेवक। वह मरीज़ जिसकी रिक्वेस्ट स्वयंसेवक ने जाँच ली हो, अगर आपका ब्लड ग्रुप मेल खाता है, आप पास हैं, अभी रक्तदान कर सकते हैं और आपने अपना नंबर नहीं छिपाया है: एक बार में एक डोनर, और हर बार खोलने का रिकॉर्ड रखा जाता है। अगर आप खुद किसी रिक्वेस्ट से जुड़ते हैं, तो उस मरीज़ को दिखता है कि आप रक्तदान के लिए तैयार हैं।",
+  "Blood group, display name or first name, broad area (city / locality)": "ब्लड ग्रुप, दिखाया जाने वाला नाम या पहला नाम, मोटे तौर पर इलाका (शहर / मोहल्ला)",
+  "Authorised volunteers and administrators. Patients with a verified request near you, when you can give, unless you hide your number. Never on an open public list.":
+    "अधिकृत स्वयंसेवक और एडमिन। आपके पास की जाँची हुई रिक्वेस्ट वाले मरीज़, जब आप रक्तदान कर सकें, अगर आपने नंबर नहीं छिपाया है। किसी खुली सार्वजनिक सूची में कभी नहीं।",
+  "You; volunteers and administrators. Patients never see your history, only that you can give now. A verified summary appears on volunteers' directory cards only if you allow it.":
+    "आप; स्वयंसेवक और एडमिन। मरीज़ आपका इतिहास कभी नहीं देखते, सिर्फ़ यह कि आप अभी रक्तदान कर सकते हैं। जाँचा गया सारांश स्वयंसेवकों के डायरेक्टरी कार्ड पर सिर्फ़ आपकी इजाज़त से दिखता है।",
+  "You; volunteers and administrators. Donors who join your request see the patient's name and age, the hospital, IP/UHID number and ward, and your name, relation and phone. The public Find Blood list shows only the blood group, donation type, units, hospital, city/district, needed-by time and urgency of a verified request.":
+    "आप; स्वयंसेवक और एडमिन। आपकी रिक्वेस्ट से जुड़ने वाले डोनर मरीज़ का नाम और उम्र, अस्पताल, IP/UHID नंबर और वार्ड, और आपका नाम, रिश्ता और फ़ोन देखते हैं। सार्वजनिक 'खून ढूँढें' सूची में जाँची हुई रिक्वेस्ट का सिर्फ़ ब्लड ग्रुप, डोनेशन का प्रकार, यूनिट, अस्पताल, शहर/ज़िला, ज़रूरत का समय और गंभीरता दिखती है।",
+  "Rakt Response is a community, volunteer-run platform that keeps a register of voluntary blood donors, records their donation history, has volunteers verify blood requests and connects patients with a verified request to donors who can give now. Rakt Response is the data fiduciary for the information described here. Contact details for privacy questions and grievances are on our {link}.":
+    "Rakt Response स्वयंसेवकों द्वारा चलाया जाने वाला एक सामुदायिक प्लेटफ़ॉर्म है, जो स्वैच्छिक रक्तदाताओं का रजिस्टर रखता है, उनके रक्तदान का रिकॉर्ड रखता है, स्वयंसेवकों से खून की रिक्वेस्ट की जाँच करवाता है, और जाँची हुई रिक्वेस्ट वाले मरीज़ों को उन डोनरों से जोड़ता है जो अभी रक्तदान कर सकते हैं। यहाँ बताई गई जानकारी के लिए Rakt Response डेटा फ़िड्यूशियरी है। प्राइवेसी से जुड़े सवालों और शिकायतों के लिए संपर्क की जानकारी हमारे {link} पर है।",
+  "Your choices:": "आपकी पसंद:",
+  "whether your number is hidden from patients, your availability, emergency alerts and sharing a donation summary, with the time each was changed.":
+    "आपका नंबर मरीज़ों से छिपा है या नहीं, आप उपलब्ध हैं या नहीं, इमरजेंसी अलर्ट और रक्तदान का सारांश शेयर करना, और हर पसंद कब बदली गई।",
+  "your name, relation to the patient and phone; the patient's name, age and gender; blood group, type of donor needed and units; hospital, IP/UHID number and ward if given, area, time needed, urgency, reason and optional notes. Volunteers use these to verify the request with the hospital, and donors who join see what they need at the blood bank. Please do not include diagnoses or documents.":
+    "आपका नाम, मरीज़ से आपका रिश्ता और फ़ोन; मरीज़ का नाम, उम्र और लिंग; ब्लड ग्रुप, किस तरह का डोनर चाहिए और कितनी यूनिट; अस्पताल, दिया गया हो तो IP/UHID नंबर और वार्ड, इलाका, ज़रूरत का समय, गंभीरता, कारण और चाहें तो नोट। स्वयंसेवक इनसे अस्पताल के साथ रिक्वेस्ट की जाँच करते हैं, और जुड़ने वाले डोनर वह देखते हैं जो ब्लड बैंक में चाहिए। कृपया बीमारी की जानकारी या दस्तावेज़ न डालें।",
+  "audit logs of privileged actions (such as a volunteer viewing contact details or a patient opening a donor's contact), a record of which donor contacts were opened for which request, and short-lived rate-limit counters.":
+    "ख़ास अधिकार वाले कामों के ऑडिट लॉग (जैसे स्वयंसेवक का संपर्क जानकारी देखना या मरीज़ का किसी डोनर का संपर्क खोलना), किस रिक्वेस्ट के लिए किस डोनर का संपर्क खोला गया इसका रिकॉर्ड, और थोड़े समय के लिए रखे जाने वाले रेट-लिमिट काउंटर।",
+  "We do not sell personal data, show advertising or use analytics or tracking cookies. We do not publish open donor lists, and exports of donor data are restricted to authorised administrators and logged.":
+    "हम निजी जानकारी नहीं बेचते, विज्ञापन नहीं दिखाते और एनालिटिक्स या ट्रैकिंग कुकी इस्तेमाल नहीं करते। हम डोनरों की खुली सूची प्रकाशित नहीं करते, और डोनर डेटा का एक्सपोर्ट सिर्फ़ अधिकृत एडमिन कर सकते हैं, जिसका रिकॉर्ड रहता है।",
+  "Hide your number from patients, pause, and switch alerts and summary sharing on or off at any time in Privacy & settings.":
+    "“प्राइवेसी और सेटिंग्स” में कभी भी मरीज़ों से अपना नंबर छिपाएँ, रुकें, और अलर्ट व सारांश शेयर करना चालू या बंद करें।",
+  "Requester contact details and patient details on closed blood requests: removed after about 90 days.":
+    "बंद हो चुकी रिक्वेस्ट पर रिक्वेस्ट करने वाले की संपर्क जानकारी और मरीज़ की जानकारी: लगभग 90 दिन बाद हटा दी जाती है।",
+  "Access is controlled by role-based permissions enforced in the database itself (row-level security), not just in the app. Contact details are only released after role and eligibility checks for a verified request, access is rate-limited and logged, and connections are encrypted. No system is perfectly secure; please tell us at once if you notice anything wrong.":
+    "कौन क्या देख सकता है, यह भूमिका के आधार पर तय अनुमतियों से होता है, जिन्हें सिर्फ़ ऐप नहीं बल्कि डेटाबेस भी लागू करता है (row-level security)। संपर्क जानकारी सिर्फ़ जाँची हुई रिक्वेस्ट के लिए भूमिका और योग्यता की जाँच के बाद ही दी जाती है, इसकी सीमा तय है, हर बार का रिकॉर्ड रहता है, और कनेक्शन एन्क्रिप्टेड होते हैं। कोई भी सिस्टम पूरी तरह सुरक्षित नहीं होता; कुछ भी गड़बड़ दिखे तो हमें तुरंत बताएँ।",
+  "Rakt Response is a free, volunteer-run platform. Voluntary blood donors register and keep a record of their donations. Volunteers verify blood requests, and then the patient can reach donors who can give now. Donors can hide their number at any time.":
+    "Rakt Response स्वयंसेवकों द्वारा चलाया जाने वाला एक मुफ़्त प्लेटफ़ॉर्म है। स्वैच्छिक रक्तदाता रजिस्टर करते हैं और अपने रक्तदान का रिकॉर्ड रखते हैं। स्वयंसेवक खून की रिक्वेस्ट की जाँच करते हैं, और फिर मरीज़ उन डोनरों तक पहुँच सकता है जो अभी रक्तदान कर सकते हैं। डोनर कभी भी अपना नंबर छिपा सकते हैं।",
+  "Give a patient's details only for a genuine request you are entitled to make, and do not include diagnoses, medical records or other people's personal details in requests or stories unless you have the right to share them.":
+    "मरीज़ की जानकारी सिर्फ़ ऐसी सच्ची रिक्वेस्ट के लिए दें जिसे करने का आपको हक़ हो, और रिक्वेस्ट या कहानियों में बीमारी की जानकारी, मेडिकल रिकॉर्ड या दूसरों की निजी जानकारी तभी डालें जब आपको उसे शेयर करने का हक़ हो।",
+  "Use a donor's number, or a patient's family's number, only for that blood request. Never share, sell or reuse it, and stop contacting anyone who says no.":
+    "किसी डोनर का नंबर, या मरीज़ के परिवार का नंबर, सिर्फ़ उसी रिक्वेस्ट के लिए इस्तेमाल करें। इसे कभी शेयर, बेचें या दोबारा इस्तेमाल न करें, और जो मना करे उससे संपर्क करना बंद करें।",
+  "Authorised volunteers may only use donor information to coordinate a specific, verified blood request, must respect each donor's contact preferences, and must not keep or share contact details for any other purpose. Access is logged and may be withdrawn at any time.":
+    "अधिकृत स्वयंसेवक डोनर की जानकारी सिर्फ़ किसी ख़ास, जाँची हुई रिक्वेस्ट पर तालमेल के लिए इस्तेमाल कर सकते हैं, उन्हें हर डोनर के संपर्क के पसंदीदा तरीके का सम्मान करना होगा, और किसी दूसरे काम के लिए संपर्क जानकारी रखनी या शेयर नहीं करनी होगी। हर बार का रिकॉर्ड रहता है और यह अधिकार कभी भी वापस लिया जा सकता है।",
 };
 
 export default hi;

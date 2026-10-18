@@ -49,6 +49,7 @@ export function RangeBar({
   active,
   marker,
   tone = "night",
+  handle,
   className,
 }: {
   /** Relative widths of each range. */
@@ -57,6 +58,8 @@ export function RangeBar({
   active?: number;
   marker?: number | null;
   tone?: "night" | "cream";
+  /** Draw the marker as a round handle that follows a drag (the bar is a slider). */
+  handle?: boolean;
   className?: string;
 }) {
   const total = segments.reduce((sum, s) => sum + s, 0);
@@ -75,8 +78,10 @@ export function RangeBar({
       {marker !== undefined && marker !== null ? (
         <span
           className={cn(
-            "absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full ring-3 transition-[left] duration-500",
-            tone === "night" ? "bg-navy ring-cream" : "bg-night ring-cream",
+            "absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
+            handle
+              ? "size-6 bg-cream shadow-[0_2px_10px_rgba(0,0,0,0.3)] transition-[left,box-shadow] duration-75 group-focus-visible:ring-4 group-focus-visible:ring-white/60"
+              : cn("h-4 w-1 ring-3 transition-[left] duration-500", tone === "night" ? "bg-navy ring-cream" : "bg-night ring-cream"),
           )}
           style={{ left: `${Math.min(1, Math.max(0, marker)) * 100}%` }}
         />

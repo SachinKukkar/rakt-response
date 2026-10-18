@@ -4,8 +4,10 @@ import {
   CONTACT_METHODS,
   DONATION_EXPERIENCE,
   DONATION_TYPES,
+  DONOR_CONTACT_METHODS,
   INDIAN_STATES,
   REQUEST_TYPES,
+  REQUESTER_CONTACT_METHODS,
   URGENCIES,
 } from "@/lib/constants";
 import { normalizePhone } from "@/lib/phone";
@@ -15,6 +17,8 @@ export const donationTypeSchema = z.enum(DONATION_TYPES, { error: "Choose a dona
 export const requestTypeSchema = z.enum(REQUEST_TYPES, { error: "Choose what kind of donor is needed" });
 export const urgencySchema = z.enum(URGENCIES, { error: "Choose the urgency" });
 export const contactMethodSchema = z.enum(CONTACT_METHODS, { error: "Choose a contact method" });
+export const donorContactMethodSchema = z.enum(DONOR_CONTACT_METHODS, { error: "Choose how patients can reach you" });
+export const requesterContactMethodSchema = z.enum(REQUESTER_CONTACT_METHODS, { error: "Choose how donors can reach you" });
 export const experienceSchema = z.enum(DONATION_EXPERIENCE, { error: "Choose one option" });
 export const stateSchema = z.enum(INDIAN_STATES, { error: "Choose a state or union territory" });
 

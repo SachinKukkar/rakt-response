@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
   bloodGroupSchema,
-  contactMethodSchema,
+  donorContactMethodSchema,
   displayNameSchema,
   donationTypeSchema,
   emailSchema,
@@ -42,7 +42,7 @@ export const donorStepSchema = z
     donation_experience: z.union([experienceSchema, z.literal("")]),
     display_name: displayNameSchema,
     phone: optionalPhoneSchema,
-    preferred_contact_method: contactMethodSchema,
+    preferred_contact_method: donorContactMethodSchema,
   })
   .superRefine((v, ctx) => {
     if (!v.is_donor) return;
@@ -94,9 +94,8 @@ export const historyStepSchema = z
   });
 
 export const consentStepSchema = z.object({
-  directory_visible: z.boolean(),
-  contact_consent: z.boolean(),
-  open_to_contact: z.boolean(),
+  /** Hidden donors are never listed to patients; volunteers can still reach them. */
+  hide_number: z.boolean(),
   emergency_alerts: z.boolean(),
   show_donation_summary: z.boolean(),
 });
@@ -114,9 +113,6 @@ export const registrationSchema = z
     if (!v.location.state) ctx.addIssue({ code: "custom", path: ["location", "state"], message: "Choose your state" });
     if (v.location.district.length < 2) ctx.addIssue({ code: "custom", path: ["location", "district"], message: "Enter your district" });
     if (v.location.city.length < 2) ctx.addIssue({ code: "custom", path: ["location", "city"], message: "Enter your city or town" });
-    if (v.consent.open_to_contact && !v.consent.contact_consent) {
-      ctx.addIssue({ code: "custom", path: ["consent", "open_to_contact"], message: "Allow contact first to be marked as open to contact" });
-    }
   });
 
 export type RegistrationInput = z.infer<typeof registrationSchema>;

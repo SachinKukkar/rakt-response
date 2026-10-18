@@ -68,11 +68,11 @@ interface PublicCamp {
 }
 
 const HOW_WE_WORK = [
-  { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves and are verified once they confirm their email. Profiles are private by default, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility." },
+  { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves and are verified once they confirm their email. Patients see a donor only for a verified request nearby, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility." },
   { icon: ClipboardCheck, title: "Reviewing blood requests", text: "Every request is checked by an authorised volunteer — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors." },
-  { icon: HandHeart, title: "Coordinating with donors", text: "Volunteers contact only donors who allowed it, or who accept a contact request. Each access to contact details is logged and rate-limited." },
+  { icon: HandHeart, title: "Coordinating with donors", text: "Once a request is verified, the patient sees donors who can give now and contacts them on each donor's chosen channel. Volunteers help when no one is found. Each contact opened is logged and limited." },
   { icon: Droplet, title: "Updating donation records", text: "Donors add donations as self-reported. Authorised reviewers verify them separately for whole blood and SDP." },
-  { icon: Lock, title: "Protecting privacy", text: "No public donor lists, phone numbers or addresses. Permissions are enforced by the database, not only the app." },
+  { icon: Lock, title: "Protecting donors", text: "No open donor lists or addresses. Donors can hide their number or pause any time. Permissions are enforced by the database, not only the app." },
   { icon: Eye, title: "What we can and cannot guarantee", text: "We help find willing voluntary donors. We cannot guarantee availability, reserve blood, certify compatibility or replace hospitals and licensed blood banks." },
 ];
 

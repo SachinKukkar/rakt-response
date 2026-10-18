@@ -39,7 +39,7 @@ The standard tile server is free but **best-effort with no SLA**, and requires v
 
 | Wanted | Free approach used | Trade-off |
 | --- | --- | --- |
-| SMS / WhatsApp Business alerts | In-app notifications + consent-based `tel:` / `wa.me` links opened by a volunteer | Donors must open the app to see alerts; volunteers message individually (no bulk messaging, by design) |
+| SMS / WhatsApp Business alerts | In-app notifications + `tel:` / `wa.me` links opened one at a time by a volunteer or the requesting family | Donors must open the app to see alerts; volunteers message individually (no bulk messaging, by design) |
 | Email notifications | Only Supabase Auth emails (via your SMTP). Core features never depend on email | No email digests yet |
 | Analytics | None (privacy) — admin analytics are computed from the database | No traffic analytics |
 | CAPTCHA | Honeypot, rate limits, verification before display | A determined spammer can still submit requests that volunteers must reject |

@@ -42,32 +42,38 @@ const PARTS = [
   {
     title: "Donors",
     note: "Register in 2 minutes",
-    items: ["Blood group and broad area", "Contact only with your consent", "You choose who can find you", "Pause any time"],
+    items: ["Blood group and broad area", "Patients reach you when you can give", "Hide your number any time", "Pause any time"],
   },
   {
     title: "Requests",
     note: "Verified first",
-    items: ["Checked with the hospital or requester", "Shared only once verified", "Listed publicly only with permission", "Duplicates caught"],
+    items: ["Checked with the hospital by a volunteer", "Then the patient sees donors who can give now", "Listed on Find Blood once verified", "Duplicates caught"],
   },
   {
     title: "Volunteers",
     note: "Authorised only",
-    items: ["Approved coordinators", "Every number they open is logged", "They call only donors who said yes", "They follow up after the donation"],
+    items: ["Approved coordinators", "They verify every request", "They help when no donor is found", "They follow up after the donation"],
   },
   {
     title: "Your record",
-    note: "Private by default",
-    items: ["Whole blood and SDP history", "Self-reported until verified", "Track the gap between donations", "Share a summary only if you want"],
+    note: "Yours to keep",
+    items: ["Whole blood and SDP history", "Self-reported until verified", "Track the gap between donations", "See when you can give again"],
   },
 ];
 
-const DONOR_POINTS = ["Register in about two minutes", "Your number is never public", "Only verified requests, near you", "Say no any time", "Keep a record of every donation"];
-const REQUEST_POINTS = ["Submit a request in minutes", "A volunteer checks it with the hospital", "Matching donors are contacted with their consent", "Updates as volunteers coordinate"];
+const DONOR_POINTS = [
+  "Register in about two minutes",
+  "Patients with a verified request can call you",
+  "Only verified requests, near you",
+  "Hide your number or say no any time",
+  "Keep a record of every donation",
+];
+const REQUEST_POINTS = ["Submit a request in minutes", "A volunteer checks it with the hospital", "Then see donors who can give now, and call them", "Volunteers help if no one is found"];
 
 const QUESTIONS = [
   {
     q: "Who can see my phone number?",
-    a: "No one publicly. An authorised volunteer can view it only while coordinating a verified request, only if you allowed contact — and every access is logged.",
+    a: "A patient whose request a volunteer has verified, when you can give, one donor at a time; and authorised volunteers. Turn on Hide my number in Privacy & settings any time.",
   },
   {
     q: "Does registering mean I'm eligible to donate?",
@@ -221,7 +227,7 @@ export default async function HomePage() {
                 <SectionLabel n={4}>Blood groups</SectionLabel>
                 <Headline id="groups-heading" className="mt-5" lead="Nine blood groups." rest="One community." />
                 <p className="mt-6 max-w-md text-[17px] leading-relaxed text-cream/75">
-                  {t("Register yours once. Volunteers reach the right donors faster, and your number stays private.")}
+                  {t("Register yours once. Verified requests reach the right donors faster.")}
                 </p>
                 <ul className="mt-8 flex flex-wrap gap-2" aria-label={t("Blood groups, including the rare Bombay group")}>
                   {BLOOD_GROUPS.map((group) => (

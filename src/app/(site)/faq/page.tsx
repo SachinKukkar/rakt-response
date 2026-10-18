@@ -109,18 +109,18 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
         a: (
           <p>
             {t(
-              "Nobody publicly. Only an authorised volunteer coordinating a verified request can see it, and only if you've consented to be contacted. Every access is logged.",
+              "A patient whose request a volunteer has verified, near you and only when you can give, one donor at a time; and authorised volunteers coordinating a verified request. Every view is recorded. Turn on Hide my number any time and patients won't see you.",
             )}
           </p>
         ),
       },
       {
-        q: t("Can I hide my profile or withdraw my consent?"),
+        q: t("Can I hide my number or pause?"),
         a: (
           <p>
             {rich(
               t(
-                "Yes, any time. In Privacy & settings you can switch directory visibility, contact permission and alerts on or off, and changes apply straight away ({link}).",
+                "Yes, any time. In Privacy & settings you can hide your number from patients, pause while you can't donate, and switch alerts on or off. Changes apply straight away ({link}).",
               ),
               { link: <Link href="/privacy">{t("privacy policy")}</Link> },
             )}
@@ -132,7 +132,7 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
         a: (
           <p>
             {t(
-              "No. We don't send bulk messages. Updates are in-app, and a volunteer contacts you directly only about a verified request, and only with your consent.",
+              "No. We don't send bulk messages. Updates are in-app. A patient or volunteer contacts you only about a verified request near you, and only when you can give.",
             )}
           </p>
         ),
@@ -244,7 +244,7 @@ export default async function FaqPage() {
           items={[
             t("Donating at a licensed centre uses sterile, single-use kit."),
             t("Registering isn't eligibility. The blood centre decides, every time."),
-            t("Your number is never public. Contact needs your consent."),
+            t("Patients see donors only after a volunteer verifies the request."),
             t("Emergency? Go to the treating hospital or a licensed blood bank now."),
           ]}
         />

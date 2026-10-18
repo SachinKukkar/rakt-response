@@ -21,8 +21,11 @@ import { mailtoLink, telLink, whatsappLink } from "@/lib/contact-links";
 import {
   CONTACT_METHOD_LABELS,
   OUTCOME_LABELS,
+  PATIENT_GENDER_LABELS,
+  REQUEST_REASON_LABELS,
   REQUEST_TRANSITIONS,
   REQUEST_TYPE_LABELS,
+  REQUESTER_RELATION_LABELS,
   RESPONSE_LABELS,
   URGENCIES,
   URGENCY_LABELS,
@@ -104,6 +107,22 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
             </p>
           </div>
         </div>
+        {request.patient_name ? (
+          <dl className="rounded-xl border border-border/70 px-3">
+            <KeyValue label="Patient">
+              {[
+                request.patient_name,
+                request.patient_age !== null ? t("{age} years", { age: request.patient_age }) : null,
+                request.patient_gender ? t(PATIENT_GENDER_LABELS[request.patient_gender]) : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </KeyValue>
+            <KeyValue label="IP / UHID">{request.hospital_patient_id ?? "—"}</KeyValue>
+            <KeyValue label="Ward or bed">{request.ward ?? "—"}</KeyValue>
+            <KeyValue label="Reason">{request.reason ? t(REQUEST_REASON_LABELS[request.reason]) : "—"}</KeyValue>
+          </dl>
+        ) : null}
         {request.notes ? <p className="rounded-xl bg-muted p-3 text-sm">{t("Requester notes: {notes}", { notes: request.notes })}</p> : null}
         {request.possible_duplicate_of ? (
           <Notice tone="warning" icon={Copy} title="Possible duplicate">
@@ -128,7 +147,9 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           <SectionHeading id="requester-heading" title="Requester (private)" as="h3" />
           <dl>
             <KeyValue label="Name">{request.requester_name}</KeyValue>
+            {request.requester_relation ? <KeyValue label="Relation to patient">{t(REQUESTER_RELATION_LABELS[request.requester_relation])}</KeyValue> : null}
             <KeyValue label="Prefers">{t(CONTACT_METHOD_LABELS[request.requester_contact_method])}</KeyValue>
+            <KeyValue label="Donors who join see the phone">{request.share_contact_with_donors ? t("Yes") : t("No (older request)")}</KeyValue>
             <KeyValue label="Submitted">{formatDateTime(request.created_at)}</KeyValue>
             <KeyValue label="Account">{request.created_by ? t("Signed-in member") : t("Submitted without an account")}</KeyValue>
           </dl>

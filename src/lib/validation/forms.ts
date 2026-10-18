@@ -1,23 +1,25 @@
 import { z } from "zod";
 import {
   bloodGroupSchema,
-  contactMethodSchema,
   displayNameSchema,
   donationTypeSchema,
+  donorContactMethodSchema,
   experienceSchema,
   isoDateSchema,
   nameSchema,
   optionalEmailSchema,
   optionalPhoneSchema,
   optionalText,
+  phoneSchema,
   pincodeSchema,
   placeSchema,
+  requesterContactMethodSchema,
   requestTypeSchema,
   stateSchema,
   urgencySchema,
   uuidSchema,
 } from "./common";
-import { STORY_TYPES } from "@/lib/constants";
+import { PATIENT_GENDERS, REQUEST_REASONS, REQUESTER_RELATIONS, STORY_TYPES } from "@/lib/constants";
 import { todayInIndia } from "@/lib/format";
 
 // --- Profile -----------------------------------------------------------------
@@ -34,22 +36,16 @@ export type ProfileInput = z.infer<typeof profileSchema>;
 
 export const bloodGroupChangeSchema = z.object({ blood_group: bloodGroupSchema });
 
-export const preferencesSchema = z
-  .object({
-    directory_visible: z.boolean(),
-    contact_consent: z.boolean(),
-    open_to_contact: z.boolean(),
-    emergency_alerts: z.boolean(),
-    show_donation_summary: z.boolean(),
-    show_first_name: z.boolean(),
-    notify_status_updates: z.boolean(),
-    preferred_contact_method: contactMethodSchema,
-    max_distance_km: z.number().int().min(1).max(500).nullable(),
-  })
-  .refine((v) => !v.open_to_contact || v.contact_consent, {
-    message: "Allow contact first to be marked as open to contact",
-    path: ["open_to_contact"],
-  });
+export const preferencesSchema = z.object({
+  hide_number: z.boolean(),
+  open_to_contact: z.boolean(),
+  emergency_alerts: z.boolean(),
+  show_donation_summary: z.boolean(),
+  show_first_name: z.boolean(),
+  notify_status_updates: z.boolean(),
+  preferred_contact_method: donorContactMethodSchema,
+  max_distance_km: z.number().int().min(1).max(500).nullable(),
+});
 export type PreferencesInput = z.infer<typeof preferencesSchema>;
 
 // --- Donation records --------------------------------------------------------
@@ -67,34 +63,42 @@ export const donationRecordSchema = z.object({
 export type DonationRecordInput = z.infer<typeof donationRecordSchema>;
 
 // --- Blood requests ----------------------------------------------------------
-export const bloodRequestSchema = z
-  .object({
-    requester_name: nameSchema,
-    requester_phone: optionalPhoneSchema,
-    requester_email: optionalEmailSchema,
-    requester_contact_method: contactMethodSchema,
-    blood_group: bloodGroupSchema,
-    request_type: requestTypeSchema,
-    units_needed: z.number().int().min(1, "At least 1").max(50, "Contact the blood bank for larger requirements").nullable(),
-    hospital_name: placeSchema("hospital or blood bank", 150),
-    state: z.union([stateSchema, z.literal("")]),
-    district: placeSchema("district", 60),
-    city: placeSchema("city", 80),
-    required_by: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "Choose the date and time"),
-    urgency: urgencySchema,
-    notes: optionalText(1000),
-    public_listing_consent: z.boolean(),
-    acknowledge_limits: z.boolean().refine((v) => v, "Please confirm you have read how Rakt Response can help"),
-    website: z.string().max(0, "Leave this field empty").optional(), // honeypot
-  })
-  .superRefine((v, ctx) => {
-    if ((v.requester_contact_method === "phone" || v.requester_contact_method === "whatsapp") && !v.requester_phone) {
-      ctx.addIssue({ code: "custom", path: ["requester_phone"], message: "Add a phone number so a volunteer can reach you" });
-    }
-    if (v.requester_contact_method === "email" && !v.requester_email) {
-      ctx.addIssue({ code: "custom", path: ["requester_email"], message: "Add an email address" });
-    }
-  });
+export const bloodRequestSchema = z.object({
+  patient_name: z.string().trim().min(2, "Enter the patient's name").max(100, "Please keep the name under 100 characters"),
+  patient_age: z
+    .number({ error: "Enter the patient's age" })
+    .int("Enter the age in years")
+    .min(0, "Enter the age in years")
+    .max(120, "Enter the age in years")
+    .nullable()
+    .refine((v): boolean => v !== null, "Enter the patient's age"),
+  patient_gender: z.union([z.enum(PATIENT_GENDERS), z.literal("")]).refine((v): boolean => v !== "", "Choose one"),
+  blood_group: bloodGroupSchema,
+  request_type: requestTypeSchema,
+  units_needed: z
+    .number({ error: "How many units are needed?" })
+    .int()
+    .min(1, "At least 1")
+    .max(50, "Contact the blood bank for larger requirements")
+    .nullable()
+    .refine((v): boolean => v !== null, "How many units are needed?"),
+  hospital_name: placeSchema("hospital or blood bank", 150),
+  state: z.union([stateSchema, z.literal("")]),
+  district: placeSchema("district", 60),
+  city: placeSchema("city", 80),
+  hospital_patient_id: optionalText(40),
+  ward: optionalText(60),
+  reason: z.union([z.enum(REQUEST_REASONS), z.literal("")]),
+  required_by: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "Choose the date and time"),
+  urgency: urgencySchema,
+  requester_name: nameSchema,
+  requester_relation: z.union([z.enum(REQUESTER_RELATIONS), z.literal("")]).refine((v): boolean => v !== "", "Choose your relation to the patient"),
+  requester_phone: phoneSchema,
+  requester_contact_method: requesterContactMethodSchema,
+  notes: optionalText(1000),
+  acknowledge_limits: z.boolean().refine((v) => v, "Please confirm you have read how Rakt Response can help"),
+  website: z.string().max(0, "Leave this field empty").optional(), // honeypot
+});
 export type BloodRequestInput = z.infer<typeof bloodRequestSchema>;
 
 export const requestStatusChangeSchema = z.object({
@@ -255,7 +259,13 @@ export const settingsSchema = z.object({
   "org.service_area": optionalText(200),
   registration_open: z.boolean(),
   whole_blood_interval_days: z.number().int().min(56).max(365),
-  anon_request_daily_limit: z.number().int().min(1).max(50),
+  apheresis_interval_days: z.number().int().min(2).max(90),
+  eligible_donor_list_size: z.number().int().min(5).max(100),
+  requester_reveal_hourly_limit: z.number().int().min(1).max(100),
+  requester_reveal_monthly_donors: z.number().int().min(1).max(500),
+  requester_open_request_limit: z.number().int().min(1).max(20),
+  donor_join_daily_limit: z.number().int().min(1).max(20),
+  donor_open_join_limit: z.number().int().min(1).max(20),
   member_request_daily_limit: z.number().int().min(1).max(50),
   contact_reveal_hourly_limit: z.number().int().min(1).max(200),
   contact_request_hourly_limit: z.number().int().min(1).max(200),

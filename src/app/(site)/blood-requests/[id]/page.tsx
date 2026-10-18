@@ -48,12 +48,12 @@ export default async function BloodRequestDetailPage({ params }: PageProps<"/blo
             <h2 className="text-lg font-bold">{t("Can you help?")}</h2>
             <p className="text-sm text-muted-foreground">
               {t(
-                "Registered donors can let volunteers know they're available. A volunteer will contact you with next steps — please don't go to the hospital until they confirm, and the blood centre will check your eligibility.",
+                "Registered donors with this blood group who can give now can join the request. Joining shows you the patient's details and the family's number. The blood centre will check your eligibility.",
               )}
             </p>
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button asChild>
-                <Link href="/requests">{t("I can help — sign in to respond")}</Link>
+                <Link href={`/requests/${request.id}`}>{t("I can help — sign in to join")}</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/register">{t("Register as a donor")}</Link>

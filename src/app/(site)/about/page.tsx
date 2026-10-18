@@ -13,7 +13,7 @@ import { PHOTOS } from "@/lib/photos";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return pageMetadata(t("About"), t(
-      "Rakt Response is a volunteer community team that helps voluntary blood donors and people seeking blood connect safely, with privacy and consent built in.",
+      "Rakt Response is a volunteer community team. Volunteers check every blood request with the hospital, then patients reach voluntary donors who can give right now.",
     ));
 }
 
@@ -23,16 +23,16 @@ function rich(text: string, slots: Record<string, React.ReactNode>) {
 }
 
 const WHAT_WE_BUILD: Tile[] = [
-  { icon: Users, title: "Donor registry", text: "Your blood group, rough area and availability. Private by default.", tag: "Donors" },
+  { icon: Users, title: "Donor registry", text: "Your blood group, area and availability. Hide your number any time.", tag: "Donors" },
   { icon: ShieldCheck, title: "Verified requests", text: "Volunteers check every request with the requester or hospital first.", tag: "Checked" },
   { icon: NotebookPen, title: "Donation history", text: "Log your donations and keep track of the gaps between them.", tag: "Yours" },
   { icon: BookOpen, title: "Blood 101", text: "Plain-language guides to donating. No jargon.", tag: "Learn" },
 ];
 
 const WE_DO = [
-  "Connect voluntary donors and people seeking blood via authorised volunteers",
-  "Check requests before showing them as verified",
-  "Keep your contact details private, shared only with consent",
+  "Check every request with the hospital before any donor is shown",
+  "Show patients only donors who can give right now",
+  "Let donors hide their number or pause any time",
   "Share general, responsible info about donating",
 ];
 
@@ -46,9 +46,9 @@ const WE_DONT = [
 
 const STEPS: { title: string; text: string }[] = [
   { title: "You register", text: "Blood group, general area, donation types you're open to." },
-  { title: "You stay private", text: "Your profile and number are never listed publicly." },
   { title: "We verify", text: "A volunteer checks each request with the requester or hospital." },
-  { title: "You choose", text: "We contact you only if you agreed. Saying no is always fine." },
+  { title: "Patients reach you", text: "When you can give, a patient with a verified request near you can call you. Hide your number any time." },
+  { title: "You choose", text: "Join a request when you can give. Saying no is always fine." },
   { title: "You log it", text: "Add your donation. It stays self-reported until verified." },
 ];
 
@@ -71,7 +71,7 @@ export default async function AboutPage() {
         subtitle={t("Rakt Response is a volunteer community team. We help donors and people seeking blood find each other, safely.")}
         chips={[
           { icon: Handshake, label: t("Volunteer-run") },
-          { icon: Lock, label: t("Privacy first") },
+          { icon: Lock, label: t("Verified requests") },
           { icon: BadgeIndianRupee, label: t("Never paid") },
         ]}
       />
@@ -158,12 +158,12 @@ export default async function AboutPage() {
           <MoreDetails title={t("Who we are")}>
             <p>
               {t(
-                "Rakt Response is run by a community team of volunteers. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, more private and more respectful for everyone involved.",
+                "Rakt Response is run by a community team of volunteers. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, quicker and more respectful for everyone involved.",
               )}
             </p>
             <p>
               {t(
-                "We are not a hospital or a blood bank. Our role is coordination: helping the right people talk to each other, with consent, so that donation can happen at a licensed blood centre.",
+                "We are not a hospital or a blood bank. Our role is coordination: helping the right people talk to each other, so that donation can happen at a licensed blood centre.",
               )}
             </p>
           </MoreDetails>
@@ -171,7 +171,7 @@ export default async function AboutPage() {
             <p>
               {rich(
                 t(
-                  "We share only figures that have been checked. See {impact}. To learn how we protect your information and how consent works, read our {privacy}.",
+                  "We share only figures that have been checked. See {impact}. To learn who can see your information and how we look after it, read our {privacy}.",
                 ),
                 {
                   impact: <Link href="/impact">{t("Our Impact")}</Link>,

@@ -46,7 +46,7 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
         title={t("Need blood?")}
         highlight={t("We'll rally donors.")}
         subtitle={t("Tell us what's needed. A volunteer verifies it, then reaches out to matching donors who said yes to being contacted.")}
-        chips={[t("Verified before sharing"), t("Free, always"), t("Your details stay private")]}
+        chips={[t("Verified before sharing"), t("Free, always"), t("Donors who can give now")]}
       >
         <ArrowLink href="/blood-requests/new" size="lg">
           {t("Submit a request")}

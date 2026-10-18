@@ -15,6 +15,7 @@ All schema lives in version-controlled migrations:
 | `0900_name_privacy_photos_data_checks.sql` | Display name or "Donor #XXXX" for volunteers, admin-only profile photos, `admin_data_checks()` |
 | `1000_bombay_blood_group.sql` (dated `20261015`) | Adds the Bombay blood group `'Oh'` to `blood_group`; matching stays exact, so Oh requests reach Oh donors only |
 | `1100_record_editing.sql` (dated `20261016`) | Donors edit and remove their own donation records at any status (editing a checked record sends it back to self-reported + pending); volunteers with `verify_donations` correct any record; admins edit and delete any record; `admin_delete_blood_request()` and `admin_delete_story()`; record edits and deletes are audited |
+| `1200_patient_donor_contact.sql` (dated `20261018`) | Requests need an account and the patient's details (name, age, gender, IP/UHID, ward, reason, the requester's relation); "Hide my number" replaces the directory and contact switches (which now follow it); eligibility from donation dates (whole blood and apheresis intervals, India date); the family behind a verified request sees donors who can give now and opens one contact at a time (`donor_disclosures`, rate-limited, audited); donors join requests they can give for, within limits, and then see the patient's details; volunteers alone change a request's place, date or patient details |
 
 ## Roles
 
@@ -29,15 +30,16 @@ Roles are only changed by `grant_staff_role` / `revoke_staff_role` (admin-only, 
 | Table | Purpose | Key protections |
 | --- | --- | --- |
 | `profiles` | Name, display name, blood group (+ verified flag, requested correction), age declaration, experience, verification, activity | Owner/admin read (volunteers only via directory RPCs); owner update; guard trigger blocks changes to verification, activity, deletion and verified blood group |
-| `profile_contacts` | Email copy, phone, WhatsApp (separate from profile) | Owner/admin only. Volunteers get contact data only through `reveal_donor_contact()` |
-| `donor_preferences` | Directory visibility, contact consent, open-to-contact, alerts, summary sharing, preferred method | Owner write; admin read; consent timestamps set by trigger; `open_to_contact` forced off without contact consent |
-| `consent_events` | Append-only consent history | Owner/admin read; written by trigger |
+| `profile_contacts` | Email copy, phone, WhatsApp (separate from profile) | Owner/admin only. Volunteers get contact data only through `reveal_donor_contact()`; the family behind a verified request only through `reveal_donor_contact_to_requester()` |
+| `donor_preferences` | Hide my number, open-to-contact, alerts, summary sharing, preferred method (call, WhatsApp or email); the older directory and contact switches follow Hide my number | Owner write; admin read; timestamps set by trigger; `open_to_contact` forced off without contact permission |
+| `consent_events` | Append-only history of a member's choices (alerts, Hide my number, terms, and the older switches) | Owner/admin read; written by trigger |
 | `donor_locations` | State/district/city/locality/PIN + optional coordinates rounded to 2 decimals (~1 km) | Owner write; admin read; volunteers see broad area only via directory RPCs; never public |
 | `donation_records` | Type (whole blood / SDP / other apheresis / unknown), date, centre, source, verification | Donor inserts are forced to self-reported + pending; only `verify_donation_record()` changes verification; a donor's edit to a checked record resets it to self-reported + pending; owner, `verify_donations` staff and admins can edit; owner and admins can delete; edits and deletes audited; exact duplicates blocked by unique index; no future dates |
-| `blood_requests` | Request with private requester contact, lifecycle status, duplicate pointer | Creator/staff read; inserts only via `submit_blood_request()`; status only via `set_request_status()` / `cancel_my_blood_request()`; permanent deletion only via `admin_delete_blood_request()` (admin, audited) |
+| `blood_requests` | Request with the patient's details, private requester contact, lifecycle status, duplicate pointer | Creator/staff read (donors who joined: through `get_request_details_for_donor()`); inserts only via `create_blood_request()` (signed in); place, date and patient details changed by staff only; status only via `set_request_status()` / `cancel_my_blood_request()`; permanent deletion only via `admin_delete_blood_request()` (admin, audited) |
 | `request_events` | Request history | Staff and creator read |
 | `request_responses` | Donor response, coordination outcome, contact attempts | Donor/staff read; writes via RPC |
-| `contact_requests` | Consent request from a volunteer to a donor for a specific request | Donor, requester volunteer and staff read; writes via RPC |
+| `contact_requests` | A volunteer asking a donor without standing contact permission to share their contact for one request (accepting counts as joining) | Donor, requester volunteer and staff read; writes via RPC |
+| `donor_disclosures` | Which donor contacts a family has opened: one row per request and donor | The donor, the family and admins read; written only by `reveal_donor_contact_to_requester()` |
 | `notifications` | In-app notifications | Owner read/delete; only `read_at` updatable |
 | `volunteer_assignments` | Who coordinates which request, follow-ups | Staff read; writes via RPC |
 | `internal_notes` | Staff-only notes on any record | Staff read/insert; append-only |
@@ -57,9 +59,9 @@ The minimum set from the brief (`profiles`, `donor_preferences`, `donor_location
 | | anon | donor (own) | volunteer | admin |
 | --- | --- | --- | --- | --- |
 | Profiles / locations / preferences | — | read, update permitted fields | only via directory functions and minimal labels (`staff_profile_labels`) | read, update |
-| Contact details | — | own | via `reveal_donor_contact` only | read |
+| Contact details | — | own; the family behind a verified request: donors who can give now and don't hide their number, via `reveal_donor_contact_to_requester` | via `reveal_donor_contact` only | read |
 | Donation records | — | own: add, edit/delete while pending | read and verify only with `can_verify_donations` (never own) | all |
-| Blood requests | public view of verified, consented requests (safe columns) | submit; read/cancel own | read, edit details, status (verify if permitted), assign self | all, assign others |
+| Blood requests | public view of verified requests (safe columns; older requests only if listing was allowed) | submit (signed in); read/cancel own; join open requests they can give for | read, edit details, status (verify if permitted), assign self | all, assign others |
 | Directory search | — | — | `search_donors`, facets, matching | same |
 | Stories | published, consented fields only | submit; read/manage own | volunteer stories | moderate everything |
 | Audit logs | — | — | — | read |
@@ -67,8 +69,10 @@ The minimum set from the brief (`profiles`, `donor_preferences`, `donor_location
 ## Key functions (SECURITY DEFINER, `search_path = ''`)
 
 - Directory: `search_donors`, `search_donor_facets`, `match_donors_for_request` — staff only, only directory-visible + confirmed + active donors, never contact columns; wildcards escaped.
-- Contact: `reveal_donor_contact(donor, request)` — staff, verified/active request, standing consent **or** accepted contact request, per-volunteer hourly rate limit, audit log entry. `create_contact_request`, `respond_to_contact_request`.
-- Requests: `submit_blood_request` (rate limit by user or hashed client key, duplicate detection), `set_request_status` (transition rules, verify permission, reasons for reject/cancel/fulfil, alerts on verification), `cancel_my_blood_request`, `expire_stale_requests`, `assign_request`, `update_assignment`, `record_coordination`, `generate_follow_up_reminders`, `list_my_request_matches`.
+- Contact: `reveal_donor_contact(donor, request)` — staff, verified/active request, standing contact permission **or** accepted contact request, per-volunteer hourly rate limit, audit log entry. `create_contact_request`, `respond_to_contact_request`.
+- Families: `list_eligible_donors_for_my_request(request)` — the request's creator only, once verified: donors who joined, then donors of the same group and district who can give now and don't hide their number (contact columns only once opened). `reveal_donor_contact_to_requester(request, donor)` — one donor from that list, hourly and monthly limits, a `donor_disclosures` row and an audit entry on first opening.
+- Donors: `list_open_requests_for_donor` (each with `can_join`, a reason code and `eligible_from`), `respond_to_blood_request` (joining checks group, eligibility, open and daily limits; tells the family and assigned volunteers), `get_request_details_for_donor` (only after joining; the requester's phone only for requests made after this change), `my_next_eligible_date`.
+- Requests: `create_blood_request` (signed in, patient details, open-request and daily limits, duplicate detection; `submit_blood_request` stays one release for old clients and refuses anonymous callers), `set_request_status` (transition rules, verify permission, reasons for reject/cancel/fulfil, alerts on verification), `cancel_my_blood_request`, `expire_stale_requests`, `assign_request`, `update_assignment`, `record_coordination`, `generate_follow_up_reminders`, `list_my_request_matches`.
 - Donations: `donation_summary` (invoker), `verify_donation_record`.
 - People: `verify_profile`, `request_blood_group_change`, `resolve_blood_group_change`, `request_account_deletion`, `cancel_account_deletion`, `set_profile_active`, `anonymize_account`, `grant_staff_role`, `revoke_staff_role`, `bootstrap_first_admin`.
 - Stories: `submit_story`, `update_story_consents`, `request_story_withdrawal`, `request_story_correction`, `set_story_status`, `update_story_public_content`, `set_story_verification`, `set_story_public_photo`, `list_published_stories`, `get_published_story`.
@@ -83,4 +87,4 @@ Anonymous users can execute only: `get_impact_metrics`, `get_public_blood_reques
 
 ## Tests
 
-`npm run test:db` applies all migrations to PGlite and runs 90+ tests covering SELECT/INSERT/UPDATE/DELETE permissions per role, privilege escalation attempts, consent and contact checks, rate limits, request and story lifecycles, the seed, and schema/code consistency.
+`npm run test:db` applies all migrations to PGlite and runs 130+ tests covering SELECT/INSERT/UPDATE/DELETE permissions per role, privilege escalation attempts, contact, eligibility and joining checks, rate limits, request and story lifecycles, the seed, and schema/code consistency.

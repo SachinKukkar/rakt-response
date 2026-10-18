@@ -1,6 +1,5 @@
 import { CalendarCheck2, Info } from "lucide-react";
 import type { DonationSummary } from "@/lib/donations";
-import { informationalWholeBloodEstimate } from "@/lib/donations";
 import { formatDate, formatNumber } from "@/lib/format";
 import { getT } from "@/i18n/server";
 import type { TFunction } from "@/i18n/translate";
@@ -23,10 +22,13 @@ function Row({ t, label, reported, verified }: { t: TFunction; label: string; re
   );
 }
 
-/** Keeps whole blood and SDP, reported and verified, strictly separate. */
-export async function DonationSummaryCards({ summary, intervalDays }: { summary: DonationSummary; intervalDays?: number }) {
+/**
+ * Keeps whole blood and SDP, reported and verified, strictly separate.
+ * `nextEligible`: the donor's next date to give (null: they can give now), from
+ * the same rule patients and requests use.
+ */
+export async function DonationSummaryCards({ summary, nextEligible }: { summary: DonationSummary; nextEligible?: string | null }) {
   const t = await getT();
-  const estimate = intervalDays ? informationalWholeBloodEstimate(summary.last_reported_whole_blood, intervalDays) : null;
   return (
     <div className="space-y-3">
       <div className="grid gap-3 sm:grid-cols-2">
@@ -51,23 +53,23 @@ export async function DonationSummaryCards({ summary, intervalDays }: { summary:
           <dd className="text-xl font-extrabold text-navy">{formatNumber(summary.pending_count)}</dd>
         </div>
       </dl>
-      {estimate ? (
+      {nextEligible !== undefined ? (
         <p className="flex items-start gap-2 rounded-xl bg-secondary p-3 text-xs text-secondary-foreground">
           <CalendarCheck2 className="mt-px size-4 shrink-0" aria-hidden="true" />
           <span>
-            <strong>{t("Informational estimate only:")}</strong>{" "}
-            {t(
-              "based on a {days}-day minimum interval after your last reported whole blood donation, a blood centre might next see you from around {date}. Intervals differ by sex and circumstances, and the blood centre's screening always decides. No estimate is given for SDP.",
-              { days: intervalDays, date: formatDate(estimate) },
-            )}
+            {nextEligible
+              ? t(
+                  "You can give again from around {date}. Until then patients won't see you and you can't join requests. The blood centre's screening always decides.",
+                  { date: formatDate(nextEligible) },
+                )
+              : t("You can give now, as far as your records show. The blood centre's screening always decides.")}
           </span>
         </p>
-      ) : (
-        <p className="flex items-start gap-2 text-xs text-muted-foreground">
-          <Info className="mt-px size-4 shrink-0" aria-hidden="true" />
-          {t("Totals count verified records only. Self-reported records are shown separately until reviewed.")}
-        </p>
-      )}
+      ) : null}
+      <p className="flex items-start gap-2 text-xs text-muted-foreground">
+        <Info className="mt-px size-4 shrink-0" aria-hidden="true" />
+        {t("Totals count verified records only. Self-reported records are shown separately until reviewed.")}
+      </p>
     </div>
   );
 }

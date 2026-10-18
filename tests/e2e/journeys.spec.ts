@@ -71,6 +71,10 @@ test.describe("registration wizard", () => {
     await expect(page.getByRole("radio", { name: "O+" })).toBeChecked();
     await page.getByText("I confirm I am between 18 and 65 years old").click();
     await page.getByText("I donate regularly").click();
+    // Patients reach donors by phone call unless they choose otherwise, so a number is needed.
+    await page.getByRole("button", { name: /Continue/ }).click();
+    await expect(page.getByText("Add a mobile number for phone or WhatsApp contact")).toBeVisible();
+    await page.locator("#phone").fill("98765 43210");
     await page.getByRole("button", { name: /Continue/ }).click();
 
     // Area: state from a list, then district and town from searchable lists.
@@ -87,6 +91,8 @@ test.describe("registration wizard", () => {
 
     await expect(page.getByRole("heading", { name: "Review & confirm" })).toBeVisible();
     await expect(page.getByText("Step 5 of 5")).toBeVisible();
+    // Donors can hide their number from patients; it is off unless they switch it on.
+    await expect(page.getByText("Hide my number from patients")).toBeVisible();
 
     // Submitting without a configured database fails safely with a clear message.
     await page.getByRole("button", { name: /Register/ }).click();
@@ -131,12 +137,20 @@ test.describe("authentication and access control", () => {
 });
 
 test.describe("blood requests and stories", () => {
-  test("public request page explains limits and offers a request form", async ({ page }) => {
+  test("public request page explains limits and asks visitors to sign in before requesting", async ({ page }) => {
     await page.goto("/blood-requests");
     await expect(page.getByText("Emergency? Call the hospital first")).toBeVisible();
     await page.getByRole("link", { name: /Submit a request/ }).click();
     await expect(page).toHaveURL(/\/blood-requests\/new/);
     await expect(page.getByText("First, contact the hospital blood bank")).toBeVisible();
+    // Requests need an account: signed-out visitors get no form.
+    await expect(page.getByText("Please sign in to submit a request")).toBeVisible();
+    await expect(page.locator("#patient_name")).toHaveCount(0);
+  });
+
+  test("a request page is not reachable without signing in", async ({ page }) => {
+    await page.goto("/requests/00000000-0000-4000-8000-000000000000");
+    await expect(page).toHaveURL(/\/login/);
   });
 
   test("story submission requires an account and explains privacy", async ({ page }) => {

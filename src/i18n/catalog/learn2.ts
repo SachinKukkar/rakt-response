@@ -164,14 +164,14 @@ const hi: Catalog = {
   Privacy: "प्राइवेसी",
   "Privacy and your profile": "प्राइवेसी और आपकी प्रोफ़ाइल",
   "Who can see my phone number?": "मेरा फ़ोन नंबर कौन देख सकता है?",
-  "Nobody publicly. Only an authorised volunteer coordinating a verified request can see it, and only if you've consented to be contacted. Every access is logged.":
-    "सबके सामने कोई नहीं। इसे सिर्फ़ वह अधिकृत स्वयंसेवक देख सकता है जो पुष्टि हुई रिक्वेस्ट संभाल रहा है, और वह भी तभी जब आपने संपर्क के लिए सहमति दी हो। हर बार देखे जाने का रिकॉर्ड रखा जाता है।",
-  "Can I hide my profile or withdraw my consent?": "क्या मैं अपनी प्रोफ़ाइल छिपा सकता/सकती हूँ या अपनी सहमति वापस ले सकता/सकती हूँ?",
-  "Yes, any time. In Privacy & settings you can switch directory visibility, contact permission and alerts on or off, and changes apply straight away ({link}).":
-    "हाँ, कभी भी। “प्राइवेसी और सेटिंग्स” में आप डायरेक्टरी में दिखना, संपर्क की इजाज़त और अलर्ट चालू या बंद कर सकते हैं, और बदलाव तुरंत लागू हो जाते हैं ({link})।",
+  "A patient whose request a volunteer has verified, near you and only when you can give, one donor at a time; and authorised volunteers coordinating a verified request. Every view is recorded. Turn on Hide my number any time and patients won't see you.":
+    "वह मरीज़ जिसकी रिक्वेस्ट स्वयंसेवक ने जाँच ली हो, आपके पास का, और सिर्फ़ तब जब आप रक्तदान कर सकें, एक बार में एक डोनर; और जाँची हुई रिक्वेस्ट संभाल रहे अधिकृत स्वयंसेवक। हर बार देखे जाने का रिकॉर्ड रहता है। कभी भी “मेरा नंबर छिपाएँ” चालू करें, फिर मरीज़ आपको नहीं देखेंगे।",
+  "Can I hide my number or pause?": "क्या मैं अपना नंबर छिपा सकता/सकती हूँ या रुक सकता/सकती हूँ?",
+  "Yes, any time. In Privacy & settings you can hide your number from patients, pause while you can't donate, and switch alerts on or off. Changes apply straight away ({link}).":
+    "हाँ, कभी भी। “प्राइवेसी और सेटिंग्स” में आप मरीज़ों से अपना नंबर छिपा सकते हैं, जब रक्तदान न कर सकें तब रुक सकते हैं, और अलर्ट चालू या बंद कर सकते हैं। बदलाव तुरंत लागू होते हैं ({link})।",
   "Will I get SMS or WhatsApp spam?": "क्या मुझे SMS या WhatsApp पर फ़ालतू मैसेज आएँगे?",
-  "No. We don't send bulk messages. Updates are in-app, and a volunteer contacts you directly only about a verified request, and only with your consent.":
-    "नहीं। हम एक साथ ढेर सारे (बल्क) मैसेज नहीं भेजते। अपडेट ऐप में ही मिलते हैं, और स्वयंसेवक आपसे सीधे सिर्फ़ पुष्टि हुई रिक्वेस्ट के बारे में संपर्क करते हैं, और वह भी सिर्फ़ आपकी सहमति से।",
+  "No. We don't send bulk messages. Updates are in-app. A patient or volunteer contacts you only about a verified request near you, and only when you can give.":
+    "नहीं। हम एक साथ ढेर सारे (बल्क) मैसेज नहीं भेजते। अपडेट ऐप में ही मिलते हैं। मरीज़ या स्वयंसेवक आपसे सिर्फ़ आपके पास की जाँची हुई रिक्वेस्ट के बारे में, और सिर्फ़ तब संपर्क करते हैं जब आप रक्तदान कर सकें।",
   "How do I delete my account?": "मैं अपना खाता कैसे डिलीट करूँ?",
   "Request deletion from Settings. You're removed from donor discovery at once and an administrator completes the request; your contact details, location and profile are anonymised, though aggregated, non-identifying counts may remain.":
     "सेटिंग्स में जाकर डिलीट करने की रिक्वेस्ट करें। आपको तुरंत डोनर खोज से हटा दिया जाता है और एक एडमिन रिक्वेस्ट पूरी करता है; आपकी संपर्क जानकारी, जगह और प्रोफ़ाइल से आपकी पहचान हटा दी जाती है, हालाँकि कुल गिनती वाले आँकड़े, जिनसे आपकी पहचान नहीं होती, रह सकते हैं।",
@@ -203,7 +203,7 @@ const hi: Catalog = {
     "लाइसेंस वाले ब्लड बैंक में रक्तदान के लिए स्टेराइल, एक बार इस्तेमाल होने वाला सामान लगता है।",
   "Registering isn't eligibility. The blood centre decides, every time.":
     "रजिस्टर करने का मतलब योग्यता नहीं है। हर बार फ़ैसला ब्लड बैंक करता है।",
-  "Your number is never public. Contact needs your consent.": "आपका नंबर कभी सबके सामने नहीं आता। संपर्क के लिए आपकी सहमति ज़रूरी है।",
+  "Patients see donors only after a volunteer verifies the request.": "स्वयंसेवक की जाँच के बाद ही मरीज़ों को डोनर दिखते हैं।",
   "Emergency? Go to the treating hospital or a licensed blood bank now.":
     "इमरजेंसी है? अभी इलाज करने वाले अस्पताल या लाइसेंस वाले ब्लड बैंक जाएँ।",
   "Rakt Response is not a hospital or blood bank": "Rakt Response अस्पताल या ब्लड बैंक नहीं है",
@@ -215,11 +215,11 @@ const hi: Catalog = {
   "contact us": "हमसे संपर्क करें",
 
   // --- About (src/app/(site)/about/page.tsx) ----------------------------------------
-  "Rakt Response is a volunteer community team that helps voluntary blood donors and people seeking blood connect safely, with privacy and consent built in.":
-    "Rakt Response स्वयंसेवकों की एक सामुदायिक टीम है, जो स्वैच्छिक रक्तदाताओं और खून ढूँढ रहे लोगों को सुरक्षित तरीके से जोड़ती है, प्राइवेसी और सहमति के साथ।",
+  "Rakt Response is a volunteer community team. Volunteers check every blood request with the hospital, then patients reach voluntary donors who can give right now.":
+    "Rakt Response स्वयंसेवकों की एक सामुदायिक टीम है। स्वयंसेवक हर रिक्वेस्ट की अस्पताल से जाँच करते हैं, फिर मरीज़ उन स्वैच्छिक डोनरों तक पहुँचते हैं जो अभी रक्तदान कर सकते हैं।",
   "Donor registry": "डोनर रजिस्टर",
-  "Your blood group, rough area and availability. Private by default.":
-    "आपका ब्लड ग्रुप, मोटे तौर पर आपका इलाका और आप कब उपलब्ध हैं। शुरू से ही प्राइवेट।",
+  "Your blood group, area and availability. Hide your number any time.":
+    "आपका ब्लड ग्रुप, इलाका और आप कब उपलब्ध हैं। अपना नंबर कभी भी छिपा सकते हैं।",
   "Donors": "डोनर",
   "Verified requests": "जाँची गई रिक्वेस्ट",
   "Volunteers check every request with the requester or hospital first.":
@@ -230,10 +230,10 @@ const hi: Catalog = {
   "Blood 101": "खून की बुनियादी बातें",
   "Plain-language guides to donating. No jargon.": "रक्तदान पर आसान भाषा में जानकारी। कोई मुश्किल शब्द नहीं।",
   "Learn": "जानें",
-  "Connect voluntary donors and people seeking blood via authorised volunteers":
-    "अधिकृत स्वयंसेवकों के ज़रिए स्वैच्छिक डोनर और खून ढूँढ रहे लोगों को जोड़ते हैं",
-  "Check requests before showing them as verified": "रिक्वेस्ट को पुष्टि हुई दिखाने से पहले उनकी जाँच करते हैं",
-  "Keep your contact details private, shared only with consent": "आपकी संपर्क जानकारी प्राइवेट रखते हैं, सिर्फ़ सहमति से शेयर करते हैं",
+  "Check every request with the hospital before any donor is shown":
+    "कोई भी डोनर दिखाने से पहले हर रिक्वेस्ट की अस्पताल से जाँच करते हैं",
+  "Show patients only donors who can give right now": "मरीज़ों को सिर्फ़ वे डोनर दिखाते हैं जो अभी रक्तदान कर सकते हैं",
+  "Let donors hide their number or pause any time": "डोनर कभी भी अपना नंबर छिपा सकते हैं या रुक सकते हैं",
   "Share general, responsible info about donating": "रक्तदान के बारे में आम और ज़िम्मेदार जानकारी देते हैं",
   "Store, test or process blood": "खून जमा नहीं करते, न उसकी जाँच या प्रोसेसिंग करते हैं",
   "Reserve or hold blood units": "खून की यूनिट बुक करके या रोककर नहीं रखते",
@@ -242,12 +242,13 @@ const hi: Catalog = {
   "Replace hospitals, doctors or licensed blood banks": "अस्पताल, डॉक्टर या लाइसेंस वाले ब्लड बैंक की जगह नहीं लेते",
   "You register": "आप रजिस्टर करते हैं",
   "Blood group, general area, donation types you're open to.": "ब्लड ग्रुप, आम इलाका, और जिस तरह के रक्तदान के लिए आप तैयार हैं।",
-  "You stay private": "आपकी जानकारी प्राइवेट रहती है",
-  "Your profile and number are never listed publicly.": "आपकी प्रोफ़ाइल और नंबर कभी सबके सामने नहीं दिखाए जाते।",
+  "Patients reach you": "मरीज़ आप तक पहुँचते हैं",
+  "When you can give, a patient with a verified request near you can call you. Hide your number any time.":
+    "जब आप रक्तदान कर सकें, पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपको फ़ोन कर सकता है। अपना नंबर कभी भी छिपा सकते हैं।",
   "We verify": "हम जाँच करते हैं",
   "A volunteer checks each request with the requester or hospital.": "एक स्वयंसेवक हर रिक्वेस्ट को रिक्वेस्ट करने वाले या अस्पताल से जाँचता है।",
   "You choose": "आप चुनते हैं",
-  "We contact you only if you agreed. Saying no is always fine.": "हम आपसे तभी संपर्क करते हैं जब आपने हाँ कहा हो। मना करना हमेशा ठीक है।",
+  "Join a request when you can give. Saying no is always fine.": "जब दे सकें, रिक्वेस्ट से जुड़ें। मना करना हमेशा ठीक है।",
   "You log it": "आप दर्ज करते हैं",
   "Add your donation. It stays self-reported until verified.": "अपना रक्तदान जोड़ें। पुष्टि होने तक यह “खुद बताया गया” रहता है।",
   "About us": "हमारे बारे में",
@@ -256,7 +257,6 @@ const hi: Catalog = {
   "Rakt Response is a volunteer community team. We help donors and people seeking blood find each other, safely.":
     "Rakt Response स्वयंसेवकों की एक सामुदायिक टीम है। हम डोनर और खून ढूँढ रहे लोगों को सुरक्षित तरीके से एक-दूसरे तक पहुँचने में मदद करते हैं।",
   "Volunteer-run": "स्वयंसेवकों द्वारा",
-  "Privacy first": "प्राइवेसी सबसे पहले",
   "Never paid": "कभी पैसे नहीं",
   "Every request is checked by a volunteer before it shows as verified.":
     "पुष्टि हुई दिखने से पहले हर रिक्वेस्ट को एक स्वयंसेवक जाँचता है।",
@@ -279,13 +279,13 @@ const hi: Catalog = {
   "How it works": "यह कैसे काम करता है",
   "Five simple steps": "पाँच आसान कदम",
   "Who we are": "हम कौन हैं",
-  "Rakt Response is run by a community team of volunteers. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, more private and more respectful for everyone involved.":
-    "Rakt Response को स्वयंसेवकों की एक सामुदायिक टीम चलाती है। हम डोनर हैं, मरीज़ों के परिवार वाले हैं, और ऐसे लोग हैं जिन्होंने देखा है कि जल्दी में खून ढूँढना कितना तनाव भरा हो सकता है। हम इसलिए साथ आए ताकि यह खोज सबके लिए ज़्यादा व्यवस्थित, ज़्यादा प्राइवेट और ज़्यादा सम्मान भरी हो।",
-  "We are not a hospital or a blood bank. Our role is coordination: helping the right people talk to each other, with consent, so that donation can happen at a licensed blood centre.":
-    "हम अस्पताल या ब्लड बैंक नहीं हैं। हमारा काम तालमेल है: सहमति के साथ सही लोगों की आपस में बात कराना, ताकि रक्तदान किसी लाइसेंस वाले ब्लड बैंक में हो सके।",
+  "Rakt Response is run by a community team of volunteers. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, quicker and more respectful for everyone involved.":
+    "Rakt Response को स्वयंसेवकों की एक सामुदायिक टीम चलाती है। हम डोनर हैं, मरीज़ों के परिवार वाले हैं, और ऐसे लोग हैं जिन्होंने देखा है कि जल्दी में खून ढूँढना कितना तनाव भरा हो सकता है। हम इसलिए साथ आए ताकि यह खोज सबके लिए ज़्यादा व्यवस्थित, ज़्यादा तेज़ और ज़्यादा सम्मान भरी हो।",
+  "We are not a hospital or a blood bank. Our role is coordination: helping the right people talk to each other, so that donation can happen at a licensed blood centre.":
+    "हम अस्पताल या ब्लड बैंक नहीं हैं। हमारा काम तालमेल है: सही लोगों की आपस में बात कराना, ताकि रक्तदान किसी लाइसेंस वाले ब्लड बैंक में हो सके।",
   "How we report our work and protect your data": "हम अपने काम की जानकारी कैसे देते हैं और आपका डेटा कैसे बचाते हैं",
-  "We share only figures that have been checked. See {impact}. To learn how we protect your information and how consent works, read our {privacy}.":
-    "हम सिर्फ़ जाँचे गए आँकड़े ही शेयर करते हैं। देखें: {impact}। हम आपकी जानकारी कैसे बचाते हैं और सहमति कैसे काम करती है, यह जानने के लिए हमारी {privacy} पढ़ें।",
+  "We share only figures that have been checked. See {impact}. To learn who can see your information and how we look after it, read our {privacy}.":
+    "हम सिर्फ़ जाँचे गए आँकड़े ही शेयर करते हैं। देखें: {impact}। आपकी जानकारी कौन देख सकता है और हम उसका ध्यान कैसे रखते हैं, यह जानने के लिए हमारी {privacy} पढ़ें।",
   "Together we can.": "साथ मिलकर हम कर सकते हैं।",
 };
 

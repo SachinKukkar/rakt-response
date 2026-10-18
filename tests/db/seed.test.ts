@@ -32,7 +32,7 @@ afterAll(async () => {
 describe("development seed", () => {
   it("creates fictional accounts through the normal signup trigger", async () => {
     const result = await db.query<{ count: number }>("select count(*)::int as count from public.profiles");
-    expect(result.rows[0].count).toBe(8);
+    expect(result.rows[0].count).toBe(10);
     const emails = await db.query<{ email: string }>("select email from auth.users");
     expect(emails.rows.every((r) => r.email.endsWith("@example.test"))).toBe(true);
   });
@@ -49,6 +49,6 @@ describe("development seed", () => {
   it("is idempotent", async () => {
     await db.exec(readFileSync(path.resolve(__dirname, "../../supabase/seed.sql"), "utf8"));
     const result = await db.query<{ count: number }>("select count(*)::int as count from auth.users");
-    expect(result.rows[0].count).toBe(8);
+    expect(result.rows[0].count).toBe(10);
   });
 });

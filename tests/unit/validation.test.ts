@@ -15,7 +15,7 @@ const validRegistration = {
   },
   location: { state: "Maharashtra", district: "Pune", city: "Pune", locality: "", pincode: "411038", lat: null, lng: null, max_distance_km: null },
   history: { has_donated: false, approx_previous_donations: null, donations: [] },
-  consent: { directory_visible: true, contact_consent: true, open_to_contact: true, emergency_alerts: false, show_donation_summary: false },
+  consent: { hide_number: false, emergency_alerts: false, show_donation_summary: false },
 };
 
 describe("registration", () => {
@@ -56,14 +56,15 @@ describe("registration", () => {
     expect(donor.success).toBe(false);
     const member = registrationSchema.safeParse({
       ...validRegistration,
-      donor: { ...validRegistration.donor, is_donor: false, blood_group: "", age_confirmed: false, donation_experience: "", preferred_contact_method: "in_app", phone: "" },
+      donor: { ...validRegistration.donor, is_donor: false, blood_group: "", age_confirmed: false, donation_experience: "", preferred_contact_method: "email", phone: "" },
       location: { ...validRegistration.location, state: "", district: "", city: "", pincode: "" },
     });
     expect(member.success).toBe(true);
   });
 
-  it("rejects open-to-contact without contact consent", () => {
-    expect(registrationSchema.safeParse({ ...validRegistration, consent: { ...validRegistration.consent, contact_consent: false } }).success).toBe(false);
+  it("offers donors Call, WhatsApp or Email, not In-app", () => {
+    expect(donorStepSchema.safeParse({ ...validRegistration.donor, preferred_contact_method: "in_app" }).success).toBe(false);
+    expect(donorStepSchema.safeParse({ ...validRegistration.donor, preferred_contact_method: "email", phone: "" }).success).toBe(true);
   });
 
   it("flags duplicate history entries and future dates", () => {
@@ -82,10 +83,9 @@ describe("registration", () => {
 
 describe("blood requests", () => {
   const request = {
-    requester_name: "Requester Fictional",
-    requester_phone: "9876543210",
-    requester_email: "",
-    requester_contact_method: "phone",
+    patient_name: "Patient Fictional",
+    patient_age: 54,
+    patient_gender: "male",
     blood_group: "B+",
     request_type: "sdp",
     units_needed: 1,
@@ -93,10 +93,16 @@ describe("blood requests", () => {
     state: "",
     district: "Pune",
     city: "Pune",
+    hospital_patient_id: "",
+    ward: "",
+    reason: "",
     required_by: "2026-10-12T10:30",
     urgency: "urgent",
+    requester_name: "Requester Fictional",
+    requester_relation: "child",
+    requester_phone: "9876543210",
+    requester_contact_method: "phone",
     notes: "",
-    public_listing_consent: false,
     acknowledge_limits: true,
     website: "",
   };
@@ -113,9 +119,16 @@ describe("blood requests", () => {
     expect(bloodRequestSchema.safeParse({ ...request, acknowledge_limits: false }).success).toBe(false);
   });
 
-  it("requires contact details that match the chosen method", () => {
+  it("requires the patient's details, the units and the requester's relation", () => {
+    for (const missing of [{ patient_name: "" }, { patient_age: null }, { patient_gender: "" }, { units_needed: null }, { requester_relation: "" }]) {
+      expect(bloodRequestSchema.safeParse({ ...request, ...missing }).success).toBe(false);
+    }
+  });
+
+  it("requires a phone donors can call, by call or WhatsApp only", () => {
     expect(bloodRequestSchema.safeParse({ ...request, requester_phone: "" }).success).toBe(false);
-    expect(bloodRequestSchema.safeParse({ ...request, requester_contact_method: "email", requester_email: "" }).success).toBe(false);
+    expect(bloodRequestSchema.safeParse({ ...request, requester_contact_method: "email" }).success).toBe(false);
+    expect(bloodRequestSchema.safeParse({ ...request, requester_contact_method: "whatsapp" }).success).toBe(true);
   });
 
   it("trips the spam honeypot", () => {
@@ -131,19 +144,19 @@ describe("other forms", () => {
     ).toBe(false);
   });
 
-  it("preferences cannot be open to contact without consent", () => {
-    expect(
-      preferencesSchema.safeParse({
-        directory_visible: true,
-        contact_consent: false,
-        open_to_contact: true,
-        emergency_alerts: false,
-        show_donation_summary: false,
-        notify_status_updates: true,
-        preferred_contact_method: "in_app",
-        max_distance_km: null,
-      }).success,
-    ).toBe(false);
+  it("preferences take Hide my number and a donor channel, not In-app", () => {
+    const prefs = {
+      hide_number: true,
+      open_to_contact: true,
+      emergency_alerts: false,
+      show_donation_summary: false,
+      show_first_name: false,
+      notify_status_updates: true,
+      preferred_contact_method: "whatsapp",
+      max_distance_km: null,
+    };
+    expect(preferencesSchema.safeParse(prefs).success).toBe(true);
+    expect(preferencesSchema.safeParse({ ...prefs, preferred_contact_method: "in_app" }).success).toBe(false);
   });
 
   it("stories need publish consent, rights confirmation and a private follow-up contact", () => {

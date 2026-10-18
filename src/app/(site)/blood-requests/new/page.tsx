@@ -20,9 +20,7 @@ export default async function NewBloodRequestPage() {
   // Hindi puts the highlighted word first: "डोनर के लिए रिक्वेस्ट करें।"
   const hindi = (await getLocale()) === "hi";
   const viewer = await getViewer();
-  // Anonymous submissions need the server-side key for rate-limited RPC access.
-  const anonymousAllowed = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
-  const canSubmit = isSupabaseConfigured() && (Boolean(viewer) || anonymousAllowed);
+  const canSubmit = isSupabaseConfigured() && Boolean(viewer);
 
   return (
     <>
@@ -30,20 +28,20 @@ export default async function NewBloodRequestPage() {
         eyebrow={t("Find blood")}
         title={hindi ? "डोनर के लिए" : "Request"}
         highlight={hindi ? "रिक्वेस्ट करें।" : "donors."}
-        subtitle={t("About two minutes. A volunteer verifies every request before any donor is contacted.")}
+        subtitle={t("A few minutes. A volunteer checks every request with the hospital. Then you see donors who can give now and contact them directly.")}
       />
     <div className="page-container max-w-2xl py-8">
       <Notice tone="warning" icon={Hospital} className="mb-5" title={t("First, contact the hospital blood bank")}>
         {t("They know exactly what is needed and may already have units. Use this form for help finding voluntary donors.")}
       </Notice>
       {canSubmit ? (
-        <BloodRequestForm signedIn={Boolean(viewer)} defaultName={viewer?.profile?.full_name} />
+        <BloodRequestForm defaultName={viewer?.profile?.full_name} />
       ) : (
         <div className="surface space-y-3 p-5">
           <p className="font-semibold text-navy">{t("Please sign in to submit a request")}</p>
           <p className="text-sm text-muted-foreground">
             {isSupabaseConfigured()
-              ? t("Requests from signed-in members help us prevent spam and keep you updated.")
+              ? t("A free account lets you see eligible donors for your request once it is verified, and keeps you updated.")
               : t("Requests are not available in this environment because the database is not configured.")}
           </p>
           {isSupabaseConfigured() ? (

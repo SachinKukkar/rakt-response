@@ -18,11 +18,11 @@ function rich(text: string, parts: Record<string, ReactNode>) {
 
 const ACCESS = [
   { data: "Name, email, account settings", who: "You; Rakt Response administrators" },
-  { data: "Mobile / WhatsApp number", who: "You; administrators. A volunteer only when coordinating a verified request and only if you allowed contact (or accepted that volunteer's contact request). Every access is logged." },
-  { data: "Blood group, display name, broad area (city / locality)", who: "Authorised volunteers and administrators — only if you turned on directory visibility. Never public." },
+  { data: "Mobile / WhatsApp number (or email, if that is your chosen channel)", who: "You; administrators; authorised volunteers coordinating a verified request. A patient whose blood request a volunteer has verified, if you match their blood group, are nearby, can give now and haven't hidden your number: one donor at a time, and every opening is recorded and logged. If you join a request yourself, that patient sees that you are ready to donate." },
+  { data: "Blood group, display name or first name, broad area (city / locality)", who: "Authorised volunteers and administrators. Patients with a verified request near you, when you can give, unless you hide your number. Never on an open public list." },
   { data: "PIN code and approximate map location", who: "You; volunteers and administrators for search and distance filtering. Never public, never shown on donor cards." },
-  { data: "Donation history", who: "You; volunteers and administrators. A verified summary appears on directory cards only if you allow it." },
-  { data: "Blood request details you submit", who: "You (if signed in); volunteers and administrators. If you allow public listing, only the blood group, donation type, hospital, city/district, needed-by time and urgency of a verified request are public." },
+  { data: "Donation history", who: "You; volunteers and administrators. Patients never see your history, only that you can give now. A verified summary appears on volunteers' directory cards only if you allow it." },
+  { data: "Blood request details you submit", who: "You; volunteers and administrators. Donors who join your request see the patient's name and age, the hospital, IP/UHID number and ward, and your name, relation and phone. The public Find Blood list shows only the blood group, donation type, units, hospital, city/district, needed-by time and urgency of a verified request." },
   { data: "Stories you submit", who: "You; administrators. Only the parts you consented to are published, and only after review." },
   { data: "Audit logs (who did what, when — without contact details)", who: "Administrators" },
 ];
@@ -35,7 +35,7 @@ export default async function PrivacyPage() {
         eyebrow={t("Your data")}
         title={t("Privacy,")}
         highlight={t("in plain words.")}
-        subtitle={t("What we collect, who sees it, and how to change your mind. Last updated 11 October 2026.")}
+        subtitle={t("What we collect, who sees it, and how to change your mind. Last updated 18 October 2026.")}
       />
     <div className="page-container max-w-3xl py-8">
       <Notice tone="warning" title={t("Review before production")} className="mb-6">
@@ -48,7 +48,7 @@ export default async function PrivacyPage() {
         <p>
           {rich(
             t(
-              "Rakt Response is a community, volunteer-run platform that keeps a register of voluntary blood donors, records their donation history and helps authorised volunteers coordinate verified blood requests. Rakt Response is the data fiduciary for the information described here. Contact details for privacy questions and grievances are on our {link}.",
+              "Rakt Response is a community, volunteer-run platform that keeps a register of voluntary blood donors, records their donation history, has volunteers verify blood requests and connects patients with a verified request to donors who can give now. Rakt Response is the data fiduciary for the information described here. Contact details for privacy questions and grievances are on our {link}.",
             ),
             { link: <Link href="/contact">{t("contact page")}</Link> },
           )}
@@ -79,15 +79,15 @@ export default async function PrivacyPage() {
             )}
           </li>
           <li>
-            <strong>{t("Consents:")}</strong>{" "}
+            <strong>{t("Your choices:")}</strong>{" "}
             {t(
-              "your choices for directory visibility, contact, emergency alerts and sharing a donation summary, with the time each was given or withdrawn.",
+              "whether your number is hidden from patients, your availability, emergency alerts and sharing a donation summary, with the time each was changed.",
             )}
           </li>
           <li>
             <strong>{t("Blood requests:")}</strong>{" "}
             {t(
-              "requester name and contact, blood group, type of donor needed, hospital, area, time needed, urgency and optional notes. Please do not include patient names, diagnoses or documents.",
+              "your name, relation to the patient and phone; the patient's name, age and gender; blood group, type of donor needed and units; hospital, IP/UHID number and ward if given, area, time needed, urgency, reason and optional notes. Volunteers use these to verify the request with the hospital, and donors who join see what they need at the blood bank. Please do not include diagnoses or documents.",
             )}
           </li>
           <li>
@@ -99,7 +99,7 @@ export default async function PrivacyPage() {
           <li>
             <strong>{t("Security records:")}</strong>{" "}
             {t(
-              "audit logs of privileged actions (such as a volunteer viewing contact details), and short-lived rate-limit counters. For requests submitted without an account we keep only a salted one-way hash of your connection address, never the address itself.",
+              "audit logs of privileged actions (such as a volunteer viewing contact details or a patient opening a donor's contact), a record of which donor contacts were opened for which request, and short-lived rate-limit counters.",
             )}
           </li>
         </ul>
@@ -117,13 +117,13 @@ export default async function PrivacyPage() {
       <div className="prose-rr">
         <p>
           {t(
-            "We do not sell personal data, show advertising or use analytics or tracking cookies. We do not publish donor lists or phone numbers, and exports of donor data are restricted to authorised administrators and logged.",
+            "We do not sell personal data, show advertising or use analytics or tracking cookies. We do not publish open donor lists, and exports of donor data are restricted to authorised administrators and logged.",
           )}
         </p>
 
         <h2>{t("Your choices and rights")}</h2>
         <ul>
-          <li>{t("Turn directory visibility, contact permission, alerts and summary sharing on or off at any time in Privacy & settings.")}</li>
+          <li>{t("Hide your number from patients, pause, and switch alerts and summary sharing on or off at any time in Privacy & settings.")}</li>
           <li>{t("View and correct your profile, location and self-reported history. A verified blood group is corrected through a review request.")}</li>
           <li>{t("Withdraw a story or narrow what it shows; withdrawal removes public access immediately.")}</li>
           <li>{t("Request deletion of your account from Settings. We remove you from discovery at once and an administrator completes the request.")}</li>
@@ -155,7 +155,7 @@ export default async function PrivacyPage() {
         <ul>
           <li>{t("Your account and profile: until you ask us to delete them.")}</li>
           <li>{t("Deletion requests: your contact details, location and profile are anonymised; aggregated, non-identifying donation counts may remain.")}</li>
-          <li>{t("Requester contact details on closed blood requests: removed after about 90 days.")}</li>
+          <li>{t("Requester contact details and patient details on closed blood requests: removed after about 90 days.")}</li>
           <li>{t("Audit logs: kept for up to three years to protect donors and investigate misuse.")}</li>
           <li>{t("Rate-limit counters: about two days.")}</li>
         </ul>
@@ -163,7 +163,7 @@ export default async function PrivacyPage() {
         <h2>{t("Security")}</h2>
         <p>
           {t(
-            "Access is controlled by role-based permissions enforced in the database itself (row-level security), not just in the app. Contact details are only released after consent and role checks, access is rate-limited and logged, and connections are encrypted. No system is perfectly secure; please tell us at once if you notice anything wrong.",
+            "Access is controlled by role-based permissions enforced in the database itself (row-level security), not just in the app. Contact details are only released after role and eligibility checks for a verified request, access is rate-limited and logged, and connections are encrypted. No system is perfectly secure; please tell us at once if you notice anything wrong.",
           )}
         </p>
 

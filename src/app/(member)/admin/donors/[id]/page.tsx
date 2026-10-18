@@ -26,6 +26,15 @@ import { uuidSchema } from "@/lib/validation/common";
 import type { ProfileRow, StaffRoleRow } from "@/lib/types";
 import { getT } from "@/i18n/server";
 
+// A donor's recorded choices. The directory and contact switches are older; they now follow "Hide my number".
+const CHOICE_LABELS: Record<string, string> = {
+  hide_number: "Number hidden from patients",
+  emergency_alerts: "Request alerts",
+  terms: "Privacy policy & terms",
+  directory: "Volunteer directory",
+  contact: "Direct contact by volunteers",
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return { title: t("Donor record") };
@@ -109,17 +118,19 @@ export default async function AdminDonorPage({ params, searchParams }: PageProps
           </dl>
         </section>
         <section className="surface p-4" aria-labelledby="consent-heading">
-          <SectionHeading id="consent-heading" title="Consent" as="h3" />
+          <SectionHeading id="consent-heading" title="Contact choices" as="h3" />
           <dl>
-            <KeyValue label="Directory">{donor.preferences?.directory_visible ? "Visible" : "Hidden"}</KeyValue>
-            <KeyValue label="Contact consent">{donor.preferences?.contact_consent ? "Given" : "Not given"}</KeyValue>
+            <KeyValue label="Hidden from patients">{donor.preferences?.hide_number ? "Yes" : "No"}</KeyValue>
             <KeyValue label="Open to contact">{donor.preferences?.open_to_contact ? "Yes" : "No"}</KeyValue>
             <KeyValue label="Alerts">{donor.preferences?.emergency_alerts ? "On" : "Off"}</KeyValue>
+            <KeyValue label="Volunteers">{donor.preferences?.contact_consent ? "Contact directly" : "Ask first"}</KeyValue>
+            <KeyValue label="Directory">{donor.preferences?.directory_visible ? "Visible" : "Hidden"}</KeyValue>
           </dl>
           <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
             {consents.map((c, i) => (
               <li key={i}>
-                {formatDateTime(c.created_at)} — {c.consent_type}: {c.granted ? t("given") : t("withdrawn")}
+                {formatDateTime(c.created_at)} — {CHOICE_LABELS[c.consent_type] ? t(CHOICE_LABELS[c.consent_type]) : c.consent_type}:{" "}
+                {c.consent_type === "hide_number" ? (c.granted ? t("on") : t("off")) : c.granted ? t("given") : t("withdrawn")}
               </li>
             ))}
           </ul>

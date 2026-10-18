@@ -241,19 +241,14 @@ describe("blood request lifecycle", () => {
     expect(message).toMatch(/permission denied/);
   });
 
-  it("the server (service role) can submit on behalf of an anonymous requester, with rate limiting", async () => {
-    await db.query("update public.platform_settings set value = '2' where key = 'anon_request_daily_limit'");
-    const first = await as(db, "service_role", (tx) => submitRequest(tx, { clientKey: "hash-abc", hospital: "Anon Hospital 1" }));
-    expect(first.reference_code).toMatch(/^RR-\d{6}-[0-9A-F]{5}$/);
-    await as(db, "service_role", (tx) => submitRequest(tx, { clientKey: "hash-abc", hospital: "Anon Hospital 2" }));
-    const third = await expectDbError(as(db, "service_role", (tx) => submitRequest(tx, { clientKey: "hash-abc", hospital: "Anon Hospital 3" })));
-    expect(third).toMatch(/Too many requests/);
-    const noKey = await expectDbError(as(db, "service_role", (tx) => submitRequest(tx, { clientKey: null })));
-    expect(noKey).toMatch(/sign in/);
+  it("requests need an account: the server can no longer submit for an anonymous requester", async () => {
+    const message = await expectDbError(as(db, "service_role", (tx) => submitRequest(tx, { clientKey: "hash-abc", hospital: "Anon Hospital 1" })));
+    expect(message).toMatch(/sign in/);
   });
 
   it("a member can submit, and a near-identical request is flagged as a possible duplicate", async () => {
     const first = await as(db, requester, (tx) => submitRequest(tx));
+    expect(first.reference_code).toMatch(/^RR-\d{6}-[0-9A-F]{5}$/);
     requestId = first.request_id;
     expect(first.possible_duplicate_of).toBeNull();
     const second = await as(db, requester, (tx) => submitRequest(tx, { hospital: "  fictional general HOSPITAL " }));
@@ -385,7 +380,7 @@ describe("blood request lifecycle", () => {
   });
 
   it("purges requester contact details from long-closed requests (admins only)", async () => {
-    const r = await as(db, "service_role", (tx) => submitRequest(tx, { clientKey: "purge-key", hospital: "Purge Hospital", group: "AB+" }));
+    const r = await as(db, donor, (tx) => submitRequest(tx, { hospital: "Purge Hospital", group: "AB+" }));
     await as(db, verifier, (tx) => tx.query("select public.set_request_status($1, 'rejected', 'Could not confirm with hospital')", [r.request_id]));
     await db.query("update public.blood_requests set closed_at = now() - interval '120 days' where id = $1", [r.request_id]);
     const denied = await expectDbError(as(db, volunteer, (tx) => tx.query("select public.purge_closed_request_contacts(90)")));

@@ -9,6 +9,8 @@ import { PASSWORD, latestEmailLink, localSql, localSqlValue, login, logout, trac
 const RUN = Date.now().toString(36);
 const NEW_DONOR = `newdonor-${RUN}@example.test`;
 const HOSPITAL = `Live Test Hospital ${RUN}`;
+const PATIENT = `Live Patient ${RUN} (Fictional)`;
+const PATIENT_ID = `IP-LIVE-${RUN}`.toUpperCase();
 const CENTRE = `Live Test Blood Bank ${RUN}`;
 /** A datetime-local value (India time) `hours` from now. */
 const inHours = (hours: number) => new Date(Date.now() + (hours + 5.5) * 3600_000).toISOString().slice(0, 16);
@@ -55,9 +57,9 @@ async function registerDonor(page: Page, email: string) {
   await page.locator("#d-centre-0").fill(CENTRE);
   await page.getByRole("button", { name: /Continue/ }).click();
 
-  // No separate consent step: one switch on the review screen, on by default.
+  // One switch on the review screen: donors can hide their number from patients (off by default).
   await expect(page.getByRole("heading", { name: "Review & confirm" })).toBeVisible();
-  await expect(page.locator("#reachable")).toBeChecked();
+  await expect(page.locator("#hide_number")).not.toBeChecked();
   await page.getByRole("button", { name: /Register/ }).click();
   await expect(page).toHaveURL(/\/verify-email/, { timeout: 30_000 });
 }
@@ -99,7 +101,7 @@ test("a new donor registers, confirms their email and lands on the dashboard", a
   expect(errors).toEqual([]);
 });
 
-test("donors record donations, get duplicate warnings and manage consent", async ({ page }) => {
+test("donors record donations, get duplicate warnings and manage their choices", async ({ page }) => {
   await login(page, NEW_DONOR);
   await page.goto("/donations/new");
   await page.getByText("SDP (single donor platelets)").click();
@@ -128,20 +130,30 @@ test("donors record donations, get duplicate warnings and manage consent", async
 
   await page.goto("/settings");
   await page.locator("#pref-emergency_alerts").uncheck();
+  await page.locator("#pref-hide_number").check();
   await page.getByRole("button", { name: "Save my choices" }).click();
   await expect(page.getByText("Your choices were saved.")).toBeVisible();
   await page.reload();
   await expect(page.locator("#pref-emergency_alerts")).not.toBeChecked();
+  await expect(page.locator("#pref-hide_number")).toBeChecked();
   await expect(page.getByText(/Request alerts: withdrawn/)).toBeVisible();
+  await expect(page.getByText(/Number hidden from patients: on/)).toBeVisible();
+  // Back to the defaults, so patients can find this donor in the journeys below.
   await page.locator("#pref-emergency_alerts").check();
+  await page.locator("#pref-hide_number").uncheck();
   await page.getByRole("button", { name: "Save my choices" }).click();
   await expect(page.getByText("Your choices were saved.")).toBeVisible();
 });
 
-test("a member submits a blood request; it stays private until verified", async ({ page }) => {
+test("a member submits a blood request with the patient's details; it stays private until verified", async ({ page }) => {
   await login(page, "member@example.test");
   await page.goto("/blood-requests/new");
+  await page.locator("#patient_name").fill(PATIENT);
+  await page.locator("#patient_age").fill("61");
+  await page.locator('input[name="patient_gender"][value="male"]').check({ force: true });
   await page.locator('input[name="blood_group"][value="O+"]').locator("..").click();
+  await page.locator("#units_needed").fill("2");
+  await page.locator("#reason").selectOption("surgery");
   await page.locator("#required_by").fill(inHours(24));
   await page.locator("#hospital_name").fill(HOSPITAL);
   // District search covers all of India until a state is chosen; picking one fills the state.
@@ -150,12 +162,18 @@ test("a member submits a blood request; it stays private until verified", async 
   await expect(page.locator("#state")).toHaveValue("Maharashtra");
   await page.locator("#city").fill("pune ci");
   await page.getByRole("option", { name: /^Pune City/ }).click();
+  await page.locator("#hospital_patient_id").fill(PATIENT_ID);
+  await page.locator("#requester_relation").selectOption("child");
   await page.locator("#requester_phone").fill("9822001122");
-  await page.locator("#public_listing_consent").check();
   await page.locator("#acknowledge_limits").check();
   await page.getByRole("button", { name: /Submit request/ }).click();
   await expect(page.getByText("Request received")).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText(/RR-\d{6}-[0-9A-F]{5}/)).toBeVisible();
+
+  // The request's own page: no donors until a volunteer has checked it.
+  await page.getByRole("link", { name: "Open my request" }).click();
+  await expect(page.getByText("A volunteer is checking your request")).toBeVisible();
+  await expect(page.getByText(PATIENT_ID)).toBeVisible();
 
   await page.goto("/requests");
   await expect(page.getByText(HOSPITAL)).toBeVisible();
@@ -164,36 +182,33 @@ test("a member submits a blood request; it stays private until verified", async 
   await expect(page.getByText(HOSPITAL)).toHaveCount(0);
 });
 
-test("anonymous visitors can submit a request too (rate limited server-side)", async ({ page }) => {
-  localSql("delete from public.rate_limits where key like 'anon:%';");
+test("signed-out visitors sign in before requesting blood", async ({ page }) => {
   await page.goto("/blood-requests/new");
-  await page.locator('input[name="blood_group"][value="B-"]').locator("..").click();
-  await page.locator("#required_by").fill(inHours(30));
-  await page.locator("#hospital_name").fill(`${HOSPITAL} Anon`);
-  // A state first, then that state's districts; a town not in the list can be typed.
-  await page.locator("#state").selectOption("Maharashtra");
-  await page.locator("#district").fill("mumbai");
-  await page.getByRole("option", { name: "Mumbai City", exact: true }).click();
-  await page.locator("#city").fill("Andheri East Test Area");
-  await page.getByRole("option", { name: /Use “Andheri East Test Area”/ }).click();
-  await page.locator("#requester_name").fill("Anonymous Live Tester");
-  await page.locator("#requester_phone").fill("9822003344");
-  await page.locator("#acknowledge_limits").check();
-  await page.getByRole("button", { name: /Submit request/ }).click();
-  await expect(page.getByText("Request received")).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText("Please sign in to submit a request")).toBeVisible();
+  await expect(page.locator("#patient_name")).toHaveCount(0);
+  await page.locator('main a[href="/login?next=/blood-requests/new"]').click();
+  await page.locator("#email").fill("member@example.test");
+  await page.locator("#password").fill(PASSWORD);
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page).toHaveURL(/\/blood-requests\/new$/, { timeout: 30_000 });
+  await expect(page.locator("#patient_name")).toBeVisible();
 });
 
-test("a volunteer verifies the request, alerted donors respond, contact needs consent", async ({ page }) => {
+test("a volunteer verifies the request; an eligible donor joins and the patient contacts them", async ({ page }) => {
   await login(page, "volunteer@example.test");
   await page.goto("/volunteer/requests?tab=verify");
   await page.getByRole("link", { name: new RegExp(HOSPITAL) }).first().click();
   await expect(page.getByText("Requester (private)")).toBeVisible();
+  // Volunteers check the patient's details with the hospital.
+  await expect(page.getByText(PATIENT)).toBeVisible();
+  await expect(page.getByText(PATIENT_ID)).toBeVisible();
   await page.getByRole("button", { name: "I'll coordinate this" }).click();
   await expect(page.getByRole("region", { name: "Volunteers coordinating" }).getByText(/Vidya/)).toBeVisible();
   await page.locator('select[name="status"]').selectOption("verified");
   await page.getByRole("button", { name: "Update status" }).click();
   await expect(page.getByText("Status updated.")).toBeVisible();
   const requestUrl = page.url();
+  const requestId = requestUrl.split("/").pop() ?? "";
 
   // Matching donors are shown without contact details until requested.
   await page.reload();
@@ -217,14 +232,33 @@ test("a volunteer verifies the request, alerted donors respond, contact needs co
   await expect(page.getByText(HOSPITAL).first()).toBeVisible();
   await expect(page.getByText("9822001122")).toHaveCount(0);
 
-  // The alerted donor sees it and responds.
+  // The alerted donor can give now, joins, and then sees the patient's details and the family's number.
   await login(page, NEW_DONOR);
   await page.goto("/notifications");
   await expect(page.getByText(/Verified O\+ whole blood request in Pune/).first()).toBeVisible();
   await page.goto("/requests");
   const match = page.locator("li", { hasText: HOSPITAL }).first();
-  await match.getByRole("button", { name: "I can help" }).click();
-  await expect(match.getByText(/A volunteer will be in touch/)).toBeVisible();
+  await match.getByRole("button", { name: "I can donate" }).click();
+  await expect(match.getByText("You joined")).toBeVisible();
+  await match.getByRole("link", { name: "See patient details" }).click();
+  await expect(page.getByRole("heading", { name: "You joined this request" })).toBeVisible();
+  await expect(page.getByText(PATIENT)).toBeVisible();
+  await expect(page.getByText(PATIENT_ID)).toBeVisible();
+  await expect(page.getByRole("link", { name: /Call \+91 98220 01122/ })).toHaveAttribute("href", "tel:+919822001122");
+
+  // The patient's family is told, sees that donor first and opens the donor's chosen channel.
+  await logout(page);
+  await login(page, "member@example.test");
+  await page.goto("/notifications");
+  await expect(page.getByText(/A donor is ready to give/).first()).toBeVisible();
+  await page.goto(`/requests/${requestId}`);
+  const donors = page.getByRole("region", { name: "Donors who can give now" });
+  const ready = donors.locator("article", { hasText: "Live D." }).first();
+  await expect(ready.getByText("Ready to donate")).toBeVisible();
+  await expect(page.getByText("98111")).toHaveCount(0);
+  await ready.getByRole("button", { name: "Show contact" }).click();
+  await expect(ready.getByRole("link", { name: /WhatsApp/ })).toHaveAttribute("href", /wa\.me\/919811122334/);
+  expect(localSqlValue(`select count(*) from public.donor_disclosures where request_id = '${requestId}';`)).toBe("1");
 
   // The volunteer sees the interest and closes the request honestly.
   await logout(page);
@@ -267,7 +301,10 @@ test("contact requests: a volunteer asks, the donor accepts, then contact is vis
   await page.goto("/requests");
   await expect(page.getByText("Contact requests waiting for you")).toBeVisible();
   await page.locator("li", { hasText: sdpHospital }).getByRole("button", { name: "Share my contact details" }).click();
-  await expect(page.locator("li", { hasText: sdpHospital }).getByText("You shared contact details")).toBeVisible();
+  // Sharing counts as joining the request.
+  const open = page.getByRole("region", { name: "Open requests" }).locator("li", { hasText: sdpHospital });
+  await expect(open.getByText("You joined")).toBeVisible();
+  await expect(page.getByText("Contact requests waiting for you")).toHaveCount(0);
 
   await logout(page);
   await login(page, "volunteer@example.test");
@@ -416,6 +453,9 @@ test("admins manage roles, verify donors, export, and process deletion", async (
   await expect(page.getByText("export.donors_csv").first()).toBeVisible();
   await page.goto("/admin/audit-logs?action=donor_contact");
   await expect(page.getByText("donor_contact.revealed").first()).toBeVisible();
+  // Patients opening a donor's contact are logged too.
+  await page.goto("/admin/audit-logs?action=donor_contact.revealed_to_requester");
+  await expect(page.getByText("donor_contact.revealed_to_requester").first()).toBeVisible();
 
   // The new donor asks for deletion; the admin anonymises.
   await logout(page);
