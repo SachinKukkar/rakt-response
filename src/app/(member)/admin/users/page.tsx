@@ -44,7 +44,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
 
   return (
     <div className="space-y-4">
-      <PageHeader eyebrow="Administrator" title="Users & roles" description="Grant volunteer or administrator access with the least privilege needed. You can't change your own role." />
+      <PageHeader eyebrow="Administrator" title="Users & roles" description="Grant Rakt Mitra or administrator access with the least privilege needed. You can't change your own role." />
       <Notice>Roles are stored server-side and checked by the database on every action. Signup details can never grant a role.</Notice>
       <form method="get" className="surface flex gap-2 p-3" role="search">
         <label htmlFor="user-q" className="sr-only">
@@ -81,7 +81,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
                 ) : u.is_active ? (
                   <details>
                     <summary className="flex min-h-10 cursor-pointer items-center text-sm font-semibold text-primary">
-                      {activeRole ? t("Change role") : t("Make volunteer or admin")}
+                      {activeRole ? t("Change role") : t("Make Rakt Mitra or admin")}
                     </summary>
                     <div className="mt-2">
                       <RoleForm userId={u.id} current={activeRole} />

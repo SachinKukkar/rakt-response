@@ -103,6 +103,32 @@ export async function getOpenRequestsForDonor(): Promise<OpenRequestForDonor[]> 
   return (data ?? []) as OpenRequestForDonor[];
 }
 
+/** A request the donor joined: whether they've told us they donated, and whether to ask now. */
+export interface DonationCheck {
+  request_id: string;
+  reference_code: string;
+  blood_group: BloodGroup;
+  request_type: RequestType;
+  hospital_name: string;
+  city: string;
+  district: string;
+  required_by: string;
+  status: RequestStatus;
+  outcome: "pending" | "donated";
+  donated_on: string | null;
+  donation_record_id: string | null;
+  /** They can still say "I donated" or "I didn't". */
+  can_report: boolean;
+  /** The request's time has passed: ask "did you donate?". */
+  ask_now: boolean;
+}
+
+export async function getMyDonationChecks(): Promise<DonationCheck[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("list_my_donation_checks");
+  return (data ?? []) as DonationCheck[];
+}
+
 /** A donor shown to a patient for their verified request. Contact fields are set once opened. */
 export interface EligibleDonor {
   donor_id: string;

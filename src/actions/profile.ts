@@ -135,7 +135,7 @@ export async function setAvailability(_prev: ActionResult, formData: FormData): 
     .eq("profile_id", viewer.id);
   if (error) return fail(friendlyDbError(error));
   refreshMemberPages();
-  return success(open ? "You're marked as available to donate." : "You're marked as unavailable. Patients and volunteers won't contact you.");
+  return success(open ? "You're marked as available to donate." : "You're marked as unavailable. Patients and Rakt Mitras won't contact you.");
 }
 
 export async function changeBloodGroup(_prev: ActionResult, formData: FormData): Promise<ActionResult> {

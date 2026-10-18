@@ -87,7 +87,7 @@ export function DonorContactCard({ donor, requestId, referenceCode, bloodGroup, 
 
       {donor.hidden ? (
         <p className="rounded-xl bg-secondary p-3 text-sm text-secondary-foreground">
-          {t("This donor keeps their number hidden. They have your request and will reach you, or a volunteer will connect you.")}
+          {t("This donor keeps their number hidden. They have your request and will reach you, or a Rakt Mitra will connect you.")}
         </p>
       ) : contact ? (
         <div className="flex flex-wrap gap-2">

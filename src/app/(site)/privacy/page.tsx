@@ -18,11 +18,11 @@ function rich(text: string, parts: Record<string, ReactNode>) {
 
 const ACCESS = [
   { data: "Name, email, account settings", who: "You; Rakt Response administrators" },
-  { data: "Mobile / WhatsApp number (or email, if that is your chosen channel)", who: "You; administrators; authorised volunteers coordinating a verified request. A patient whose blood request a volunteer has verified, if you match their blood group, are nearby, can give now and haven't hidden your number: one donor at a time, and every opening is recorded and logged. If you join a request yourself, that patient sees that you are ready to donate." },
-  { data: "Blood group, display name or first name, broad area (city / locality)", who: "Authorised volunteers and administrators. Patients with a verified request near you, when you can give, unless you hide your number. Never on an open public list." },
-  { data: "PIN code and approximate map location", who: "You; volunteers and administrators for search and distance filtering. Never public, never shown on donor cards." },
-  { data: "Donation history", who: "You; volunteers and administrators. Patients never see your history, only that you can give now. A verified summary appears on volunteers' directory cards only if you allow it." },
-  { data: "Blood request details you submit", who: "You; volunteers and administrators. Donors who join your request see the patient's name and age, the hospital, IP/UHID number and ward, and your name, relation and phone. The public Find Blood list shows only the blood group, donation type, units, hospital, city/district, needed-by time and urgency of a verified request." },
+  { data: "Mobile / WhatsApp number (or email, if that is your chosen channel)", who: "You; administrators; authorised Rakt Mitras coordinating a verified request. A patient whose blood request a Rakt Mitra has verified, if you match their blood group, are nearby, can give now and haven't hidden your number: one donor at a time, and every opening is recorded and logged. If you join a request yourself, that patient sees that you are ready to donate." },
+  { data: "Blood group, display name or first name, broad area (city / locality)", who: "Authorised Rakt Mitras and administrators. Patients with a verified request near you, when you can give, unless you hide your number. Never on an open public list." },
+  { data: "PIN code and approximate map location", who: "You; Rakt Mitras and administrators for search and distance filtering. Never public, never shown on donor cards." },
+  { data: "Donation history", who: "You; Rakt Mitras and administrators. Patients never see your history, only that you can give now. A verified summary appears on Rakt Mitras' directory cards only if you allow it." },
+  { data: "Blood request details you submit", who: "You; Rakt Mitras and administrators. Donors who join your request see the patient's name and age, the hospital, IP/UHID number and ward, and your name, relation and phone. The public Find Blood list shows only the blood group, donation type, units, hospital, city/district, needed-by time and urgency of a verified request." },
   { data: "Stories you submit", who: "You; administrators. Only the parts you consented to are published, and only after review." },
   { data: "Audit logs (who did what, when — without contact details)", who: "Administrators" },
 ];
@@ -48,7 +48,7 @@ export default async function PrivacyPage() {
         <p>
           {rich(
             t(
-              "Rakt Response is a community, volunteer-run platform that keeps a register of voluntary blood donors, records their donation history, has volunteers verify blood requests and connects patients with a verified request to donors who can give now. Rakt Response is the data fiduciary for the information described here. Contact details for privacy questions and grievances are on our {link}.",
+              "Rakt Response is a community platform run by Rakt Mitras that keeps a register of voluntary blood donors, records their donation history, has Rakt Mitras verify blood requests and connects patients with a verified request to donors who can give now. Rakt Response is the data fiduciary for the information described here. Contact details for privacy questions and grievances are on our {link}.",
             ),
             { link: <Link href="/contact">{t("contact page")}</Link> },
           )}
@@ -87,7 +87,7 @@ export default async function PrivacyPage() {
           <li>
             <strong>{t("Blood requests:")}</strong>{" "}
             {t(
-              "your name, relation to the patient and phone; the patient's name, age and gender; blood group, type of donor needed and units; hospital, IP/UHID number and ward if given, area, time needed, urgency, reason and optional notes. Volunteers use these to verify the request with the hospital, and donors who join see what they need at the blood bank. Please do not include diagnoses or documents.",
+              "your name, relation to the patient and phone; the patient's name, age and gender; blood group, type of donor needed and units; hospital, IP/UHID number and ward if given, area, time needed, urgency, reason and optional notes. Rakt Mitras use these to verify the request with the hospital, and donors who join see what they need at the blood bank. Please do not include diagnoses or documents.",
             )}
           </li>
           <li>
@@ -99,7 +99,7 @@ export default async function PrivacyPage() {
           <li>
             <strong>{t("Security records:")}</strong>{" "}
             {t(
-              "audit logs of privileged actions (such as a volunteer viewing contact details or a patient opening a donor's contact), a record of which donor contacts were opened for which request, and short-lived rate-limit counters.",
+              "audit logs of privileged actions (such as a Rakt Mitra viewing contact details or a patient opening a donor's contact), a record of which donor contacts were opened for which request, and short-lived rate-limit counters.",
             )}
           </li>
         </ul>

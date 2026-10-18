@@ -20,7 +20,7 @@ export default async function AdminRequestsPage({ searchParams }: PageProps<"/ad
       <PageHeader
         eyebrow="Administrator"
         title="Blood requests"
-        description="Open a request to verify, assign volunteers or close it."
+        description="Open a request to verify, assign Rakt Mitras or close it."
         actions={
           viewer.isAdmin ? (
             <Button asChild variant="outline">

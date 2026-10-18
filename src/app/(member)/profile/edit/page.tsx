@@ -37,7 +37,7 @@ export default async function EditProfilePage() {
 
   return (
     <div className="max-w-2xl space-y-6">
-      <PageHeader backHref="/profile" backLabel="Profile" title="Edit profile" description="Keep your details current so volunteers can respond quickly." />
+      <PageHeader backHref="/profile" backLabel="Profile" title="Edit profile" description="Keep your details current so Rakt Mitras can respond quickly." />
       <section className="surface p-5" aria-labelledby="photo-heading">
         <SectionHeading id="photo-heading" title="Profile photo" as="h3" />
         <PhotoForm photoUrl={photoUrl} />

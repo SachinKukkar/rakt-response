@@ -147,7 +147,7 @@ export default async function DonationProcessPage() {
                 {t("Done? Log it.")}
               </h2>
               <p className="mt-1 text-sm text-white/80">
-                {t("Add the date, type and centre. It stays self-reported until a volunteer verifies it.")}
+                {t("Add the date, type and centre. It stays self-reported until a Rakt Mitra verifies it.")}
               </p>
             </div>
           </div>

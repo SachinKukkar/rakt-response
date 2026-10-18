@@ -102,8 +102,8 @@ const hi: Catalog = {
   "SDP and other apheresis donations need additional checks, such as a platelet count and vein suitability, which the apheresis centre decides. Your questionnaire answers are confidential to the blood centre.":
     "SDP और दूसरे एफ़ेरेसिस रक्तदान के लिए कुछ और जाँच होती है, जैसे प्लेटलेट्स की गिनती और नसें ठीक हैं या नहीं। इसका फ़ैसला एफ़ेरेसिस सेंटर करता है। फ़ॉर्म के सवालों पर आपके जवाब सिर्फ़ ब्लड बैंक तक गोपनीय रहते हैं।",
   "Unsure about something?": "किसी बात को लेकर पक्का नहीं हैं?",
-  "Ask a licensed blood centre or your own doctor. Rakt Response volunteers can't give medical advice or confirm whether you can donate.":
-    "किसी लाइसेंस वाले ब्लड बैंक या अपने डॉक्टर से पूछें। Rakt Response के स्वयंसेवक डॉक्टरी सलाह नहीं दे सकते, और न ही यह पक्का कर सकते हैं कि आप रक्तदान कर सकते हैं या नहीं।",
+  "Ask a licensed blood centre or your own doctor. Rakt Mitras can't give medical advice or confirm whether you can donate.":
+    "किसी लाइसेंस वाले ब्लड बैंक या अपने डॉक्टर से पूछें। Rakt Response के रक्त मित्र डॉक्टरी सलाह नहीं दे सकते, और न ही यह पक्का कर सकते हैं कि आप रक्तदान कर सकते हैं या नहीं।",
   "Curious about the day itself?": "रक्तदान वाले दिन के बारे में जानना चाहते हैं?",
   "See what happens": "देखें क्या होता है",
   "Register in two minutes. The blood centre will always do its own screening on the day.":
@@ -160,8 +160,8 @@ const hi: Catalog = {
     "आमतौर पर मशीन पर 60–90 मिनट या ज़्यादा, साथ में जाँच और आराम का समय। कुछ घंटे खाली रखें।",
   "Compare types": "प्रकारों की तुलना करें",
   "Done? Log it.": "हो गया? दर्ज करें।",
-  "Add the date, type and centre. It stays self-reported until a volunteer verifies it.":
-    "तारीख, प्रकार और ब्लड बैंक जोड़ें। जब तक कोई स्वयंसेवक जाँच न ले, यह \"खुद बताया गया\" रहता है।",
+  "Add the date, type and centre. It stays self-reported until a Rakt Mitra verifies it.":
+    "तारीख, प्रकार और ब्लड बैंक जोड़ें। जब तक कोई रक्त मित्र जाँच न ले, यह \"खुद बताया गया\" रहता है।",
   "Record a donation": "रक्तदान दर्ज करें",
   "If you feel faint or dizzy": "अगर बेहोशी या चक्कर जैसा लगे",
   "Sit or lie down straight away, wherever you are.": "आप जहाँ भी हों, तुरंत बैठ जाएँ या लेट जाएँ।",

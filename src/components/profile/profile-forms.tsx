@@ -53,14 +53,14 @@ export function ProfileDetailsForm({ defaults, ageConfirmed }: { defaults: Profi
       <Field id="full_name" label="Full name" required error={errors.full_name?.message}>
         <Input {...fieldAria("full_name", errors.full_name?.message)} autoComplete="name" {...register("full_name")} />
       </Field>
-      <Field id="display_name" label="Display name for volunteers" error={errors.display_name?.message} hint="Optional. What volunteers see. Leave blank to appear as a code like “Donor #3F2A”.">
+      <Field id="display_name" label="Display name for Rakt Mitras" error={errors.display_name?.message} hint="Optional. What Rakt Mitras see. Leave blank to appear as a code like “Donor #3F2A”.">
         <Input {...fieldAria("display_name", errors.display_name?.message, true)} {...register("display_name")} />
       </Field>
       <Field
         id="bio"
         label="Why I donate"
         error={errors.bio?.message}
-        hint="Optional, up to 280 characters. Shown on your profile and to volunteers and admins."
+        hint="Optional, up to 280 characters. Shown on your profile and to Rakt Mitras and admins."
       >
         <Textarea {...fieldAria("bio", errors.bio?.message, true)} rows={3} maxLength={280} {...register("bio")} />
       </Field>
@@ -235,7 +235,7 @@ export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
             <Trash2 className="size-4" aria-hidden="true" /> {t("Remove")}
           </Button>
         ) : null}
-        <p className="text-xs text-muted-foreground">{t("Optional. Visible only to you and authorised volunteers. Location data is removed.")}</p>
+        <p className="text-xs text-muted-foreground">{t("Optional. Visible only to you and authorised Rakt Mitras. Location data is removed.")}</p>
         <FormMessage state={result} />
       </div>
     </div>
@@ -278,15 +278,15 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
           {toggle(
             "hide_number",
             "Hide my number from patients",
-            "Off: a patient with a verified request near you, when you can give, sees your first name and area and can reach you on the channel below. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests.",
+            "Off: a patient with a verified request near you, when you can give, sees your first name and area and can reach you on the channel below. On: patients don't see you, and you can still join requests yourself. Rakt Mitras can always reach you for verified requests.",
           )}
           {toggle("open_to_contact", "I'm available to donate", "Turn off while travelling, unwell or after a recent donation. Patients don't see you while it's off.")}
           {toggle("emergency_alerts", "In-app alerts for verified requests near me", "Matching blood group and district only, when you can give. No SMS or bulk messages.")}
-          {toggle("show_donation_summary", "Share my verified donation summary with volunteers", "Last verified whole blood / SDP dates and counts.")}
+          {toggle("show_donation_summary", "Share my verified donation summary with Rakt Mitras", "Last verified whole blood / SDP dates and counts.")}
           {toggle(
             "show_first_name",
-            "Show my first name to volunteers",
-            "Off: volunteers see only your display name, or a code like “Donor #3F2A”. Your full name and photo are only ever seen by Rakt Response admins.",
+            "Show my first name to Rakt Mitras",
+            "Off: Rakt Mitras see only your display name, or a code like “Donor #3F2A”. Your full name and photo are only ever seen by Rakt Response admins.",
           )}
         </>
       ) : (

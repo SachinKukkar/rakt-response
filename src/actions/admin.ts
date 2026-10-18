@@ -190,6 +190,8 @@ export async function updateSettings(_prev: ActionResult, fd: FormData): Promise
     requester_open_request_limit: Number(str(fd, "requester_open_request_limit")),
     donor_join_daily_limit: Number(str(fd, "donor_join_daily_limit")),
     donor_open_join_limit: Number(str(fd, "donor_open_join_limit")),
+    donation_report_days: Number(str(fd, "donation_report_days")),
+    donation_follow_up_days: Number(str(fd, "donation_follow_up_days")),
     member_request_daily_limit: Number(str(fd, "member_request_daily_limit")),
     contact_reveal_hourly_limit: Number(str(fd, "contact_reveal_hourly_limit")),
     contact_request_hourly_limit: Number(str(fd, "contact_request_hourly_limit")),

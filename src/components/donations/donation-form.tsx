@@ -42,7 +42,7 @@ export function DonationForm({ record, returnTo = "/donations" }: { record?: Edi
   const [duplicates, setDuplicates] = useState<Array<{ donation_date: string; centre_name: string }> | null>(null);
 
   const [selfReportedBefore, selfReportedAfter] = t(
-    "This record will be marked {status} until an authorised volunteer verifies it. Recording a donation does not determine when you can donate again.",
+    "This record will be marked {status} until an authorised Rakt Mitra verifies it. Recording a donation does not determine when you can donate again.",
   ).split("{status}");
 
   const onSubmit = handleSubmit((values) => {
@@ -163,7 +163,7 @@ export function DonationForm({ record, returnTo = "/donations" }: { record?: Edi
         </p>
       ) : record.isOwner && record.status !== "pending" ? (
         <p className="rounded-xl border border-warning/30 bg-warning-soft px-3.5 py-3 text-sm" role="note">
-          {t("This record has already been checked. If you save changes, it goes back to self-reported until a volunteer checks it again.")}
+          {t("This record has already been checked. If you save changes, it goes back to self-reported until a Rakt Mitra checks it again.")}
         </p>
       ) : !record.isOwner ? (
         <p className="text-xs text-muted-foreground">{t("Your correction keeps the record's verification status. Every change is logged.")}</p>

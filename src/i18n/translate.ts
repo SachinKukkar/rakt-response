@@ -1,5 +1,6 @@
 import type { Locale } from "./config";
 import { HINDI, MESSAGE_TEMPLATES } from "./catalog";
+import { siteTerms } from "./terms";
 
 export type TranslateVars = Record<string, string | number | null | undefined>;
 export type TFunction = (text: string, vars?: TranslateVars) => string;
@@ -43,7 +44,10 @@ function templatePatterns() {
  * missing from the Hindi catalog is shown in English rather than breaking.
  */
 export function translate(locale: Locale, text: string, vars?: TranslateVars): string {
-  if (locale === "en" || !text) return fill(text, vars);
+  if (!text) return fill(text, vars);
+  // Database messages still say "volunteer"; the site says "Rakt Mitra" (see terms.ts).
+  text = siteTerms(text);
+  if (locale === "en") return fill(text, vars);
   const exact = HINDI[text];
   if (exact !== undefined) return fill(exact, vars);
   if (!vars) {

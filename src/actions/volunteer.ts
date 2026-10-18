@@ -7,7 +7,14 @@ import { friendlyDbError } from "@/lib/errors";
 import { indiaLocalToIso } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import { optionalText, placeSchema, urgencySchema, uuidSchema } from "@/lib/validation/common";
-import { assignmentUpdateSchema, contactRequestSchema, coordinationSchema, internalNoteSchema, requestStatusChangeSchema } from "@/lib/validation/forms";
+import {
+  assignmentUpdateSchema,
+  contactRequestSchema,
+  coordinationSchema,
+  followUpSchema,
+  internalNoteSchema,
+  requestStatusChangeSchema,
+} from "@/lib/validation/forms";
 import { z } from "zod";
 import type { ContactMethod } from "@/lib/constants";
 
@@ -83,7 +90,7 @@ export async function editRequestDetails(_prev: ActionResult, formData: FormData
     subject_type: "blood_request",
     subject_id: v.request_id,
     author_id: viewer.id,
-    body: "Request details edited by a volunteer.",
+    body: "Request details edited by a Rakt Mitra.",
   });
   refreshRequest(v.request_id);
   return success("Request details saved.");
@@ -100,7 +107,7 @@ export async function assignRequest(_prev: ActionResult, formData: FormData): Pr
   if (error) return fail(friendlyDbError(error));
   refreshRequest(id.data);
   revalidatePath("/volunteer/coordination");
-  return success(volunteer ? "Volunteer assigned." : "You're now coordinating this request.");
+  return success(volunteer ? "Rakt Mitra assigned." : "You're now coordinating this request.");
 }
 
 export async function updateAssignment(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
@@ -149,6 +156,27 @@ export async function recordCoordination(_prev: ActionResult, formData: FormData
   if (error) return fail(friendlyDbError(error));
   refreshRequest(parsed.data.request_id);
   return success(parsed.data.attempted ? "Contact attempt logged." : "Coordination updated.");
+}
+
+/** Marks a donor's after-donation follow-up as done, with an optional note for the team. */
+export async function completeDonationFollowUp(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  await requireStaff();
+  const parsed = followUpSchema.safeParse({
+    request_id: formData.get("request_id"),
+    donor_id: formData.get("donor_id"),
+    note: String(formData.get("note") ?? ""),
+  });
+  if (!parsed.success) return validationFailure(parsed.error);
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("complete_donation_follow_up", {
+    p_request: parsed.data.request_id,
+    p_donor: parsed.data.donor_id,
+    p_note: parsed.data.note || null,
+  });
+  if (error) return fail(friendlyDbError(error));
+  refreshRequest(parsed.data.request_id);
+  revalidatePath("/volunteer/coordination");
+  return success("Follow-up recorded. Thank you.");
 }
 
 export interface RevealedContact {

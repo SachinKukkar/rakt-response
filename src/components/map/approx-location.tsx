@@ -53,7 +53,7 @@ export function ApproxLocation({ value, onChange }: { value: LatLng | null; onCh
       <div>
         <p className="text-sm font-semibold text-navy">{t("Approximate location (optional)")}</p>
         <p className="text-xs text-muted-foreground">
-          {t("Helps volunteers find nearby donors. We store it rounded to about 1 km and never show it publicly.")}
+          {t("Helps Rakt Mitras find nearby donors. We store it rounded to about 1 km and never show it publicly.")}
         </p>
       </div>
       {value ? (

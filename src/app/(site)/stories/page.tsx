@@ -17,7 +17,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return pageMetadata(t("Stories"), t("Experiences shared by donors, patients' families, volunteers and camp organisers — published with consent."));
+  return pageMetadata(t("Stories"), t("Experiences shared by donors, patients' families, Rakt Mitras and camp organisers — published with consent."));
 }
 
 const PAGE_SIZE = 9;
@@ -52,7 +52,7 @@ export default async function StoriesPage({ searchParams }: PageProps<"/stories"
         eyebrow={t("Stories")}
         title={t("Stories that")}
         highlight={t("kept us going.")}
-        subtitle={t("Donors, families and volunteers — in their own words, published only with their consent.")}
+        subtitle={t("Donors, families and Rakt Mitras — in their own words, published only with their consent.")}
         chips={[t("Reviewed before publishing"), t("Withdraw any time")]}
       >
         <ArrowLink href="/share-your-story" size="lg">

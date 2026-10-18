@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AlarmClock, ClipboardCheck, Droplet, HandHeart, ShieldAlert, Siren, Users } from "lucide-react";
+import { AlarmClock, ClipboardCheck, Droplet, HandHeart, HeartHandshake, ShieldAlert, Siren, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ActionForm } from "@/components/common/action-form";
 import { EmptyState, PageHeader, SectionHeading, StatCard } from "@/components/common/page-parts";
@@ -16,7 +16,7 @@ import type { BloodRequestRow, RequestEventRow } from "@/lib/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return { title: t("Volunteer") };
+  return { title: t("Rakt Mitra") };
 }
 
 interface Overview {
@@ -38,7 +38,7 @@ export default async function VolunteerOverviewPage() {
   // Housekeeping is cheap and idempotent; running it here avoids needing a scheduler.
   await Promise.all([supabase.rpc("expire_stale_requests"), supabase.rpc("generate_follow_up_reminders")]);
 
-  const [overviewResult, urgentResult, assignmentsResult, responsesResult, eventsResult] = await Promise.all([
+  const [overviewResult, urgentResult, assignmentsResult, responsesResult, eventsResult, followUpsResult] = await Promise.all([
     supabase.rpc("get_volunteer_overview"),
     supabase
       .from("blood_requests")
@@ -61,6 +61,7 @@ export default async function VolunteerOverviewPage() {
       .order("responded_at", { ascending: false })
       .limit(5),
     supabase.from("request_events").select("id, request_id, actor_id, event_type, from_status, to_status, note, created_at").order("created_at", { ascending: false }).limit(8),
+    supabase.from("request_responses").select("donor_id", { count: "exact", head: true }).eq("outcome", "donated").is("followed_up_at", null),
   ]);
   const overview = (overviewResult.data ?? {}) as Partial<Overview>;
   const urgent = (urgentResult.data ?? []) as BloodRequestRow[];
@@ -77,9 +78,9 @@ export default async function VolunteerOverviewPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="Volunteer"
+        eyebrow="Rakt Mitra"
         title="Coordination overview"
-        description="Verify requests, coordinate with consenting donors and follow up."
+        description="Verify requests, coordinate with donors and follow up after donation."
         actions={
           <Button asChild variant="outline">
             <Link href="/volunteer/donors">
@@ -94,6 +95,7 @@ export default async function VolunteerOverviewPage() {
         <StatCard label="Urgent, unverified" value={formatNumber(overview.urgent_awaiting_verification)} icon={Siren} />
         <StatCard label="Active requests" value={formatNumber(overview.active_requests)} icon={HandHeart} />
         <StatCard label="Follow-ups due (mine)" value={formatNumber(overview.follow_ups_due)} icon={AlarmClock} />
+        <StatCard label="Donors to follow up" value={formatNumber(followUpsResult.count ?? 0)} icon={HeartHandshake} />
         <StatCard label="My assignments" value={formatNumber(overview.my_assignments)} icon={ShieldAlert} />
         <StatCard label="Donors interested (7 days)" value={formatNumber(overview.interested_responses_7d)} icon={Users} />
         <StatCard label="Donation records to review" value={formatNumber(overview.pending_donation_records)} icon={Droplet} />

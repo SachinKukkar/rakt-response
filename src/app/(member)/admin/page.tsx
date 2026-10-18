@@ -66,7 +66,7 @@ export default async function AdminOverviewPage() {
       </section>
 
       <section aria-labelledby="tools-heading">
-        <SectionHeading id="tools-heading" title="Coordination tools" description="Everything volunteers can do, available to administrators too." />
+        <SectionHeading id="tools-heading" title="Coordination tools" description="Everything Rakt Mitras can do, available to administrators too." />
         <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {TOOLS.map((tool) => (
             <li key={tool.href}>

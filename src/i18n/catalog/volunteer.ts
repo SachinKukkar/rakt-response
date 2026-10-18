@@ -4,7 +4,8 @@ import type { Catalog } from "./types";
 const hi: Catalog = {
   // --- Volunteer overview (src/app/(member)/volunteer/page.tsx) ---------------
   "Coordination overview": "तालमेल का सारांश",
-  "Verify requests, coordinate with consenting donors and follow up.": "रिक्वेस्ट की पुष्टि करें, सहमति देने वाले डोनर से तालमेल करें और फ़ॉलो-अप करें।",
+  "Verify requests, coordinate with donors and follow up after donation.":
+    "रिक्वेस्ट जाँचें, डोनरों से तालमेल करें और रक्तदान के बाद उनका हाल-चाल लें।",
   Summary: "सारांश",
   "Awaiting verification": "पुष्टि का इंतज़ार",
   "Urgent, unverified": "जल्दी ज़रूरत, पुष्टि नहीं हुई",
@@ -54,7 +55,7 @@ const hi: Catalog = {
   active: "चालू",
   completed: "पूरा हुआ",
   released: "छोड़ दिया",
-  volunteer: "स्वयंसेवक",
+  "Rakt Mitra": "रक्त मित्र",
   admin: "एडमिन",
 
   // --- Request queue ------------------------------------------------------------
@@ -94,12 +95,12 @@ const hi: Catalog = {
   "Submitted without an account": "बिना खाते के भेजी गई",
   Status: "स्थिति",
   "Closing note: {reason}": "बंद करने का नोट: {reason}",
-  "Volunteers coordinating": "तालमेल कर रहे स्वयंसेवक",
+  "Rakt Mitras coordinating": "तालमेल कर रहे रक्त मित्र",
   "follow up {when}": "फ़ॉलो-अप {when}",
   "Nobody is coordinating this request yet.": "अभी कोई इस रिक्वेस्ट का तालमेल नहीं कर रहा है।",
   "I'll coordinate this": "मैं इसका तालमेल करूँगा/करूँगी",
   Assign: "ज़िम्मेदारी दें",
-  "Assign a volunteer": "स्वयंसेवक को ज़िम्मेदारी दें",
+  "Assign a Rakt Mitra": "रक्त मित्र को ज़िम्मेदारी दें",
   "Matching donors": "मेल खाते डोनर",
   "Same blood group, same district, directory-visible. Compatibility beyond an exact group match is for the hospital to decide.":
     "वही ब्लड ग्रुप, वही ज़िला, और डोनर सूची में दिखने वाले। ठीक वही ग्रुप न होने पर खून मेल खाएगा या नहीं, यह अस्पताल तय करता है।",
@@ -128,7 +129,7 @@ const hi: Catalog = {
   History: "इतिहास",
   "Team member": "टीम सदस्य",
   "Internal notes": "अंदरूनी नोट",
-  "Visible to volunteers and admins only.": "सिर्फ़ स्वयंसेवक और एडमिन देख सकते हैं।",
+  "Visible to Rakt Mitras and admins only.": "सिर्फ़ रक्त मित्र और एडमिन देख सकते हैं।",
   "Add note": "नोट जोड़ें",
   Note: "नोट",
   "e.g. Spoke to blood bank, 2 units confirmed needed.": "जैसे: ब्लड बैंक से बात हुई, 2 यूनिट की ज़रूरत पक्की है।",
@@ -136,8 +137,8 @@ const hi: Catalog = {
   // --- Donor directory ------------------------------------------------------------
   "The directory could not be searched right now.": "अभी डोनर सूची में खोज नहीं हो पाई।",
   "No donors match these filters": "इन फ़िल्टर से कोई डोनर नहीं मिला",
-  "Try a wider area, remove the 'open to contact' filter, or search nearby districts. Only donors who opted into the directory appear.":
-    "बड़ा इलाका चुनें, 'संपर्क के लिए तैयार' फ़िल्टर हटाएँ, या आस-पास के ज़िलों में खोजें। सिर्फ़ वही डोनर दिखते हैं जिन्होंने सूची में दिखना चुना है।",
+  "Try a wider area, remove the 'open to contact' filter, or search nearby districts.":
+    "बड़ा इलाका चुनें, 'संपर्क के लिए तैयार' फ़िल्टर हटाएँ, या आस-पास के ज़िलों में खोजें।",
   "{count} donor found": "{count} डोनर मिला",
   "{count} donors found": "{count} डोनर मिले",
   "Active {when}": "आखिरी बार सक्रिय {when}",
@@ -145,8 +146,8 @@ const hi: Catalog = {
   "Verified: {count} whole blood": "पुष्टि हुई: {count} होल ब्लड",
   "(last {date})": "(आखिरी {date})",
   "Choose an active request above to contact this donor.": "इस डोनर से संपर्क करने के लिए ऊपर एक चालू रिक्वेस्ट चुनें।",
-  "Only donors who opted in appear. Contact details are never listed — they are released per request, with consent, and every access is logged.":
-    "सिर्फ़ वही डोनर दिखते हैं जिन्होंने हाँ कहा है। संपर्क जानकारी कभी सूची में नहीं दिखती — यह हर रिक्वेस्ट के लिए, सहमति से ही दी जाती है, और हर बार देखने का रिकॉर्ड रखा जाता है।",
+  "Contact details are never listed here. They open for one verified request at a time, and every access is logged.":
+    "संपर्क जानकारी यहाँ कभी नहीं दिखती। यह एक बार में एक जाँची गई रिक्वेस्ट के लिए खुलती है, और हर बार खोलने का रिकॉर्ड रहता है।",
   "Request context": "किस रिक्वेस्ट के लिए",
   Coordinating: "तालमेल:",
   "at {hospital}": "अस्पताल: {hospital}",
@@ -164,7 +165,8 @@ const hi: Catalog = {
   "Loading results": "नतीजे लोड हो रहे हैं",
   Filters: "फ़िल्टर",
   "Filter donors": "डोनर छाँटें",
-  "Only donors who chose to be visible to volunteers are searchable.": "सिर्फ़ उन्हीं डोनर को खोजा जा सकता है जिन्होंने स्वयंसेवकों को दिखना चुना है।",
+  "Search by blood group, area and availability. Contact details never appear here.":
+    "ब्लड ग्रुप, इलाके और उपलब्धता से खोजें। संपर्क जानकारी यहाँ कभी नहीं दिखती।",
   "Blood groups": "ब्लड ग्रुप",
   State: "राज्य",
   Any: "कोई भी",
@@ -225,7 +227,7 @@ const hi: Catalog = {
   "Follow-up due now": "फ़ॉलो-अप का समय हो गया",
   "Still coordinating": "अभी तालमेल चल रहा है",
   Completed: "पूरा हुआ",
-  "Release to another volunteer": "दूसरे स्वयंसेवक को सौंपें",
+  "Release to another Rakt Mitra": "दूसरे रक्त मित्र को सौंपें",
   "Next follow-up (India time)": "अगला फ़ॉलो-अप (भारतीय समय)",
   "Notes for yourself": "अपने लिए नोट",
   "Completed or released": "पूरे हुए या छोड़े गए",
@@ -245,6 +247,48 @@ const hi: Catalog = {
   "Your own record — another reviewer must verify it.": "यह आपका अपना रिकॉर्ड है — इसकी पुष्टि कोई दूसरा करेगा।",
   "Verify only with proportionate evidence (e.g. a donor card, certificate or confirmation from the blood centre). Verification confirms the record, not the donor's eligibility.":
     "पुष्टि तभी करें जब ठीक-ठाक सबूत हो (जैसे डोनर कार्ड, सर्टिफ़िकेट या ब्लड बैंक से पुष्टि)। पुष्टि से रिकॉर्ड सही माना जाता है, इससे डोनर की योग्यता तय नहीं होती।",
+
+  // --- After donation (Rakt Mitras) --------------------------------------------------
+  "Follow up after donation":
+    "रक्तदान के बाद हाल-चाल",
+  "Donors who gave blood for a request. Call or message them: thank them and ask how they feel. Then mark it done. Their contact opens for this (logged) even after the request closes.":
+    "जिन डोनरों ने किसी रिक्वेस्ट के लिए रक्तदान किया। उन्हें कॉल या मैसेज करें: धन्यवाद दें और पूछें कि वे कैसा महसूस कर रहे हैं। फिर इसे पूरा मार्क करें। इसके लिए उनका संपर्क रिक्वेस्ट बंद होने के बाद भी खुलता है (हर बार दर्ज होता है)।",
+  "No donors waiting for a follow-up":
+    "किसी डोनर का हाल-चाल बाकी नहीं",
+  "When a donor tells us they gave blood, or you record it, they appear here.":
+    "जब कोई डोनर बताता है कि उसने रक्तदान किया, या आप इसे दर्ज करते हैं, तो वह यहाँ दिखता है।",
+  "Donated on {date}":
+    "{date} को रक्तदान किया",
+  "Donated":
+    "रक्तदान किया",
+  "Reported by the donor":
+    "डोनर ने बताया",
+  "Recorded by a Rakt Mitra":
+    "रक्त मित्र ने दर्ज किया",
+  "Mark followed up":
+    "हाल-चाल पूरा मार्क करें",
+  "Note for the team (optional)":
+    "टीम के लिए नोट (ज़रूरी नहीं)",
+  "e.g. Feeling fine, thanked them.":
+    "जैसे: ठीक महसूस कर रहे हैं, धन्यवाद दिया।",
+  "Donors to follow up":
+    "हाल-चाल बाकी वाले डोनर",
+  "Followed up":
+    "हाल-चाल लिया",
+  "Follow-up due":
+    "हाल-चाल बाकी",
+  "Follow-up recorded. Thank you.":
+    "हाल-चाल दर्ज हो गया। धन्यवाद।",
+  "Days after a request closes in which a donor can still say they donated":
+    "रिक्वेस्ट बंद होने के बाद कितने दिन तक डोनर बता सकता है कि उसने रक्तदान किया",
+  "Days a Rakt Mitra can open a donor's contact to follow up after their donation":
+    "रक्तदान के बाद हाल-चाल के लिए रक्त मित्र कितने दिन तक डोनर का संपर्क खोल सकता है",
+
+  // --- After donation (recently done) ------------------------------------------------
+  "Followed up recently":
+    "हाल ही में हाल-चाल लिया",
+  "by {name}, {when}":
+    "{name} ने, {when}",
 };
 
 export default hi;

@@ -72,7 +72,7 @@ export default async function ProfilePage() {
         <div className="order-last min-w-0 basis-full sm:order-none sm:flex-1 sm:basis-0">
           <p className="text-xl font-extrabold text-navy">{profile?.full_name}</p>
           <p className="text-sm text-muted-foreground">
-            {t("Volunteers see you as “{name}”. Only admins see your full name and photo.", {
+            {t("Rakt Mitras see you as “{name}”. Only admins see your full name and photo.", {
               name:
                 profile?.display_name ||
                 (prefs?.show_first_name || viewer.isStaff
@@ -144,7 +144,7 @@ export default async function ProfilePage() {
               <KeyValue label="Approximate map point">{donor.location.approx_lat !== null ? t("Added (~1 km)") : t("Not added")}</KeyValue>
             </dl>
           ) : (
-            <p className="text-sm text-muted-foreground">{t("No area added yet. Volunteers can't match you to nearby requests without it.")}</p>
+            <p className="text-sm text-muted-foreground">{t("No area added yet. Rakt Mitras can't match you to nearby requests without it.")}</p>
           )}
         </section>
       </div>
@@ -165,7 +165,7 @@ export default async function ProfilePage() {
           />
           <dl>
             <KeyValue label="Donations logged">{records.length}</KeyValue>
-            <KeyValue label="Verified by a volunteer">{verifiedRecords.length}</KeyValue>
+            <KeyValue label="Verified by a Rakt Mitra">{verifiedRecords.length}</KeyValue>
             <KeyValue label="Last donation">{lastDonation ? formatDate(lastDonation) : t("None logged yet")}</KeyValue>
           </dl>
           <Button asChild size="sm" className="mt-3">
@@ -226,12 +226,11 @@ export default async function ProfilePage() {
           }
         />
         <dl>
-          <KeyValue label="Visible in volunteer directory">{yesNo(prefs?.directory_visible)}</KeyValue>
-          <KeyValue label="Volunteers may contact me">{yesNo(prefs?.contact_consent)}</KeyValue>
+          <KeyValue label="Number hidden from patients">{yesNo(prefs?.hide_number)}</KeyValue>
           <KeyValue label="Currently open to contact">{yesNo(prefs?.open_to_contact)}</KeyValue>
           <KeyValue label="In-app request alerts">{yesNo(prefs?.emergency_alerts)}</KeyValue>
           <KeyValue label="Share verified donation summary">{yesNo(prefs?.show_donation_summary)}</KeyValue>
-          <KeyValue label="Volunteers see my first name">{yesNo(prefs?.show_first_name)}</KeyValue>
+          <KeyValue label="Rakt Mitras see my first name">{yesNo(prefs?.show_first_name)}</KeyValue>
           <KeyValue label="Preferred contact">{prefs ? t(CONTACT_METHOD_LABELS[prefs.preferred_contact_method]) : "—"}</KeyValue>
         </dl>
       </section>

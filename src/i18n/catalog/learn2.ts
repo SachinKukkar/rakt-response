@@ -164,14 +164,14 @@ const hi: Catalog = {
   Privacy: "प्राइवेसी",
   "Privacy and your profile": "प्राइवेसी और आपकी प्रोफ़ाइल",
   "Who can see my phone number?": "मेरा फ़ोन नंबर कौन देख सकता है?",
-  "A patient whose request a volunteer has verified, near you and only when you can give, one donor at a time; and authorised volunteers coordinating a verified request. Every view is recorded. Turn on Hide my number any time and patients won't see you.":
-    "वह मरीज़ जिसकी रिक्वेस्ट स्वयंसेवक ने जाँच ली हो, आपके पास का, और सिर्फ़ तब जब आप रक्तदान कर सकें, एक बार में एक डोनर; और जाँची हुई रिक्वेस्ट संभाल रहे अधिकृत स्वयंसेवक। हर बार देखे जाने का रिकॉर्ड रहता है। कभी भी “मेरा नंबर छिपाएँ” चालू करें, फिर मरीज़ आपको नहीं देखेंगे।",
+  "A patient whose request a Rakt Mitra has verified, near you and only when you can give, one donor at a time; and authorised Rakt Mitras coordinating a verified request. Every view is recorded. Turn on Hide my number any time and patients won't see you.":
+    "वह मरीज़ जिसकी रिक्वेस्ट रक्त मित्र ने जाँच ली हो, आपके पास का, और सिर्फ़ तब जब आप रक्तदान कर सकें, एक बार में एक डोनर; और जाँची हुई रिक्वेस्ट संभाल रहे अधिकृत रक्त मित्र। हर बार देखे जाने का रिकॉर्ड रहता है। कभी भी “मेरा नंबर छिपाएँ” चालू करें, फिर मरीज़ आपको नहीं देखेंगे।",
   "Can I hide my number or pause?": "क्या मैं अपना नंबर छिपा सकता/सकती हूँ या रुक सकता/सकती हूँ?",
   "Yes, any time. In Privacy & settings you can hide your number from patients, pause while you can't donate, and switch alerts on or off. Changes apply straight away ({link}).":
     "हाँ, कभी भी। “प्राइवेसी और सेटिंग्स” में आप मरीज़ों से अपना नंबर छिपा सकते हैं, जब रक्तदान न कर सकें तब रुक सकते हैं, और अलर्ट चालू या बंद कर सकते हैं। बदलाव तुरंत लागू होते हैं ({link})।",
   "Will I get SMS or WhatsApp spam?": "क्या मुझे SMS या WhatsApp पर फ़ालतू मैसेज आएँगे?",
-  "No. We don't send bulk messages. Updates are in-app. A patient or volunteer contacts you only about a verified request near you, and only when you can give.":
-    "नहीं। हम एक साथ ढेर सारे (बल्क) मैसेज नहीं भेजते। अपडेट ऐप में ही मिलते हैं। मरीज़ या स्वयंसेवक आपसे सिर्फ़ आपके पास की जाँची हुई रिक्वेस्ट के बारे में, और सिर्फ़ तब संपर्क करते हैं जब आप रक्तदान कर सकें।",
+  "No. We don't send bulk messages. Updates are in-app. A patient or Rakt Mitra contacts you only about a verified request near you, and only when you can give.":
+    "नहीं। हम एक साथ ढेर सारे (बल्क) मैसेज नहीं भेजते। अपडेट ऐप में ही मिलते हैं। मरीज़ या रक्त मित्र आपसे सिर्फ़ आपके पास की जाँची हुई रिक्वेस्ट के बारे में, और सिर्फ़ तब संपर्क करते हैं जब आप रक्तदान कर सकें।",
   "How do I delete my account?": "मैं अपना खाता कैसे डिलीट करूँ?",
   "Request deletion from Settings. You're removed from donor discovery at once and an administrator completes the request; your contact details, location and profile are anonymised, though aggregated, non-identifying counts may remain.":
     "सेटिंग्स में जाकर डिलीट करने की रिक्वेस्ट करें। आपको तुरंत डोनर खोज से हटा दिया जाता है और एक एडमिन रिक्वेस्ट पूरी करता है; आपकी संपर्क जानकारी, जगह और प्रोफ़ाइल से आपकी पहचान हटा दी जाती है, हालाँकि कुल गिनती वाले आँकड़े, जिनसे आपकी पहचान नहीं होती, रह सकते हैं।",
@@ -179,17 +179,20 @@ const hi: Catalog = {
   "What should I do in an emergency?": "इमरजेंसी में मुझे क्या करना चाहिए?",
   "Contact the treating hospital or the nearest licensed blood bank immediately, and don't wait for a response on Rakt Response. We can help find voluntary donors, but we are not an emergency service.":
     "तुरंत इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से संपर्क करें, और Rakt Response पर जवाब का इंतज़ार न करें। हम स्वैच्छिक डोनर ढूँढने में मदद कर सकते हैं, पर हम इमरजेंसी सेवा नहीं हैं।",
+  "Who is a Rakt Mitra?": "रक्त मित्र कौन होता है?",
+  "A Rakt Mitra (“blood friend”) is a Rakt Response team member approved by our administrators. Rakt Mitras check every request with the hospital, help families reach donors, and follow up with donors after they donate. Only approved Rakt Mitras can use the coordination tools.":
+    "रक्त मित्र Rakt Response टीम का वह सदस्य है जिसे हमारे एडमिन ने मंज़ूरी दी हो। रक्त मित्र हर रिक्वेस्ट की अस्पताल से जाँच करते हैं, परिवारों को डोनर तक पहुँचने में मदद करते हैं, और रक्तदान के बाद डोनर का हाल-चाल लेते हैं। तालमेल के टूल सिर्फ़ मंज़ूर रक्त मित्र ही इस्तेमाल कर सकते हैं।",
   "How are blood requests verified?": "खून की रिक्वेस्ट की पुष्टि कैसे होती है?",
-  "An authorised volunteer checks the details with the requester or hospital before marking a request verified. Unverified requests are never shown as confirmed.":
-    "किसी रिक्वेस्ट को पुष्टि हुई बताने से पहले, एक अधिकृत स्वयंसेवक रिक्वेस्ट करने वाले या अस्पताल से जानकारी जाँचता है। जिन रिक्वेस्ट की पुष्टि नहीं हुई, उन्हें कभी पक्का करके नहीं दिखाया जाता।",
+  "An authorised Rakt Mitra checks the details with the requester or hospital before marking a request verified. Unverified requests are never shown as confirmed.":
+    "किसी रिक्वेस्ट को पुष्टि हुई बताने से पहले, एक अधिकृत रक्त मित्र रिक्वेस्ट करने वाले या अस्पताल से जानकारी जाँचता है। जिन रिक्वेस्ट की पुष्टि नहीं हुई, उन्हें कभी पक्का करके नहीं दिखाया जाता।",
   "Does Rakt Response guarantee blood?": "क्या Rakt Response खून मिलने की गारंटी देता है?",
   "No. We coordinate between voluntary donors and people seeking blood; we don't store blood, reserve units, certify compatibility or guarantee a donor will be available. Hospitals and licensed blood banks remain responsible for supplying blood.":
     "नहीं। हम स्वैच्छिक डोनर और खून ढूँढ रहे लोगों के बीच तालमेल करते हैं; हम खून जमा नहीं करते, यूनिट बुक करके नहीं रखते, ब्लड मैच की पुष्टि नहीं करते और यह गारंटी भी नहीं देते कि डोनर मिलेगा। खून देने की ज़िम्मेदारी अस्पतालों और लाइसेंस वाले ब्लड बैंकों की ही रहती है।",
   Records: "रिकॉर्ड",
   "Donation records and stories": "रक्तदान रिकॉर्ड और कहानियाँ",
   "What do “self-reported” and “verified” donations mean?": "“खुद बताया गया” और “पुष्टि हुई” रक्तदान का क्या मतलब है?",
-  "{selfReported} means you added it yourself; it becomes {verified} once a volunteer or administrator checks it against supporting details. Neither label is a medical decision about when you can donate next.":
-    "{selfReported} का मतलब है कि आपने इसे खुद जोड़ा है; जब कोई स्वयंसेवक या एडमिन इसे सबूत वाली जानकारी से मिलाकर जाँच लेता है, तो इस पर {verified} का लेबल लग जाता है। इनमें से कोई भी लेबल इस बारे में डॉक्टरी फ़ैसला नहीं है कि आप अगली बार कब रक्तदान कर सकते हैं।",
+  "{selfReported} means you added it yourself; it becomes {verified} once a Rakt Mitra or administrator checks it against supporting details. Neither label is a medical decision about when you can donate next.":
+    "{selfReported} का मतलब है कि आपने इसे खुद जोड़ा है; जब कोई रक्त मित्र या एडमिन इसे सबूत वाली जानकारी से मिलाकर जाँच लेता है, तो इस पर {verified} का लेबल लग जाता है। इनमें से कोई भी लेबल इस बारे में डॉक्टरी फ़ैसला नहीं है कि आप अगली बार कब रक्तदान कर सकते हैं।",
   verified: "पुष्टि हुई",
   "How are stories published?": "कहानियाँ कैसे प्रकाशित होती हैं?",
   "Only after review by our team and with your consent. You choose what to share and can withdraw your story later.":
@@ -203,7 +206,7 @@ const hi: Catalog = {
     "लाइसेंस वाले ब्लड बैंक में रक्तदान के लिए स्टेराइल, एक बार इस्तेमाल होने वाला सामान लगता है।",
   "Registering isn't eligibility. The blood centre decides, every time.":
     "रजिस्टर करने का मतलब योग्यता नहीं है। हर बार फ़ैसला ब्लड बैंक करता है।",
-  "Patients see donors only after a volunteer verifies the request.": "स्वयंसेवक की जाँच के बाद ही मरीज़ों को डोनर दिखते हैं।",
+  "Patients see donors only after a Rakt Mitra verifies the request.": "रक्त मित्र की जाँच के बाद ही मरीज़ों को डोनर दिखते हैं।",
   "Emergency? Go to the treating hospital or a licensed blood bank now.":
     "इमरजेंसी है? अभी इलाज करने वाले अस्पताल या लाइसेंस वाले ब्लड बैंक जाएँ।",
   "Rakt Response is not a hospital or blood bank": "Rakt Response अस्पताल या ब्लड बैंक नहीं है",
@@ -215,15 +218,15 @@ const hi: Catalog = {
   "contact us": "हमसे संपर्क करें",
 
   // --- About (src/app/(site)/about/page.tsx) ----------------------------------------
-  "Rakt Response is a volunteer community team. Volunteers check every blood request with the hospital, then patients reach voluntary donors who can give right now.":
-    "Rakt Response स्वयंसेवकों की एक सामुदायिक टीम है। स्वयंसेवक हर रिक्वेस्ट की अस्पताल से जाँच करते हैं, फिर मरीज़ उन स्वैच्छिक डोनरों तक पहुँचते हैं जो अभी रक्तदान कर सकते हैं।",
+  "Rakt Response is a community team of Rakt Mitras. Rakt Mitras check every blood request with the hospital, then patients reach voluntary donors who can give right now.":
+    "Rakt Response रक्त मित्रों की एक सामुदायिक टीम है। रक्त मित्र हर रिक्वेस्ट की अस्पताल से जाँच करते हैं, फिर मरीज़ उन स्वैच्छिक डोनरों तक पहुँचते हैं जो अभी रक्तदान कर सकते हैं।",
   "Donor registry": "डोनर रजिस्टर",
   "Your blood group, area and availability. Hide your number any time.":
     "आपका ब्लड ग्रुप, इलाका और आप कब उपलब्ध हैं। अपना नंबर कभी भी छिपा सकते हैं।",
   "Donors": "डोनर",
   "Verified requests": "जाँची गई रिक्वेस्ट",
-  "Volunteers check every request with the requester or hospital first.":
-    "स्वयंसेवक हर रिक्वेस्ट को पहले रिक्वेस्ट करने वाले या अस्पताल से जाँचते हैं।",
+  "Rakt Mitras check every request with the requester or hospital first.":
+    "रक्त मित्र हर रिक्वेस्ट को पहले रिक्वेस्ट करने वाले या अस्पताल से जाँचते हैं।",
   "Checked": "जाँचा गया",
   "Log your donations and keep track of the gaps between them.": "अपने रक्तदान दर्ज करें और उनके बीच के अंतर का ध्यान रखें।",
   "Yours": "आपका",
@@ -246,7 +249,7 @@ const hi: Catalog = {
   "When you can give, a patient with a verified request near you can call you. Hide your number any time.":
     "जब आप रक्तदान कर सकें, पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपको फ़ोन कर सकता है। अपना नंबर कभी भी छिपा सकते हैं।",
   "We verify": "हम जाँच करते हैं",
-  "A volunteer checks each request with the requester or hospital.": "एक स्वयंसेवक हर रिक्वेस्ट को रिक्वेस्ट करने वाले या अस्पताल से जाँचता है।",
+  "A Rakt Mitra checks each request with the requester or hospital.": "एक रक्त मित्र हर रिक्वेस्ट को रिक्वेस्ट करने वाले या अस्पताल से जाँचता है।",
   "You choose": "आप चुनते हैं",
   "Join a request when you can give. Saying no is always fine.": "जब दे सकें, रिक्वेस्ट से जुड़ें। मना करना हमेशा ठीक है।",
   "You log it": "आप दर्ज करते हैं",
@@ -254,12 +257,12 @@ const hi: Catalog = {
   "About us": "हमारे बारे में",
   "People helping": "लोगों की मदद करते",
   "people.": "लोग।",
-  "Rakt Response is a volunteer community team. We help donors and people seeking blood find each other, safely.":
-    "Rakt Response स्वयंसेवकों की एक सामुदायिक टीम है। हम डोनर और खून ढूँढ रहे लोगों को सुरक्षित तरीके से एक-दूसरे तक पहुँचने में मदद करते हैं।",
-  "Volunteer-run": "स्वयंसेवकों द्वारा",
+  "Rakt Response is a community team of Rakt Mitras. We help donors and people seeking blood find each other, safely.":
+    "Rakt Response रक्त मित्रों की एक सामुदायिक टीम है। हम डोनर और खून ढूँढ रहे लोगों को सुरक्षित तरीके से एक-दूसरे तक पहुँचने में मदद करते हैं।",
+  "Run by Rakt Mitras": "रक्त मित्रों द्वारा",
   "Never paid": "कभी पैसे नहीं",
-  "Every request is checked by a volunteer before it shows as verified.":
-    "पुष्टि हुई दिखने से पहले हर रिक्वेस्ट को एक स्वयंसेवक जाँचता है।",
+  "Every request is checked by a Rakt Mitra before it shows as verified.":
+    "पुष्टि हुई दिखने से पहले हर रिक्वेस्ट को एक रक्त मित्र जाँचता है।",
   "We connect people in need with potential blood donors.": "हम ज़रूरतमंद लोगों को संभावित रक्तदाताओं से जोड़ते हैं।",
   "We respect your privacy and handle shared information responsibly.":
     "हम आपकी प्राइवेसी का सम्मान करते हैं और साझा की गई जानकारी को ज़िम्मेदारी से संभालते हैं।",
@@ -279,8 +282,8 @@ const hi: Catalog = {
   "How it works": "यह कैसे काम करता है",
   "Five simple steps": "पाँच आसान कदम",
   "Who we are": "हम कौन हैं",
-  "Rakt Response is run by a community team of volunteers. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, quicker and more respectful for everyone involved.":
-    "Rakt Response को स्वयंसेवकों की एक सामुदायिक टीम चलाती है। हम डोनर हैं, मरीज़ों के परिवार वाले हैं, और ऐसे लोग हैं जिन्होंने देखा है कि जल्दी में खून ढूँढना कितना तनाव भरा हो सकता है। हम इसलिए साथ आए ताकि यह खोज सबके लिए ज़्यादा व्यवस्थित, ज़्यादा तेज़ और ज़्यादा सम्मान भरी हो।",
+  "Rakt Response is run by a community team of Rakt Mitras. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, quicker and more respectful for everyone involved.":
+    "Rakt Response को रक्त मित्रों की एक सामुदायिक टीम चलाती है। हम डोनर हैं, मरीज़ों के परिवार वाले हैं, और ऐसे लोग हैं जिन्होंने देखा है कि जल्दी में खून ढूँढना कितना तनाव भरा हो सकता है। हम इसलिए साथ आए ताकि यह खोज सबके लिए ज़्यादा व्यवस्थित, ज़्यादा तेज़ और ज़्यादा सम्मान भरी हो।",
   "We are not a hospital or a blood bank. Our role is coordination: helping the right people talk to each other, so that donation can happen at a licensed blood centre.":
     "हम अस्पताल या ब्लड बैंक नहीं हैं। हमारा काम तालमेल है: सही लोगों की आपस में बात कराना, ताकि रक्तदान किसी लाइसेंस वाले ब्लड बैंक में हो सके।",
   "How we report our work and protect your data": "हम अपने काम की जानकारी कैसे देते हैं और आपका डेटा कैसे बचाते हैं",

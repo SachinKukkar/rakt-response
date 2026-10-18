@@ -39,7 +39,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="max-w-2xl space-y-6">
-      <PageHeader title="Privacy & settings" description="Choose how patients and volunteers can reach you. You can change these any time." />
+      <PageHeader title="Privacy & settings" description="Choose how patients and Rakt Mitras can reach you. You can change these any time." />
 
       <section className="surface p-5" aria-labelledby="consent-heading">
         <SectionHeading id="consent-heading" title="Contact & availability" as="h3" />

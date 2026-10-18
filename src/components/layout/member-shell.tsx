@@ -19,7 +19,7 @@ function bottomItems(viewer: Viewer): NavItem[] {
   } else if (viewer.isStaff) {
     items.push(
       { href: "/requests", label: "Requests", icon: "requests" },
-      { href: "/volunteer", label: "Volunteer", icon: "volunteer" },
+      { href: "/volunteer", label: "Rakt Mitra", icon: "volunteer" },
       { href: "/donations", label: "Donations", icon: "donations" },
     );
   } else {
@@ -49,7 +49,7 @@ function sideGroups(viewer: Viewer) {
   ];
   if (viewer.isStaff && !viewer.isAdmin) {
     groups.push({
-      title: "Volunteer",
+      title: "Rakt Mitra",
       items: [
         { href: "/volunteer", label: "Overview", icon: "volunteer", exact: true },
         { href: "/volunteer/requests", label: "Requests", icon: "list" },
@@ -71,7 +71,7 @@ function sideGroups(viewer: Viewer) {
         { href: "/admin/donations", label: "Donations", icon: "donations" },
         { href: "/admin/data-checks", label: "Data checks", icon: "audit" },
         { href: "/admin/users", label: "Users & roles", icon: "profile" },
-        { href: "/admin/volunteers", label: "Volunteers", icon: "volunteer" },
+        { href: "/admin/volunteers", label: "Rakt Mitras", icon: "volunteer" },
         { href: "/admin/stories", label: "Stories", icon: "stories" },
         { href: "/admin/camps", label: "Camps & impact data", icon: "camps" },
         { href: "/admin/analytics", label: "Analytics", icon: "chart" },

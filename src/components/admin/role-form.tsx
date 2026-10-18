@@ -23,12 +23,12 @@ export function RoleForm({
         <label className="space-y-1 text-xs font-semibold text-navy">
           {t("Role")}
           <select name="role" value={role} onChange={(e) => setRole(e.target.value as "volunteer" | "admin")} className={selectClass}>
-            <option value="volunteer">{t("Volunteer")}</option>
+            <option value="volunteer">{t("Rakt Mitra")}</option>
             <option value="admin">{t("Administrator")}</option>
           </select>
         </label>
         <fieldset className="flex flex-wrap items-end gap-x-4 text-sm" disabled={role === "admin"}>
-          <legend className="sr-only">{t("Volunteer permissions")}</legend>
+          <legend className="sr-only">{t("Rakt Mitra permissions")}</legend>
           <label className="flex min-h-11 items-center gap-2">
             <input type="checkbox" name="can_verify_requests" defaultChecked={current?.can_verify_requests ?? true} className="size-5 accent-primary" />
             {t("Verify requests")}

@@ -49,8 +49,8 @@ const hi: Catalog = {
   "Go to sign in": "साइन इन पर जाएँ",
   "We sent a confirmation link to the email address you registered with. Open it on this phone or any device to activate your account.":
     "जिस ईमेल से आपने रजिस्टर किया, उस पर हमने पुष्टि का लिंक भेजा है। अपना खाता चालू करने के लिए उसे इस फ़ोन या किसी भी फ़ोन/कंप्यूटर पर खोलें।",
-  "Patients and volunteers can't see you until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.":
-    "जब तक आप ईमेल की पुष्टि नहीं करते, मरीज़ और स्वयंसेवक आपको नहीं देख सकते। ईमेल आने में कुछ मिनट लग सकते हैं — Spam या Promotions फ़ोल्डर भी देखें।",
+  "Patients and Rakt Mitras can't see you until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.":
+    "जब तक आप ईमेल की पुष्टि नहीं करते, मरीज़ और रक्त मित्र आपको नहीं देख सकते। ईमेल आने में कुछ मिनट लग सकते हैं — Spam या Promotions फ़ोल्डर भी देखें।",
   "Didn't get the email? Enter your address to resend it": "ईमेल नहीं मिला? अपना ईमेल लिखें, हम फिर से भेज देंगे",
   "Resend verification email": "पुष्टि वाला ईमेल फिर से भेजें",
 
@@ -66,7 +66,7 @@ const hi: Catalog = {
   "Only what's needed to coordinate safely.": "सिर्फ़ उतनी जानकारी जितनी सुरक्षित तालमेल के लिए ज़रूरी है।",
   "Where are you based?": "आप कहाँ रहते हैं?",
   "Area details only — never your exact address.": "सिर्फ़ इलाके की जानकारी — आपका पूरा पता कभी नहीं।",
-  "Self-reported until a volunteer verifies it.": "जब तक स्वयंसेवक पुष्टि न करे, यह आपकी बताई जानकारी मानी जाएगी।",
+  "Self-reported until a Rakt Mitra verifies it.": "जब तक रक्त मित्र पुष्टि न करे, यह आपकी बताई जानकारी मानी जाएगी।",
   "Review & confirm": "जाँचें और पक्का करें",
   "Check everything before you register.": "रजिस्टर करने से पहले सब कुछ एक बार देख लें।",
   "Step {current} of {total}": "{total} में से चरण {current}",
@@ -100,10 +100,10 @@ const hi: Catalog = {
     "हम आपकी जन्म तारीख नहीं पूछते। आप रक्तदान कर सकते हैं या नहीं, इसका आखिरी फ़ैसला हमेशा ब्लड बैंक में होता है।",
   "Donation experience": "रक्तदान का अनुभव",
   "Preferred display name": "दिखने वाला नाम",
-  "Shown to volunteers instead of your full name. Optional.": "स्वयंसेवकों को आपके पूरे नाम की जगह यह नाम दिखेगा। ज़रूरी नहीं।",
+  "Shown to Rakt Mitras instead of your full name. Optional.": "रक्त मित्रों को आपके पूरे नाम की जगह यह नाम दिखेगा। ज़रूरी नहीं।",
   "Mobile number": "मोबाइल नंबर",
-  "Kept private. Shared with an authorised volunteer only if you allow contact.":
-    "यह छिपा रहता है। आप संपर्क की अनुमति देंगे, तभी यह अधिकृत स्वयंसेवक को दिखेगा।",
+  "Kept private. Shared with an authorised Rakt Mitra only if you allow contact.":
+    "यह छिपा रहता है। आप संपर्क की अनुमति देंगे, तभी यह अधिकृत रक्त मित्र को दिखेगा।",
   "Preferred contact method": "संपर्क का पसंदीदा तरीका",
   "You can add a profile photo later from your profile. We don't ask for medical history.":
     "प्रोफ़ाइल फ़ोटो आप बाद में अपनी प्रोफ़ाइल से लगा सकते हैं। हम आपकी बीमारियों का इतिहास नहीं पूछते।",
@@ -139,9 +139,9 @@ const hi: Catalog = {
   "Add another donation": "एक और रक्तदान जोड़ें",
 
   // Review step
-  "Volunteers can reach me when my blood group is needed nearby": "जब पास में मेरे ब्लड ग्रुप की ज़रूरत हो, तो स्वयंसेवक मुझसे संपर्क कर सकते हैं",
-  "Only Rakt Response volunteers and admins see your name, blood group and area. Never the public or other donors. Your number is shown only for a verified request, and every view is logged. Change this any time in Privacy & settings.":
-    "आपका नाम, ब्लड ग्रुप और इलाका सिर्फ़ Rakt Response के स्वयंसेवक और एडमिन देखते हैं। आम लोग या दूसरे डोनर कभी नहीं। आपका नंबर सिर्फ़ जाँची गई रिक्वेस्ट के लिए दिखता है, और हर बार देखने का रिकॉर्ड रहता है। इसे कभी भी प्राइवेसी और सेटिंग्स में बदल सकते हैं।",
+  "Rakt Mitras can reach me when my blood group is needed nearby": "जब पास में मेरे ब्लड ग्रुप की ज़रूरत हो, तो रक्त मित्र मुझसे संपर्क कर सकते हैं",
+  "Only Rakt Mitras and admins see your name, blood group and area. Never the public or other donors. Your number is shown only for a verified request, and every view is logged. Change this any time in Privacy & settings.":
+    "आपका नाम, ब्लड ग्रुप और इलाका सिर्फ़ Rakt Response के रक्त मित्र और एडमिन देखते हैं। आम लोग या दूसरे डोनर कभी नहीं। आपका नंबर सिर्फ़ जाँची गई रिक्वेस्ट के लिए दिखता है, और हर बार देखने का रिकॉर्ड रहता है। इसे कभी भी प्राइवेसी और सेटिंग्स में बदल सकते हैं।",
   Name: "नाम",
   "Donor details": "डोनर की जानकारी",
   "Registering as": "किस रूप में जुड़ रहे हैं",
@@ -180,8 +180,8 @@ const hi: Catalog = {
   // --- Approximate location (map) ---------------------------------------------------
   "Loading map": "नक्शा लोड हो रहा है",
   "Approximate location (optional)": "अंदाज़न जगह (ज़रूरी नहीं)",
-  "Helps volunteers find nearby donors. We store it rounded to about 1 km and never show it publicly.":
-    "इससे स्वयंसेवक पास के डोनर ढूँढ पाते हैं। हम इसे लगभग 1 किमी तक अंदाज़न रखते हैं और कभी सबको नहीं दिखाते।",
+  "Helps Rakt Mitras find nearby donors. We store it rounded to about 1 km and never show it publicly.":
+    "इससे रक्त मित्र पास के डोनर ढूँढ पाते हैं। हम इसे लगभग 1 किमी तक अंदाज़न रखते हैं और कभी सबको नहीं दिखाते।",
   "Approximately {lat}, {lng}": "लगभग {lat}, {lng}",
   "Remove approximate location": "अंदाज़न जगह हटाएँ",
   "Locating…": "जगह ढूँढी जा रही है…",

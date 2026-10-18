@@ -15,7 +15,7 @@ export function whatsappLink(e164: string, message?: string): string {
 }
 
 export function volunteerWhatsappMessage(referenceCode: string): string {
-  return `Hello, this is a Rakt Response volunteer reaching out about blood donation request ${referenceCode}. Is now a good time to talk? You are free to say no.`;
+  return `Hello, this is a Rakt Mitra from Rakt Response reaching out about blood donation request ${referenceCode}. Is now a good time to talk? You are free to say no.`;
 }
 
 /** From a patient's family to a donor who can give now. */

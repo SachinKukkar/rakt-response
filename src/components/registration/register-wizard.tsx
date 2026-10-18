@@ -42,7 +42,7 @@ const STEP_META: Record<StepKey, { title: string; subtitle: string }> = {
   account: { title: "Create your account", subtitle: "Your login details stay private." },
   donor: { title: "About you as a donor", subtitle: "Only what's needed to coordinate safely." },
   location: { title: "Where are you based?", subtitle: "Area details only — never your exact address." },
-  history: { title: "Donation history", subtitle: "Self-reported until a volunteer verifies it." },
+  history: { title: "Donation history", subtitle: "Self-reported until a Rakt Mitra verifies it." },
   review: { title: "Review & confirm", subtitle: "Check everything before you register." },
 };
 
@@ -374,14 +374,14 @@ export function RegisterWizard() {
                 </div>
               </>
             ) : null}
-            <Field id="display_name" label="Preferred display name" error={e("donor.display_name")} hint="Shown to volunteers instead of your full name. Optional.">
+            <Field id="display_name" label="Preferred display name" error={e("donor.display_name")} hint="Shown to Rakt Mitras instead of your full name. Optional.">
               <Input {...fieldAria("display_name", e("donor.display_name"), true)} autoComplete="nickname" {...register("donor.display_name")} />
             </Field>
             <Field
               id="phone"
               label="Mobile number"
               error={e("donor.phone")}
-              hint="Volunteers can reach you on it for verified requests, and patients too unless you hide your number."
+              hint="Rakt Mitras can reach you on it for verified requests, and patients too unless you hide your number."
             >
               <Input {...fieldAria("phone", e("donor.phone"), true)} type="tel" inputMode="tel" autoComplete="tel" placeholder="98765 43210" {...register("donor.phone")} />
             </Field>
@@ -586,7 +586,7 @@ export function RegisterWizard() {
                 checked={hideNumber}
                 onCheckedChange={(v) => setValue("consent.hide_number", v)}
                 title="Hide my number from patients"
-                description="Off: when you can give, a patient with a verified request near you sees your first name and area and can reach you on the channel you chose. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests. Change this any time in Privacy & settings."
+                description="Off: when you can give, a patient with a verified request near you sees your first name and area and can reach you on the channel you chose. On: patients don't see you, and you can still join requests yourself. Rakt Mitras can always reach you for verified requests. Change this any time in Privacy & settings."
               />
             ) : null}
           </div>

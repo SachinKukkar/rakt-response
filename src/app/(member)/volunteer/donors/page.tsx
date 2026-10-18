@@ -79,7 +79,7 @@ async function Results({ params, requestContext }: { params: Params; requestCont
       <EmptyState
         icon={Users}
         title="No donors match these filters"
-        description="Try a wider area, remove the 'open to contact' filter, or search nearby districts. Only donors who opted into the directory appear."
+        description="Try a wider area, remove the 'open to contact' filter, or search nearby districts."
       />
     );
   }
@@ -178,9 +178,9 @@ export default async function DonorDirectoryPage({ searchParams }: PageProps<"/v
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Volunteer"
+        eyebrow="Rakt Mitra"
         title="Donor directory"
-        description="Only donors who opted in appear. Contact details are never listed — they are released per request, with consent, and every access is logged."
+        description="Contact details are never listed here. They open for one verified request at a time, and every access is logged."
       />
       <section className="surface p-3" aria-label={t("Request context")}>
         {usableContext ? (

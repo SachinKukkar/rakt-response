@@ -26,7 +26,7 @@ export interface SampleTestimonial {
 export const SAMPLE_TESTIMONIALS: SampleTestimonial[] = [
   {
     quote: {
-      en: "Signing up took two minutes. When a verified request for my blood group came up nearby, a volunteer called, explained everything and let me decide.",
+      en: "Signing up took two minutes. When a verified request for my blood group came up nearby, a Rakt Mitra called, explained everything and let me decide.",
       hi: "साइन अप करने में बस दो मिनट लगे। जब पास में मेरे ब्लड ग्रुप की एक जाँची हुई रिक्वेस्ट आई, तो एक वॉलंटियर ने फ़ोन किया, सब कुछ समझाया और फ़ैसला मुझ पर छोड़ा।",
     },
     name: "Neha K.",
@@ -35,7 +35,7 @@ export const SAMPLE_TESTIMONIALS: SampleTestimonial[] = [
   },
   {
     quote: {
-      en: "It was 2 a.m. and we didn't know whom to call. A volunteer checked our request with the hospital and helped us reach donors who had agreed to be contacted.",
+      en: "It was 2 a.m. and we didn't know whom to call. A Rakt Mitra checked our request with the hospital and helped us reach donors who had agreed to be contacted.",
       hi: "रात के 2 बजे थे और हमें समझ नहीं आ रहा था कि किसे फ़ोन करें। एक वॉलंटियर ने अस्पताल से हमारी रिक्वेस्ट की पुष्टि की और उन डोनरों तक पहुँचने में मदद की जिन्होंने संपर्क के लिए हाँ कहा था।",
     },
     name: "Rahul M.",
@@ -48,7 +48,7 @@ export const SAMPLE_TESTIMONIALS: SampleTestimonial[] = [
       hi: "हम पहले हर रिक्वेस्ट की अस्पताल से जाँच करते हैं। उसके बाद ही परिवार उन डोनरों को फ़ोन कर पाता है जो अभी रक्तदान कर सकते हैं।",
     },
     name: "Farhan A.",
-    role: { en: "Volunteer", hi: "वॉलंटियर" },
+    role: { en: "Rakt Mitra", hi: "वॉलंटियर" },
     city: "Pune",
   },
 ];
@@ -77,17 +77,17 @@ export const SAMPLE_STORIES: SampleStory[] = [
     donation_type: "sdp",
     title: { en: "The call I almost didn't answer", hi: "वो कॉल जिसे मैं लगभग नहीं उठाने वाली थी" },
     excerpt: {
-      en: "An unknown number during a work meeting turned out to be a volunteer with a verified platelet request near my home.",
+      en: "An unknown number during a work meeting turned out to be a Rakt Mitra with a verified platelet request near my home.",
       hi: "ऑफ़िस मीटिंग के बीच आया एक अनजान नंबर — फ़ोन एक वॉलंटियर का था, मेरे घर के पास प्लेटलेट्स की एक जाँची हुई रिक्वेस्ट के लिए।",
     },
     body: {
       en: `I registered on Rakt Response after a friend's father needed platelets last year. I chose to be contacted only for verified requests, by phone, and then honestly forgot about it.
 
-Months later an unknown number rang during a meeting. I nearly let it go. It was a volunteer who said a hospital ten minutes from my home had a verified request for SDP, and asked whether I was free and willing. She was clear that saying no was completely fine.
+Months later an unknown number rang during a meeting. I nearly let it go. It was a Rakt Mitra who said a hospital ten minutes from my home had a verified request for SDP, and asked whether I was free and willing. She was clear that saying no was completely fine.
 
 I went that evening. The blood centre did its own checks before the donation, and the session took longer than whole blood, so I was glad she had told me to keep a few hours free.
 
-What stayed with me is that my number was never posted anywhere. I was asked, I decided, and the volunteer called the next day only to say thank you.`,
+What stayed with me is that my number was never posted anywhere. I was asked, I decided, and the Rakt Mitra called the next day only to say thank you.`,
       hi: `पिछले साल एक दोस्त के पिताजी को प्लेटलेट्स की ज़रूरत पड़ी थी, उसके बाद मैंने Rakt Response पर रजिस्टर किया। मैंने चुना कि मुझसे सिर्फ़ जाँची हुई रिक्वेस्ट के लिए, फ़ोन पर संपर्क किया जाए — और फिर सच कहूँ तो मैं भूल ही गई।
 
 कई महीने बाद एक मीटिंग के बीच एक अनजान नंबर से फ़ोन आया। मैं लगभग काटने वाली थी। वो एक वॉलंटियर थीं। उन्होंने बताया कि मेरे घर से दस मिनट दूर एक अस्पताल में SDP की एक जाँची हुई रिक्वेस्ट है, और पूछा कि क्या मैं आ सकती हूँ और आना चाहती हूँ। उन्होंने साफ़ कहा कि मना करना भी बिल्कुल ठीक है।
@@ -112,9 +112,9 @@ What stayed with me is that my number was never posted anywhere. I was asked, I 
     body: {
       en: `When my father was admitted with dengue, the doctors told us his platelet count was falling and that he might need platelets. We started calling everyone we knew. By midnight we were exhausted and getting nowhere.
 
-A cousin sent me the Rakt Response request form. It asked for the hospital, the blood group and what was needed, and it said clearly that a volunteer would check the request before sharing it with anyone.
+A cousin sent me the Rakt Response request form. It asked for the hospital, the blood group and what was needed, and it said clearly that a Rakt Mitra would check the request before sharing it with anyone.
 
-The volunteer called the hospital first, then called me. Over the next day, two donors who had agreed to be contacted reached the blood centre. The doctors decided everything about my father's treatment; the platform only helped us find people willing to help.
+The Rakt Mitra called the hospital first, then called me. Over the next day, two donors who had agreed to be contacted reached the blood centre. The doctors decided everything about my father's treatment; the platform only helped us find people willing to help.
 
 He is home now. I wrote this because I wish we had known about it on the first night, not the second.`,
       hi: `जब पापा डेंगू के साथ भर्ती हुए, डॉक्टरों ने बताया कि उनके प्लेटलेट्स गिर रहे हैं और प्लेटलेट्स चढ़ाने पड़ सकते हैं। हमने हर जानने वाले को फ़ोन करना शुरू किया। आधी रात तक हम थक चुके थे और कुछ हाथ नहीं लगा था।
@@ -135,11 +135,11 @@ He is home now. I wrote this because I wish we had known about it on the first n
     donation_type: null,
     title: { en: "What I learned verifying my first request", hi: "पहली रिक्वेस्ट की जाँच करके मैंने क्या सीखा" },
     excerpt: {
-      en: "Before anyone is contacted, a volunteer confirms the request with the hospital. My first one taught me why that step matters.",
+      en: "Before anyone is contacted, a Rakt Mitra confirms the request with the hospital. My first one taught me why that step matters.",
       hi: "किसी से संपर्क से पहले वॉलंटियर अस्पताल से रिक्वेस्ट की पुष्टि करता है। मेरी पहली रिक्वेस्ट ने सिखाया कि यह क्यों ज़रूरी है।",
     },
     body: {
-      en: `I joined as a volunteer thinking the job was mostly about finding donors quickly. My first request taught me that the most important step comes before that.
+      en: `I joined as a Rakt Mitra thinking the job was mostly about finding donors quickly. My first request taught me that the most important step comes before that.
 
 The request said "urgent, four units". When I called the hospital, the blood bank had already arranged two units and needed donors only for the rest, and only the next morning. Without that call, we would have woken up donors in the middle of the night for nothing.
 

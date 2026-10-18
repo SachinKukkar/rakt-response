@@ -27,7 +27,7 @@ export default async function DonationsPage({ searchParams }: PageProps<"/donati
     <div className="space-y-6">
       <PageHeader
         title="Donation history"
-        description="Whole blood and SDP are tracked separately. New records are self-reported until an authorised volunteer verifies them."
+        description="Whole blood and SDP are tracked separately. New records are self-reported until an authorised Rakt Mitra verifies them."
         actions={
           viewer.profile?.is_donor ? (
             <Button asChild>
@@ -46,8 +46,8 @@ export default async function DonationsPage({ searchParams }: PageProps<"/donati
             : params.saved === "edited"
             ? t("Changes saved.")
             : params.saved === "recheck"
-              ? t("Changes saved. The record will be checked again by a volunteer.")
-              : t("Donation saved. It shows as self-reported until a volunteer verifies it.")}
+              ? t("Changes saved. The record will be checked again by a Rakt Mitra.")
+              : t("Donation saved. It shows as self-reported until a Rakt Mitra verifies it.")}
         </p>
       ) : null}
       <DonationSummaryCards summary={donor.summary} nextEligible={nextEligible} />
@@ -57,7 +57,7 @@ export default async function DonationsPage({ searchParams }: PageProps<"/donati
           <EmptyState
             icon={Droplet}
             title="No donations recorded yet"
-            description="Add donations you've made — even from years ago — so volunteers can coordinate better."
+            description="Add donations you've made — even from years ago — so Rakt Mitras can coordinate better."
             action={
               viewer.profile?.is_donor ? (
                 <Button asChild variant="outline">

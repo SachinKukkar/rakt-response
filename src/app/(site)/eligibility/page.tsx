@@ -142,7 +142,7 @@ export default async function EligibilityPage() {
 
         <Notice title="Unsure about something?" icon={MessageCircleQuestion}>
           {t(
-            "Ask a licensed blood centre or your own doctor. Rakt Response volunteers can't give medical advice or confirm whether you can donate.",
+            "Ask a licensed blood centre or your own doctor. Rakt Mitras can't give medical advice or confirm whether you can donate.",
           )}
         </Notice>
 

@@ -25,7 +25,7 @@ export default async function ContactPage() {
   const t = await getT();
   const settings = await getPublicSettings();
   const [needBloodBefore, needBloodAfter] = t(
-    "Contact the treating hospital or the nearest licensed blood bank first. Then {link} so our volunteers can help find voluntary donors.",
+    "Contact the treating hospital or the nearest licensed blood bank first. Then {link} so our Rakt Mitras can help find voluntary donors.",
   ).split("{link}");
   const hasChannels = settings.contactEmail || settings.contactPhone || settings.whatsapp;
   return (
@@ -34,7 +34,7 @@ export default async function ContactPage() {
         eyebrow={t("Contact")}
         title={t("Talk to")}
         highlight={t("the team.")}
-        subtitle={t("Volunteers reply as fast as they can. We're not an emergency service.")}
+        subtitle={t("Rakt Mitras reply as fast as they can. We're not an emergency service.")}
         photo={PHOTOS.holdingHand}
       />
       <div className="page-container py-14 sm:py-20">

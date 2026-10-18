@@ -31,8 +31,8 @@ const CHOICE_LABELS: Record<string, string> = {
   hide_number: "Number hidden from patients",
   emergency_alerts: "Request alerts",
   terms: "Privacy policy & terms",
-  directory: "Volunteer directory",
-  contact: "Direct contact by volunteers",
+  directory: "Rakt Mitra directory",
+  contact: "Direct contact by Rakt Mitras",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -123,7 +123,7 @@ export default async function AdminDonorPage({ params, searchParams }: PageProps
             <KeyValue label="Hidden from patients">{donor.preferences?.hide_number ? "Yes" : "No"}</KeyValue>
             <KeyValue label="Open to contact">{donor.preferences?.open_to_contact ? "Yes" : "No"}</KeyValue>
             <KeyValue label="Alerts">{donor.preferences?.emergency_alerts ? "On" : "Off"}</KeyValue>
-            <KeyValue label="Volunteers">{donor.preferences?.contact_consent ? "Contact directly" : "Ask first"}</KeyValue>
+            <KeyValue label="Rakt Mitras">{donor.preferences?.contact_consent ? "Contact directly" : "Ask first"}</KeyValue>
             <KeyValue label="Directory">{donor.preferences?.directory_visible ? "Visible" : "Hidden"}</KeyValue>
           </dl>
           <ul className="mt-2 space-y-1 text-xs text-muted-foreground">

@@ -24,6 +24,23 @@ describe("translate", () => {
     expect(translate("hi", "Request Memorial Hospital")).toBe("Request Memorial Hospital");
   });
 
+  it("says Rakt Mitra where the database still says volunteer, in English and Hindi", () => {
+    // Database messages keep the old word; the site shows its title for the team.
+    expect(translate("en", "Only authorised volunteers can update request status")).toBe("Only authorised Rakt Mitras can update request status");
+    expect(translate("en", "You are now a Rakt Response volunteer")).toBe("You are now a Rakt Mitra");
+    expect(translate("hi", "Only authorised volunteers can record follow-ups")).toBe("सिर्फ़ अधिकृत रक्त मित्र ही हाल-चाल दर्ज कर सकते हैं");
+    // Addresses and identifiers are never touched.
+    expect(translate("en", "/volunteer/requests")).toBe("/volunteer/requests");
+    expect(translate("en", "volunteer_assignments")).toBe("volunteer_assignments");
+  });
+
+  it("has no volunteer wording left in the Hindi catalog", () => {
+    for (const [english, hindi] of Object.entries(HINDI)) {
+      expect(english, english).not.toMatch(/\bvolunteers?\b/i);
+      expect(hindi, english).not.toMatch(/स्वयंसेवक|वॉलंटियर/);
+    }
+  });
+
   it("falls back to English for anything not yet translated", () => {
     expect(translate("hi", "A sentence nobody has translated")).toBe("A sentence nobody has translated");
   });

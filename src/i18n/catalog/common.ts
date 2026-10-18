@@ -40,16 +40,16 @@ const hi: Catalog = {
   "Privacy policy": "प्राइवेसी नीति",
   "Terms of use": "उपयोग की शर्तें",
   "Share your story": "अपनी कहानी बताएँ",
-  "Built by volunteers, for voluntary donors.": "स्वयंसेवकों द्वारा, स्वैच्छिक रक्तदाताओं के लिए।",
-  "Rakt Response is a volunteer coordination platform. It does not store blood, certify compatibility or replace a hospital or licensed blood bank. In an emergency, contact the treating hospital or the nearest licensed blood bank immediately.":
-    "Rakt Response स्वयंसेवकों का एक तालमेल मंच है। यह खून जमा नहीं करता, ब्लड मैच की पुष्टि नहीं करता और अस्पताल या लाइसेंस वाले ब्लड बैंक की जगह नहीं लेता। इमरजेंसी में तुरंत इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से संपर्क करें।",
+  "Built by Rakt Mitras, for voluntary donors.": "रक्त मित्रों द्वारा, स्वैच्छिक रक्तदाताओं के लिए।",
+  "Rakt Response is a coordination platform run by Rakt Mitras. It does not store blood, certify compatibility or replace a hospital or licensed blood bank. In an emergency, contact the treating hospital or the nearest licensed blood bank immediately.":
+    "Rakt Response रक्त मित्रों का एक तालमेल मंच है। यह खून जमा नहीं करता, ब्लड मैच की पुष्टि नहीं करता और अस्पताल या लाइसेंस वाले ब्लड बैंक की जगह नहीं लेता। इमरजेंसी में तुरंत इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से संपर्क करें।",
 
   // Member navigation (src/components/layout/member-shell.tsx)
   Requests: "रिक्वेस्ट",
   Donations: "रक्तदान",
   Profile: "प्रोफ़ाइल",
   Admin: "एडमिन",
-  Volunteer: "स्वयंसेवक",
+  "Rakt Mitra": "रक्त मित्र",
   "My account": "मेरा खाता",
   "Donation history": "रक्तदान का रिकॉर्ड",
   "Privacy & settings": "प्राइवेसी और सेटिंग्स",
@@ -63,7 +63,7 @@ const hi: Catalog = {
   "Coordinate requests": "रिक्वेस्ट संभालें",
   "Data checks": "डेटा जाँच",
   "Users & roles": "यूज़र और भूमिकाएँ",
-  Volunteers: "स्वयंसेवक",
+  "Rakt Mitras": "रक्त मित्र",
   "Camps & impact data": "कैंप और असर का डेटा",
   Analytics: "आँकड़े",
   "Audit logs": "ऑडिट लॉग",
@@ -124,7 +124,7 @@ const hi: Catalog = {
 
   // --- Verification -----------------------------------------------------------
   "Self-reported": "खुद बताया गया",
-  "Volunteer-verified": "स्वयंसेवक ने जाँचा",
+  "Verified by a Rakt Mitra": "रक्त मित्र ने जाँचा",
   "Administrator-verified": "एडमिन ने जाँचा",
   Imported: "इम्पोर्ट किया गया",
   "Pending review": "जाँच बाकी",
@@ -138,11 +138,11 @@ const hi: Catalog = {
   "Donor story": "डोनर की कहानी",
   "Patient attendant / family": "मरीज़ के परिजन",
   Recipient: "खून पाने वाले",
-  "Volunteer experience": "स्वयंसेवक का अनुभव",
+  "Rakt Mitra experience": "रक्त मित्र का अनुभव",
   "Donation camp": "रक्तदान कैंप",
   "Donor stories": "डोनर की कहानियाँ",
   "Stories of Hope": "उम्मीद की कहानियाँ",
-  "Volunteer stories": "स्वयंसेवकों की कहानियाँ",
+  "Rakt Mitra stories": "रक्त मित्रों की कहानियाँ",
   "Donation camps": "रक्तदान कैंप",
   "Under review": "जाँच में",
   "More information requested": "और जानकारी माँगी गई",
@@ -208,8 +208,8 @@ const hi: Catalog = {
   "© {year} Rakt Response Team. All rights reserved.": "© {year} Rakt Response Team. सर्वाधिकार सुरक्षित।",
   Menu: "मेनू",
   "Every page in your account.": "आपके खाते के सभी पेज।",
-  "Donation saved. It shows as self-reported until a volunteer verifies it.":
-    "रक्तदान सेव हो गया। जब तक कोई स्वयंसेवक इसकी पुष्टि नहीं करता, यह \"खुद बताया गया\" दिखेगा।",
+  "Donation saved. It shows as self-reported until a Rakt Mitra verifies it.":
+    "रक्तदान सेव हो गया। जब तक कोई रक्त मित्र इसकी पुष्टि नहीं करता, यह \"खुद बताया गया\" दिखेगा।",
   "Choose a new password for your Rakt Response account.": "अपने Rakt Response खाते के लिए नया पासवर्ड चुनें।",
   "Confirm your email address to finish registering as a Rakt Response donor.":
     "Rakt Response डोनर के रूप में रजिस्ट्रेशन पूरा करने के लिए अपने ईमेल की पुष्टि करें।",

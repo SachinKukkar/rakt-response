@@ -121,6 +121,25 @@ export const contactRequestSchema = z.object({
   message: optionalText(500),
 });
 
+/** A donor telling us whether they donated for a request they joined. */
+export const donationReportSchema = z
+  .object({
+    request_id: uuidSchema,
+    donated: z.boolean(),
+    donation_date: isoDateSchema.nullable(),
+  })
+  .refine((v): boolean => !v.donated || (v.donation_date !== null && v.donation_date <= todayInIndia()), {
+    message: "Choose the day you donated (not a future date)",
+    path: ["donation_date"],
+  });
+
+/** A Rakt Mitra marking a donor's after-donation follow-up as done. */
+export const followUpSchema = z.object({
+  request_id: uuidSchema,
+  donor_id: uuidSchema,
+  note: optionalText(500),
+});
+
 export const assignmentUpdateSchema = z.object({
   assignment_id: uuidSchema,
   status: z.enum(["active", "completed", "released"]),
@@ -266,6 +285,8 @@ export const settingsSchema = z.object({
   requester_open_request_limit: z.number().int().min(1).max(20),
   donor_join_daily_limit: z.number().int().min(1).max(20),
   donor_open_join_limit: z.number().int().min(1).max(20),
+  donation_report_days: z.number().int().min(1).max(60),
+  donation_follow_up_days: z.number().int().min(1).max(60),
   member_request_daily_limit: z.number().int().min(1).max(50),
   contact_reveal_hourly_limit: z.number().int().min(1).max(200),
   contact_request_hourly_limit: z.number().int().min(1).max(200),

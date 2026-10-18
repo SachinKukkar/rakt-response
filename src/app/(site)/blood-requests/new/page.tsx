@@ -12,7 +12,7 @@ import { getLocale, getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return pageMetadata(t("Submit a blood request"), t("Ask Rakt Response volunteers to help find voluntary donors for a hospital requirement."));
+  return pageMetadata(t("Submit a blood request"), t("Ask Rakt Mitras to help find voluntary donors for a hospital requirement."));
 }
 
 export default async function NewBloodRequestPage() {
@@ -28,7 +28,7 @@ export default async function NewBloodRequestPage() {
         eyebrow={t("Find blood")}
         title={hindi ? "डोनर के लिए" : "Request"}
         highlight={hindi ? "रिक्वेस्ट करें।" : "donors."}
-        subtitle={t("A few minutes. A volunteer checks every request with the hospital. Then you see donors who can give now and contact them directly.")}
+        subtitle={t("A few minutes. A Rakt Mitra checks every request with the hospital. Then you see donors who can give now and contact them directly.")}
       />
     <div className="page-container max-w-2xl py-8">
       <Notice tone="warning" icon={Hospital} className="mb-5" title={t("First, contact the hospital blood bank")}>
