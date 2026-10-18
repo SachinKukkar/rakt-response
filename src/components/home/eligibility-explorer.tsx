@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { RangeBar } from "@/components/site/parts";
 import { ArrowLink } from "@/components/site/arrow-link";
 import { cn } from "@/lib/utils";
@@ -69,6 +69,9 @@ const CHECKS: Check[] = [
   },
 ];
 
+/** How far each key moves the slider. */
+const KEY_STEPS: Record<string, number> = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 10, PageDown: -10 };
+
 function rangeOf(check: Check, value: number): number {
   const i = check.bounds.findIndex((bound) => value < bound);
   return i === -1 ? check.bounds.length : i;
@@ -84,6 +87,22 @@ export function EligibilityExplorer({ className }: { className?: string }) {
   const range = rangeOf(check, value);
   const span = check.max - check.min;
   const segments = [check.bounds[0] - check.min, ...check.bounds.slice(1).map((b, i) => b - check.bounds[i]), check.max - check.bounds[check.bounds.length - 1]];
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const setValue = (next: number) =>
+    setValues((prev) => prev.map((v, i) => (i === active ? Math.min(check.max, Math.max(check.min, Math.round(next))) : v)));
+  // Where along the bar the finger or pointer is, as a value.
+  const valueAt = (clientX: number) => {
+    const rect = sliderRef.current?.getBoundingClientRect();
+    return rect && rect.width ? check.min + ((clientX - rect.left) / rect.width) * span : value;
+  };
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key in KEY_STEPS) setValue(value + KEY_STEPS[e.key]);
+    else if (e.key === "Home") setValue(check.min);
+    else if (e.key === "End") setValue(check.max);
+    else return;
+    e.preventDefault();
+  };
 
   return (
     <div className={cn("min-w-0", className)}>
@@ -117,8 +136,29 @@ export function EligibilityExplorer({ className }: { className?: string }) {
           <span className="text-lg text-cream/70">{t(check.unit)}</span>
         </p>
 
-        <RangeBar segments={segments} active={check.usual} marker={(value - check.min) / span} className="mt-8" />
-        <div className="mt-3 flex justify-between gap-2" aria-hidden="true">
+        {/* The bar itself is the slider: drag or tap anywhere on it, or use the arrow keys. */}
+        <div
+          ref={sliderRef}
+          role="slider"
+          tabIndex={0}
+          aria-label={t(check.tab)}
+          aria-valuemin={check.min}
+          aria-valuemax={check.max}
+          aria-valuenow={value}
+          aria-valuetext={`${value} ${t(check.unit)}: ${t(check.verdicts[range])}`}
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            setValue(valueAt(e.clientX));
+          }}
+          onPointerMove={(e) => {
+            if (e.currentTarget.hasPointerCapture(e.pointerId)) setValue(valueAt(e.clientX));
+          }}
+          onKeyDown={onKeyDown}
+          className="group mt-3 cursor-pointer touch-pan-y py-5 outline-none select-none"
+        >
+          <RangeBar segments={segments} active={check.usual} marker={(value - check.min) / span} handle />
+        </div>
+        <div className="-mt-2 flex justify-between gap-2" aria-hidden="true">
           {check.labels.map((label, i) => (
             <span
               key={label}
@@ -130,21 +170,7 @@ export function EligibilityExplorer({ className }: { className?: string }) {
           ))}
         </div>
 
-        <label htmlFor={`${id}-slider`} className="mt-8 block text-sm text-cream/70">
-          {t("Move the slider to match you")}
-        </label>
-        <input
-          id={`${id}-slider`}
-          type="range"
-          min={check.min}
-          max={check.max}
-          value={value}
-          aria-valuetext={`${value} ${t(check.unit)}: ${t(check.verdicts[range])}`}
-          onChange={(e) => setValues((prev) => prev.map((v, i) => (i === active ? Number(e.target.value) : v)))}
-          className="mt-3 h-11 w-full cursor-pointer accent-white"
-        />
-
-        <p className="mt-4 text-lg font-medium sm:text-xl">{t(check.verdicts[range])}</p>
+        <p className="mt-8 text-lg font-medium sm:text-xl">{t(check.verdicts[range])}</p>
         <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-cream/65">{t(check.note)}</p>
 
         <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">

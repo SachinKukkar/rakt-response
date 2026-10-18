@@ -132,6 +132,54 @@ export const CONTACT_METHOD_LABELS: Record<ContactMethod, string> = {
   email: "Email",
   in_app: "In-app only",
 };
+/** How patients can reach a donor: the donor picks one. */
+export const DONOR_CONTACT_METHODS = ["phone", "whatsapp", "email"] as const;
+export type DonorContactMethod = (typeof DONOR_CONTACT_METHODS)[number];
+/** How donors who join can reach the requester. */
+export const REQUESTER_CONTACT_METHODS = ["phone", "whatsapp"] as const;
+export type RequesterContactMethod = (typeof REQUESTER_CONTACT_METHODS)[number];
+
+export const PATIENT_GENDERS = ["female", "male", "other"] as const;
+export type PatientGender = (typeof PATIENT_GENDERS)[number];
+export const PATIENT_GENDER_LABELS: Record<PatientGender, string> = {
+  female: "Female",
+  male: "Male",
+  other: "Other",
+};
+
+export const REQUESTER_RELATIONS = ["self", "parent", "child", "spouse", "sibling", "relative", "friend", "other"] as const;
+export type RequesterRelation = (typeof REQUESTER_RELATIONS)[number];
+export const REQUESTER_RELATION_LABELS: Record<RequesterRelation, string> = {
+  self: "I am the patient",
+  parent: "Parent",
+  child: "Son or daughter",
+  spouse: "Husband or wife",
+  sibling: "Brother or sister",
+  relative: "Other relative",
+  friend: "Friend",
+  other: "Other",
+};
+
+export const REQUEST_REASONS = ["surgery", "accident", "thalassemia", "cancer", "delivery", "dengue", "anaemia", "other"] as const;
+export type RequestReason = (typeof REQUEST_REASONS)[number];
+export const REQUEST_REASON_LABELS: Record<RequestReason, string> = {
+  surgery: "Surgery",
+  accident: "Accident",
+  thalassemia: "Thalassemia",
+  cancer: "Cancer treatment",
+  delivery: "Delivery",
+  dengue: "Dengue",
+  anaemia: "Anaemia",
+  other: "Other",
+};
+
+/** Why a donor can't join a request yet (codes from list_open_requests_for_donor). */
+export const JOIN_REASON_LABELS: Record<string, string> = {
+  joined: "You joined this request",
+  not_donor: "Add your blood group to join requests",
+  other_group: "Needs a different blood group",
+  too_soon: "Too soon after your last donation",
+};
 
 export const DONATION_EXPERIENCE = ["first_time", "occasional", "regular"] as const;
 export type DonationExperience = (typeof DONATION_EXPERIENCE)[number];

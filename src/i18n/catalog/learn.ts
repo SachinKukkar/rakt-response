@@ -11,8 +11,8 @@ const hi: Catalog = {
   "More topics": "और विषय",
   "What happens": "क्या होता है",
   "Ready to be someone's hero?": "किसी के हीरो बनने के लिए तैयार हैं?",
-  "Join in two minutes. Your details stay private until you say otherwise.":
-    "दो मिनट में जुड़ें। जब तक आप न कहें, आपकी जानकारी प्राइवेट रहती है।",
+  "Join in two minutes. Hide your number any time.":
+    "दो मिनट में जुड़ें। अपना नंबर कभी भी छिपा सकते हैं।",
 
   // --- /learn -------------------------------------------------------------------
   "Blood 101 from Rakt Response: why donating matters, whole blood vs SDP, general eligibility information, what happens on the day, and FAQs.":

@@ -8,8 +8,7 @@ import { VerificationBadge } from "@/components/common/status-badge";
 import { DonationSummaryCards } from "@/components/donations/donation-summary";
 import { deleteDonation } from "@/actions/donations";
 import { requireViewer } from "@/lib/auth";
-import { getDonationRecords, getDonorData } from "@/lib/data/member";
-import { getPublicSettings } from "@/lib/data/public";
+import { getDonationRecords, getDonorData, getMyNextEligibleDate } from "@/lib/data/member";
 import { DONATION_TYPE_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
 import { getT } from "@/i18n/server";
@@ -22,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DonationsPage({ searchParams }: PageProps<"/donations">) {
   const t = await getT();
   const viewer = await requireViewer("/donations");
-  const [donor, records, settings, params] = await Promise.all([getDonorData(viewer.id), getDonationRecords(viewer.id), getPublicSettings(), searchParams]);
+  const [donor, records, nextEligible, params] = await Promise.all([getDonorData(viewer.id), getDonationRecords(viewer.id), getMyNextEligibleDate(), searchParams]);
 
   return (
     <div className="space-y-6">
@@ -51,7 +50,7 @@ export default async function DonationsPage({ searchParams }: PageProps<"/donati
               : t("Donation saved. It shows as self-reported until a volunteer verifies it.")}
         </p>
       ) : null}
-      <DonationSummaryCards summary={donor.summary} intervalDays={settings.wholeBloodIntervalDays} />
+      <DonationSummaryCards summary={donor.summary} nextEligible={nextEligible} />
       <section aria-labelledby="records-heading">
         <SectionHeading id="records-heading" title="All records" />
         {records.length === 0 ? (

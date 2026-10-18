@@ -66,9 +66,12 @@ function toSignupMetadata(input: RegistrationInput) {
         }
       : undefined,
     preferences: {
-      directory_visible: isDonor && consent.directory_visible,
-      contact_consent: isDonor && consent.contact_consent,
-      open_to_contact: isDonor && consent.contact_consent && consent.open_to_contact,
+      // Donors join to be reachable: volunteers can always reach them for
+      // verified requests, and patients too unless they hide their number.
+      directory_visible: isDonor,
+      contact_consent: isDonor,
+      open_to_contact: isDonor,
+      hide_number: isDonor && consent.hide_number,
       emergency_alerts: isDonor && consent.emergency_alerts,
       show_donation_summary: isDonor && consent.show_donation_summary,
       preferred_contact_method: donor.preferred_contact_method,

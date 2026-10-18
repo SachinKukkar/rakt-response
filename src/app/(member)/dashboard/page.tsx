@@ -11,8 +11,7 @@ import { DonationSummaryCards } from "@/components/donations/donation-summary";
 import { RequestCard } from "@/components/requests/request-card";
 import { setAvailability } from "@/actions/profile";
 import { requireViewer } from "@/lib/auth";
-import { getDonorData, getRequestMatches, profileCompletion } from "@/lib/data/member";
-import { getPublicSettings } from "@/lib/data/public";
+import { getDonorData, getMyNextEligibleDate, getOpenRequestsForDonor, getRequestMatches, profileCompletion } from "@/lib/data/member";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/format";
 import { getT } from "@/i18n/server";
@@ -33,10 +32,11 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
   const viewer = await requireViewer("/dashboard");
   const profile = viewer.profile;
   const supabase = await createClient();
-  const [donor, matches, settings, notificationsResult] = await Promise.all([
+  const [donor, matches, openRequests, nextEligible, notificationsResult] = await Promise.all([
     getDonorData(viewer.id),
     profile?.is_donor ? getRequestMatches() : Promise.resolve([]),
-    getPublicSettings(),
+    profile?.is_donor ? getOpenRequestsForDonor() : Promise.resolve([]),
+    profile?.is_donor ? getMyNextEligibleDate() : Promise.resolve(null),
     supabase.from("notifications").select("id, kind, title, body, link, read_at, created_at").order("created_at", { ascending: false }).limit(3),
   ]);
   const notifications = (notificationsResult.data ?? []) as NotificationRow[];
@@ -52,6 +52,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
   const notice = typeof params.notice === "string" ? NOTICES[params.notice] : undefined;
   const name = profile?.display_name || profile?.full_name?.split(" ")[0] || t("there");
   const pendingContact = matches.filter((m) => m.contact_request_status === "pending").length;
+  const myGroupRequests = openRequests.filter((r) => r.matches_group);
   const [becomeDonorBefore, becomeDonorAfter] = t(
     "You registered as a member. Add your blood group and area from {link} whenever you're ready to join the donor register.",
   ).split("{link}");
@@ -60,7 +61,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
     <div className="space-y-6">
       {params.welcome ? (
         <Notice tone="brand" icon={ShieldCheck} title="Welcome to Rakt Response">
-          {t("Your account is active. Your profile is private by default — review your choices in Privacy & settings at any time.")}
+          {t("Your account is active. Choose how patients can reach you, or hide your number, in Privacy & settings.")}
         </Notice>
       ) : null}
       {notice ? <Notice>{notice}</Notice> : null}
@@ -166,7 +167,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
               </Link>
             }
           />
-          <DonationSummaryCards summary={donor.summary} intervalDays={settings.wholeBloodIntervalDays} />
+          <DonationSummaryCards summary={donor.summary} nextEligible={nextEligible} />
         </section>
       ) : (
         <Notice title="Become a donor">
@@ -184,17 +185,17 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
           <SectionHeading
             id="matches-heading"
             title="Requests that match you"
-            description="Verified requests for your blood group in your district, or ones you were asked about."
+            description="Verified requests for your blood group. Join one when you can give."
             action={
               <Link href="/requests" className="shrink-0 text-sm font-semibold text-primary hover:underline">
                 {t("All")}
               </Link>
             }
           />
-          {matches.length ? (
+          {myGroupRequests.length ? (
             <div className="grid gap-3 md:grid-cols-2">
-              {matches.slice(0, 2).map((m) => (
-                <RequestCard key={m.request_id} request={{ ...m, id: m.request_id }} href="/requests" />
+              {myGroupRequests.slice(0, 2).map((m) => (
+                <RequestCard key={m.request_id} request={{ ...m, id: m.request_id }} href={`/requests/${m.request_id}`} />
               ))}
             </div>
           ) : (

@@ -49,8 +49,8 @@ const hi: Catalog = {
   "Go to sign in": "साइन इन पर जाएँ",
   "We sent a confirmation link to the email address you registered with. Open it on this phone or any device to activate your account.":
     "जिस ईमेल से आपने रजिस्टर किया, उस पर हमने पुष्टि का लिंक भेजा है। अपना खाता चालू करने के लिए उसे इस फ़ोन या किसी भी फ़ोन/कंप्यूटर पर खोलें।",
-  "Your profile stays private until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.":
-    "जब तक आप ईमेल की पुष्टि नहीं करते, आपकी प्रोफ़ाइल किसी को नहीं दिखती। ईमेल आने में कुछ मिनट लग सकते हैं — Spam या Promotions फ़ोल्डर भी देखें।",
+  "Patients and volunteers can't see you until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.":
+    "जब तक आप ईमेल की पुष्टि नहीं करते, मरीज़ और स्वयंसेवक आपको नहीं देख सकते। ईमेल आने में कुछ मिनट लग सकते हैं — Spam या Promotions फ़ोल्डर भी देखें।",
   "Didn't get the email? Enter your address to resend it": "ईमेल नहीं मिला? अपना ईमेल लिखें, हम फिर से भेज देंगे",
   "Resend verification email": "पुष्टि वाला ईमेल फिर से भेजें",
 

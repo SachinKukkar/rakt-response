@@ -159,6 +159,13 @@ for (const [role, email, pages] of [
     await login(page, email);
     await page.setViewportSize(PHONE);
     const extra: string[] = [];
+    if (role === "donor") {
+      // A verified request's own page, as a donor sees it.
+      const id = localSqlValue(
+        "select id from public.blood_requests where status in ('verified','in_coordination') and required_by > now() order by created_at desc limit 1;",
+      );
+      if (id) extra.push(`/requests/${id}`);
+    }
     if (role === "volunteer") {
       const id = localSqlValue("select id from public.blood_requests order by created_at desc limit 1;");
       if (id) extra.push(`/volunteer/requests/${id}`);

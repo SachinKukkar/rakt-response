@@ -34,7 +34,7 @@ export default async function VerifyEmailPage() {
           </p>
           <p>
             {t(
-              "Your profile stays private until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.",
+              "Patients and volunteers can't see you until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.",
             )}
           </p>
         </div>

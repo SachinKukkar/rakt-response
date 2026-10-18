@@ -13,8 +13,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const NUMBER_FIELDS: Array<{ key: string; label: string; min: number; max: number; hint?: string }> = [
-  { key: "whole_blood_interval_days", label: "Whole blood interval used for the informational estimate (days)", min: 56, max: 365, hint: "Shown to donors as an estimate only." },
-  { key: "anon_request_daily_limit", label: "Requests per anonymous connection per day", min: 1, max: 50 },
+  { key: "whole_blood_interval_days", label: "Days after a whole-blood donation before a donor shows as able to give", min: 56, max: 365, hint: "Used for the patient's donor list, joining requests and the donor's estimate. The blood centre decides." },
+  { key: "apheresis_interval_days", label: "Days after an SDP/apheresis donation before a donor shows as able to give", min: 2, max: 90 },
+  { key: "eligible_donor_list_size", label: "Donors shown to a patient per verified request", min: 5, max: 100 },
+  { key: "requester_reveal_hourly_limit", label: "Donor contacts a patient can open per hour", min: 1, max: 100 },
+  { key: "requester_reveal_monthly_donors", label: "Different donors a patient can open in 30 days", min: 1, max: 500 },
+  { key: "requester_open_request_limit", label: "Open requests a member can have at once", min: 1, max: 20 },
+  { key: "donor_join_daily_limit", label: "Requests a donor can join per day", min: 1, max: 20 },
+  { key: "donor_open_join_limit", label: "Open requests a donor can be joined to at once", min: 1, max: 20 },
   { key: "member_request_daily_limit", label: "Requests per member per day", min: 1, max: 50 },
   { key: "contact_reveal_hourly_limit", label: "Contact views per volunteer per hour", min: 1, max: 200 },
   { key: "contact_request_hourly_limit", label: "Contact requests per volunteer per hour", min: 1, max: 200 },

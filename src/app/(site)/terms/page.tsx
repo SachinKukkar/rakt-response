@@ -24,7 +24,7 @@ export default async function TermsPage() {
         eyebrow={t("The fine print")}
         title={t("Terms of")}
         highlight={t("use.")}
-        subtitle={t("How Rakt Response works, and what it can and can't do. Last updated 11 October 2026.")}
+        subtitle={t("How Rakt Response works, and what it can and can't do. Last updated 18 October 2026.")}
       />
     <div className="page-container max-w-3xl py-8">
       <Notice tone="warning" title={t("Review before production")} className="mb-6">
@@ -34,7 +34,7 @@ export default async function TermsPage() {
         <h2>{t("What Rakt Response is")}</h2>
         <p>
           {t(
-            "Rakt Response is a free, volunteer-run platform that helps voluntary blood donors register, keep a record of their donations and be reached — with their consent — by authorised volunteers coordinating verified blood requests.",
+            "Rakt Response is a free, volunteer-run platform. Voluntary blood donors register and keep a record of their donations. Volunteers verify blood requests, and then the patient can reach donors who can give now. Donors can hide their number at any time.",
           )}
         </p>
 
@@ -50,7 +50,8 @@ export default async function TermsPage() {
         <ul>
           <li>{t("Give accurate information, keep it up to date and only register yourself.")}</li>
           <li>{t("Only submit blood requests that are genuine, and tell us when a request is no longer needed.")}</li>
-          <li>{t("Do not include patient names, diagnoses, medical records or other people's personal details in requests or stories unless you have the right to share them.")}</li>
+          <li>{t("Give a patient's details only for a genuine request you are entitled to make, and do not include diagnoses, medical records or other people's personal details in requests or stories unless you have the right to share them.")}</li>
+          <li>{t("Use a donor's number, or a patient's family's number, only for that blood request. Never share, sell or reuse it, and stop contacting anyone who says no.")}</li>
           <li>{t("Never offer, request or accept payment for blood. Donation through Rakt Response is voluntary and unpaid.")}</li>
           <li>{t("Do not attempt to scrape, copy, export or misuse donor information, or to access areas you are not authorised for.")}</li>
         </ul>
@@ -58,7 +59,7 @@ export default async function TermsPage() {
         <h2>{t("Volunteers and administrators")}</h2>
         <p>
           {t(
-            "Authorised volunteers may only use donor information to coordinate a specific, verified blood request, must respect each donor's consent and contact preferences, and must not keep or share contact details for any other purpose. Access is logged and may be withdrawn at any time.",
+            "Authorised volunteers may only use donor information to coordinate a specific, verified blood request, must respect each donor's contact preferences, and must not keep or share contact details for any other purpose. Access is logged and may be withdrawn at any time.",
           )}
         </p>
 

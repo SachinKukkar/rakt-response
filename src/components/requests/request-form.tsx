@@ -13,15 +13,29 @@ import { BloodGroupPicker, ChipChoice } from "@/components/forms/pickers";
 import { LocationPickers } from "@/components/forms/location-pickers";
 import { Notice } from "@/components/common/page-parts";
 import { submitBloodRequest, type SubmittedRequest } from "@/actions/requests";
-import { CONTACT_METHOD_LABELS, REQUEST_TYPE_LABELS, URGENCY_LABELS, type ContactMethod, type RequestType, type Urgency } from "@/lib/constants";
+import {
+  CONTACT_METHOD_LABELS,
+  PATIENT_GENDER_LABELS,
+  PATIENT_GENDERS,
+  REQUEST_REASON_LABELS,
+  REQUEST_REASONS,
+  REQUEST_TYPE_LABELS,
+  REQUESTER_CONTACT_METHODS,
+  REQUESTER_RELATION_LABELS,
+  REQUESTER_RELATIONS,
+  URGENCY_LABELS,
+  type PatientGender,
+  type RequesterContactMethod,
+  type RequestType,
+  type Urgency,
+} from "@/lib/constants";
 import { bloodRequestSchema, type BloodRequestInput } from "@/lib/validation/forms";
 import { useT } from "@/i18n/client";
 
 const DEFAULTS: BloodRequestInput = {
-  requester_name: "",
-  requester_phone: "",
-  requester_email: "",
-  requester_contact_method: "phone",
+  patient_name: "",
+  patient_age: null,
+  patient_gender: "",
   blood_group: "" as BloodRequestInput["blood_group"],
   request_type: "whole_blood",
   units_needed: null,
@@ -29,10 +43,16 @@ const DEFAULTS: BloodRequestInput = {
   state: "",
   district: "",
   city: "",
+  hospital_patient_id: "",
+  ward: "",
+  reason: "",
   required_by: "",
   urgency: "urgent",
+  requester_name: "",
+  requester_relation: "",
+  requester_phone: "",
+  requester_contact_method: "phone",
   notes: "",
-  public_listing_consent: false,
   acknowledge_limits: false,
   website: "",
 };
@@ -42,7 +62,31 @@ function localIndiaInput(hours: number): string {
   return new Date(Date.now() + (hours + 5.5) * 3600_000).toISOString().slice(0, 16);
 }
 
-export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean; defaultName?: string }) {
+/** A number input that stores null while empty. */
+function NumberInput({ id, value, onChange, onBlur, error, min, max }: {
+  id: string;
+  value: number | null;
+  onChange: (v: number | null) => void;
+  onBlur: () => void;
+  error?: string;
+  min: number;
+  max: number;
+}) {
+  return (
+    <Input
+      {...fieldAria(id, error)}
+      type="number"
+      inputMode="numeric"
+      min={min}
+      max={max}
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value === "" ? null : Number(e.target.value))}
+      onBlur={onBlur}
+    />
+  );
+}
+
+export function BloodRequestForm({ defaultName }: { defaultName?: string }) {
   const t = useT();
   const form = useForm<BloodRequestInput>({
     resolver: zodResolver(bloodRequestSchema),
@@ -94,16 +138,14 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           </Notice>
         ) : null}
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
-          <li>{t("A volunteer will verify the request with you or the hospital before contacting donors.")}</li>
-          <li>{t("Until it is verified it is not shown publicly or sent to donors.")}</li>
+          <li>{t("A volunteer will check the request with the hospital.")}</li>
+          <li>{t("Once it is verified, your request page shows donors who can give now, and you can contact them directly.")}</li>
           <li>{t("Keep in touch with the hospital blood bank — they decide what is needed and when.")}</li>
         </ul>
         <div className="flex flex-col gap-2 sm:flex-row">
-          {submitted.signedIn ? (
-            <Button asChild>
-              <Link href="/requests">{t("Track in My requests")}</Link>
-            </Button>
-          ) : null}
+          <Button asChild>
+            <Link href={`/requests/${submitted.requestId}`}>{t("Open my request")}</Link>
+          </Button>
           <Button asChild variant="outline">
             <Link href="/blood-requests">{t("Back to blood requests")}</Link>
           </Button>
@@ -113,7 +155,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="surface space-y-5 p-5 sm:p-7">
+    <form onSubmit={onSubmit} noValidate className="surface space-y-6 p-5 sm:p-7">
       {/* Honeypot: invisible to people, tempting to bots. */}
       <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
@@ -121,7 +163,45 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
       </div>
 
       <fieldset className="space-y-4">
-        <legend className="mb-1 text-base font-bold text-navy">{t("What is needed")}</legend>
+        <legend className="mb-1 text-base font-bold text-navy">{t("Patient")}</legend>
+        <Field id="patient_name" label="Patient's full name" required error={errors.patient_name?.message} hint="As on the hospital's blood request form.">
+          <Input {...fieldAria("patient_name", errors.patient_name?.message, true)} autoComplete="off" {...register("patient_name")} />
+        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field id="patient_age" label="Age (years)" required error={errors.patient_age?.message}>
+            <Controller
+              control={control}
+              name="patient_age"
+              render={({ field }) => (
+                <NumberInput id="patient_age" value={field.value} onChange={field.onChange} onBlur={field.onBlur} error={errors.patient_age?.message} min={0} max={120} />
+              )}
+            />
+          </Field>
+          <div className="space-y-2">
+            <p id="rq-gender" className="text-sm font-semibold text-navy">
+              {t("Gender")} <span className="text-primary">*</span>
+            </p>
+            <Controller
+              control={control}
+              name="patient_gender"
+              render={({ field }) => (
+                <ChipChoice<PatientGender>
+                  name="patient_gender"
+                  labelledBy="rq-gender"
+                  columns={3}
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={PATIENT_GENDERS.map((g) => ({ value: g, label: t(PATIENT_GENDER_LABELS[g]) }))}
+                />
+              )}
+            />
+            {errors.patient_gender?.message ? (
+              <p className="text-sm text-destructive" role="alert">
+                {t(errors.patient_gender.message)}
+              </p>
+            ) : null}
+          </div>
+        </div>
         <div className="space-y-2">
           <p id="rq-bg" className="text-sm font-semibold text-navy">
             {t("Blood group")} <span className="text-primary">*</span>
@@ -134,6 +214,10 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
             )}
           />
         </div>
+      </fieldset>
+
+      <fieldset className="space-y-4">
+        <legend className="mb-1 text-base font-bold text-navy">{t("What is needed")}</legend>
         <div className="space-y-2">
           <p id="rq-type" className="text-sm font-semibold text-navy">
             {t("Type of donor needed")} <span className="text-primary">*</span>
@@ -165,43 +249,44 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           ) : null}
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field id="units_needed" label="Units / donors needed (if known)" error={errors.units_needed?.message}>
+          <Field id="units_needed" label="Units / donors needed" required error={errors.units_needed?.message}>
             <Controller
               control={control}
               name="units_needed"
               render={({ field }) => (
-                <Input
-                  {...fieldAria("units_needed", errors.units_needed?.message)}
-                  type="number"
-                  inputMode="numeric"
-                  min={1}
-                  max={50}
-                  value={field.value ?? ""}
-                  onChange={(e) => field.onChange(e.target.value === "" ? null : Number(e.target.value))}
-                  onBlur={field.onBlur}
-                />
+                <NumberInput id="units_needed" value={field.value} onChange={field.onChange} onBlur={field.onBlur} error={errors.units_needed?.message} min={1} max={50} />
               )}
             />
           </Field>
-          <div className="space-y-2">
-            <p id="rq-urgency" className="text-sm font-semibold text-navy">
-              {t("Urgency")} <span className="text-primary">*</span>
-            </p>
-            <Controller
-              control={control}
-              name="urgency"
-              render={({ field }) => (
-                <ChipChoice<Urgency>
-                  name="urgency"
-                  labelledBy="rq-urgency"
-                  columns={3}
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={(Object.keys(URGENCY_LABELS) as Urgency[]).map((u) => ({ value: u, label: t(URGENCY_LABELS[u]) }))}
-                />
-              )}
-            />
-          </div>
+          <Field id="reason" label="Reason (optional)" error={errors.reason?.message}>
+            <select id="reason" className={selectClass} {...register("reason")}>
+              <option value="">{t("Choose")}</option>
+              {REQUEST_REASONS.map((r) => (
+                <option key={r} value={r}>
+                  {t(REQUEST_REASON_LABELS[r])}
+                </option>
+              ))}
+            </select>
+          </Field>
+        </div>
+        <div className="space-y-2">
+          <p id="rq-urgency" className="text-sm font-semibold text-navy">
+            {t("Urgency")} <span className="text-primary">*</span>
+          </p>
+          <Controller
+            control={control}
+            name="urgency"
+            render={({ field }) => (
+              <ChipChoice<Urgency>
+                name="urgency"
+                labelledBy="rq-urgency"
+                columns={3}
+                value={field.value}
+                onChange={field.onChange}
+                options={(Object.keys(URGENCY_LABELS) as Urgency[]).map((u) => ({ value: u, label: t(URGENCY_LABELS[u]) }))}
+              />
+            )}
+          />
         </div>
         <Field id="required_by" label="Needed by (date and time)" required error={errors.required_by?.message} hint="India time.">
           <Input {...fieldAria("required_by", errors.required_by?.message, true)} type="datetime-local" min={localIndiaInput(0)} max={localIndiaInput(60 * 24)} {...register("required_by")} />
@@ -209,7 +294,7 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-1 text-base font-bold text-navy">{t("Where")}</legend>
+        <legend className="mb-1 text-base font-bold text-navy">{t("Hospital")}</legend>
         <Field id="hospital_name" label="Hospital or blood bank" required error={errors.hospital_name?.message}>
           <Input {...fieldAria("hospital_name", errors.hospital_name?.message)} {...register("hospital_name")} />
         </Field>
@@ -220,65 +305,79 @@ export function BloodRequestForm({ signedIn, defaultName }: { signedIn: boolean;
           onChange={(field, value) => setValue(field as "state" | "district" | "city", value, { shouldDirty: true, shouldValidate: formState.isSubmitted })}
           errors={{ state: errors.state?.message, district: errors.district?.message, city: errors.city?.message }}
         />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field id="hospital_patient_id" label="Patient's IP / UHID number (optional)" error={errors.hospital_patient_id?.message} hint="Donors give this at the blood bank.">
+            <Input {...fieldAria("hospital_patient_id", errors.hospital_patient_id?.message, true)} autoComplete="off" {...register("hospital_patient_id")} />
+          </Field>
+          <Field id="ward" label="Ward or bed (optional)" error={errors.ward?.message}>
+            <Input {...fieldAria("ward", errors.ward?.message)} autoComplete="off" {...register("ward")} />
+          </Field>
+        </div>
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-1 text-base font-bold text-navy">{t("How volunteers can reach you")}</legend>
-        <p className="text-xs text-muted-foreground">{t("Kept private — only authorised volunteers see these details.")}</p>
-        <Field id="requester_name" label="Your name" required error={errors.requester_name?.message}>
-          <Input {...fieldAria("requester_name", errors.requester_name?.message)} autoComplete="name" {...register("requester_name")} />
-        </Field>
+        <legend className="mb-1 text-base font-bold text-navy">{t("Your details")}</legend>
+        <p className="text-xs text-muted-foreground">
+          {t("Volunteers see all these details to verify the request. Donors who offer to help see the patient's name, the hospital, and your name and number, so they can reach you.")}
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field id="requester_phone" label="Phone" error={errors.requester_phone?.message}>
-            <Input {...fieldAria("requester_phone", errors.requester_phone?.message)} type="tel" inputMode="tel" autoComplete="tel" {...register("requester_phone")} />
+          <Field id="requester_name" label="Your name" required error={errors.requester_name?.message}>
+            <Input {...fieldAria("requester_name", errors.requester_name?.message)} autoComplete="name" {...register("requester_name")} />
           </Field>
-          <Field id="requester_email" label="Email" error={errors.requester_email?.message}>
-            <Input {...fieldAria("requester_email", errors.requester_email?.message)} type="email" inputMode="email" autoComplete="email" {...register("requester_email")} />
+          <Field id="requester_relation" label="Your relation to the patient" required error={errors.requester_relation?.message}>
+            <select className={selectClass} {...fieldAria("requester_relation", errors.requester_relation?.message)} {...register("requester_relation")}>
+              <option value="">{t("Choose")}</option>
+              {REQUESTER_RELATIONS.map((r) => (
+                <option key={r} value={r}>
+                  {t(REQUESTER_RELATION_LABELS[r])}
+                </option>
+              ))}
+            </select>
           </Field>
         </div>
-        <Field id="requester_contact_method" label="Best way to reach you">
-          <select id="requester_contact_method" className={selectClass} {...register("requester_contact_method")}>
-            {(["phone", "whatsapp", "email"] as ContactMethod[]).concat(signedIn ? ["in_app"] : []).map((m) => (
-              <option key={m} value={m}>
-                {t(CONTACT_METHOD_LABELS[m])}
-              </option>
-            ))}
-          </select>
-        </Field>
-        <Field id="notes" label="Anything volunteers should know? (optional)" error={errors.notes?.message} hint="Please don't include the patient's name, diagnosis or medical documents.">
-          <Textarea {...fieldAria("notes", errors.notes?.message, true)} rows={3} {...register("notes")} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field id="requester_phone" label="Your phone" required error={errors.requester_phone?.message}>
+            <Input {...fieldAria("requester_phone", errors.requester_phone?.message)} type="tel" inputMode="tel" autoComplete="tel" {...register("requester_phone")} />
+          </Field>
+          <div className="space-y-2">
+            <p id="rq-method" className="text-sm font-semibold text-navy">
+              {t("Donors can reach you by")} <span className="text-primary">*</span>
+            </p>
+            <Controller
+              control={control}
+              name="requester_contact_method"
+              render={({ field }) => (
+                <ChipChoice<RequesterContactMethod>
+                  name="requester_contact_method"
+                  labelledBy="rq-method"
+                  columns={2}
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={REQUESTER_CONTACT_METHODS.map((m) => ({ value: m, label: t(CONTACT_METHOD_LABELS[m]) }))}
+                />
+              )}
+            />
+          </div>
+        </div>
+        <Field id="notes" label="Anything volunteers should know? (optional)" error={errors.notes?.message}>
+          <Textarea {...fieldAria("notes", errors.notes?.message)} rows={3} {...register("notes")} />
         </Field>
       </fieldset>
 
-      <div className="space-y-3">
-        <Controller
-          control={control}
-          name="public_listing_consent"
-          render={({ field }) => (
-            <ChoiceRow
-              id="public_listing_consent"
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              title="List this request publicly once it is verified"
-              description="Only the blood group, donor type, hospital, city, time needed and urgency are shown — never your name or contact details."
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="acknowledge_limits"
-          render={({ field }) => (
-            <ChoiceRow
-              id="acknowledge_limits"
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              error={errors.acknowledge_limits?.message}
-              title="I understand Rakt Response helps find voluntary donors but cannot guarantee availability, reserve blood or decide compatibility"
-              description="I will stay in contact with the hospital or licensed blood bank."
-            />
-          )}
-        />
-      </div>
+      <Controller
+        control={control}
+        name="acknowledge_limits"
+        render={({ field }) => (
+          <ChoiceRow
+            id="acknowledge_limits"
+            checked={field.value}
+            onCheckedChange={field.onChange}
+            error={errors.acknowledge_limits?.message}
+            title="I understand Rakt Response helps find voluntary donors but cannot guarantee availability, reserve blood or decide compatibility"
+            description="I will stay in contact with the hospital or licensed blood bank."
+          />
+        )}
+      />
 
       {serverError ? (
         <p className="rounded-xl border border-destructive/25 bg-destructive/5 px-3.5 py-3 text-sm text-destructive" role="alert">

@@ -4,8 +4,11 @@ import type {
   DonationExperience,
   DonationType,
   Outcome,
+  PatientGender,
   ProfileVerification,
   RecordSource,
+  RequesterRelation,
+  RequestReason,
   RequestStatus,
   RequestType,
   ResponseStatus,
@@ -59,6 +62,8 @@ export interface PreferencesRow {
   open_to_contact: boolean;
   show_donation_summary: boolean;
   show_first_name: boolean;
+  /** Hidden donors are never listed to patients; volunteers can still reach them. */
+  hide_number: boolean;
   preferred_contact_method: ContactMethod;
   max_distance_km: number | null;
   notify_status_updates: boolean;
@@ -117,6 +122,15 @@ export interface BloodRequestRow {
   urgency: Urgency;
   notes: string | null;
   public_listing_consent: boolean;
+  patient_name: string | null;
+  patient_age: number | null;
+  patient_gender: PatientGender | null;
+  hospital_patient_id: string | null;
+  ward: string | null;
+  reason: RequestReason | null;
+  requester_relation: RequesterRelation | null;
+  /** True for requests made with the current form: donors who join see the requester's phone. */
+  share_contact_with_donors: boolean;
   status: RequestStatus;
   verified_at: string | null;
   closed_at: string | null;

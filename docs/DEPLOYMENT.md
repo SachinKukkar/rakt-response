@@ -7,7 +7,6 @@
    - `NEXT_PUBLIC_SITE_URL` — e.g. `https://raktresponse.org`
    - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY` (optional, **Production only**, mark as sensitive)
-   - `RATE_LIMIT_SALT` (random 32+ bytes)
 3. Deploy. `NEXT_PUBLIC_*` values are compiled into the build, so **redeploy after changing them**.
 4. Add your domain, then update Supabase **Site URL** and **Redirect URLs** to match.
 5. Smoke test: homepage, register → confirmation email → dashboard, submit a request, volunteer verification, admin pages.

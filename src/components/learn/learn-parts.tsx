@@ -203,7 +203,7 @@ export async function TopicPills({ current }: { current?: string }) {
 }
 
 /** The closing call-to-action used on every public page. */
-export function CtaBand({ title = "Ready to be someone's hero?", text = "Join in two minutes. Your details stay private until you say otherwise." }: { title?: string; text?: string }) {
+export function CtaBand({ title = "Ready to be someone's hero?", text = "Join in two minutes. Hide your number any time." }: { title?: string; text?: string }) {
   return (
     <section className="page-container py-14 sm:py-20">
       <div className="on-night relative isolate overflow-hidden rounded-[1.75rem] px-7 py-12 sm:px-12 sm:py-16">

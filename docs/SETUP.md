@@ -17,8 +17,7 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_SITE_URL` | public | Base URL used in auth email redirects, e.g. `https://raktresponse.org` |
 | `NEXT_PUBLIC_SUPABASE_URL` | public | Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public | The anon/publishable key. Safe in the browser — RLS protects data |
-| `SUPABASE_SERVICE_ROLE_KEY` | **server only** | Optional. Enables anonymous blood-request submission, the admin bootstrap script and login removal when processing deletions. Never prefix with `NEXT_PUBLIC_` |
-| `RATE_LIMIT_SALT` | **server only** | Random secret for hashing client IPs used as rate-limit keys |
+| `SUPABASE_SERVICE_ROLE_KEY` | **server only** | Optional. Enables the admin bootstrap script and login removal when processing deletions. Never prefix with `NEXT_PUBLIC_` |
 | `NEXT_PUBLIC_ENABLE_MAP` | public | `false` hides the optional OpenStreetMap picker |
 
 ## 3a. Hosted Supabase project

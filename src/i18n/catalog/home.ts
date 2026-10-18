@@ -106,8 +106,8 @@ const hi: Catalog = {
   "Frequently asked questions": "अक्सर पूछे जाने वाले सवाल",
   "All FAQs": "सभी सवाल-जवाब",
   "Who can see my phone number?": "मेरा फ़ोन नंबर कौन देख सकता है?",
-  "No one publicly. An authorised volunteer can view it only while coordinating a verified request, only if you allowed contact — and every access is logged.":
-    "यह किसी को सार्वजनिक रूप से नहीं दिखता। अधिकृत स्वयंसेवक इसे सिर्फ़ तब देख सकते हैं जब वे किसी जाँची गई रिक्वेस्ट पर तालमेल कर रहे हों, और सिर्फ़ तब जब आपने संपर्क की इजाज़त दी हो — और हर बार देखने का रिकॉर्ड रखा जाता है।",
+  "A patient whose request a volunteer has verified, when you can give, one donor at a time; and authorised volunteers. Turn on Hide my number in Privacy & settings any time.":
+    "वह मरीज़ जिसकी रिक्वेस्ट वॉलंटियर ने जाँच ली हो, जब आप दे सकें, एक बार में एक डोनर; और अधिकृत वॉलंटियर। 'प्राइवेसी और सेटिंग्स' में कभी भी 'मेरा नंबर छिपाएँ' चालू करें।",
   "Does registering mean I'm eligible to donate?": "क्या रजिस्टर करने का मतलब है कि मैं रक्तदान कर सकता/सकती हूँ?",
   "No. Eligibility is decided by the blood centre's screening on the day. Rakt Response never makes medical decisions.":
     "नहीं। आप रक्तदान कर सकते हैं या नहीं, यह उसी दिन ब्लड बैंक की जाँच से तय होता है। Rakt Response कभी कोई मेडिकल फ़ैसला नहीं लेता।",
@@ -168,20 +168,20 @@ const hi: Catalog = {
   "How We Work": "हम कैसे काम करते हैं",
   "What happens behind the scenes, in plain language.": "पर्दे के पीछे क्या होता है, आसान भाषा में।",
   "Donor registration & verification": "डोनर रजिस्ट्रेशन और पुष्टि",
-  "Donors register themselves and are verified once they confirm their email. Profiles are private by default, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility.":
-    "डोनर खुद रजिस्टर करते हैं, और ईमेल की पुष्टि करते ही उनकी पुष्टि हो जाती है। प्रोफ़ाइल शुरू से निजी रहती है, और ब्लड ग्रुप तभी \"जाँचा गया\" माना जाता है जब कोई एडमिन कोई दस्तावेज़ देख ले। यह पुष्टि कभी तय नहीं करती कि आप मेडिकल तौर पर रक्तदान कर सकते हैं या नहीं।",
+  "Donors register themselves and are verified once they confirm their email. Patients see a donor only for a verified request nearby, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility.":
+    "डोनर खुद रजिस्टर करते हैं, और ईमेल की पुष्टि करते ही उनकी पुष्टि हो जाती है। मरीज़ों को डोनर सिर्फ़ पास की जाँची हुई रिक्वेस्ट के लिए दिखते हैं, और ब्लड ग्रुप तभी \"जाँचा गया\" माना जाता है जब कोई एडमिन कोई दस्तावेज़ देख ले। यह पुष्टि कभी तय नहीं करती कि आप मेडिकल तौर पर रक्तदान कर सकते हैं या नहीं।",
   "Reviewing blood requests": "खून की रिक्वेस्ट की जाँच",
   "Every request is checked by an authorised volunteer — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors.":
     "हर रिक्वेस्ट को \"जाँचा गया\" मानने, सबको दिखाने या डोनरों को भेजने से पहले एक अधिकृत स्वयंसेवक उसकी जाँच करते हैं — आमतौर पर रिक्वेस्ट भेजने वाले या अस्पताल से बात करके।",
   "Coordinating with donors": "डोनरों से तालमेल",
-  "Volunteers contact only donors who allowed it, or who accept a contact request. Each access to contact details is logged and rate-limited.":
-    "स्वयंसेवक सिर्फ़ उन्हीं डोनरों से संपर्क करते हैं जिन्होंने इजाज़त दी है, या जो संपर्क की रिक्वेस्ट मान लेते हैं। संपर्क की जानकारी हर बार देखने का रिकॉर्ड रखा जाता है, और इसकी एक सीमा तय है।",
+  "Once a request is verified, the patient sees donors who can give now and contacts them on each donor's chosen channel. Volunteers help when no one is found. Each contact opened is logged and limited.":
+    "रिक्वेस्ट की जाँच के बाद मरीज़ को वे डोनर दिखते हैं जो अभी रक्तदान कर सकते हैं, और वह हर डोनर से उसके चुने हुए तरीके से संपर्क करता है। कोई न मिले तो स्वयंसेवक मदद करते हैं। हर संपर्क खोलने का रिकॉर्ड रहता है, और इसकी सीमा तय है।",
   "Updating donation records": "रक्तदान के रिकॉर्ड अपडेट करना",
   "Donors add donations as self-reported. Authorised reviewers verify them separately for whole blood and SDP.":
     "डोनर अपने रक्तदान \"खुद बताया गया\" के रूप में जोड़ते हैं। अधिकृत समीक्षक होल ब्लड और SDP के लिए इनकी अलग-अलग जाँच करते हैं।",
-  "Protecting privacy": "प्राइवेसी की सुरक्षा",
-  "No public donor lists, phone numbers or addresses. Permissions are enforced by the database, not only the app.":
-    "डोनरों की कोई सार्वजनिक सूची, फ़ोन नंबर या पता नहीं दिखाया जाता। कौन क्या देख सकता है, यह सिर्फ़ ऐप ही नहीं, डेटाबेस भी तय करता है।",
+  "Protecting donors": "डोनरों की सुरक्षा",
+  "No open donor lists or addresses. Donors can hide their number or pause any time. Permissions are enforced by the database, not only the app.":
+    "डोनरों की कोई खुली सूची या पता नहीं दिखाया जाता। डोनर कभी भी अपना नंबर छिपा सकते हैं या रुक सकते हैं। कौन क्या देख सकता है, यह सिर्फ़ ऐप ही नहीं, डेटाबेस भी तय करता है।",
   "What we can and cannot guarantee": "हम किस बात की गारंटी दे सकते हैं और किसकी नहीं",
   "We help find willing voluntary donors. We cannot guarantee availability, reserve blood, certify compatibility or replace hospitals and licensed blood banks.":
     "हम रक्तदान के लिए तैयार स्वैच्छिक डोनर ढूँढने में मदद करते हैं। हम खून मिलने की गारंटी नहीं दे सकते, खून रिज़र्व नहीं कर सकते, ब्लड मैच की पुष्टि नहीं कर सकते, और अस्पताल या लाइसेंस वाले ब्लड बैंक की जगह नहीं ले सकते।",

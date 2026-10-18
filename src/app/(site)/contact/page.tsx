@@ -103,7 +103,7 @@ export default async function ContactPage() {
             <h2 className="mt-5 text-xl font-medium tracking-[-0.02em]">{t("Corrections, withdrawals & privacy")}</h2>
             <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
               {t(
-                "Manage your consent, correct your profile or request deletion from your account. Story contributors can withdraw or request corrections from My stories.",
+                "Choose how patients can reach you, correct your profile or request deletion from your account. Story contributors can withdraw or request corrections from My stories.",
               )}
             </p>
             <div className="mt-3 flex flex-wrap gap-x-4">

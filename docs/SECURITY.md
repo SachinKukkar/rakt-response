@@ -2,10 +2,10 @@
 
 ## Principles
 
-1. **Private by default.** New donors are invisible in the directory and not contactable until they opt in. Each permission is separate and revocable, and its history is recorded.
+1. **Donors decide who can reach them.** Donors are never listed publicly. When a donor can give now, the family behind a verified request in their district sees their first name and area and can open their contact on the channel they chose, unless they switch on "Hide my number" or pause. Hide my number and alert choices are recorded with timestamps.
 2. **Defence in depth.** Every private page is gated in the proxy *and* server layouts; every mutation is a server action that validates input with Zod and re-checks the user; the database enforces RLS, guard triggers, CHECK constraints and authorisation inside every SECURITY DEFINER function. Hiding a button is never the control.
-3. **Least privilege.** Volunteers get per-permission flags; contact details are released one donor, one verified request at a time, with consent, a rate limit and an audit entry.
-4. **Minimal data.** No date of birth, gender, medical history or street address. Coordinates are optional and rounded to ~1 km. Requests ask for no patient identifiers.
+3. **Least privilege.** Volunteers get per-permission flags. Contact details are released one donor, one verified request at a time, with a rate limit and an audit entry: to volunteers, and to the family that made the request (only donors who can give now and don't hide their number).
+4. **Minimal data.** Donors give no date of birth, gender, medical history or street address; coordinates are optional and rounded to ~1 km. Requests ask only for what volunteers check with the hospital (the patient's name, age and gender, the hospital's IP/UHID number and ward). These are shown to staff and to donors who join, never publicly, and the retention clean-up removes them with the requester's contact after the request closes.
 
 ## Checklist
 
@@ -13,11 +13,11 @@
 - [x] Roles only via admin RPCs; no self-assignment; signup metadata ignored for roles (tested).
 - [x] Service role key used only server-side, optional, never `NEXT_PUBLIC_`.
 - [x] Privileged columns (verification, status, provenance, roles) protected by guard triggers (tested).
-- [x] Contact access: staff + verified request + consent/accepted request + rate limit + audit (tested).
+- [x] Contact access: volunteers (verified request + standing permission or accepted contact request) and the requesting family (own verified request; donors who can give now and don't hide their number; one at a time, hourly and monthly caps); rate limits and audit entries (tested).
 - [x] Directory never returns phone, email, PIN or coordinates (tested).
 - [x] Public request/story functions return only safe columns (tested).
 - [x] Audit log append-only, stores changed field names not values.
-- [x] Rate limits on requests (per user / hashed IP), contact views, contact requests, stories, corrections, donation records; Supabase Auth limits for sign-in/sign-up.
+- [x] Rate limits on requests (per user, plus a cap on open requests), donor joins, contact views by volunteers and families, contact requests, stories, corrections, donation records; Supabase Auth limits for sign-in/sign-up.
 - [x] Spam: honeypot field, duplicate request detection, verification before anything is shown.
 - [x] Server Actions CSRF protection (Next.js origin check); sign-out is POST-only with an origin check.
 - [x] Open-redirect protection on `next` parameters.
@@ -38,7 +38,7 @@
 
 ## Indian data-protection notes
 
-The Digital Personal Data Protection Act, 2023 (and its rules) applies to digital personal data processed in India. The platform is built to support: notice and specific consent (separate consents with timestamps), purpose limitation (coordination only), data minimisation, withdrawal of consent, correction and erasure requests, security safeguards and breach preparedness (audit logs). Health-related information (blood group, donation history) should be treated as sensitive. **This is not legal advice** — obtain a professional review of the privacy policy, terms, retention periods, cross-border hosting region and grievance process before production. Do not claim automatic compliance.
+The Digital Personal Data Protection Act, 2023 (and its rules) applies to digital personal data processed in India. The platform is built to support: notice (the sign-up screen, settings and privacy policy say who sees what), recorded choices with timestamps (Hide my number, alerts), purpose limitation (coordination only), data minimisation, withdrawal (hide the number or pause at any time), correction and erasure requests, security safeguards and breach preparedness (audit logs). Health-related information (blood group, donation history) should be treated as sensitive. Showing donors' contact details to requesting families is a deliberate product decision. **This is not legal advice** — obtain a professional review of that decision, of the privacy policy, terms, retention periods, cross-border hosting region and grievance process before production. Do not claim automatic compliance.
 
 ## Reporting a vulnerability
 

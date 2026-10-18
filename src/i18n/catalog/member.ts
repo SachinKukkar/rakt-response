@@ -26,7 +26,7 @@ const hi: Catalog = {
   "Add your blood group": "अपना ब्लड ग्रुप जोड़ें",
   "Add a mobile number": "मोबाइल नंबर जोड़ें",
   "Add your area": "अपना इलाका जोड़ें",
-  "Review your contact & directory choices": "संपर्क और सूची से जुड़ी अपनी पसंद देखें",
+  "Choose how patients can reach you": "चुनें कि मरीज़ आप तक कैसे पहुँचें",
   "Record your donation history": "अपने पिछले रक्तदान दर्ज करें",
   "Your donations": "आपके रक्तदान",
   History: "रिकॉर्ड",
@@ -222,15 +222,13 @@ const hi: Catalog = {
   // --- Privacy & settings -------------------------------------------------------------
   "Every permission is separate and can be changed or withdrawn at any time.": "हर अनुमति अलग है और आप इसे कभी भी बदल या वापस ले सकते हैं।",
   "Consent & availability": "सहमति और उपलब्धता",
-  "Directory visibility": "सूची में दिखना",
-  "Contact by volunteers": "स्वयंसेवकों द्वारा संपर्क",
   "Request alerts": "रिक्वेस्ट की सूचना",
   "Privacy policy & terms": "प्राइवेसी नीति और शर्तें",
   "Consent history": "सहमति का रिकॉर्ड",
   "A record of the choices you've made.": "आपने जो-जो चुना, उसका रिकॉर्ड।",
   given: "दी गई",
   "withdrawn / not given": "वापस ली गई / नहीं दी गई",
-  "No consent changes recorded yet.": "अभी तक सहमति में कोई बदलाव दर्ज नहीं।",
+  "No changes recorded yet.": "अभी तक कोई बदलाव दर्ज नहीं।",
   "Signed in as": "इस ईमेल से साइन इन:",
   "Change password": "पासवर्ड बदलें",
   "Delete my account": "मेरा खाता हटाएँ",
@@ -266,6 +264,66 @@ const hi: Catalog = {
   "correction requested": "सुधार माँगा गया",
   withdrawn: "वापस ली गई",
   note: "टिप्पणी",
+
+  // --- Hide my number, availability, admin limits (18 October 2026) ------------------
+  "Number hidden from patients":
+    "मरीज़ों से नंबर छिपा है",
+  "Choose how patients and volunteers can reach you. You can change these any time.":
+    "चुनें कि मरीज़ और स्वयंसेवक आप तक कैसे पहुँचें। आप इन्हें कभी भी बदल सकते हैं।",
+  "Contact & availability":
+    "संपर्क और उपलब्धता",
+  "History of your choices":
+    "आपकी पसंद का इतिहास",
+  "on":
+    "चालू",
+  "off":
+    "बंद",
+  "Hide my number from patients":
+    "मरीज़ों से मेरा नंबर छिपाएँ",
+  "Off: a patient with a verified request near you, when you can give, sees your first name and area and can reach you on the channel below. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests.":
+    "बंद: जब आप दे सकें, आपके पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपका पहला नाम और इलाका देखता है और नीचे चुने तरीके से आप तक पहुँच सकता है। चालू: मरीज़ आपको नहीं देखते, और आप खुद रिक्वेस्ट से जुड़ सकते हैं। जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक हमेशा आप तक पहुँच सकते हैं।",
+  "I'm available to donate":
+    "मैं रक्तदान के लिए उपलब्ध हूँ",
+  "Turn off while travelling, unwell or after a recent donation. Patients don't see you while it's off.":
+    "यात्रा में, बीमार होने पर या हाल में रक्तदान के बाद बंद रखें। बंद रहने पर मरीज़ आपको नहीं देखते।",
+  "Matching blood group and district only, when you can give. No SMS or bulk messages.":
+    "सिर्फ़ मेल खाता ब्लड ग्रुप और ज़िला, जब आप दे सकें। कोई SMS या बल्क मैसेज नहीं।",
+  "Contact options become available once you add a blood group to your profile.":
+    "प्रोफ़ाइल में ब्लड ग्रुप जोड़ने पर संपर्क के विकल्प मिलेंगे।",
+  "How patients can reach you":
+    "मरीज़ आप तक कैसे पहुँचें",
+  "You choose how patients can reach you, or hide your number, before you finish.":
+    "आख़िर में आप चुनेंगे कि मरीज़ आप तक कैसे पहुँचें, या अपना नंबर छिपाएँगे।",
+  "Volunteers can reach you on it for verified requests, and patients too unless you hide your number.":
+    "जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक इस पर आप तक पहुँच सकते हैं, और मरीज़ भी, जब तक आप नंबर न छिपाएँ।",
+  "Off: when you can give, a patient with a verified request near you sees your first name and area and can reach you on the channel you chose. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests. Change this any time in Privacy & settings.":
+    "बंद: जब आप दे सकें, आपके पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपका पहला नाम और इलाका देखता है और आपके चुने तरीके से आप तक पहुँच सकता है। चालू: मरीज़ आपको नहीं देखते, और आप खुद रिक्वेस्ट से जुड़ सकते हैं। जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक हमेशा आप तक पहुँच सकते हैं। इसे कभी भी “प्राइवेसी और सेटिंग्स” में बदलें।",
+  "Your account is active. Choose how patients can reach you, or hide your number, in Privacy & settings.":
+    "आपका खाता चालू है। “प्राइवेसी और सेटिंग्स” में चुनें कि मरीज़ आप तक कैसे पहुँचें, या अपना नंबर छिपाएँ।",
+  "Verified requests for your blood group. Join one when you can give.":
+    "आपके ब्लड ग्रुप की जाँची हुई रिक्वेस्ट। जब दे सकें, किसी से जुड़ें।",
+  "You can give again from around {date}. Until then patients won't see you and you can't join requests. The blood centre's screening always decides.":
+    "आप लगभग {date} से फिर रक्तदान कर सकते हैं। तब तक मरीज़ आपको नहीं देखेंगे और आप रिक्वेस्ट से नहीं जुड़ पाएँगे। आख़िरी फ़ैसला हमेशा ब्लड सेंटर की जाँच से होता है।",
+  "You can give now, as far as your records show. The blood centre's screening always decides.":
+    "आपके रिकॉर्ड के हिसाब से आप अभी रक्तदान कर सकते हैं। आख़िरी फ़ैसला हमेशा ब्लड सेंटर की जाँच से होता है।",
+  "Days after a whole-blood donation before a donor shows as able to give":
+    "होल ब्लड डोनेशन के बाद कितने दिन तक डोनर 'दे सकते हैं' नहीं दिखेगा",
+  "Used for the patient's donor list, joining requests and the donor's estimate. The blood centre decides.":
+    "मरीज़ की डोनर सूची, रिक्वेस्ट से जुड़ने और डोनर के अनुमान के लिए इस्तेमाल होता है। फ़ैसला ब्लड सेंटर करता है।",
+  "Days after an SDP/apheresis donation before a donor shows as able to give":
+    "SDP/एफ़ेरेसिस डोनेशन के बाद कितने दिन तक डोनर 'दे सकते हैं' नहीं दिखेगा",
+  "Donors shown to a patient per verified request":
+    "हर जाँची हुई रिक्वेस्ट पर मरीज़ को कितने डोनर दिखें",
+  "Donor contacts a patient can open per hour":
+    "एक मरीज़ एक घंटे में कितने डोनर संपर्क खोल सकता है",
+  "Different donors a patient can open in 30 days":
+    "एक मरीज़ 30 दिन में कितने अलग डोनर खोल सकता है",
+  "Open requests a member can have at once":
+    "एक सदस्य की एक साथ कितनी खुली रिक्वेस्ट हो सकती हैं",
+  "Requests a donor can join per day":
+    "एक डोनर एक दिन में कितनी रिक्वेस्ट से जुड़ सकता है",
+  "Open requests a donor can be joined to at once":
+    "एक डोनर एक साथ कितनी खुली रिक्वेस्ट से जुड़ा रह सकता है",
 };
 
 export default hi;

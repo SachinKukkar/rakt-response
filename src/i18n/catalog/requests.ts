@@ -11,7 +11,7 @@ const hi: Catalog = {
     "बताइए क्या चाहिए। एक स्वयंसेवक पहले इसकी जाँच करेगा, फिर उन डोनर से बात करेगा जिनका ब्लड ग्रुप मिलता है और जिन्होंने संपर्क के लिए हाँ कहा है।",
   "Verified before sharing": "शेयर से पहले जाँच",
   "Free, always": "हमेशा मुफ़्त",
-  "Your details stay private": "आपकी जानकारी प्राइवेट रहती है",
+  "Donors who can give now": "अभी रक्तदान कर सकने वाले डोनर",
   "Submit a request": "रिक्वेस्ट भेजें",
   "Emergency? Call the hospital first": "इमरजेंसी है? पहले अस्पताल को फ़ोन करें",
   "The treating hospital or nearest licensed blood bank comes first. We coordinate voluntary donors — we can't reserve blood, check compatibility or guarantee a donor.":
@@ -153,6 +153,200 @@ const hi: Catalog = {
   "Cancel this request? Volunteers will stop contacting donors.": "यह रिक्वेस्ट रद्द करें? स्वयंसेवक डोनर से संपर्क करना बंद कर देंगे।",
   "You haven't submitted any requests": "आपने अभी कोई रिक्वेस्ट नहीं भेजी है",
   "If someone needs blood, submit a request and a volunteer will verify it.": "अगर किसी को खून चाहिए, तो रिक्वेस्ट भेजें। स्वयंसेवक उसकी जाँच करेगा।",
+
+  // --- Patients and donors (18 October 2026) -----------------------------------------
+  "Patient":
+    "मरीज़",
+  "Patient's full name":
+    "मरीज़ का पूरा नाम",
+  "As on the hospital's blood request form.":
+    "जैसा अस्पताल के ब्लड रिक्वेस्ट फ़ॉर्म पर लिखा है।",
+  "Age (years)":
+    "उम्र (साल)",
+  "Gender":
+    "लिंग",
+  "Female":
+    "महिला",
+  "Male":
+    "पुरुष",
+  "Other":
+    "अन्य",
+  "Units / donors needed":
+    "कितनी यूनिट / कितने डोनर चाहिए",
+  "Choose":
+    "चुनें",
+  "Hospital":
+    "अस्पताल",
+  "Patient's IP / UHID number (optional)":
+    "मरीज़ का IP / UHID नंबर (अगर हो)",
+  "Donors give this at the blood bank.":
+    "डोनर ब्लड बैंक में यह नंबर बताते हैं।",
+  "Ward or bed (optional)":
+    "वार्ड या बेड (अगर हो)",
+  "Your details":
+    "आपकी जानकारी",
+  "Volunteers see all these details to verify the request. Donors who offer to help see the patient's name, the hospital, and your name and number, so they can reach you.":
+    "स्वयंसेवक रिक्वेस्ट की जाँच के लिए यह सारी जानकारी देखते हैं। मदद के लिए आगे आने वाले डोनर मरीज़ का नाम, अस्पताल, और आपका नाम व नंबर देखते हैं, ताकि वे आप तक पहुँच सकें।",
+  "Your relation to the patient":
+    "मरीज़ से आपका रिश्ता",
+  "Your phone":
+    "आपका फ़ोन",
+  "Donors can reach you by":
+    "डोनर आप तक ऐसे पहुँचें",
+  "A volunteer will check the request with the hospital.":
+    "स्वयंसेवक अस्पताल से रिक्वेस्ट की जाँच करेगा।",
+  "Once it is verified, your request page shows donors who can give now, and you can contact them directly.":
+    "जाँच के बाद आपकी रिक्वेस्ट वाले पेज पर वे डोनर दिखेंगे जो अभी रक्तदान कर सकते हैं, और आप उनसे सीधे संपर्क कर सकेंगे।",
+  "Open my request":
+    "मेरी रिक्वेस्ट खोलें",
+  "I am the patient":
+    "मैं ही मरीज़ हूँ",
+  "Parent":
+    "माता या पिता",
+  "Son or daughter":
+    "बेटा या बेटी",
+  "Husband or wife":
+    "पति या पत्नी",
+  "Brother or sister":
+    "भाई या बहन",
+  "Other relative":
+    "दूसरे रिश्तेदार",
+  "Friend":
+    "दोस्त",
+  "Accident":
+    "दुर्घटना",
+  "Thalassemia":
+    "थैलेसीमिया",
+  "Delivery":
+    "प्रसव (डिलीवरी)",
+  "Dengue":
+    "डेंगू",
+  "Anaemia":
+    "एनीमिया (खून की कमी)",
+  "You joined this request":
+    "आप इस रिक्वेस्ट से जुड़ चुके हैं",
+  "Add your blood group to join requests":
+    "रिक्वेस्ट से जुड़ने के लिए अपना ब्लड ग्रुप जोड़ें",
+  "Needs a different blood group":
+    "दूसरा ब्लड ग्रुप चाहिए",
+  "Too soon after your last donation":
+    "पिछले रक्तदान को अभी ज़्यादा समय नहीं हुआ",
+  "WhatsApp {phone}":
+    "WhatsApp {phone}",
+  "Email {email}":
+    "ईमेल {email}",
+  "Ready to donate":
+    "रक्तदान के लिए तैयार",
+  "Can give now":
+    "अभी दे सकते हैं",
+  "Prefers: {method}":
+    "पसंद: {method}",
+  "This donor keeps their number hidden. They have your request and will reach you, or a volunteer will connect you.":
+    "इस डोनर ने अपना नंबर छिपा रखा है। आपकी रिक्वेस्ट उनके पास है, वे आप तक पहुँचेंगे, या कोई स्वयंसेवक आपको जोड़ देगा।",
+  "Show contact":
+    "संपर्क दिखाएँ",
+  "Your request for {group} blood at {hospital}.":
+    "{hospital} में {group} खून के लिए आपकी रिक्वेस्ट।",
+  "All my requests":
+    "मेरी सारी रिक्वेस्ट",
+  "Same blood group, near you, and enough time since their last donation. Tap Show contact to reach a donor on the channel they chose.":
+    "एक ही ब्लड ग्रुप, आपके पास, और पिछले रक्तदान को काफ़ी समय हो चुका। डोनर से उनके चुने तरीके से संपर्क के लिए “संपर्क दिखाएँ” दबाएँ।",
+  "Please use these numbers only for this request and don't share them. The blood centre's doctor still checks every donor.":
+    "ये नंबर सिर्फ़ इसी रिक्वेस्ट के लिए इस्तेमाल करें और किसी से शेयर न करें। ब्लड सेंटर का डॉक्टर फिर भी हर डोनर की जाँच करता है।",
+  "Ready to donate ({count})":
+    "रक्तदान के लिए तैयार ({count})",
+  "More donors who can give now ({count})":
+    "अभी दे सकने वाले और डोनर ({count})",
+  "No donor can give right now in your district":
+    "आपके ज़िले में अभी कोई डोनर रक्तदान नहीं कर सकता",
+  "Volunteers are looking too. We'll notify you when a donor joins your request.":
+    "स्वयंसेवक भी ढूँढ रहे हैं। कोई डोनर आपकी रिक्वेस्ट से जुड़ेगा तो हम आपको बताएँगे।",
+  "A volunteer is checking your request":
+    "स्वयंसेवक आपकी रिक्वेस्ट जाँच रहा है",
+  "They check it with the hospital. Once it is verified, donors who can give now appear here, and you can contact them directly.":
+    "वे अस्पताल से इसकी जाँच करते हैं। जाँच के बाद अभी रक्तदान कर सकने वाले डोनर यहाँ दिखेंगे, और आप उनसे सीधे संपर्क कर सकेंगे।",
+  "Details you gave":
+    "आपकी दी हुई जानकारी",
+  "{age} years":
+    "{age} साल",
+  "IP / UHID":
+    "IP / UHID",
+  "Ward or bed":
+    "वार्ड या बेड",
+  "When needed":
+    "कब तक चाहिए",
+  "Your relation":
+    "आपका रिश्ता",
+  "Need to change something? Contact a volunteer.":
+    "कुछ बदलना है? किसी स्वयंसेवक से संपर्क करें।",
+  "Cancel this request? Donors and volunteers will stop contacting you.":
+    "यह रिक्वेस्ट रद्द करें? डोनर और स्वयंसेवक आपसे संपर्क करना बंद कर देंगे।",
+  "You joined this request. Thank you.":
+    "आप इस रिक्वेस्ट से जुड़े हैं। धन्यवाद।",
+  "Patient and hospital":
+    "मरीज़ और अस्पताल",
+  "Needed":
+    "ज़रूरत",
+  "Patient's family":
+    "मरीज़ का परिवार",
+  "A volunteer will share the family's contact details with you.":
+    "कोई स्वयंसेवक आपको परिवार की संपर्क जानकारी देगा।",
+  "At the blood bank":
+    "ब्लड बैंक में",
+  "Say you are donating for this patient and give the hospital's IP / UHID number if there is one. The blood centre's doctor decides if you can donate.":
+    "बताएँ कि आप इस मरीज़ के लिए रक्तदान कर रहे हैं, और अगर IP / UHID नंबर हो तो वह दें। आप रक्तदान कर सकते हैं या नहीं, यह ब्लड सेंटर का डॉक्टर तय करता है।",
+  "I can't donate after all":
+    "मैं रक्तदान नहीं कर पाऊँगा/पाऊँगी",
+  "Leave this request? The family will no longer see you as ready to donate.":
+    "इस रिक्वेस्ट से हटें? परिवार को अब आप रक्तदान के लिए तैयार नहीं दिखेंगे।",
+  "Joining shows you the patient's details and the family's number, and tells them you are ready to donate.":
+    "जुड़ने पर आपको मरीज़ की जानकारी और परिवार का नंबर दिखेगा, और उन्हें पता चलेगा कि आप रक्तदान के लिए तैयार हैं।",
+  "You can give again from {date}.":
+    "आप {date} से फिर रक्तदान कर सकते हैं।",
+  "You joined":
+    "आप जुड़ चुके हैं",
+  "See patient details":
+    "मरीज़ की जानकारी देखें",
+  "I can donate":
+    "मैं रक्तदान कर सकता/सकती हूँ",
+  "Open requests you can help with, and requests you've submitted.":
+    "खुली रिक्वेस्ट जिनमें आप मदद कर सकते हैं, और आपकी भेजी रिक्वेस्ट।",
+  "Open requests":
+    "खुली रिक्वेस्ट",
+  "Verified by a volunteer. Join a request when you can give: you'll see the patient's details and the family's number.":
+    "स्वयंसेवक द्वारा जाँची गई। जब आप दे सकें, किसी रिक्वेस्ट से जुड़ें: आपको मरीज़ की जानकारी और परिवार का नंबर दिखेगा।",
+  "Joining is not a commitment, and it is never treated as a confirmed donation. The blood centre will check your eligibility.":
+    "जुड़ना कोई वादा नहीं है, और इसे कभी पक्का रक्तदान नहीं माना जाता। ब्लड सेंटर आपकी योग्यता जाँचेगा।",
+  "There are no open verified requests at the moment.":
+    "अभी कोई खुली जाँची हुई रिक्वेस्ट नहीं है।",
+  "Verified requests for your blood group will appear here.":
+    "आपके ब्लड ग्रुप की जाँची हुई रिक्वेस्ट यहाँ दिखेंगी।",
+  "Want to help with requests?":
+    "रिक्वेस्ट में मदद करना चाहते हैं?",
+  "Open request":
+    "रिक्वेस्ट खोलें",
+  "Registered donors with this blood group who can give now can join the request. Joining shows you the patient's details and the family's number. The blood centre will check your eligibility.":
+    "इस ब्लड ग्रुप के रजिस्टर्ड डोनर, जो अभी रक्तदान कर सकते हैं, इस रिक्वेस्ट से जुड़ सकते हैं। जुड़ने पर आपको मरीज़ की जानकारी और परिवार का नंबर दिखता है। ब्लड सेंटर आपकी योग्यता जाँचेगा।",
+  "I can help — sign in to join":
+    "मैं मदद कर सकता/सकती हूँ — जुड़ने के लिए साइन इन करें",
+  "A few minutes. A volunteer checks every request with the hospital. Then you see donors who can give now and contact them directly.":
+    "कुछ ही मिनट। स्वयंसेवक हर रिक्वेस्ट की अस्पताल से जाँच करते हैं। फिर आपको अभी रक्तदान कर सकने वाले डोनर दिखते हैं और आप उनसे सीधे संपर्क कर सकते हैं।",
+  "A free account lets you see eligible donors for your request once it is verified, and keeps you updated.":
+    "मुफ़्त खाते से, जाँच के बाद आप अपनी रिक्वेस्ट के लिए योग्य डोनर देख सकते हैं, और आपको अपडेट मिलते रहते हैं।",
+  "Relation to patient":
+    "मरीज़ से रिश्ता",
+  "Donors who join see the phone":
+    "जुड़ने वाले डोनर फ़ोन देखते हैं",
+  "No (older request)":
+    "नहीं (पुरानी रिक्वेस्ट)",
+
+  // --- Request page titles -----------------------------------------------------------
+  "Your request":
+    "आपकी रिक्वेस्ट",
+  "For {group} blood at {hospital}.":
+    "{hospital} में {group} खून के लिए।",
+  "Thank you. Here is what you need at the blood bank.":
+    "धन्यवाद। ब्लड बैंक में आपको यह जानकारी चाहिए होगी।",
 };
 
 export default hi;

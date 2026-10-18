@@ -3,24 +3,24 @@
 import { revalidatePath } from "next/cache";
 import { fail, success, validationFailure, type ActionResult } from "@/lib/action-result";
 import { getViewer } from "@/lib/auth";
-import { anonymousClientKey } from "@/lib/client-key";
+import type { DonorContactMethod } from "@/lib/constants";
 import { isSupabaseConfigured } from "@/lib/env";
 import { friendlyDbError } from "@/lib/errors";
 import { indiaLocalToIso } from "@/lib/format";
 import { normalizePhone } from "@/lib/phone";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { uuidSchema } from "@/lib/validation/common";
 import { bloodRequestSchema, type BloodRequestInput } from "@/lib/validation/forms";
 
 export interface SubmittedRequest {
+  requestId: string;
   referenceCode: string;
   possibleDuplicate: boolean;
-  signedIn: boolean;
 }
 
 export async function submitBloodRequest(input: BloodRequestInput): Promise<ActionResult<SubmittedRequest>> {
   if (!isSupabaseConfigured()) return fail("Requests cannot be submitted yet: the database is not configured.");
+  if (!(await getViewer())) return fail("Please sign in to submit a request");
   const parsed = bloodRequestSchema.safeParse(input);
   if (!parsed.success) return validationFailure(parsed.error);
   const v = parsed.data;
@@ -29,12 +29,11 @@ export async function submitBloodRequest(input: BloodRequestInput): Promise<Acti
   const requiredBy = indiaLocalToIso(v.required_by);
   if (!requiredBy) return fail("Please choose a valid date and time.", { required_by: ["Choose the date and time"] });
 
-  const viewer = await getViewer();
-  const args = {
-    p_requester_name: v.requester_name,
-    p_requester_phone: normalizePhone(v.requester_phone),
-    p_requester_email: v.requester_email || null,
-    p_contact_method: v.requester_contact_method,
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("create_blood_request", {
+    p_patient_name: v.patient_name,
+    p_patient_age: v.patient_age,
+    p_patient_gender: v.patient_gender,
     p_blood_group: v.blood_group,
     p_request_type: v.request_type,
     p_units: v.units_needed,
@@ -42,33 +41,27 @@ export async function submitBloodRequest(input: BloodRequestInput): Promise<Acti
     p_state: v.state || null,
     p_district: v.district,
     p_city: v.city,
+    p_hospital_patient_id: v.hospital_patient_id || null,
+    p_ward: v.ward || null,
+    p_reason: v.reason || null,
     p_required_by: requiredBy,
     p_urgency: v.urgency,
+    p_requester_name: v.requester_name,
+    p_requester_relation: v.requester_relation,
+    p_requester_phone: normalizePhone(v.requester_phone),
+    p_contact_method: v.requester_contact_method,
     p_notes: v.notes || null,
-    p_public_listing: v.public_listing_consent,
-  };
-
-  let client;
-  let clientKey: string | null = null;
-  if (viewer) {
-    client = await createClient();
-  } else {
-    client = createAdminClient();
-    if (!client) {
-      return fail("Please sign in to submit a request. For emergencies, contact the hospital blood bank directly.");
-    }
-    clientKey = await anonymousClientKey("blood-request");
-  }
-
-  const { data, error } = await client.rpc("submit_blood_request", { ...args, p_client_key: clientKey });
+  });
   if (error) return fail(friendlyDbError(error, "We could not submit your request. Please try again."));
-  const row = (Array.isArray(data) ? data[0] : data) as { reference_code: string; possible_duplicate_of: string | null } | undefined;
+  const row = (Array.isArray(data) ? data[0] : data) as
+    | { request_id: string; reference_code: string; possible_duplicate_of: string | null }
+    | undefined;
   if (!row) return fail("We could not submit your request. Please try again.");
   revalidatePath("/requests");
   return success("Request submitted.", {
+    requestId: row.request_id,
     referenceCode: row.reference_code,
     possibleDuplicate: Boolean(row.possible_duplicate_of),
-    signedIn: Boolean(viewer),
   });
 }
 
@@ -80,6 +73,7 @@ export async function cancelMyRequest(_prev: ActionResult, formData: FormData): 
   const { error } = await supabase.rpc("cancel_my_blood_request", { p_request: id.data, p_reason: reason || "Cancelled by requester" });
   if (error) return fail(friendlyDbError(error));
   revalidatePath("/requests");
+  revalidatePath(`/requests/${id.data}`);
   return success("Your request was cancelled. Thank you for letting us know.");
 }
 
@@ -91,9 +85,11 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   const { error } = await supabase.rpc("respond_to_blood_request", { p_request: id.data, p_response: response });
   if (error) return fail(friendlyDbError(error));
   revalidatePath("/requests");
+  revalidatePath(`/requests/${id.data}`);
+  revalidatePath("/dashboard");
   return success(
     response === "interested"
-      ? "Thank you. A volunteer will be in touch if your help is needed. Please don't go to the hospital until they confirm."
+      ? "Thank you for joining. Open the request to see the patient's details and contact the family."
       : "Thanks for letting us know.",
   );
 }
@@ -107,4 +103,24 @@ export async function respondToContactRequest(_prev: ActionResult, formData: For
   if (error) return fail(friendlyDbError(error));
   revalidatePath("/requests");
   return success(accept ? "Thank you. The volunteer can now see your contact details for this request." : "Declined. Your details were not shared.");
+}
+
+export interface RevealedDonorContact {
+  channel: DonorContactMethod;
+  phone: string | null;
+  whatsapp: string | null;
+  email: string | null;
+}
+
+/** Opens one eligible donor's contact for the patient's own verified request (limited and logged). */
+export async function revealDonorToRequester(requestId: string, donorId: string): Promise<ActionResult<RevealedDonorContact>> {
+  const request = uuidSchema.safeParse(requestId);
+  const donor = uuidSchema.safeParse(donorId);
+  if (!request.success || !donor.success) return fail("Invalid request.");
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("reveal_donor_contact_to_requester", { p_request: request.data, p_donor: donor.data });
+  if (error) return fail(friendlyDbError(error));
+  const row = (Array.isArray(data) ? data[0] : data) as RevealedDonorContact | undefined;
+  if (!row) return fail("This donor is not available for your request");
+  return success("Contact shown.", row);
 }

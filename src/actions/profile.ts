@@ -103,9 +103,12 @@ export async function updatePreferences(input: PreferencesInput): Promise<Action
   const { error } = await supabase.from("donor_preferences").upsert(
     {
       profile_id: viewer.id,
-      directory_visible: isDonor && v.directory_visible,
-      contact_consent: isDonor && v.contact_consent,
-      open_to_contact: isDonor && v.contact_consent && v.open_to_contact,
+      hide_number: isDonor && v.hide_number,
+      // Volunteers can reach every donor for verified requests (logged); the
+      // older separate directory and contact switches follow that.
+      directory_visible: isDonor,
+      contact_consent: isDonor,
+      open_to_contact: isDonor && v.open_to_contact,
       emergency_alerts: isDonor && v.emergency_alerts,
       show_donation_summary: isDonor && v.show_donation_summary,
       show_first_name: v.show_first_name,
@@ -125,14 +128,14 @@ export async function setAvailability(_prev: ActionResult, formData: FormData): 
   const viewer = await requireViewer();
   const open = formData.get("open") === "true";
   const supabase = await createClient();
-  const { data: prefs } = await supabase.from("donor_preferences").select("contact_consent").eq("profile_id", viewer.id).maybeSingle();
-  if (open && !prefs?.contact_consent) {
-    return fail("To be open to contact, first allow volunteers to contact you in Privacy & settings.");
-  }
-  const { error } = await supabase.from("donor_preferences").update({ open_to_contact: open }).eq("profile_id", viewer.id);
+  // Being available means volunteers can reach you too (older accounts may have had that switched off).
+  const { error } = await supabase
+    .from("donor_preferences")
+    .update(open ? { open_to_contact: true, contact_consent: true, directory_visible: true } : { open_to_contact: false })
+    .eq("profile_id", viewer.id);
   if (error) return fail(friendlyDbError(error));
   refreshMemberPages();
-  return success(open ? "You're marked as open to contact." : "You're marked as unavailable. Volunteers won't contact you.");
+  return success(open ? "You're marked as available to donate." : "You're marked as unavailable. Patients and volunteers won't contact you.");
 }
 
 export async function changeBloodGroup(_prev: ActionResult, formData: FormData): Promise<ActionResult> {

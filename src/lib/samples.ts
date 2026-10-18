@@ -44,8 +44,8 @@ export const SAMPLE_TESTIMONIALS: SampleTestimonial[] = [
   },
   {
     quote: {
-      en: "We check every request before reaching out. Donors trust us because their numbers are never shown publicly.",
-      hi: "किसी से संपर्क करने से पहले हम हर रिक्वेस्ट की जाँच करते हैं। डोनर हम पर भरोसा करते हैं, क्योंकि उनका नंबर कभी सबके सामने नहीं दिखाया जाता।",
+      en: "We check every request with the hospital first. Only then can the family call donors who can give right now.",
+      hi: "हम पहले हर रिक्वेस्ट की अस्पताल से जाँच करते हैं। उसके बाद ही परिवार उन डोनरों को फ़ोन कर पाता है जो अभी रक्तदान कर सकते हैं।",
     },
     name: "Farhan A.",
     role: { en: "Volunteer", hi: "वॉलंटियर" },
@@ -143,14 +143,14 @@ He is home now. I wrote this because I wish we had known about it on the first n
 
 The request said "urgent, four units". When I called the hospital, the blood bank had already arranged two units and needed donors only for the rest, and only the next morning. Without that call, we would have woken up donors in the middle of the night for nothing.
 
-Now I check every request the same way: confirm it with the hospital or the requester, mark it verified, and only then look for donors who said yes to being contacted. Their numbers stay private; I see them only while I'm coordinating.
+Now I check every request the same way: confirm it with the hospital or the requester, and only then mark it verified. That is the moment the family can see donors who can give right now, so it has to be right.
 
 It takes a few minutes longer, and it is the reason donors keep picking up our calls.`,
       hi: `मैं वॉलंटियर बना तो सोचा था कि काम बस जल्दी से डोनर ढूँढना है। पहली ही रिक्वेस्ट ने सिखाया कि सबसे ज़रूरी कदम उससे पहले आता है।
 
 रिक्वेस्ट में लिखा था "अर्जेंट, चार यूनिट"। जब मैंने अस्पताल फ़ोन किया, तो पता चला कि ब्लड बैंक दो यूनिट का इंतज़ाम कर चुका था, बाकी के लिए डोनर चाहिए थे, और वो भी अगली सुबह। वो फ़ोन न करता, तो हम आधी रात को डोनरों को बेवजह जगा देते।
 
-अब मैं हर रिक्वेस्ट ऐसे ही जाँचता हूँ: अस्पताल या रिक्वेस्ट करने वाले से पुष्टि, फिर उसे वेरिफ़ाइड मार्क करना, और उसके बाद ही उन डोनरों को ढूँढना जिन्होंने संपर्क के लिए हाँ कहा है। उनके नंबर प्राइवेट रहते हैं; मुझे वो सिर्फ़ तालमेल के दौरान दिखते हैं।
+अब मैं हर रिक्वेस्ट ऐसे ही जाँचता हूँ: अस्पताल या रिक्वेस्ट करने वाले से पुष्टि, और उसके बाद ही उसे वेरिफ़ाइड मार्क करना। उसी पल परिवार को वे डोनर दिखते हैं जो अभी रक्तदान कर सकते हैं, इसलिए यह सही होना चाहिए।
 
 इसमें कुछ मिनट ज़्यादा लगते हैं, और इसी वजह से डोनर हमारा फ़ोन उठाते रहते हैं।`,
     },

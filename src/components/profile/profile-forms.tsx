@@ -18,8 +18,8 @@ import { resizeImageForUpload } from "@/lib/client-image";
 import {
   CONTACT_METHOD_LABELS,
   DONATION_EXPERIENCE_LABELS,
+  DONOR_CONTACT_METHODS,
   type BloodGroup,
-  type ContactMethod,
   type DonationExperience,
 } from "@/lib/constants";
 import { donorLocationSchema, type DonorLocationInput } from "@/lib/validation/registration";
@@ -245,10 +245,9 @@ export function PhotoForm({ photoUrl }: { photoUrl: string | null }) {
 export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesInput; isDonor: boolean }) {
   const t = useT();
   const form = useForm<PreferencesInput>({ resolver: zodResolver(preferencesSchema), defaultValues: defaults });
-  const { control, register, handleSubmit, setError, setValue, formState } = form;
+  const { control, register, handleSubmit, setError, formState } = form;
   const [result, setResult] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
-  const contact = useWatch({ control, name: "contact_consent" });
   const onSubmit = handleSubmit((values) =>
     startTransition(async () => {
       const r = await updatePreferences(values);
@@ -256,24 +255,19 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
       applyFieldErrors(r, setError);
     }),
   );
-  const toggle = (name: keyof PreferencesInput, title: string, description: string, disabled = false) => (
+  const toggle = (name: keyof PreferencesInput, title: string, description: string) => (
     <Controller
       control={control}
       name={name}
       render={({ field }) => (
-        <div className={disabled ? "pointer-events-none opacity-50" : undefined} aria-disabled={disabled || undefined}>
-          <ChoiceRow
-            id={`pref-${name}`}
-            checked={Boolean(field.value) && !disabled}
-            onCheckedChange={(v) => {
-              field.onChange(v);
-              if (name === "contact_consent" && !v) setValue("open_to_contact", false);
-            }}
-            error={formState.errors[name]?.message as string | undefined}
-            title={title}
-            description={description}
-          />
-        </div>
+        <ChoiceRow
+          id={`pref-${name}`}
+          checked={Boolean(field.value)}
+          onCheckedChange={field.onChange}
+          error={formState.errors[name]?.message as string | undefined}
+          title={title}
+          description={description}
+        />
       )}
     />
   );
@@ -281,10 +275,13 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
     <form onSubmit={onSubmit} noValidate className="space-y-3">
       {isDonor ? (
         <>
-          {toggle("directory_visible", "Visible in the volunteer donor directory", "Authorised volunteers see your display name, blood group and broad area. Never public.")}
-          {toggle("contact_consent", "Volunteers may contact me about verified requests", "Your number is revealed only for a verified request; every access is logged.")}
-          {toggle("open_to_contact", "I'm currently open to contact", "Turn off while travelling, unwell or after a recent donation.", !contact)}
-          {toggle("emergency_alerts", "In-app alerts for verified requests near me", "Matching blood group and district only. No SMS or bulk messages.")}
+          {toggle(
+            "hide_number",
+            "Hide my number from patients",
+            "Off: a patient with a verified request near you, when you can give, sees your first name and area and can reach you on the channel below. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests.",
+          )}
+          {toggle("open_to_contact", "I'm available to donate", "Turn off while travelling, unwell or after a recent donation. Patients don't see you while it's off.")}
+          {toggle("emergency_alerts", "In-app alerts for verified requests near me", "Matching blood group and district only, when you can give. No SMS or bulk messages.")}
           {toggle("show_donation_summary", "Share my verified donation summary with volunteers", "Last verified whole blood / SDP dates and counts.")}
           {toggle(
             "show_first_name",
@@ -294,14 +291,14 @@ export function PreferencesForm({ defaults, isDonor }: { defaults: PreferencesIn
         </>
       ) : (
         <p className="rounded-xl bg-secondary p-3 text-sm text-secondary-foreground">
-          {t("Directory and contact options become available once you add a blood group to your profile.")}
+          {t("Contact options become available once you add a blood group to your profile.")}
         </p>
       )}
       {toggle("notify_status_updates", "Notify me about updates to my requests and records", "In-app notifications only.")}
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="preferred_contact_method" label="Preferred contact method">
+        <Field id="preferred_contact_method" label="How patients can reach you">
           <select id="preferred_contact_method" className={selectClass} {...register("preferred_contact_method")}>
-            {(Object.keys(CONTACT_METHOD_LABELS) as ContactMethod[]).map((m) => (
+            {DONOR_CONTACT_METHODS.map((m) => (
               <option key={m} value={m}>
                 {t(CONTACT_METHOD_LABELS[m])}
               </option>

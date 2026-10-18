@@ -18,11 +18,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("Privacy & settings") };
 }
 
+// The choices a member makes. The older directory and contact switches follow "Hide my number" now, so they aren't listed.
 const CONSENT_LABELS: Record<string, string> = {
-  directory: "Directory visibility",
-  contact: "Contact by volunteers",
   emergency_alerts: "Request alerts",
   terms: "Privacy policy & terms",
+  hide_number: "Number hidden from patients",
 };
 
 export default async function SettingsPage() {
@@ -31,7 +31,7 @@ export default async function SettingsPage() {
   const supabase = await createClient();
   const [donor, eventsResult] = await Promise.all([
     getDonorData(viewer.id),
-    supabase.from("consent_events").select("consent_type, granted, created_at").eq("profile_id", viewer.id).order("created_at", { ascending: false }).limit(15),
+    supabase.from("consent_events").select("consent_type, granted, created_at").eq("profile_id", viewer.id).in("consent_type", Object.keys(CONSENT_LABELS)).order("created_at", { ascending: false }).limit(15),
   ]);
   const prefs = donor.preferences;
   const events = (eventsResult.data ?? []) as Array<{ consent_type: string; granted: boolean; created_at: string }>;
@@ -39,41 +39,44 @@ export default async function SettingsPage() {
 
   return (
     <div className="max-w-2xl space-y-6">
-      <PageHeader title="Privacy & settings" description="Every permission is separate and can be changed or withdrawn at any time." />
+      <PageHeader title="Privacy & settings" description="Choose how patients and volunteers can reach you. You can change these any time." />
 
       <section className="surface p-5" aria-labelledby="consent-heading">
-        <SectionHeading id="consent-heading" title="Consent & availability" as="h3" />
+        <SectionHeading id="consent-heading" title="Contact & availability" as="h3" />
         <PreferencesForm
           isDonor={Boolean(viewer.profile?.is_donor)}
           defaults={{
-            directory_visible: prefs?.directory_visible ?? false,
-            contact_consent: prefs?.contact_consent ?? false,
+            hide_number: prefs?.hide_number ?? false,
             open_to_contact: prefs?.open_to_contact ?? false,
             emergency_alerts: prefs?.emergency_alerts ?? false,
             show_donation_summary: prefs?.show_donation_summary ?? false,
             show_first_name: prefs?.show_first_name ?? false,
             notify_status_updates: prefs?.notify_status_updates ?? true,
-            preferred_contact_method: prefs?.preferred_contact_method ?? "in_app",
+            preferred_contact_method:
+              prefs?.preferred_contact_method && prefs.preferred_contact_method !== "in_app" ? prefs.preferred_contact_method : "phone",
             max_distance_km: prefs?.max_distance_km ?? null,
           }}
         />
       </section>
 
       <section className="surface p-5" aria-labelledby="history-heading">
-        <SectionHeading id="history-heading" title="Consent history" description="A record of the choices you've made." as="h3" />
+        <SectionHeading id="history-heading" title="History of your choices" description="A record of the choices you've made." as="h3" />
         {events.length ? (
           <ul className="space-y-1.5 text-sm">
             {events.map((e, i) => (
               <li key={i} className="flex justify-between gap-3 border-b border-border/60 py-1.5 last:border-0">
                 <span>
-                  {CONSENT_LABELS[e.consent_type] ? t(CONSENT_LABELS[e.consent_type]) : e.consent_type}: <strong>{e.granted ? t("given") : t("withdrawn / not given")}</strong>
+                  {CONSENT_LABELS[e.consent_type] ? t(CONSENT_LABELS[e.consent_type]) : e.consent_type}:{" "}
+                  <strong>
+                    {e.consent_type === "hide_number" ? (e.granted ? t("on") : t("off")) : e.granted ? t("given") : t("withdrawn / not given")}
+                  </strong>
                 </span>
                 <span className="shrink-0 text-xs text-muted-foreground">{formatDateTime(e.created_at)}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted-foreground">{t("No consent changes recorded yet.")}</p>
+          <p className="text-sm text-muted-foreground">{t("No changes recorded yet.")}</p>
         )}
       </section>
 

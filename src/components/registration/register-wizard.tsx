@@ -19,7 +19,7 @@ import {
   DONATION_EXPERIENCE_LABELS,
   DONATION_TYPE_LABELS,
   DONATION_TYPES,
-  type ContactMethod,
+  DONOR_CONTACT_METHODS,
   type DonationExperience,
   type DonationType,
 } from "@/lib/constants";
@@ -62,16 +62,14 @@ const DEFAULTS: RegistrationInput = {
     donation_experience: "",
     display_name: "",
     phone: "",
-    preferred_contact_method: "in_app",
+    preferred_contact_method: "phone",
   },
   location: { state: "", district: "", city: "", locality: "", pincode: "", lat: null, lng: null, max_distance_km: null },
   history: { has_donated: false, approx_previous_donations: null, donations: [] },
-  // Donors join to be reachable, so this starts on. One clear switch on the review
-  // step controls it, and each part can be changed later in Privacy & settings.
+  // Donors join to be reachable. One switch on the review step hides their number
+  // from patients; everything can be changed later in Privacy & settings.
   consent: {
-    directory_visible: true,
-    contact_consent: true,
-    open_to_contact: true,
+    hide_number: false,
     emergency_alerts: true,
     show_donation_summary: false,
   },
@@ -194,7 +192,7 @@ export function RegisterWizard() {
     return (node as { message?: string } | undefined)?.message;
   };
 
-  const reachable = useWatch({ control, name: "consent.contact_consent" });
+  const hideNumber = useWatch({ control, name: "consent.hide_number" });
   const [locState, locDistrict, locCity, locPincode] = useWatch({
     control,
     name: ["location.state", "location.district", "location.city", "location.pincode"],
@@ -288,7 +286,7 @@ export function RegisterWizard() {
                       </Link>
                     </>
                   }
-                  description="Directory visibility and contact permissions are separate choices you'll make later."
+                  description="You choose how patients can reach you, or hide your number, before you finish."
                 />
               )}
             />
@@ -383,13 +381,13 @@ export function RegisterWizard() {
               id="phone"
               label="Mobile number"
               error={e("donor.phone")}
-              hint="Kept private. Shared with an authorised volunteer only if you allow contact."
+              hint="Volunteers can reach you on it for verified requests, and patients too unless you hide your number."
             >
               <Input {...fieldAria("phone", e("donor.phone"), true)} type="tel" inputMode="tel" autoComplete="tel" placeholder="98765 43210" {...register("donor.phone")} />
             </Field>
-            <Field id="preferred_contact_method" label="Preferred contact method" error={e("donor.preferred_contact_method")}>
+            <Field id="preferred_contact_method" label="How patients can reach you" error={e("donor.preferred_contact_method")}>
               <select {...fieldAria("preferred_contact_method", e("donor.preferred_contact_method"))} className={selectClass} {...register("donor.preferred_contact_method")}>
-                {(Object.keys(CONTACT_METHOD_LABELS) as ContactMethod[]).map((m) => (
+                {DONOR_CONTACT_METHODS.map((m) => (
                   <option key={m} value={m}>
                     {t(CONTACT_METHOD_LABELS[m])}
                   </option>
@@ -584,15 +582,11 @@ export function RegisterWizard() {
             <ReviewSummary values={getValues()} isDonor={isDonor} onEdit={goTo} />
             {isDonor ? (
               <ChoiceRow
-                id="reachable"
-                checked={reachable}
-                onCheckedChange={(v) => {
-                  for (const key of ["directory_visible", "contact_consent", "open_to_contact", "emergency_alerts"] as const) {
-                    setValue(`consent.${key}`, v);
-                  }
-                }}
-                title="Volunteers can reach me when my blood group is needed nearby"
-                description="Only Rakt Response volunteers and admins see your name, blood group and area. Never the public or other donors. Your number is shown only for a verified request, and every view is logged. Change this any time in Privacy & settings."
+                id="hide_number"
+                checked={hideNumber}
+                onCheckedChange={(v) => setValue("consent.hide_number", v)}
+                title="Hide my number from patients"
+                description="Off: when you can give, a patient with a verified request near you sees your first name and area and can reach you on the channel you chose. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests. Change this any time in Privacy & settings."
               />
             ) : null}
           </div>

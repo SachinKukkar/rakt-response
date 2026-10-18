@@ -34,7 +34,6 @@ const hi: Catalog = {
   "Add your blood group": "अपना ब्लड ग्रुप जोड़ें",
   "Add a mobile number": "मोबाइल नंबर जोड़ें",
   "Add your area": "अपना इलाका जोड़ें",
-  "Review your contact & directory choices": "संपर्क और डोनर सूची की अपनी पसंद देखें",
   "Record your donation history": "अपना रक्तदान रिकॉर्ड दर्ज करें",
 
   // --- Sign in, sign up, passwords (src/actions/auth.ts) -----------------------
@@ -529,6 +528,60 @@ const hi: Catalog = {
   "Donor response: unavailable": "डोनर का जवाब: अभी उपलब्ध नहीं",
   "Donor response: declined": "डोनर का जवाब: मना किया",
   "Donor response: no_response": "डोनर का जवाब: कोई जवाब नहीं",
+
+  // --- Patients and donors (18 October 2026) -----------------------------------------
+  "You're marked as available to donate.":
+    "आप रक्तदान के लिए उपलब्ध दिखाए जा रहे हैं।",
+  "You're marked as unavailable. Patients and volunteers won't contact you.":
+    "आप उपलब्ध नहीं दिखाए जा रहे। मरीज़ और स्वयंसेवक आपसे संपर्क नहीं करेंगे।",
+  "Thank you for joining. Open the request to see the patient's details and contact the family.":
+    "जुड़ने के लिए धन्यवाद। मरीज़ की जानकारी देखने और परिवार से संपर्क करने के लिए रिक्वेस्ट खोलें।",
+  "This donor is not available for your request":
+    "यह डोनर आपकी रिक्वेस्ट के लिए उपलब्ध नहीं है",
+  "Contact shown.":
+    "संपर्क दिखाया गया।",
+  "This request is not yours":
+    "यह रिक्वेस्ट आपकी नहीं है",
+  "You have opened many donor contacts this month. Please contact a volunteer for more help.":
+    "इस महीने आपने कई डोनर संपर्क खोले हैं। और मदद के लिए किसी स्वयंसेवक से संपर्क करें।",
+  "You have opened many donor contacts in the last hour. Please try again later.":
+    "पिछले एक घंटे में आपने कई डोनर संपर्क खोले हैं। कृपया थोड़ी देर बाद कोशिश करें।",
+  "You cannot join your own request":
+    "आप अपनी ही रिक्वेस्ट से नहीं जुड़ सकते",
+  "This request needs a different blood group":
+    "इस रिक्वेस्ट के लिए दूसरा ब्लड ग्रुप चाहिए",
+  "Your last donation was too recent to join this request":
+    "आपका पिछला रक्तदान हाल ही में हुआ है, इसलिए आप इस रिक्वेस्ट से नहीं जुड़ सकते",
+  "You have joined several open requests. Finish or leave one before joining another.":
+    "आप कई खुली रिक्वेस्ट से जुड़े हैं। किसी और से जुड़ने से पहले एक पूरी करें या उससे हटें।",
+  "You have joined several requests today. Please try again tomorrow.":
+    "आज आप कई रिक्वेस्ट से जुड़ चुके हैं। कृपया कल कोशिश करें।",
+  "You already have open requests. Close one, or contact a volunteer, before adding another.":
+    "आपकी पहले से खुली रिक्वेस्ट हैं। नई जोड़ने से पहले एक बंद करें, या किसी स्वयंसेवक से संपर्क करें।",
+  "Only a volunteer can change these details. Please contact a volunteer.":
+    "यह जानकारी सिर्फ़ स्वयंसेवक बदल सकते हैं। कृपया किसी स्वयंसेवक से संपर्क करें।",
+  "A donor is ready to give for {code}":
+    "{code} के लिए एक डोनर रक्तदान को तैयार है",
+  "Open your request to see them. The blood centre will check their eligibility.":
+    "उन्हें देखने के लिए अपनी रिक्वेस्ट खोलें। ब्लड सेंटर उनकी योग्यता जाँचेगा।",
+  "A volunteer verified your request. Open it to see donors who can give now, and keep in touch with the hospital blood bank.":
+    "स्वयंसेवक ने आपकी रिक्वेस्ट जाँच ली है। अभी रक्तदान कर सकने वाले डोनर देखने के लिए इसे खोलें, और अस्पताल के ब्लड बैंक के संपर्क में रहें।",
+  "Enter the patient's name":
+    "मरीज़ का नाम लिखें",
+  "Please keep the name under 100 characters":
+    "नाम 100 अक्षरों से छोटा रखें",
+  "Enter the patient's age":
+    "मरीज़ की उम्र लिखें",
+  "Enter the age in years":
+    "उम्र सालों में लिखें",
+  "Choose one":
+    "एक चुनें",
+  "How many units are needed?":
+    "कितनी यूनिट चाहिए?",
+  "Choose your relation to the patient":
+    "मरीज़ से अपना रिश्ता चुनें",
+  "Choose how donors can reach you":
+    "चुनें कि डोनर आप तक कैसे पहुँचें",
 };
 
 export default hi;

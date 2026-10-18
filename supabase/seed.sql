@@ -9,7 +9,9 @@
 --   admin@example.test       administrator
 --   volunteer@example.test   volunteer (can verify requests and donations)
 --   donor1@example.test …    donors
---   member@example.test      member (not a donor)
+--   member@example.test      member (not a donor) with a verified O+ request:
+--                            sees donor1 and donor2; not donor6 (gave recently)
+--                            or donor7 (keeps the number hidden)
 -- =============================================================================
 
 do $seed$
@@ -58,7 +60,24 @@ declare
       'location', jsonb_build_object('state', 'Maharashtra', 'district', 'Pune', 'city', 'Pune'),
       'preferences', jsonb_build_object('directory_visible', false))),
     jsonb_build_object('email', 'member@example.test', 'meta', jsonb_build_object(
-      'full_name', 'Neha Member (Fictional)', 'is_donor', false, 'terms_accepted', true))
+      'full_name', 'Neha Member (Fictional)', 'is_donor', false, 'terms_accepted', true)),
+    -- Gave whole blood a month ago: not shown to patients until 90 days have passed.
+    jsonb_build_object('email', 'donor6@example.test', 'meta', jsonb_build_object(
+      'full_name', 'Ravi Recent (Fictional)', 'is_donor', true, 'blood_group', 'O+', 'age_confirmed', true, 'terms_accepted', true,
+      'donation_experience', 'regular', 'phone', '+919000000106',
+      'location', jsonb_build_object('state', 'Maharashtra', 'district', 'Pune', 'city', 'Pune', 'locality', 'Baner'),
+      'preferences', jsonb_build_object('directory_visible', true, 'contact_consent', true, 'open_to_contact', true, 'emergency_alerts', true,
+        'hide_number', false, 'preferred_contact_method', 'phone'),
+      'donations', jsonb_build_array(
+        jsonb_build_object('donation_type', 'whole_blood', 'donation_date', to_char(current_date - 30, 'YYYY-MM-DD'),
+          'centre_name', 'Fictional City Blood Bank [DEV]', 'city', 'Pune')))),
+    -- Keeps their number hidden: never listed to patients, can still join requests.
+    jsonb_build_object('email', 'donor7@example.test', 'meta', jsonb_build_object(
+      'full_name', 'Hema Hidden (Fictional)', 'is_donor', true, 'blood_group', 'O+', 'age_confirmed', true, 'terms_accepted', true,
+      'donation_experience', 'occasional', 'phone', '+919000000107',
+      'location', jsonb_build_object('state', 'Maharashtra', 'district', 'Pune', 'city', 'Pune', 'locality', 'Viman Nagar'),
+      'preferences', jsonb_build_object('directory_visible', true, 'contact_consent', true, 'open_to_contact', true, 'emergency_alerts', true,
+        'hide_number', true, 'preferred_contact_method', 'whatsapp')))
   );
   v_user jsonb;
   v_id uuid;
@@ -105,11 +124,15 @@ begin
   update public.profiles set verification_status = 'verified', verified_by = v_admin, verified_at = now(), blood_group_verified = true
   where id = (select id from auth.users where email = 'donor1@example.test');
 
-  -- Blood requests in different lifecycle states.
-  insert into public.blood_requests (created_by, requester_name, requester_phone, requester_contact_method, blood_group, request_type,
-    units_needed, hospital_name, state, district, city, required_by, urgency, notes, public_listing_consent, status, verified_by, verified_at)
-  values (v_member, 'Neha Member (Fictional)', '+919000000201', 'phone', 'O+', 'whole_blood', 2,
-    'Fictional General Hospital [DEV]', 'Maharashtra', 'Pune', 'Pune', now() + interval '20 hours', 'urgent',
+  -- Blood requests in different lifecycle states. The member's verified request
+  -- uses the current form, so the member sees Meera and Rohan as able to give now.
+  insert into public.blood_requests (created_by, requester_name, requester_phone, requester_contact_method, requester_relation,
+    patient_name, patient_age, patient_gender, hospital_patient_id, ward, reason, share_contact_with_donors,
+    blood_group, request_type, units_needed, hospital_name, state, district, city, required_by, urgency, notes,
+    public_listing_consent, status, verified_by, verified_at)
+  values (v_member, 'Neha Member (Fictional)', '+919000000201', 'phone', 'child',
+    'Kamla Patient (Fictional)', 62, 'female', 'IP-DEV-0042', 'Ward 3', 'surgery', true,
+    'O+', 'whole_blood', 2, 'Fictional General Hospital [DEV]', 'Maharashtra', 'Pune', 'Pune', now() + interval '20 hours', 'urgent',
     'Sample request for local development.', true, 'verified', v_volunteer, now() - interval '2 hours')
   returning id into v_request;
   insert into public.request_events (request_id, actor_id, event_type, to_status) values

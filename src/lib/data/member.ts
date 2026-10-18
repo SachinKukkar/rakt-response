@@ -2,7 +2,16 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { EMPTY_SUMMARY, type DonationSummary } from "@/lib/donations";
 import type { ContactsRow, DonationRecordRow, LocationRow, PreferencesRow } from "@/lib/types";
-import type { BloodGroup, RequestStatus, RequestType, ResponseStatus, Urgency } from "@/lib/constants";
+import type {
+  BloodGroup,
+  ContactMethod,
+  DonorContactMethod,
+  RequesterRelation,
+  RequestStatus,
+  RequestType,
+  ResponseStatus,
+  Urgency,
+} from "@/lib/constants";
 
 export type ContactRequestStatusLike = "pending" | "accepted" | "declined" | "cancelled" | "expired";
 
@@ -59,6 +68,90 @@ export async function getRequestMatches(): Promise<RequestMatch[]> {
   return (data ?? []) as RequestMatch[];
 }
 
+/** The signed-in donor's next date to give, by the same rule patients see (null: they can give now). */
+export async function getMyNextEligibleDate(): Promise<string | null> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("my_next_eligible_date");
+  return typeof data === "string" ? data : null;
+}
+
+/** An open verified request as a donor sees it, with whether they can join it now. */
+export interface OpenRequestForDonor {
+  request_id: string;
+  reference_code: string;
+  blood_group: BloodGroup;
+  request_type: RequestType;
+  units_needed: number | null;
+  hospital_name: string;
+  city: string;
+  district: string;
+  required_by: string;
+  urgency: Urgency;
+  status: RequestStatus;
+  verified_at: string | null;
+  my_response: ResponseStatus | null;
+  matches_group: boolean;
+  can_join: boolean;
+  /** "joined" | "not_donor" | "other_group" | "too_soon" */
+  reason: string | null;
+  eligible_from: string | null;
+}
+
+export async function getOpenRequestsForDonor(): Promise<OpenRequestForDonor[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("list_open_requests_for_donor");
+  return (data ?? []) as OpenRequestForDonor[];
+}
+
+/** A donor shown to a patient for their verified request. Contact fields are set once opened. */
+export interface EligibleDonor {
+  donor_id: string;
+  label: string;
+  blood_group: BloodGroup;
+  city: string | null;
+  locality: string | null;
+  channel: DonorContactMethod;
+  joined: boolean;
+  hidden: boolean;
+  contact_opened: boolean;
+  phone: string | null;
+  whatsapp: string | null;
+  email: string | null;
+}
+
+export async function getEligibleDonors(requestId: string): Promise<EligibleDonor[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("list_eligible_donors_for_my_request", { p_request: requestId });
+  return (data ?? []) as EligibleDonor[];
+}
+
+/** What a donor who joined a request sees: the patient, hospital and requester details. */
+export interface RequestDetailsForDonor {
+  reference_code: string;
+  blood_group: BloodGroup;
+  request_type: RequestType;
+  units_needed: number | null;
+  patient_name: string | null;
+  patient_age: number | null;
+  hospital_name: string;
+  hospital_patient_id: string | null;
+  ward: string | null;
+  city: string;
+  district: string;
+  required_by: string;
+  requester_name: string;
+  requester_relation: RequesterRelation | null;
+  /** Only for requests made after the change; older ones never share it. */
+  requester_phone: string | null;
+  requester_contact_method: ContactMethod | null;
+}
+
+export async function getRequestDetailsForDonor(requestId: string): Promise<RequestDetailsForDonor | null> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("get_request_details_for_donor", { p_request: requestId });
+  return ((Array.isArray(data) ? data[0] : data) as RequestDetailsForDonor | undefined) ?? null;
+}
+
 /** Rough profile completeness for the dashboard (not a quality score). */
 export function profileCompletion(input: {
   hasBloodGroup: boolean;
@@ -71,7 +164,7 @@ export function profileCompletion(input: {
     [input.hasBloodGroup, "Add your blood group"],
     [input.hasPhone, "Add a mobile number"],
     [input.hasLocation, "Add your area"],
-    [input.hasMadeConsentChoice, "Review your contact & directory choices"],
+    [input.hasMadeConsentChoice, "Choose how patients can reach you"],
     [input.hasHistoryOrFirstTimer, "Record your donation history"],
   ];
   const done = checks.filter(([ok]) => ok).length;

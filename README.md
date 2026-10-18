@@ -2,7 +2,7 @@
 
 **We Respond, We Support, We Save Lives.**
 
-Rakt Response is a mobile-first web platform for the Rakt Response Team. It keeps a private register of voluntary blood donors, records whole blood and SDP donation history separately, helps authorised volunteers find consenting donors by blood group and area, coordinates verified blood requests, publishes real stories with consent, and educates the public about voluntary donation.
+Rakt Response is a mobile-first web platform for the Rakt Response Team. It keeps a private register of voluntary blood donors, records whole blood and SDP donation history separately, has volunteers verify every blood request, shows the family behind a verified request the donors who can give now (donors can hide their number), publishes real stories with consent, and educates the public about voluntary donation.
 
 > Rakt Response facilitates coordination. It does not store blood, reserve units, certify compatibility, guarantee donor availability or replace a hospital or licensed blood bank.
 
@@ -11,10 +11,10 @@ Rakt Response is a mobile-first web platform for the Rakt Response Team. It keep
 | Area | Highlights |
 | --- | --- |
 | Public site | Homepage, About, Why donate, Donation types, Eligibility (information only), Donation process, FAQ, Contact, Privacy, Terms, Our Impact, Stories, Share your story |
-| Accounts | Email/password sign-up with email verification, password reset, 5-step donor registration with separate consents, member (non-donor) path |
-| Donors | Dashboard, profile & photo, area with optional ~1 km map point, consent & availability controls with history, whole blood / SDP / apheresis history (self-reported vs verified), duplicate warnings, requests that match them, contact-request accept/decline, deletion request |
-| Requests | Public or signed-in submission (rate limited, honeypot, duplicate detection), 9-state lifecycle, verification before listing, SDP-specific workflow, in-app alerts to opted-in donors, closure with confirmation notes, history |
-| Volunteers | Overview, request queue, request coordination page (verify, assign, match, consent-checked contact, outcomes, notes), donor directory with server-side filters + mobile filter sheet, donation verification queue, follow-ups |
+| Accounts | Email/password sign-up with email verification, password reset, 5-step donor registration with a "Hide my number" switch, member (non-donor) path |
+| Donors | Dashboard, profile & photo, area with optional ~1 km map point, Hide my number, availability, contact channel and alert choices with history, whole blood / SDP / apheresis history (self-reported vs verified), duplicate warnings, "can give again from" date, open requests they can join when they can give (then the patient's details), contact-request accept/decline, deletion request |
+| Requests | Signed-in submission with the patient's details (rate limited, open-request cap, honeypot, duplicate detection), 9-state lifecycle, verification before listing, the family's page with donors who can give now (one contact opened at a time, logged), SDP-specific workflow, in-app alerts to donors who can give now (alerts on), closure with confirmation notes, history |
+| Volunteers | Overview, request queue, request coordination page (patient details to check, verify, assign, match, logged contact, outcomes, notes), donor directory with server-side filters + mobile filter sheet, donation verification queue, follow-ups |
 | Admins | Analytics from live records, donor verification & blood-group corrections, users & roles, volunteer permissions, story moderation & photo publication, camps & documented impact figures, audit logs, settings, retention clean-up, CSV exports (no contact data, logged) |
 | Platform | Supabase Postgres with RLS on every table, SECURITY DEFINER RPCs with built-in authorisation, append-only audit log, PWA manifest + privacy-safe service worker, security headers, no paid services required |
 
@@ -54,7 +54,7 @@ Local Supabase (`npx supabase db reset`) also loads **fictional** seed accounts 
 | `npm run test:unit` | Validation, helpers, image metadata stripping, CSV, errors |
 | `npm run test:db` | Migrations + RLS/RPC tests in PGlite (in-process Postgres with a Supabase auth stub) |
 | `npm run test:e2e` | Playwright on phone, 320 px and desktop viewports (run `npm run build` first; `PLAYWRIGHT_CHANNEL=chrome` uses installed Chrome) |
-| `npm run test:live` | Full-stack journeys against a **local** Supabase (`npx supabase start`) with `npm run dev` running: signup + email confirmation, donations, requests, volunteer verification, consent-checked contact, stories with photos, password reset, roles, export, deletion |
+| `npm run test:live` | Full-stack journeys against a **local** Supabase (`npx supabase start`) with `npm run dev` running: signup + email confirmation, donations, requests with patient details, volunteer verification, donors joining, families contacting donors, stories with photos, password reset, roles, export, deletion |
 | `npm run db:check` | Apply all migrations to an in-memory database |
 | `npm run icons` | Regenerate PWA/favicon derivatives from the supplied logo |
 | `npm run bootstrap-admin -- <email>` | Create the first administrator (service role key required) |
