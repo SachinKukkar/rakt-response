@@ -40,7 +40,7 @@ export default async function BloodRequestDetailPage({ params }: PageProps<"/blo
       <div className="mt-4 space-y-4">
         {request.verified_at ? (
           <p className="text-sm text-muted-foreground">
-            {t("Verified by a Rakt Response volunteer on {date}.", { date: formatDateTime(request.verified_at) })}
+            {t("Verified by a Rakt Mitra on {date}.", { date: formatDateTime(request.verified_at) })}
           </p>
         ) : null}
         {open ? (

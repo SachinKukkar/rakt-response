@@ -3,12 +3,12 @@ import type { Catalog } from "./types";
 /** English UI text → Hindi. Keep the English key exactly as written in the code. */
 const hi: Catalog = {
   // --- Find blood (src/app/(site)/blood-requests/page.tsx) ---------------------
-  "Submit a blood request for volunteer coordination and see verified requests where voluntary donors can help.":
-    "खून की रिक्वेस्ट भेजें, ताकि स्वयंसेवक मदद कर सकें। साथ ही वे जाँची गई रिक्वेस्ट देखें जिनमें स्वैच्छिक डोनर मदद कर सकते हैं।",
+  "Submit a blood request for Rakt Mitras to coordinate and see verified requests where voluntary donors can help.":
+    "खून की रिक्वेस्ट भेजें, ताकि रक्त मित्र मदद कर सकें। साथ ही वे जाँची गई रिक्वेस्ट देखें जिनमें स्वैच्छिक डोनर मदद कर सकते हैं।",
   "Need blood?": "खून चाहिए?",
   "We'll rally donors.": "हम डोनर जुटाएँगे।",
-  "Tell us what's needed. A volunteer verifies it, then reaches out to matching donors who said yes to being contacted.":
-    "बताइए क्या चाहिए। एक स्वयंसेवक पहले इसकी जाँच करेगा, फिर उन डोनर से बात करेगा जिनका ब्लड ग्रुप मिलता है और जिन्होंने संपर्क के लिए हाँ कहा है।",
+  "Tell us what's needed. A Rakt Mitra checks it with the hospital, then you see donors who can give now and contact them.":
+    "बताइए क्या चाहिए। रक्त मित्र अस्पताल से इसकी जाँच करता है, फिर आप अभी रक्तदान कर सकने वाले डोनर देखते हैं और उनसे संपर्क करते हैं।",
   "Verified before sharing": "शेयर से पहले जाँच",
   "Free, always": "हमेशा मुफ़्त",
   "Donors who can give now": "अभी रक्तदान कर सकने वाले डोनर",
@@ -18,8 +18,8 @@ const hi: Catalog = {
     "सबसे पहले इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से बात करें। हम स्वैच्छिक डोनर से तालमेल करते हैं — हम खून रिज़र्व नहीं कर सकते, ब्लड मैच की जाँच नहीं कर सकते और डोनर मिलने की गारंटी नहीं दे सकते।",
   "Can you help?": "क्या आप मदद कर सकते हैं?",
   "Verified requests": "जाँची गई रिक्वेस्ट",
-  "Checked by a volunteer and shared with permission. Tap one to respond.":
-    "स्वयंसेवक ने इनकी जाँच की है और अनुमति से शेयर किया है। जवाब देने के लिए किसी एक पर टैप करें।",
+  "Checked with the hospital by a Rakt Mitra. Tap one to help.":
+    "रक्त मित्र ने अस्पताल से इनकी जाँच की है। मदद के लिए किसी एक पर टैप करें।",
   "Filter requests": "रिक्वेस्ट छाँटें",
   "Blood group": "ब्लड ग्रुप",
   "All groups": "सभी ग्रुप",
@@ -41,9 +41,9 @@ const hi: Catalog = {
   "All requests": "सभी रिक्वेस्ट",
   "{group} donors needed": "{group} डोनर चाहिए",
   "Request {code}": "रिक्वेस्ट {code}",
-  "Verified by a Rakt Response volunteer on {date}.": "Rakt Response के स्वयंसेवक ने {date} को इसकी जाँच की।",
-  "Registered donors can let volunteers know they're available. A volunteer will contact you with next steps — please don't go to the hospital until they confirm, and the blood centre will check your eligibility.":
-    "रजिस्टर्ड डोनर स्वयंसेवकों को बता सकते हैं कि वे उपलब्ध हैं। एक स्वयंसेवक आपसे संपर्क करके आगे का तरीका बताएगा — जब तक वे पुष्टि न करें, कृपया अस्पताल न जाएँ। आप रक्तदान कर सकते हैं या नहीं, यह ब्लड बैंक जाँचेगा।",
+  "Verified by a Rakt Mitra on {date}.": "Rakt Response के रक्त मित्र ने {date} को इसकी जाँच की।",
+  "Registered donors can let Rakt Mitras know they're available. A Rakt Mitra will contact you with next steps — please don't go to the hospital until they confirm, and the blood centre will check your eligibility.":
+    "रजिस्टर्ड डोनर रक्त मित्रों को बता सकते हैं कि वे उपलब्ध हैं। एक रक्त मित्र आपसे संपर्क करके आगे का तरीका बताएगा — जब तक वे पुष्टि न करें, कृपया अस्पताल न जाएँ। आप रक्तदान कर सकते हैं या नहीं, यह ब्लड बैंक जाँचेगा।",
   "I can help — sign in to respond": "मैं मदद कर सकता/सकती हूँ — जवाब देने के लिए साइन इन करें",
   "Register as a donor": "डोनर के रूप में रजिस्टर करें",
   "This request is no longer open": "यह रिक्वेस्ट अब खुली नहीं है",
@@ -60,11 +60,11 @@ const hi: Catalog = {
 
   // --- New request (src/app/(site)/blood-requests/new/page.tsx) -----------------
   "Submit a blood request": "खून की रिक्वेस्ट भेजें",
-  "Ask Rakt Response volunteers to help find voluntary donors for a hospital requirement.":
-    "अस्पताल की ज़रूरत के लिए स्वैच्छिक डोनर ढूँढने में Rakt Response के स्वयंसेवकों से मदद माँगें।",
+  "Ask Rakt Mitras to help find voluntary donors for a hospital requirement.":
+    "अस्पताल की ज़रूरत के लिए स्वैच्छिक डोनर ढूँढने में Rakt Response के रक्त मित्रों से मदद माँगें।",
   Request: "रिक्वेस्ट",
-  "About two minutes. A volunteer verifies every request before any donor is contacted.":
-    "बस दो मिनट लगेंगे। किसी भी डोनर से संपर्क करने से पहले स्वयंसेवक हर रिक्वेस्ट की जाँच करता है।",
+  "About two minutes. A Rakt Mitra verifies every request before any donor is contacted.":
+    "बस दो मिनट लगेंगे। किसी भी डोनर से संपर्क करने से पहले रक्त मित्र हर रिक्वेस्ट की जाँच करता है।",
   "First, contact the hospital blood bank": "पहले अस्पताल के ब्लड बैंक से बात करें",
   "They know exactly what is needed and may already have units. Use this form for help finding voluntary donors.":
     "उन्हें ठीक-ठीक पता होता है कि क्या चाहिए, और हो सकता है उनके पास खून पहले से हो। स्वैच्छिक डोनर ढूँढने में मदद के लिए यह फ़ॉर्म भरें।",
@@ -80,10 +80,10 @@ const hi: Catalog = {
   "Your reference is": "आपका रेफ़रेंस नंबर:",
   "Please note it down.": "कृपया इसे लिख लें।",
   "A similar request is already open": "ऐसी ही एक रिक्वेस्ट पहले से खुली है",
-  "It looks like a request for the same blood group at this hospital was submitted recently. Volunteers will check both so donors aren't contacted twice.":
-    "लगता है इसी अस्पताल के लिए इसी ब्लड ग्रुप की रिक्वेस्ट हाल ही में भेजी गई है। स्वयंसेवक दोनों को देखेंगे, ताकि डोनर से दो बार संपर्क न हो।",
-  "A volunteer will verify the request with you or the hospital before contacting donors.":
-    "डोनर से संपर्क करने से पहले स्वयंसेवक आपसे या अस्पताल से रिक्वेस्ट की पुष्टि करेगा।",
+  "It looks like a request for the same blood group at this hospital was submitted recently. Rakt Mitras will check both so donors aren't contacted twice.":
+    "लगता है इसी अस्पताल के लिए इसी ब्लड ग्रुप की रिक्वेस्ट हाल ही में भेजी गई है। रक्त मित्र दोनों को देखेंगे, ताकि डोनर से दो बार संपर्क न हो।",
+  "A Rakt Mitra will verify the request with you or the hospital before contacting donors.":
+    "डोनर से संपर्क करने से पहले रक्त मित्र आपसे या अस्पताल से रिक्वेस्ट की पुष्टि करेगा।",
   "Until it is verified it is not shown publicly or sent to donors.": "पुष्टि होने तक यह रिक्वेस्ट न सबको दिखाई जाती है, न डोनर को भेजी जाती है।",
   "Keep in touch with the hospital blood bank — they decide what is needed and when.":
     "अस्पताल के ब्लड बैंक से संपर्क में रहें — क्या और कब चाहिए, यह वही तय करते हैं।",
@@ -106,12 +106,12 @@ const hi: Catalog = {
   City: "शहर",
   State: "राज्य",
   "Select…": "चुनें…",
-  "How volunteers can reach you": "स्वयंसेवक आपसे कैसे संपर्क करें",
-  "Kept private — only authorised volunteers see these details.": "यह जानकारी प्राइवेट रहती है — इसे सिर्फ़ अधिकृत स्वयंसेवक देखते हैं।",
+  "How Rakt Mitras can reach you": "रक्त मित्र आपसे कैसे संपर्क करें",
+  "Kept private — only authorised Rakt Mitras see these details.": "यह जानकारी प्राइवेट रहती है — इसे सिर्फ़ अधिकृत रक्त मित्र देखते हैं।",
   "Your name": "आपका नाम",
   Phone: "फ़ोन",
   "Best way to reach you": "आपसे संपर्क का सबसे अच्छा तरीका",
-  "Anything volunteers should know? (optional)": "स्वयंसेवकों को कुछ और बताना है? (ज़रूरी नहीं)",
+  "Anything Rakt Mitras should know? (optional)": "रक्त मित्रों को कुछ और बताना है? (ज़रूरी नहीं)",
   "Please don't include the patient's name, diagnosis or medical documents.": "कृपया मरीज़ का नाम, बीमारी या मेडिकल कागज़ न लिखें।",
   "List this request publicly once it is verified": "पुष्टि होने के बाद यह रिक्वेस्ट सबको दिखाएँ",
   "Only the blood group, donor type, hospital, city, time needed and urgency are shown — never your name or contact details.":
@@ -127,14 +127,14 @@ const hi: Catalog = {
     "वे रिक्वेस्ट जिनमें आपकी मदद काम आ सकती है, और वे रिक्वेस्ट जो आपने भेजी हैं।",
   "New request": "नई रिक्वेस्ट",
   "Contact requests waiting for you": "आपके जवाब का इंतज़ार करती संपर्क रिक्वेस्ट",
-  "A volunteer asked if they may contact you. Your details are shared only if you accept.":
-    "एक स्वयंसेवक पूछ रहे हैं कि क्या वे आपसे संपर्क कर सकते हैं। आप हाँ कहेंगे, तभी आपकी जानकारी शेयर होगी।",
+  "A Rakt Mitra asked if they may contact you. Your details are shared only if you accept.":
+    "एक रक्त मित्र पूछ रहे हैं कि क्या वे आपसे संपर्क कर सकते हैं। आप हाँ कहेंगे, तभी आपकी जानकारी शेयर होगी।",
   "Respond by {date}": "{date} तक जवाब दें",
   "Share my contact details": "मेरी संपर्क जानकारी शेयर करें",
   Decline: "मना करें",
   "Requests that match you": "आपसे मेल खाती रिक्वेस्ट",
-  "Respond only if you can currently donate. A volunteer will confirm before you travel.":
-    "जवाब तभी दें जब आप अभी रक्तदान कर सकते हों। आपके निकलने से पहले स्वयंसेवक पुष्टि करेगा।",
+  "Respond only if you can currently donate. A Rakt Mitra will confirm before you travel.":
+    "जवाब तभी दें जब आप अभी रक्तदान कर सकते हों। आपके निकलने से पहले रक्त मित्र पुष्टि करेगा।",
   "Interest is not a commitment, and it is never treated as a confirmed donation. The blood centre will check your eligibility.":
     "'तैयार हूँ' कहना कोई वादा नहीं है, और इसे कभी पक्का रक्तदान नहीं माना जाता। आप रक्तदान कर सकते हैं या नहीं, यह ब्लड बैंक जाँचेगा।",
   "Your response: {response}": "आपका जवाब: {response}",
@@ -150,9 +150,9 @@ const hi: Catalog = {
   "Note: {reason}": "नोट: {reason}",
   "No longer needed": "अब ज़रूरत नहीं",
   "Cancel — no longer needed": "रद्द करें — अब ज़रूरत नहीं",
-  "Cancel this request? Volunteers will stop contacting donors.": "यह रिक्वेस्ट रद्द करें? स्वयंसेवक डोनर से संपर्क करना बंद कर देंगे।",
+  "Cancel this request? Rakt Mitras will stop contacting donors.": "यह रिक्वेस्ट रद्द करें? रक्त मित्र डोनर से संपर्क करना बंद कर देंगे।",
   "You haven't submitted any requests": "आपने अभी कोई रिक्वेस्ट नहीं भेजी है",
-  "If someone needs blood, submit a request and a volunteer will verify it.": "अगर किसी को खून चाहिए, तो रिक्वेस्ट भेजें। स्वयंसेवक उसकी जाँच करेगा।",
+  "If someone needs blood, submit a request and a Rakt Mitra will verify it.": "अगर किसी को खून चाहिए, तो रिक्वेस्ट भेजें। रक्त मित्र उसकी जाँच करेगा।",
 
   // --- Patients and donors (18 October 2026) -----------------------------------------
   "Patient":
@@ -185,16 +185,16 @@ const hi: Catalog = {
     "वार्ड या बेड (अगर हो)",
   "Your details":
     "आपकी जानकारी",
-  "Volunteers see all these details to verify the request. Donors who offer to help see the patient's name, the hospital, and your name and number, so they can reach you.":
-    "स्वयंसेवक रिक्वेस्ट की जाँच के लिए यह सारी जानकारी देखते हैं। मदद के लिए आगे आने वाले डोनर मरीज़ का नाम, अस्पताल, और आपका नाम व नंबर देखते हैं, ताकि वे आप तक पहुँच सकें।",
+  "Rakt Mitras see all these details to verify the request. Donors who offer to help see the patient's name, the hospital, and your name and number, so they can reach you.":
+    "रक्त मित्र रिक्वेस्ट की जाँच के लिए यह सारी जानकारी देखते हैं। मदद के लिए आगे आने वाले डोनर मरीज़ का नाम, अस्पताल, और आपका नाम व नंबर देखते हैं, ताकि वे आप तक पहुँच सकें।",
   "Your relation to the patient":
     "मरीज़ से आपका रिश्ता",
   "Your phone":
     "आपका फ़ोन",
   "Donors can reach you by":
     "डोनर आप तक ऐसे पहुँचें",
-  "A volunteer will check the request with the hospital.":
-    "स्वयंसेवक अस्पताल से रिक्वेस्ट की जाँच करेगा।",
+  "A Rakt Mitra will check the request with the hospital.":
+    "रक्त मित्र अस्पताल से रिक्वेस्ट की जाँच करेगा।",
   "Once it is verified, your request page shows donors who can give now, and you can contact them directly.":
     "जाँच के बाद आपकी रिक्वेस्ट वाले पेज पर वे डोनर दिखेंगे जो अभी रक्तदान कर सकते हैं, और आप उनसे सीधे संपर्क कर सकेंगे।",
   "Open my request":
@@ -241,8 +241,8 @@ const hi: Catalog = {
     "अभी दे सकते हैं",
   "Prefers: {method}":
     "पसंद: {method}",
-  "This donor keeps their number hidden. They have your request and will reach you, or a volunteer will connect you.":
-    "इस डोनर ने अपना नंबर छिपा रखा है। आपकी रिक्वेस्ट उनके पास है, वे आप तक पहुँचेंगे, या कोई स्वयंसेवक आपको जोड़ देगा।",
+  "This donor keeps their number hidden. They have your request and will reach you, or a Rakt Mitra will connect you.":
+    "इस डोनर ने अपना नंबर छिपा रखा है। आपकी रिक्वेस्ट उनके पास है, वे आप तक पहुँचेंगे, या कोई रक्त मित्र आपको जोड़ देगा।",
   "Show contact":
     "संपर्क दिखाएँ",
   "Your request for {group} blood at {hospital}.":
@@ -259,10 +259,10 @@ const hi: Catalog = {
     "अभी दे सकने वाले और डोनर ({count})",
   "No donor can give right now in your district":
     "आपके ज़िले में अभी कोई डोनर रक्तदान नहीं कर सकता",
-  "Volunteers are looking too. We'll notify you when a donor joins your request.":
-    "स्वयंसेवक भी ढूँढ रहे हैं। कोई डोनर आपकी रिक्वेस्ट से जुड़ेगा तो हम आपको बताएँगे।",
-  "A volunteer is checking your request":
-    "स्वयंसेवक आपकी रिक्वेस्ट जाँच रहा है",
+  "Rakt Mitras are looking too. We'll notify you when a donor joins your request.":
+    "रक्त मित्र भी ढूँढ रहे हैं। कोई डोनर आपकी रिक्वेस्ट से जुड़ेगा तो हम आपको बताएँगे।",
+  "A Rakt Mitra is checking your request":
+    "रक्त मित्र आपकी रिक्वेस्ट जाँच रहा है",
   "They check it with the hospital. Once it is verified, donors who can give now appear here, and you can contact them directly.":
     "वे अस्पताल से इसकी जाँच करते हैं। जाँच के बाद अभी रक्तदान कर सकने वाले डोनर यहाँ दिखेंगे, और आप उनसे सीधे संपर्क कर सकेंगे।",
   "Details you gave":
@@ -277,10 +277,10 @@ const hi: Catalog = {
     "कब तक चाहिए",
   "Your relation":
     "आपका रिश्ता",
-  "Need to change something? Contact a volunteer.":
-    "कुछ बदलना है? किसी स्वयंसेवक से संपर्क करें।",
-  "Cancel this request? Donors and volunteers will stop contacting you.":
-    "यह रिक्वेस्ट रद्द करें? डोनर और स्वयंसेवक आपसे संपर्क करना बंद कर देंगे।",
+  "Need to change something? Contact a Rakt Mitra.":
+    "कुछ बदलना है? किसी रक्त मित्र से संपर्क करें।",
+  "Cancel this request? Donors and Rakt Mitras will stop contacting you.":
+    "यह रिक्वेस्ट रद्द करें? डोनर और रक्त मित्र आपसे संपर्क करना बंद कर देंगे।",
   "You joined this request. Thank you.":
     "आप इस रिक्वेस्ट से जुड़े हैं। धन्यवाद।",
   "Patient and hospital":
@@ -289,8 +289,8 @@ const hi: Catalog = {
     "ज़रूरत",
   "Patient's family":
     "मरीज़ का परिवार",
-  "A volunteer will share the family's contact details with you.":
-    "कोई स्वयंसेवक आपको परिवार की संपर्क जानकारी देगा।",
+  "A Rakt Mitra will share the family's contact details with you.":
+    "कोई रक्त मित्र आपको परिवार की संपर्क जानकारी देगा।",
   "At the blood bank":
     "ब्लड बैंक में",
   "Say you are donating for this patient and give the hospital's IP / UHID number if there is one. The blood centre's doctor decides if you can donate.":
@@ -313,8 +313,8 @@ const hi: Catalog = {
     "खुली रिक्वेस्ट जिनमें आप मदद कर सकते हैं, और आपकी भेजी रिक्वेस्ट।",
   "Open requests":
     "खुली रिक्वेस्ट",
-  "Verified by a volunteer. Join a request when you can give: you'll see the patient's details and the family's number.":
-    "स्वयंसेवक द्वारा जाँची गई। जब आप दे सकें, किसी रिक्वेस्ट से जुड़ें: आपको मरीज़ की जानकारी और परिवार का नंबर दिखेगा।",
+  "Verified by a Rakt Mitra. Join a request when you can give: you'll see the patient's details and the family's number.":
+    "रक्त मित्र द्वारा जाँची गई। जब आप दे सकें, किसी रिक्वेस्ट से जुड़ें: आपको मरीज़ की जानकारी और परिवार का नंबर दिखेगा।",
   "Joining is not a commitment, and it is never treated as a confirmed donation. The blood centre will check your eligibility.":
     "जुड़ना कोई वादा नहीं है, और इसे कभी पक्का रक्तदान नहीं माना जाता। ब्लड सेंटर आपकी योग्यता जाँचेगा।",
   "There are no open verified requests at the moment.":
@@ -329,8 +329,8 @@ const hi: Catalog = {
     "इस ब्लड ग्रुप के रजिस्टर्ड डोनर, जो अभी रक्तदान कर सकते हैं, इस रिक्वेस्ट से जुड़ सकते हैं। जुड़ने पर आपको मरीज़ की जानकारी और परिवार का नंबर दिखता है। ब्लड सेंटर आपकी योग्यता जाँचेगा।",
   "I can help — sign in to join":
     "मैं मदद कर सकता/सकती हूँ — जुड़ने के लिए साइन इन करें",
-  "A few minutes. A volunteer checks every request with the hospital. Then you see donors who can give now and contact them directly.":
-    "कुछ ही मिनट। स्वयंसेवक हर रिक्वेस्ट की अस्पताल से जाँच करते हैं। फिर आपको अभी रक्तदान कर सकने वाले डोनर दिखते हैं और आप उनसे सीधे संपर्क कर सकते हैं।",
+  "A few minutes. A Rakt Mitra checks every request with the hospital. Then you see donors who can give now and contact them directly.":
+    "कुछ ही मिनट। रक्त मित्र हर रिक्वेस्ट की अस्पताल से जाँच करते हैं। फिर आपको अभी रक्तदान कर सकने वाले डोनर दिखते हैं और आप उनसे सीधे संपर्क कर सकते हैं।",
   "A free account lets you see eligible donors for your request once it is verified, and keeps you updated.":
     "मुफ़्त खाते से, जाँच के बाद आप अपनी रिक्वेस्ट के लिए योग्य डोनर देख सकते हैं, और आपको अपडेट मिलते रहते हैं।",
   "Relation to patient":

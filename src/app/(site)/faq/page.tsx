@@ -109,7 +109,7 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
         a: (
           <p>
             {t(
-              "A patient whose request a volunteer has verified, near you and only when you can give, one donor at a time; and authorised volunteers coordinating a verified request. Every view is recorded. Turn on Hide my number any time and patients won't see you.",
+              "A patient whose request a Rakt Mitra has verified, near you and only when you can give, one donor at a time; and authorised Rakt Mitras coordinating a verified request. Every view is recorded. Turn on Hide my number any time and patients won't see you.",
             )}
           </p>
         ),
@@ -132,7 +132,7 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
         a: (
           <p>
             {t(
-              "No. We don't send bulk messages. Updates are in-app. A patient or volunteer contacts you only about a verified request near you, and only when you can give.",
+              "No. We don't send bulk messages. Updates are in-app. A patient or Rakt Mitra contacts you only about a verified request near you, and only when you can give.",
             )}
           </p>
         ),
@@ -166,11 +166,21 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
         ),
       },
       {
+        q: t("Who is a Rakt Mitra?"),
+        a: (
+          <p>
+            {t(
+              "A Rakt Mitra (“blood friend”) is a Rakt Response team member approved by our administrators. Rakt Mitras check every request with the hospital, help families reach donors, and follow up with donors after they donate. Only approved Rakt Mitras can use the coordination tools.",
+            )}
+          </p>
+        ),
+      },
+      {
         q: t("How are blood requests verified?"),
         a: (
           <p>
             {t(
-              "An authorised volunteer checks the details with the requester or hospital before marking a request verified. Unverified requests are never shown as confirmed.",
+              "An authorised Rakt Mitra checks the details with the requester or hospital before marking a request verified. Unverified requests are never shown as confirmed.",
             )}
           </p>
         ),
@@ -199,7 +209,7 @@ const groups = (t: TFunction): { id: string; icon: LucideIcon; kicker: string; t
           <p>
             {rich(
               t(
-                "{selfReported} means you added it yourself; it becomes {verified} once a volunteer or administrator checks it against supporting details. Neither label is a medical decision about when you can donate next.",
+                "{selfReported} means you added it yourself; it becomes {verified} once a Rakt Mitra or administrator checks it against supporting details. Neither label is a medical decision about when you can donate next.",
               ),
               { selfReported: <strong>{t("Self-reported")}</strong>, verified: <strong>{t("verified")}</strong> },
             )}
@@ -244,7 +254,7 @@ export default async function FaqPage() {
           items={[
             t("Donating at a licensed centre uses sterile, single-use kit."),
             t("Registering isn't eligibility. The blood centre decides, every time."),
-            t("Patients see donors only after a volunteer verifies the request."),
+            t("Patients see donors only after a Rakt Mitra verifies the request."),
             t("Emergency? Go to the treating hospital or a licensed blood bank now."),
           ]}
         />

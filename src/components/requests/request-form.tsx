@@ -133,12 +133,12 @@ export function BloodRequestForm({ defaultName }: { defaultName?: string }) {
         {submitted.possibleDuplicate ? (
           <Notice tone="warning" title={t("A similar request is already open")}>
             {t(
-              "It looks like a request for the same blood group at this hospital was submitted recently. Volunteers will check both so donors aren't contacted twice.",
+              "It looks like a request for the same blood group at this hospital was submitted recently. Rakt Mitras will check both so donors aren't contacted twice.",
             )}
           </Notice>
         ) : null}
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
-          <li>{t("A volunteer will check the request with the hospital.")}</li>
+          <li>{t("A Rakt Mitra will check the request with the hospital.")}</li>
           <li>{t("Once it is verified, your request page shows donors who can give now, and you can contact them directly.")}</li>
           <li>{t("Keep in touch with the hospital blood bank — they decide what is needed and when.")}</li>
         </ul>
@@ -318,7 +318,7 @@ export function BloodRequestForm({ defaultName }: { defaultName?: string }) {
       <fieldset className="space-y-4">
         <legend className="mb-1 text-base font-bold text-navy">{t("Your details")}</legend>
         <p className="text-xs text-muted-foreground">
-          {t("Volunteers see all these details to verify the request. Donors who offer to help see the patient's name, the hospital, and your name and number, so they can reach you.")}
+          {t("Rakt Mitras see all these details to verify the request. Donors who offer to help see the patient's name, the hospital, and your name and number, so they can reach you.")}
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field id="requester_name" label="Your name" required error={errors.requester_name?.message}>
@@ -359,7 +359,7 @@ export function BloodRequestForm({ defaultName }: { defaultName?: string }) {
             />
           </div>
         </div>
-        <Field id="notes" label="Anything volunteers should know? (optional)" error={errors.notes?.message}>
+        <Field id="notes" label="Anything Rakt Mitras should know? (optional)" error={errors.notes?.message}>
           <Textarea {...fieldAria("notes", errors.notes?.message)} rows={3} {...register("notes")} />
         </Field>
       </fieldset>

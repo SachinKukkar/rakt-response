@@ -24,7 +24,7 @@ export const revalidate = 300;
 
 const FACTS = [
   { value: "9", label: "Blood groups", text: "Including the rare Bombay (Oh) group." },
-  { value: "₹0", label: "To use Rakt Response", text: "Free for donors, families and volunteers." },
+  { value: "₹0", label: "To use Rakt Response", text: "Free for donors, families and Rakt Mitras." },
   { value: "10–15", label: "Minutes in the chair", text: "For a whole blood donation." },
   { value: "3", label: "Parts from one donation", text: "Red cells, plasma and platelets." },
 ];
@@ -47,10 +47,10 @@ const PARTS = [
   {
     title: "Requests",
     note: "Verified first",
-    items: ["Checked with the hospital by a volunteer", "Then the patient sees donors who can give now", "Listed on Find Blood once verified", "Duplicates caught"],
+    items: ["Checked with the hospital by a Rakt Mitra", "Then the patient sees donors who can give now", "Listed on Find Blood once verified", "Duplicates caught"],
   },
   {
-    title: "Volunteers",
+    title: "Rakt Mitra",
     note: "Authorised only",
     items: ["Approved coordinators", "They verify every request", "They help when no donor is found", "They follow up after the donation"],
   },
@@ -68,12 +68,12 @@ const DONOR_POINTS = [
   "Hide your number or say no any time",
   "Keep a record of every donation",
 ];
-const REQUEST_POINTS = ["Submit a request in minutes", "A volunteer checks it with the hospital", "Then see donors who can give now, and call them", "Volunteers help if no one is found"];
+const REQUEST_POINTS = ["Submit a request in minutes", "A Rakt Mitra checks it with the hospital", "Then see donors who can give now, and call them", "Rakt Mitras help if no one is found"];
 
 const QUESTIONS = [
   {
     q: "Who can see my phone number?",
-    a: "A patient whose request a volunteer has verified, when you can give, one donor at a time; and authorised volunteers. Turn on Hide my number in Privacy & settings any time.",
+    a: "A patient whose request a Rakt Mitra has verified, when you can give, one donor at a time; and authorised Rakt Mitras. Turn on Hide my number in Privacy & settings any time.",
   },
   {
     q: "Does registering mean I'm eligible to donate?",
@@ -89,7 +89,7 @@ const QUESTIONS = [
   },
   {
     q: "What should I do in an emergency?",
-    a: "Contact the treating hospital or the nearest licensed blood bank immediately. You can also submit a request here for volunteer support.",
+    a: "Contact the treating hospital or the nearest licensed blood bank immediately. You can also submit a request here for Rakt Mitra support.",
   },
 ];
 
@@ -115,7 +115,7 @@ export default async function HomePage() {
   // Sample stories stand in only while nothing real has been published.
   const sampleStories = realStories.length === 0 && SHOW_SAMPLES ? SAMPLE_STORIES.filter((story) => HOME_SAMPLE_SLUGS.includes(story.slug)) : [];
   const quote = t(
-    "No family should have to make fifty calls at night to find a donor. So we built a calmer way: requests checked by volunteers, and donors who already said yes.",
+    "No family should have to make fifty calls at night to find a donor. So we built a calmer way: requests checked by Rakt Mitras, and donors who already said yes.",
   );
 
   return (
@@ -227,7 +227,7 @@ export default async function HomePage() {
                 <SectionLabel n={4}>Blood groups</SectionLabel>
                 <Headline id="groups-heading" className="mt-5" lead="Nine blood groups." rest="One community." />
                 <p className="mt-6 max-w-md text-[17px] leading-relaxed text-cream/75">
-                  {t("Register yours once. Verified requests reach the right donors faster.")}
+                  {t("Register your blood group once. Rakt Mitras help connect people in need with potential donors faster.")}
                 </p>
                 <ul className="mt-8 flex flex-wrap gap-2" aria-label={t("Blood groups, including the rare Bombay group")}>
                   {BLOOD_GROUPS.map((group) => (
@@ -278,7 +278,7 @@ export default async function HomePage() {
             </span>
             <div>
               <p className="text-lg font-medium">{t("Rakt Response Team")}</p>
-              <p className="label-mono mt-1.5 text-muted-foreground">{t("Volunteers · India · Since 2022")}</p>
+              <p className="label-mono mt-1.5 text-muted-foreground">{t("Rakt Mitras · India · Since 2022")}</p>
             </div>
           </div>
           <h2 id="team-heading" className="sr-only">
@@ -296,7 +296,7 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <p className="text-xl font-medium tracking-[-0.02em] sm:mt-4">{name}</p>
-                  <p className="label-mono mt-2 text-muted-foreground">{t("Core team · Volunteer")}</p>
+                  <p className="label-mono mt-2 text-muted-foreground">{t("Core team · Rakt Mitra")}</p>
                 </div>
               </li>
             ))}
@@ -415,7 +415,7 @@ export default async function HomePage() {
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionLabel n={8}>Questions</SectionLabel>
             <Headline id="faq-heading" className="mt-5" size="md" lead="Asked before every first donation." />
-            <p className="mt-5 max-w-sm text-[17px] leading-relaxed text-cream/65">{t("Anything else? Ask us. A volunteer replies, usually within a day.")}</p>
+            <p className="mt-5 max-w-sm text-[17px] leading-relaxed text-cream/65">{t("Anything else? Ask us. A Rakt Mitra replies, usually within a day.")}</p>
             <div className="mt-8 flex flex-wrap gap-2.5">
               <ArrowLink href="/contact" tone="cream">
                 {t("Ask a question")}

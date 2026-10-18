@@ -16,7 +16,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return { title: t("Volunteers") };
+  return { title: t("Rakt Mitras") };
 }
 
 export default async function AdminVolunteersPage() {
@@ -34,7 +34,7 @@ export default async function AdminVolunteersPage() {
     <div className="space-y-4">
       <PageHeader
         eyebrow="Administrator"
-        title="Volunteers & administrators"
+        title="Rakt Mitras & administrators"
         actions={
           <Button asChild variant="outline">
             <Link href="/admin/users">{t("Add someone")}</Link>

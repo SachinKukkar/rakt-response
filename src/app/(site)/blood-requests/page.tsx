@@ -17,7 +17,7 @@ import { getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return pageMetadata(t("Find blood"), t("Submit a blood request for volunteer coordination and see verified requests where voluntary donors can help."));
+  return pageMetadata(t("Find blood"), t("Submit a blood request for Rakt Mitras to coordinate and see verified requests where voluntary donors can help."));
 }
 
 const PAGE_SIZE = 12;
@@ -45,7 +45,7 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
         eyebrow={t("Find blood")}
         title={t("Need blood?")}
         highlight={t("We'll rally donors.")}
-        subtitle={t("Tell us what's needed. A volunteer verifies it, then reaches out to matching donors who said yes to being contacted.")}
+        subtitle={t("Tell us what's needed. A Rakt Mitra checks it with the hospital, then you see donors who can give now and contact them.")}
         chips={[t("Verified before sharing"), t("Free, always"), t("Donors who can give now")]}
       >
         <ArrowLink href="/blood-requests/new" size="lg">
@@ -61,7 +61,7 @@ export default async function BloodRequestsPage({ searchParams }: PageProps<"/bl
 
       <section aria-labelledby="verified-heading">
         <SectionTitle id="verified-heading" kicker={t("Can you help?")} title={t("Verified requests")} />
-        <p className="-mt-2 mb-4 text-sm text-muted-foreground">{t("Checked by a volunteer and shared with permission. Tap one to respond.")}</p>
+        <p className="-mt-2 mb-4 text-sm text-muted-foreground">{t("Checked with the hospital by a Rakt Mitra. Tap one to help.")}</p>
 
         <form method="get" className="surface mb-4 grid gap-3 p-4 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end" role="search" aria-label={t("Filter requests")}>
           <div className="space-y-1.5">

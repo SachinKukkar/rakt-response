@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { accountStepSchema, donorStepSchema, historyStepSchema, registrationSchema } from "@/lib/validation/registration";
-import { adminDonorSchema, bloodRequestSchema, donationRecordSchema, preferencesSchema, profileSchema, storySchema } from "@/lib/validation/forms";
+import {
+  adminDonorSchema,
+  bloodRequestSchema,
+  donationRecordSchema,
+  donationReportSchema,
+  followUpSchema,
+  preferencesSchema,
+  profileSchema,
+  storySchema,
+} from "@/lib/validation/forms";
 
 const validRegistration = {
   account: { full_name: "Asha Fictional", email: "ASHA@Example.test ", password: "safePass1", confirm_password: "safePass1", accept_terms: true },
@@ -137,6 +146,20 @@ describe("blood requests", () => {
 });
 
 describe("other forms", () => {
+  it("a donation report needs a day, not in the future, only when the donor says they donated", () => {
+    const id = "00000000-0000-4000-8000-000000000000";
+    expect(donationReportSchema.safeParse({ request_id: id, donated: true, donation_date: "2026-10-18" }).success).toBe(true);
+    expect(donationReportSchema.safeParse({ request_id: id, donated: true, donation_date: null }).success).toBe(false);
+    expect(donationReportSchema.safeParse({ request_id: id, donated: true, donation_date: "2999-01-01" }).success).toBe(false);
+    expect(donationReportSchema.safeParse({ request_id: id, donated: false, donation_date: null }).success).toBe(true);
+  });
+
+  it("a follow-up note stays short", () => {
+    const ids = { request_id: "00000000-0000-4000-8000-000000000000", donor_id: "00000000-0000-4000-8000-000000000001" };
+    expect(followUpSchema.safeParse({ ...ids, note: "" }).success).toBe(true);
+    expect(followUpSchema.safeParse({ ...ids, note: "x".repeat(501) }).success).toBe(false);
+  });
+
   it("donation records cannot be in the future", () => {
     expect(
       donationRecordSchema.safeParse({ donation_type: "whole_blood", donation_date: "2999-01-01", centre_name: "Centre", city: "", district: "", event_name: "" })

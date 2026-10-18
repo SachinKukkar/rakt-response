@@ -13,7 +13,7 @@ import { getT } from "@/i18n/server";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return pageMetadata(t("Share your story"), t(
-      "Share your experience as a donor, family member, volunteer or camp organiser. Nothing is published without review and your consent.",
+      "Share your experience as a donor, family member, Rakt Mitra or camp organiser. Nothing is published without review and your consent.",
     ));
 }
 
@@ -38,7 +38,7 @@ export default async function ShareYourStoryPage() {
         eyebrow={t("Share your story")}
         title={t("Your story could be")}
         highlight={t("someone's first push.")}
-        subtitle={t("Donated? Needed blood? Volunteered? Tell it your way — you choose what's shown.")}
+        subtitle={t("Donated? Needed blood? Served as a Rakt Mitra? Tell it your way — you choose what's shown.")}
       />
     <div className="page-container max-w-2xl py-8">
       <ul className="mb-5 grid gap-2 sm:grid-cols-3">
@@ -71,7 +71,7 @@ export default async function ShareYourStoryPage() {
           <p className="font-semibold text-navy">{t("Sign in to share your story")}</p>
           <p className="text-sm text-muted-foreground">
             {t(
-              "An account lets you see the review status, change what is shown, request corrections and withdraw your story whenever you like. You don't need to be a donor — family members and volunteers are welcome.",
+              "An account lets you see the review status, change what is shown, request corrections and withdraw your story whenever you like. You don't need to be a donor — family members and Rakt Mitras are welcome.",
             )}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">

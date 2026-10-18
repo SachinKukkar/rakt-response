@@ -88,7 +88,7 @@ export default async function MyRequestsPage({ searchParams }: PageProps<"/reque
 
       {contactRequests.length ? (
         <section aria-labelledby="contact-heading">
-          <SectionHeading id="contact-heading" title="Contact requests waiting for you" description="A volunteer asked if they may contact you. Your details are shared only if you accept." />
+          <SectionHeading id="contact-heading" title="Contact requests waiting for you" description="A Rakt Mitra asked if they may contact you. Your details are shared only if you accept." />
           <ul className="space-y-3">
             {contactRequests.map((m) => (
               <li key={m.contact_request_id}>
@@ -121,7 +121,7 @@ export default async function MyRequestsPage({ searchParams }: PageProps<"/reque
           <SectionHeading
             id="open-heading"
             title="Open requests"
-            description="Verified by a volunteer. Join a request when you can give: you'll see the patient's details and the family's number."
+            description="Verified by a Rakt Mitra. Join a request when you can give: you'll see the patient's details and the family's number."
           />
           <nav aria-label={t("Filter requests")} className="mb-3 flex gap-2">
             {[
@@ -192,7 +192,7 @@ export default async function MyRequestsPage({ searchParams }: PageProps<"/reque
                           label="Cancel — no longer needed"
                           variant="ghost"
                           size="sm"
-                          confirmText="Cancel this request? Donors and volunteers will stop contacting you."
+                          confirmText="Cancel this request? Donors and Rakt Mitras will stop contacting you."
                           hideAfterSuccess
                         />
                       </div>
@@ -203,7 +203,7 @@ export default async function MyRequestsPage({ searchParams }: PageProps<"/reque
             ))}
           </ul>
         ) : (
-          <EmptyState icon={ClipboardList} title="You haven't submitted any requests" description="If someone needs blood, submit a request and a volunteer will verify it." />
+          <EmptyState icon={ClipboardList} title="You haven't submitted any requests" description="If someone needs blood, submit a request and a Rakt Mitra will verify it." />
         )}
       </section>
     </div>

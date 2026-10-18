@@ -63,14 +63,23 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
     supabase.from("volunteer_assignments").select("id, volunteer_id, status, follow_up_at, created_at").eq("request_id", id).order("created_at"),
     supabase.from("request_events").select("*").eq("request_id", id).order("created_at", { ascending: false }).limit(40),
     supabase.from("internal_notes").select("id, author_id, body, created_at").eq("subject_type", "blood_request").eq("subject_id", id).order("created_at", { ascending: false }),
-    supabase.from("request_responses").select("donor_id, response, outcome, contact_attempts, last_contacted_at, responded_at").eq("request_id", id),
+    supabase.from("request_responses").select("donor_id, response, outcome, contact_attempts, last_contacted_at, responded_at, followed_up_at").eq("request_id", id),
     open ? supabase.rpc("match_donors_for_request", { p_request: id, p_limit: 30, p_offset: 0 }) : Promise.resolve({ data: [] }),
     viewer.isAdmin ? activeStaff() : Promise.resolve([]),
   ]);
   const assignments = (assignmentsResult.data ?? []) as Array<{ id: string; volunteer_id: string; status: string; follow_up_at: string | null }>;
   const events = (eventsResult.data ?? []) as RequestEventRow[];
   const notes = (notesResult.data ?? []) as Array<{ id: string; author_id: string; body: string; created_at: string }>;
-  const responses = (responsesResult.data ?? []) as Array<{ donor_id: string; response: ResponseStatus; outcome: Outcome; contact_attempts: number; last_contacted_at: string | null }>;
+  const responses = (responsesResult.data ?? []) as Array<{
+    donor_id: string;
+    response: ResponseStatus;
+    outcome: Outcome;
+    contact_attempts: number;
+    last_contacted_at: string | null;
+    followed_up_at: string | null;
+  }>;
+  const followedUp = new Set(responses.filter((r) => r.followed_up_at).map((r) => r.donor_id));
+  const followUpLabel = (donorId: string) => (followedUp.has(donorId) ? t("Followed up") : t("Follow-up due"));
   const matches = (matchesResult.data ?? []) as MatchedDonor[];
   const names = await displayNames([
     ...assignments.map((a) => a.volunteer_id),
@@ -186,13 +195,13 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
       </div>
 
       <section className="surface p-4" aria-labelledby="assign-heading">
-        <SectionHeading id="assign-heading" title="Volunteers coordinating" as="h3" />
+        <SectionHeading id="assign-heading" title="Rakt Mitras coordinating" as="h3" />
         {activeAssignments.length ? (
           <ul className="mb-3 flex flex-wrap gap-2">
             {activeAssignments.map((a) => (
               <li key={a.id}>
                 <Pill tone="info" icon={UserCheck}>
-                  {names.get(a.volunteer_id) ?? t("Volunteer")}
+                  {names.get(a.volunteer_id) ?? t("Rakt Mitra")}
                   {a.follow_up_at ? ` · ${t("follow up {when}", { when: relativeTime(a.follow_up_at) })}` : ""}
                 </Pill>
               </li>
@@ -208,7 +217,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           {viewer.isAdmin && staff.length ? (
             <ActionForm action={assignRequest} fields={{ request_id: request.id }} label="Assign" size="sm" variant="outline" className="flex items-end gap-2 space-y-0">
               <label className="space-y-1 text-xs font-semibold text-navy">
-                {t("Assign a volunteer")}
+                {t("Assign a Rakt Mitra")}
                 <select name="volunteer_id" className={selectClass} required>
                   {staff
                     .filter((s) => s.user_id !== viewer.id)
@@ -262,6 +271,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
                     {m.open_to_contact ? <Pill tone="success">{t("Open to contact")}</Pill> : <Pill>{t("Not open now")}</Pill>}
                     {m.response ? <Pill tone={m.response === "interested" ? "success" : "neutral"}>{t(RESPONSE_LABELS[m.response])}</Pill> : null}
                     {m.outcome && m.outcome !== "pending" ? <Pill tone="info">{t(OUTCOME_LABELS[m.outcome])}</Pill> : null}
+                    {m.outcome === "donated" ? <Pill tone={followedUp.has(m.donor_id) ? "success" : "warning"}>{followUpLabel(m.donor_id)}</Pill> : null}
                   </div>
                 </div>
                 {m.last_verified_whole_blood || m.last_verified_sdp ? (
@@ -293,7 +303,8 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
                 <li key={r.donor_id} className="flex flex-wrap justify-between gap-2">
                   <span>{names.get(r.donor_id) ?? t("Donor")}</span>
                   <span className="text-muted-foreground">
-                    {t(RESPONSE_LABELS[r.response])} · {t(OUTCOME_LABELS[r.outcome])} · {t("{count} attempt(s)", { count: r.contact_attempts })}
+                    {t(RESPONSE_LABELS[r.response])} · {t(OUTCOME_LABELS[r.outcome])}
+                    {r.outcome === "donated" ? ` · ${followUpLabel(r.donor_id)}` : ""} · {t("{count} attempt(s)", { count: r.contact_attempts })}
                   </span>
                 </li>
               ))}
@@ -362,7 +373,7 @@ export default async function VolunteerRequestPage({ params }: PageProps<"/volun
           </ol>
         </section>
         <section className="surface space-y-3 p-4" aria-labelledby="notes-heading">
-          <SectionHeading id="notes-heading" title="Internal notes" description="Visible to volunteers and admins only." as="h3" />
+          <SectionHeading id="notes-heading" title="Internal notes" description="Visible to Rakt Mitras and admins only." as="h3" />
           <ActionForm action={addInternalNote} fields={{ subject_type: "blood_request", subject_id: request.id }} label="Add note" size="sm" variant="outline">
             <label htmlFor="note-body" className="sr-only">
               {t("Note")}

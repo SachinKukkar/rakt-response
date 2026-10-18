@@ -170,9 +170,9 @@ test("a member submits a blood request with the patient's details; it stays priv
   await expect(page.getByText("Request received")).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText(/RR-\d{6}-[0-9A-F]{5}/)).toBeVisible();
 
-  // The request's own page: no donors until a volunteer has checked it.
+  // The request's own page: no donors until a Rakt Mitra has checked it.
   await page.getByRole("link", { name: "Open my request" }).click();
-  await expect(page.getByText("A volunteer is checking your request")).toBeVisible();
+  await expect(page.getByText("A Rakt Mitra is checking your request")).toBeVisible();
   await expect(page.getByText(PATIENT_ID)).toBeVisible();
 
   await page.goto("/requests");
@@ -194,16 +194,16 @@ test("signed-out visitors sign in before requesting blood", async ({ page }) => 
   await expect(page.locator("#patient_name")).toBeVisible();
 });
 
-test("a volunteer verifies the request; an eligible donor joins and the patient contacts them", async ({ page }) => {
+test("a Rakt Mitra verifies the request; an eligible donor joins, the patient contacts them, and after the donation a Rakt Mitra follows up", async ({ page }) => {
   await login(page, "volunteer@example.test");
   await page.goto("/volunteer/requests?tab=verify");
   await page.getByRole("link", { name: new RegExp(HOSPITAL) }).first().click();
   await expect(page.getByText("Requester (private)")).toBeVisible();
-  // Volunteers check the patient's details with the hospital.
+  // Rakt Mitras check the patient's details with the hospital.
   await expect(page.getByText(PATIENT)).toBeVisible();
   await expect(page.getByText(PATIENT_ID)).toBeVisible();
   await page.getByRole("button", { name: "I'll coordinate this" }).click();
-  await expect(page.getByRole("region", { name: "Volunteers coordinating" }).getByText(/Vidya/)).toBeVisible();
+  await expect(page.getByRole("region", { name: "Rakt Mitras coordinating" }).getByText(/Vidya/)).toBeVisible();
   await page.locator('select[name="status"]').selectOption("verified");
   await page.getByRole("button", { name: "Update status" }).click();
   await expect(page.getByText("Status updated.")).toBeVisible();
@@ -260,9 +260,26 @@ test("a volunteer verifies the request; an eligible donor joins and the patient 
   await expect(ready.getByRole("link", { name: /WhatsApp/ })).toHaveAttribute("href", /wa\.me\/919811122334/);
   expect(localSqlValue(`select count(*) from public.donor_disclosures where request_id = '${requestId}';`)).toBe("1");
 
-  // The volunteer sees the interest and closes the request honestly.
+  // After giving blood the donor tells us: it goes into their record and a Rakt Mitra follows up.
+  await logout(page);
+  await login(page, NEW_DONOR);
+  await page.goto(`/requests/${requestId}`);
+  await page.getByRole("button", { name: "Yes, I donated" }).click();
+  await expect(page.getByText("Thank you for donating", { exact: true })).toBeVisible();
+  await page.goto("/donations");
+  await expect(page.getByText(HOSPITAL).first()).toBeVisible();
+
   await logout(page);
   await login(page, "volunteer@example.test");
+  await page.goto("/volunteer/coordination");
+  const followUp = page.getByRole("region", { name: "Follow up after donation" }).locator("li", { hasText: HOSPITAL }).first();
+  await followUp.getByRole("button", { name: "View contact details" }).click();
+  await expect(followUp.getByRole("link", { name: /Call \+91 98111 22334/ })).toBeVisible();
+  await followUp.locator("textarea[name=note]").fill("Feeling fine, thanked them.");
+  await followUp.getByRole("button", { name: "Mark followed up" }).click();
+  await expect(page.getByText("Followed up recently")).toBeVisible();
+
+  // The Rakt Mitra sees the interest and closes the request honestly.
   await page.goto(requestUrl);
   await expect(page.locator("li", { hasText: "Live D." }).first().locator("span", { hasText: /^Interested$/ })).toBeVisible();
   await page.locator('select[name="status"]').selectOption("fulfilled");
@@ -271,7 +288,7 @@ test("a volunteer verifies the request; an eligible donor joins and the patient 
   await expect(page.getByText("Status updated.")).toBeVisible();
 });
 
-test("contact requests: a volunteer asks, the donor accepts, then contact is visible", async ({ page }) => {
+test("contact requests: a Rakt Mitra asks, the donor accepts, then contact is visible", async ({ page }) => {
   // Seeded donor3 is in the directory but has not given standing contact consent.
   const sdpHospital = `Live SDP Centre ${RUN}`;
   localSql(`insert into public.blood_requests (requester_name, requester_phone, blood_group, request_type, hospital_name, district, city, required_by, urgency, status)
@@ -283,7 +300,7 @@ test("contact requests: a volunteer asks, the donor accepts, then contact is vis
   await page.getByRole("button", { name: "Update status" }).click();
   await expect(page.getByText("Status updated.")).toBeVisible();
   await page.reload();
-  // Sana has no display name, so volunteers see only her neutral code.
+  // Sana has no display name, so Rakt Mitras see only her neutral code.
   const sanaLabel = localSqlValue(
     "select 'Donor #' || upper(left(replace(id::text, '-', ''), 4)) from auth.users where email = 'donor3@example.test';",
   );
@@ -314,7 +331,7 @@ test("contact requests: a volunteer asks, the donor accepts, then contact is vis
   await expect(accepted.getByRole("link", { name: /Call/ })).toHaveAttribute("href", "tel:+919000000103");
 });
 
-test("volunteers verify donation records; donors see the verified badge", async ({ page }) => {
+test("Rakt Mitras verify donation records; donors see the verified badge", async ({ page }) => {
   await login(page, "volunteer@example.test");
   await page.goto("/volunteer/donations");
   const record = page.locator("li", { hasText: CENTRE }).first();
@@ -323,7 +340,7 @@ test("volunteers verify donation records; donors see the verified badge", async 
   await logout(page);
   await login(page, NEW_DONOR);
   await page.goto("/donations");
-  await expect(page.locator("li", { hasText: CENTRE }).getByText("Volunteer-verified")).toBeVisible();
+  await expect(page.locator("li", { hasText: CENTRE }).getByText("Verified by a Rakt Mitra")).toBeVisible();
 });
 
 test("stories: submit with photo, moderate, publish, then withdraw", async ({ page }) => {
@@ -419,10 +436,10 @@ test("password reset by email", async ({ page }) => {
 
 test("admins manage roles, verify donors, export, and process deletion", async ({ page }) => {
   await login(page, "admin@example.test");
-  // Admins see their donor tabs plus one Admin hub, not a separate volunteer area.
+  // Admins see their donor tabs plus one Admin hub, not a separate Rakt Mitra area.
   const tabs = page.getByRole("navigation", { name: "Primary" });
   await expect(tabs.getByRole("link", { name: "Admin" })).toBeVisible();
-  await expect(tabs.getByRole("link", { name: "Volunteer" })).toHaveCount(0);
+  await expect(tabs.getByRole("link", { name: "Rakt Mitra" })).toHaveCount(0);
   await page.goto("/admin");
   await expect(page.getByRole("link", { name: "Coordinate requests" }).first()).toBeVisible();
 
@@ -435,12 +452,12 @@ test("admins manage roles, verify donors, export, and process deletion", async (
   await expect(page.getByText("Donor details saved.")).toBeVisible();
   await page.goto(`/admin/users?q=${encodeURIComponent(NEW_DONOR)}`);
   await page.goto(`/admin/users?q=${encodeURIComponent(NEW_DONOR)}`);
-  await page.getByText("Make volunteer or admin").click();
+  await page.getByText("Make Rakt Mitra or admin").click();
   await page.getByRole("button", { name: "Grant role" }).click();
   await expect(page.getByText("Role saved.")).toBeVisible();
 
   await page.goto("/admin/volunteers");
-  // Administrators see full names (volunteers would see the display name).
+  // Administrators see full names (Rakt Mitras would see the display name).
   await expect(page.getByText("Live Test Donor").first()).toBeVisible();
 
   const download = page.waitForEvent("download");

@@ -85,7 +85,7 @@ function CampFields({ camp, t }: { camp?: Camp; t: TFunction }) {
         <Input name="registrations_count" type="number" min={0} defaultValue={camp?.registrations_count ?? ""} />
       </label>
       <label className={field}>
-        {t("Volunteers")}
+        {t("Rakt Mitras")}
         <Input name="volunteer_count" type="number" min={0} defaultValue={camp?.volunteer_count ?? ""} />
       </label>
       <label className={field}>

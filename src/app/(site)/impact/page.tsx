@@ -40,11 +40,11 @@ export const revalidate = 300;
 const IMPACT_METRICS: MetricDefinition[] = [
   { key: "registered_donors", label: "Registered donors", icon: Users, definition: "Active donor accounts with a confirmed email address." },
   { key: "verified_donors", label: "Verified donors", icon: UserCheck, definition: "Registered donors who confirmed their email address. Verification is not a medical eligibility decision." },
-  { key: "verified_whole_blood_donations", label: "Verified whole blood donations", icon: Droplet, definition: "Whole blood donation records verified by an authorised volunteer or administrator." },
+  { key: "verified_whole_blood_donations", label: "Verified whole blood donations", icon: Droplet, definition: "Whole blood donation records verified by an authorised Rakt Mitra or administrator." },
   { key: "verified_sdp_donations", label: "Verified SDP donations", icon: HeartPulse, definition: "Single donor platelet records that have been verified. Counted separately from whole blood." },
-  { key: "requests_received", label: "Blood requests received", icon: Inbox, definition: "Requests submitted to volunteers (excluding drafts). Includes requests that could not be verified." },
-  { key: "requests_verified", label: "Requests verified", icon: ClipboardCheck, definition: "Requests a volunteer confirmed with the requester or hospital." },
-  { key: "requests_coordinated", label: "Requests coordinated", icon: HandHeart, definition: "Verified requests where volunteers actively coordinated with potential donors." },
+  { key: "requests_received", label: "Blood requests received", icon: Inbox, definition: "Requests submitted to Rakt Mitras (excluding drafts). Includes requests that could not be verified." },
+  { key: "requests_verified", label: "Requests verified", icon: ClipboardCheck, definition: "Requests a Rakt Mitra confirmed with the requester or hospital." },
+  { key: "requests_coordinated", label: "Requests coordinated", icon: HandHeart, definition: "Verified requests where Rakt Mitras actively coordinated with potential donors." },
   { key: "requests_fulfilled", label: "Requests fulfilled", icon: Activity, definition: "Closed as fulfilled with a confirmation note. Contacting a donor or receiving interest does not count." },
   { key: "camps_completed", label: "Donation camps organised", icon: Tent, definition: "Completed camps recorded by administrators." },
 ];
@@ -69,8 +69,8 @@ interface PublicCamp {
 
 const HOW_WE_WORK = [
   { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves and are verified once they confirm their email. Patients see a donor only for a verified request nearby, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility." },
-  { icon: ClipboardCheck, title: "Reviewing blood requests", text: "Every request is checked by an authorised volunteer — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors." },
-  { icon: HandHeart, title: "Coordinating with donors", text: "Once a request is verified, the patient sees donors who can give now and contacts them on each donor's chosen channel. Volunteers help when no one is found. Each contact opened is logged and limited." },
+  { icon: ClipboardCheck, title: "Reviewing blood requests", text: "Every request is checked by an authorised Rakt Mitra — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors." },
+  { icon: HandHeart, title: "Coordinating with donors", text: "Once a request is verified, the patient sees donors who can give now and contacts them on each donor's chosen channel. Rakt Mitras help when no one is found. Each contact opened is logged and limited." },
   { icon: Droplet, title: "Updating donation records", text: "Donors add donations as self-reported. Authorised reviewers verify them separately for whole blood and SDP." },
   { icon: Lock, title: "Protecting donors", text: "No open donor lists or addresses. Donors can hide their number or pause any time. Permissions are enforced by the database, not only the app." },
   { icon: Eye, title: "What we can and cannot guarantee", text: "We help find willing voluntary donors. We cannot guarantee availability, reserve blood, certify compatibility or replace hospitals and licensed blood banks." },
@@ -152,7 +152,7 @@ export default async function ImpactPage() {
       <section className="mb-10" aria-labelledby="stories-heading">
         <SectionHeading
           id="stories-heading"
-          title="Stories of donors, families and volunteers"
+          title="Stories of donors, families and Rakt Mitras"
           action={
             <Link href="/stories" className="shrink-0 text-sm font-semibold text-primary hover:underline">
               {t("All stories")}
@@ -216,7 +216,7 @@ export default async function ImpactPage() {
                   ) : null}
                   {camp.volunteer_count !== null ? (
                     <div className="rounded-xl bg-muted p-2">
-                      <dt className="text-xs text-muted-foreground">{t("Volunteers")}</dt>
+                      <dt className="text-xs text-muted-foreground">{t("Rakt Mitras")}</dt>
                       <dd className="font-bold text-navy">{formatNumber(camp.volunteer_count)}</dd>
                     </div>
                   ) : null}

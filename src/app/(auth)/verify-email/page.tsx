@@ -34,7 +34,7 @@ export default async function VerifyEmailPage() {
           </p>
           <p>
             {t(
-              "Patients and volunteers can't see you until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.",
+              "Patients and Rakt Mitras can't see you until you confirm your email. Emails can take a few minutes — please also check spam or promotions folders.",
             )}
           </p>
         </div>

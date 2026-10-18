@@ -13,7 +13,7 @@ export default async function VolunteerDonationsPage({ searchParams }: PageProps
   const viewer = await requireStaff();
   return (
     <div>
-      <PageHeader eyebrow="Volunteer" title="Donation records" description="Review self-reported donations. Whole blood and SDP records are verified separately." />
+      <PageHeader eyebrow="Rakt Mitra" title="Donation records" description="Review self-reported donations. Whole blood and SDP records are verified separately." />
       <DonationReviewList basePath="/volunteer/donations" searchParams={await searchParams} canVerify={viewerCan(viewer, "verify_donations")} viewerId={viewer.id} isAdmin={viewer.isAdmin} />
     </div>
   );

@@ -54,7 +54,7 @@ export async function addDonation(input: DonationRecordInput): Promise<ActionRes
   }
   revalidatePath("/donations");
   revalidatePath("/dashboard");
-  return success("Donation recorded. It will show as self-reported until a volunteer verifies it.", {});
+  return success("Donation recorded. It will show as self-reported until a Rakt Mitra verifies it.", {});
 }
 
 /** Pages that show donation records or figures counted from them. */
@@ -99,7 +99,7 @@ export async function updateDonation(recordId: string, input: DonationRecordInpu
   if (!after) return fail("You can't edit this record.");
   refreshDonationPages(after.donor_id as string);
   const recheck = before.verification_status !== "pending" && after.verification_status === "pending";
-  return success(recheck ? "Changes saved. The record will be checked again by a volunteer." : "Changes saved.", { recheck });
+  return success(recheck ? "Changes saved. The record will be checked again by a Rakt Mitra." : "Changes saved.", { recheck });
 }
 
 /** Removes a donation record: donors their own (any status), administrators any. */

@@ -44,12 +44,12 @@ const hi: Catalog = {
   "No notifications yet.": "अभी कोई सूचना नहीं।",
 
   // --- Donations ----------------------------------------------------------------
-  "Whole blood and SDP are tracked separately. New records are self-reported until an authorised volunteer verifies them.":
-    "होल ब्लड और SDP का रिकॉर्ड अलग-अलग रखा जाता है। नए रिकॉर्ड तब तक 'खुद बताया गया' रहते हैं जब तक कोई अधिकृत स्वयंसेवक उनकी पुष्टि न कर दे।",
+  "Whole blood and SDP are tracked separately. New records are self-reported until an authorised Rakt Mitra verifies them.":
+    "होल ब्लड और SDP का रिकॉर्ड अलग-अलग रखा जाता है। नए रिकॉर्ड तब तक 'खुद बताया गया' रहते हैं जब तक कोई अधिकृत रक्त मित्र उनकी पुष्टि न कर दे।",
   "All records": "सारे रिकॉर्ड",
   "No donations recorded yet": "अभी कोई रक्तदान दर्ज नहीं",
-  "Add donations you've made — even from years ago — so volunteers can coordinate better.":
-    "आपने जो रक्तदान किए हैं, उन्हें जोड़ें — सालों पुराने भी — ताकि स्वयंसेवक बेहतर तालमेल कर सकें।",
+  "Add donations you've made — even from years ago — so Rakt Mitras can coordinate better.":
+    "आपने जो रक्तदान किए हैं, उन्हें जोड़ें — सालों पुराने भी — ताकि रक्त मित्र बेहतर तालमेल कर सकें।",
   "Event: {name}": "कार्यक्रम: {name}",
   "Reviewer note: {note}": "जाँचने वाले की टिप्पणी: {note}",
   Remove: "हटाएँ",
@@ -86,8 +86,8 @@ const hi: Catalog = {
   "This might be a duplicate": "यह दोबारा दर्ज हो सकता है",
   "You already have a record of the same type close to this date:": "इसी तारीख के आस-पास आपका इसी प्रकार का एक रिकॉर्ड पहले से है:",
   "If this is a separate donation, submit again to confirm.": "अगर यह अलग रक्तदान है, तो पक्का करने के लिए फिर से भेजें।",
-  "This record will be marked {status} until an authorised volunteer verifies it. Recording a donation does not determine when you can donate again.":
-    "जब तक कोई अधिकृत स्वयंसेवक पुष्टि नहीं करता, यह रिकॉर्ड {status} माना जाएगा। रक्तदान दर्ज करने से यह तय नहीं होता कि आप फिर कब रक्तदान कर सकते हैं।",
+  "This record will be marked {status} until an authorised Rakt Mitra verifies it. Recording a donation does not determine when you can donate again.":
+    "जब तक कोई अधिकृत रक्त मित्र पुष्टि नहीं करता, यह रिकॉर्ड {status} माना जाएगा। रक्तदान दर्ज करने से यह तय नहीं होता कि आप फिर कब रक्तदान कर सकते हैं।",
   "self-reported": "खुद बताया गया",
   "Yes, save it as a separate donation": "हाँ, इसे अलग रक्तदान के रूप में सेव करें",
   "Save donation": "रक्तदान सेव करें",
@@ -105,8 +105,8 @@ const hi: Catalog = {
 
   // --- Profile ----------------------------------------------------------------------
   "My profile": "मेरी प्रोफ़ाइल",
-  "Volunteers see you as “{name}”. Only admins see your full name and photo.":
-    "स्वयंसेवकों को आप “{name}” के नाम से दिखते हैं। आपका पूरा नाम और फ़ोटो सिर्फ़ एडमिन देखते हैं।",
+  "Rakt Mitras see you as “{name}”. Only admins see your full name and photo.":
+    "रक्त मित्रों को आप “{name}” के नाम से दिखते हैं। आपका पूरा नाम और फ़ोटो सिर्फ़ एडमिन देखते हैं।",
   "Donor #{code}": "डोनर #{code}",
   "Verified group": "पुष्टि वाला ग्रुप",
   "Self-declared": "खुद बताया",
@@ -136,28 +136,28 @@ const hi: Catalog = {
   "PIN code": "पिन कोड",
   "Approximate map point": "नक्शे पर अंदाज़न जगह",
   "Added (~1 km)": "जोड़ा गया (~1 km)",
-  "No area added yet. Volunteers can't match you to nearby requests without it.":
-    "अभी कोई इलाका नहीं जोड़ा। इसके बिना स्वयंसेवक आपको पास की रिक्वेस्ट से नहीं जोड़ पाएँगे।",
+  "No area added yet. Rakt Mitras can't match you to nearby requests without it.":
+    "अभी कोई इलाका नहीं जोड़ा। इसके बिना रक्त मित्र आपको पास की रिक्वेस्ट से नहीं जोड़ पाएँगे।",
   "My donations": "मेरे रक्तदान",
   "Donations logged": "दर्ज रक्तदान",
-  "Verified by a volunteer": "स्वयंसेवक ने पुष्टि की",
+  "Verified by a Rakt Mitra": "रक्त मित्र ने जाँचा",
   "Last donation": "आखिरी रक्तदान",
   "Log a donation": "रक्तदान दर्ज करें",
   "Shared {date}": "{date} को भेजी",
   "Tell people why you donate, with a photo if you like. An admin reviews it and you choose what is shown.":
     "लोगों को बताएँ कि आप रक्तदान क्यों करते हैं, चाहें तो फ़ोटो के साथ। एडमिन इसे जाँचते हैं और क्या दिखेगा, यह आप चुनते हैं।",
   "Privacy & availability": "प्राइवेसी और उपलब्धता",
-  "Visible in volunteer directory": "स्वयंसेवकों की डोनर सूची में दिखें",
-  "Volunteers may contact me": "स्वयंसेवक मुझसे संपर्क कर सकते हैं",
+  "Visible in Rakt Mitra directory": "रक्त मित्रों की डोनर सूची में दिखें",
+  "Rakt Mitras may contact me": "रक्त मित्र मुझसे संपर्क कर सकते हैं",
   "Currently open to contact": "अभी संपर्क के लिए उपलब्ध",
   "In-app request alerts": "ऐप में रिक्वेस्ट की सूचना",
   "Share verified donation summary": "पुष्टि वाले रक्तदान का सारांश दिखाएँ",
-  "Volunteers see my first name": "स्वयंसेवक मेरा पहला नाम देखें",
+  "Rakt Mitras see my first name": "रक्त मित्र मेरा पहला नाम देखें",
   "Preferred contact": "संपर्क का पसंदीदा तरीका",
 
   // Edit profile (src/app/(member)/profile/edit/page.tsx)
   "Edit profile": "प्रोफ़ाइल बदलें",
-  "Keep your details current so volunteers can respond quickly.": "अपनी जानकारी सही और नई रखें, ताकि स्वयंसेवक जल्दी मदद कर सकें।",
+  "Keep your details current so Rakt Mitras can respond quickly.": "अपनी जानकारी सही और नई रखें, ताकि रक्त मित्र जल्दी मदद कर सकें।",
   "Profile photo": "प्रोफ़ाइल फ़ोटो",
   "Blood group": "ब्लड ग्रुप",
   "Personal details": "निजी जानकारी",
@@ -165,12 +165,12 @@ const hi: Catalog = {
 
   // Profile forms (src/components/profile/profile-forms.tsx)
   "Full name": "पूरा नाम",
-  "Display name for volunteers": "स्वयंसेवकों को दिखने वाला नाम",
-  "Optional. What volunteers see. Leave blank to appear as a code like “Donor #3F2A”.":
-    "ज़रूरी नहीं। यह नाम स्वयंसेवकों को दिखता है। खाली छोड़ेंगे तो आप “Donor #3F2A” जैसे कोड से दिखेंगे।",
+  "Display name for Rakt Mitras": "रक्त मित्रों को दिखने वाला नाम",
+  "Optional. What Rakt Mitras see. Leave blank to appear as a code like “Donor #3F2A”.":
+    "ज़रूरी नहीं। यह नाम रक्त मित्रों को दिखता है। खाली छोड़ेंगे तो आप “Donor #3F2A” जैसे कोड से दिखेंगे।",
   "Why I donate": "मैं रक्तदान क्यों करता/करती हूँ",
-  "Optional, up to 280 characters. Shown on your profile and to volunteers and admins.":
-    "ज़रूरी नहीं, 280 अक्षर तक। आपकी प्रोफ़ाइल पर और स्वयंसेवकों व एडमिन को दिखता है।",
+  "Optional, up to 280 characters. Shown on your profile and to Rakt Mitras and admins.":
+    "ज़रूरी नहीं, 280 अक्षर तक। आपकी प्रोफ़ाइल पर और रक्त मित्रों व एडमिन को दिखता है।",
   "Mobile number": "मोबाइल नंबर",
   "Private. Only shared with consent.": "प्राइवेट। सिर्फ़ आपकी सहमति से ही बताया जाता है।",
   "WhatsApp number (if different)": "WhatsApp नंबर (अगर अलग है)",
@@ -192,23 +192,23 @@ const hi: Catalog = {
   "Your profile photo": "आपकी प्रोफ़ाइल फ़ोटो",
   "Change photo": "फ़ोटो बदलें",
   "Add photo": "फ़ोटो जोड़ें",
-  "Optional. Visible only to you and authorised volunteers. Location data is removed.":
-    "ज़रूरी नहीं। सिर्फ़ आपको और अधिकृत स्वयंसेवकों को दिखती है। फ़ोटो से जगह की जानकारी हटा दी जाती है।",
-  "Visible in the volunteer donor directory": "स्वयंसेवकों की डोनर सूची में दिखें",
-  "Authorised volunteers see your display name, blood group and broad area. Never public.":
-    "अधिकृत स्वयंसेवक आपका दिखने वाला नाम, ब्लड ग्रुप और मोटा-मोटा इलाका देखते हैं। यह कभी सबके लिए नहीं होता।",
-  "Volunteers may contact me about verified requests": "जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक मुझसे संपर्क कर सकते हैं",
+  "Optional. Visible only to you and authorised Rakt Mitras. Location data is removed.":
+    "ज़रूरी नहीं। सिर्फ़ आपको और अधिकृत रक्त मित्रों को दिखती है। फ़ोटो से जगह की जानकारी हटा दी जाती है।",
+  "Visible in the Rakt Mitra donor directory": "रक्त मित्रों की डोनर सूची में दिखें",
+  "Authorised Rakt Mitras see your display name, blood group and broad area. Never public.":
+    "अधिकृत रक्त मित्र आपका दिखने वाला नाम, ब्लड ग्रुप और मोटा-मोटा इलाका देखते हैं। यह कभी सबके लिए नहीं होता।",
+  "Rakt Mitras may contact me about verified requests": "जाँची हुई रिक्वेस्ट के लिए रक्त मित्र मुझसे संपर्क कर सकते हैं",
   "Your number is revealed only for a verified request; every access is logged.":
     "आपका नंबर सिर्फ़ जाँची हुई रिक्वेस्ट के लिए दिखाया जाता है; हर बार देखने का रिकॉर्ड रखा जाता है।",
   "I'm currently open to contact": "अभी मुझसे संपर्क किया जा सकता है",
   "Turn off while travelling, unwell or after a recent donation.": "सफ़र में, तबीयत ठीक न हो या हाल ही में रक्तदान किया हो, तो इसे बंद कर दें।",
   "In-app alerts for verified requests near me": "मेरे पास की जाँची हुई रिक्वेस्ट की ऐप में सूचना",
   "Matching blood group and district only. No SMS or bulk messages.": "सिर्फ़ मेल खाते ब्लड ग्रुप और ज़िले की। कोई SMS या एक साथ ढेर सारे मैसेज नहीं।",
-  "Share my verified donation summary with volunteers": "मेरे पुष्टि वाले रक्तदान का सारांश स्वयंसेवकों को दिखाएँ",
+  "Share my verified donation summary with Rakt Mitras": "मेरे पुष्टि वाले रक्तदान का सारांश रक्त मित्रों को दिखाएँ",
   "Last verified whole blood / SDP dates and counts.": "पुष्टि वाले आखिरी होल ब्लड / SDP की तारीखें और गिनती।",
-  "Show my first name to volunteers": "स्वयंसेवकों को मेरा पहला नाम दिखाएँ",
-  "Off: volunteers see only your display name, or a code like “Donor #3F2A”. Your full name and photo are only ever seen by Rakt Response admins.":
-    "बंद होने पर: स्वयंसेवक सिर्फ़ आपका दिखने वाला नाम या “Donor #3F2A” जैसा कोड देखते हैं। आपका पूरा नाम और फ़ोटो सिर्फ़ Rakt Response के एडमिन ही देखते हैं।",
+  "Show my first name to Rakt Mitras": "रक्त मित्रों को मेरा पहला नाम दिखाएँ",
+  "Off: Rakt Mitras see only your display name, or a code like “Donor #3F2A”. Your full name and photo are only ever seen by Rakt Response admins.":
+    "बंद होने पर: रक्त मित्र सिर्फ़ आपका दिखने वाला नाम या “Donor #3F2A” जैसा कोड देखते हैं। आपका पूरा नाम और फ़ोटो सिर्फ़ Rakt Response के एडमिन ही देखते हैं।",
   "Directory and contact options become available once you add a blood group to your profile.":
     "प्रोफ़ाइल में ब्लड ग्रुप जोड़ने के बाद सूची और संपर्क वाले विकल्प मिलेंगे।",
   "Notify me about updates to my requests and records": "मेरी रिक्वेस्ट और रिकॉर्ड में बदलाव होने पर मुझे बताएँ",
@@ -268,8 +268,8 @@ const hi: Catalog = {
   // --- Hide my number, availability, admin limits (18 October 2026) ------------------
   "Number hidden from patients":
     "मरीज़ों से नंबर छिपा है",
-  "Choose how patients and volunteers can reach you. You can change these any time.":
-    "चुनें कि मरीज़ और स्वयंसेवक आप तक कैसे पहुँचें। आप इन्हें कभी भी बदल सकते हैं।",
+  "Choose how patients and Rakt Mitras can reach you. You can change these any time.":
+    "चुनें कि मरीज़ और रक्त मित्र आप तक कैसे पहुँचें। आप इन्हें कभी भी बदल सकते हैं।",
   "Contact & availability":
     "संपर्क और उपलब्धता",
   "History of your choices":
@@ -280,8 +280,8 @@ const hi: Catalog = {
     "बंद",
   "Hide my number from patients":
     "मरीज़ों से मेरा नंबर छिपाएँ",
-  "Off: a patient with a verified request near you, when you can give, sees your first name and area and can reach you on the channel below. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests.":
-    "बंद: जब आप दे सकें, आपके पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपका पहला नाम और इलाका देखता है और नीचे चुने तरीके से आप तक पहुँच सकता है। चालू: मरीज़ आपको नहीं देखते, और आप खुद रिक्वेस्ट से जुड़ सकते हैं। जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक हमेशा आप तक पहुँच सकते हैं।",
+  "Off: a patient with a verified request near you, when you can give, sees your first name and area and can reach you on the channel below. On: patients don't see you, and you can still join requests yourself. Rakt Mitras can always reach you for verified requests.":
+    "बंद: जब आप दे सकें, आपके पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपका पहला नाम और इलाका देखता है और नीचे चुने तरीके से आप तक पहुँच सकता है। चालू: मरीज़ आपको नहीं देखते, और आप खुद रिक्वेस्ट से जुड़ सकते हैं। जाँची हुई रिक्वेस्ट के लिए रक्त मित्र हमेशा आप तक पहुँच सकते हैं।",
   "I'm available to donate":
     "मैं रक्तदान के लिए उपलब्ध हूँ",
   "Turn off while travelling, unwell or after a recent donation. Patients don't see you while it's off.":
@@ -294,10 +294,10 @@ const hi: Catalog = {
     "मरीज़ आप तक कैसे पहुँचें",
   "You choose how patients can reach you, or hide your number, before you finish.":
     "आख़िर में आप चुनेंगे कि मरीज़ आप तक कैसे पहुँचें, या अपना नंबर छिपाएँगे।",
-  "Volunteers can reach you on it for verified requests, and patients too unless you hide your number.":
-    "जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक इस पर आप तक पहुँच सकते हैं, और मरीज़ भी, जब तक आप नंबर न छिपाएँ।",
-  "Off: when you can give, a patient with a verified request near you sees your first name and area and can reach you on the channel you chose. On: patients don't see you, and you can still join requests yourself. Volunteers can always reach you for verified requests. Change this any time in Privacy & settings.":
-    "बंद: जब आप दे सकें, आपके पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपका पहला नाम और इलाका देखता है और आपके चुने तरीके से आप तक पहुँच सकता है। चालू: मरीज़ आपको नहीं देखते, और आप खुद रिक्वेस्ट से जुड़ सकते हैं। जाँची हुई रिक्वेस्ट के लिए स्वयंसेवक हमेशा आप तक पहुँच सकते हैं। इसे कभी भी “प्राइवेसी और सेटिंग्स” में बदलें।",
+  "Rakt Mitras can reach you on it for verified requests, and patients too unless you hide your number.":
+    "जाँची हुई रिक्वेस्ट के लिए रक्त मित्र इस पर आप तक पहुँच सकते हैं, और मरीज़ भी, जब तक आप नंबर न छिपाएँ।",
+  "Off: when you can give, a patient with a verified request near you sees your first name and area and can reach you on the channel you chose. On: patients don't see you, and you can still join requests yourself. Rakt Mitras can always reach you for verified requests. Change this any time in Privacy & settings.":
+    "बंद: जब आप दे सकें, आपके पास की जाँची हुई रिक्वेस्ट वाला मरीज़ आपका पहला नाम और इलाका देखता है और आपके चुने तरीके से आप तक पहुँच सकता है। चालू: मरीज़ आपको नहीं देखते, और आप खुद रिक्वेस्ट से जुड़ सकते हैं। जाँची हुई रिक्वेस्ट के लिए रक्त मित्र हमेशा आप तक पहुँच सकते हैं। इसे कभी भी “प्राइवेसी और सेटिंग्स” में बदलें।",
   "Your account is active. Choose how patients can reach you, or hide your number, in Privacy & settings.":
     "आपका खाता चालू है। “प्राइवेसी और सेटिंग्स” में चुनें कि मरीज़ आप तक कैसे पहुँचें, या अपना नंबर छिपाएँ।",
   "Verified requests for your blood group. Join one when you can give.":
@@ -324,6 +324,42 @@ const hi: Catalog = {
     "एक डोनर एक दिन में कितनी रिक्वेस्ट से जुड़ सकता है",
   "Open requests a donor can be joined to at once":
     "एक डोनर एक साथ कितनी खुली रिक्वेस्ट से जुड़ा रह सकता है",
+
+  // --- After donation (donors) -------------------------------------------------------
+  "Did you donate?":
+    "क्या आपने रक्तदान किया?",
+  "Thank you for donating":
+    "रक्तदान के लिए धन्यवाद",
+  "See my donation history":
+    "मेरा रक्तदान इतिहास देखें",
+  "Day you donated":
+    "रक्तदान का दिन",
+  "This request has closed. Thank you for offering to help.":
+    "यह रिक्वेस्ट बंद हो चुकी है। मदद की पेशकश के लिए धन्यवाद।",
+  "The request":
+    "रिक्वेस्ट",
+  "{code} at {hospital}":
+    "{hospital} की रिक्वेस्ट {code}",
+  "You gave blood for this request on {date}. It's in your donation record, and a Rakt Mitra may check in with you.":
+    "आपने {date} को इस रिक्वेस्ट के लिए रक्तदान किया। यह आपके रक्तदान रिकॉर्ड में दर्ज है, और कोई रक्त मित्र आपका हाल-चाल ले सकता है।",
+  "Tell us after you give blood for this request. We add it to your donation record, which updates when you can give again, and a Rakt Mitra checks in on you.":
+    "इस रिक्वेस्ट के लिए रक्तदान करने के बाद हमें बताइए। हम इसे आपके रक्तदान रिकॉर्ड में जोड़ देंगे, जिससे आपकी अगली रक्तदान की तारीख भी तय होगी, और कोई रक्त मित्र आपका हाल-चाल लेगा।",
+  "Yes, I donated":
+    "हाँ, मैंने रक्तदान किया",
+  "No, I didn't donate":
+    "नहीं, मैंने रक्तदान नहीं किया",
+  "You joined these requests. Tell us if you gave blood, so we can thank you and keep your record right.":
+    "आप इन रिक्वेस्ट से जुड़े थे। अगर आपने रक्तदान किया हो तो हमें बताइए, ताकि हम आपको धन्यवाद दे सकें और आपका रिकॉर्ड सही रहे।",
+  "Thank you for donating. It's now in your donation record.":
+    "रक्तदान के लिए धन्यवाद। यह अब आपके रक्तदान रिकॉर्ड में है।",
+  "Choose the day you donated (not a future date)":
+    "रक्तदान का दिन चुनें (आगे की तारीख नहीं)",
+
+  // --- After donation (recorded by a Rakt Mitra) -------------------------------------
+  "A Rakt Mitra recorded your donation for this request. Add it to your donation record so we know when you can give again.":
+    "रक्त मित्र ने इस रिक्वेस्ट के लिए आपका रक्तदान दर्ज किया है। इसे अपने रक्तदान रिकॉर्ड में जोड़ें, ताकि पता रहे कि आप फिर कब रक्तदान कर सकते हैं।",
+  "Add to my record":
+    "मेरे रिकॉर्ड में जोड़ें",
 };
 
 export default hi;

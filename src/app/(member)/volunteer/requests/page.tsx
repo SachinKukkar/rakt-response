@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function VolunteerRequestsPage({ searchParams }: PageProps<"/volunteer/requests">) {
   return (
     <div>
-      <PageHeader eyebrow="Volunteer" title="Blood requests" description="Verify new requests before any donor is contacted. Close requests honestly." />
+      <PageHeader eyebrow="Rakt Mitra" title="Blood requests" description="Verify new requests before any donor is contacted. Close requests honestly." />
       <RequestQueue basePath="/volunteer/requests" searchParams={await searchParams} />
     </div>
   );

@@ -3,7 +3,7 @@ import { ArrowLink } from "@/components/site/arrow-link";
 import { PHOTOS } from "@/lib/photos";
 import { getT } from "@/i18n/server";
 
-const STEPS = ["Register", "Volunteer checks", "You say yes", "Donate, log it"];
+const STEPS = ["Register", "Rakt Mitra checks", "You say yes", "Donate, log it"];
 
 /**
  * The photo melting into the brand red, a two-part headline and the four steps.
@@ -38,7 +38,7 @@ export async function HomeHero() {
         <div className="mt-8 max-w-xl space-y-7">
           <p className="text-lg leading-snug font-medium sm:text-[1.35rem]">
             {t("Connecting voluntary blood donors with people who need help, one response at a time.")}{" "}
-            <span className="text-cream/80">{t("Free, and every request is checked by volunteers.")}</span>
+            <span className="text-cream/80">{t("Free, and every request is checked by Rakt Mitras.")}</span>
           </p>
           <div className="flex flex-wrap gap-2.5">
             <ArrowLink href="/register">{t("Become a Donor")}</ArrowLink>

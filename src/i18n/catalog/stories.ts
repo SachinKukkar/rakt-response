@@ -3,12 +3,12 @@ import type { Catalog } from "./types";
 /** English UI text → Hindi. Keep the English key exactly as written in the code. */
 const hi: Catalog = {
   // --- /stories -------------------------------------------------------------------
-  "Experiences shared by donors, patients' families, volunteers and camp organisers — published with consent.":
-    "डोनर, मरीज़ों के परिजन, स्वयंसेवक और कैंप आयोजक के अनुभव — उनकी सहमति से प्रकाशित।",
+  "Experiences shared by donors, patients' families, Rakt Mitras and camp organisers — published with consent.":
+    "डोनर, मरीज़ों के परिजन, रक्त मित्र और कैंप आयोजक के अनुभव — उनकी सहमति से प्रकाशित।",
   "Stories that": "वो कहानियाँ जिन्होंने",
   "kept us going.": "हमें हिम्मत दी।",
-  "Donors, families and volunteers — in their own words, published only with their consent.":
-    "डोनर, परिवार और स्वयंसेवक — उनके अपने शब्दों में, सिर्फ़ उनकी सहमति से प्रकाशित।",
+  "Donors, families and Rakt Mitras — in their own words, published only with their consent.":
+    "डोनर, परिवार और रक्त मित्र — उनके अपने शब्दों में, सिर्फ़ उनकी सहमति से प्रकाशित।",
   "Reviewed before publishing": "प्रकाशित करने से पहले जाँच",
   "Withdraw any time": "कभी भी वापस लें",
   "Story categories": "कहानियों की श्रेणियाँ",
@@ -46,19 +46,19 @@ const hi: Catalog = {
   "Let us know": "हमें बताएँ",
 
   // --- /share-your-story ------------------------------------------------------------
-  "Share your experience as a donor, family member, volunteer or camp organiser. Nothing is published without review and your consent.":
-    "डोनर, परिवार के सदस्य, स्वयंसेवक या कैंप आयोजक के रूप में अपना अनुभव बताएँ। जाँच और आपकी सहमति के बिना कुछ भी प्रकाशित नहीं होता।",
+  "Share your experience as a donor, family member, Rakt Mitra or camp organiser. Nothing is published without review and your consent.":
+    "डोनर, परिवार के सदस्य, रक्त मित्र या कैंप आयोजक के रूप में अपना अनुभव बताएँ। जाँच और आपकी सहमति के बिना कुछ भी प्रकाशित नहीं होता।",
   "Your story could be": "आपकी कहानी",
   "someone's first push.": "किसी की पहली हिम्मत बन सकती है।",
-  "Donated? Needed blood? Volunteered? Tell it your way — you choose what's shown.":
-    "रक्तदान किया? खून की ज़रूरत पड़ी? स्वयंसेवा की? अपने तरीके से बताइए — क्या दिखेगा, यह आप तय करते हैं।",
+  "Donated? Needed blood? Served as a Rakt Mitra? Tell it your way — you choose what's shown.":
+    "रक्तदान किया? खून की ज़रूरत पड़ी? रक्त मित्र के रूप में सेवा की? अपने तरीके से बताइए — क्या दिखेगा, यह आप तय करते हैं।",
   "Private until an administrator approves it": "एडमिन की मंज़ूरी तक निजी रहती है",
   "You choose your name, photo and details": "नाम, फ़ोटो और जानकारी आप चुनते हैं",
   "Withdraw or correct it any time": "कभी भी वापस लें या सुधार करवाएँ",
   "View stories you've shared": "अपनी भेजी हुई कहानियाँ देखें",
   "Sign in to share your story": "अपनी कहानी बताने के लिए साइन इन करें",
-  "An account lets you see the review status, change what is shown, request corrections and withdraw your story whenever you like. You don't need to be a donor — family members and volunteers are welcome.":
-    "खाते से आप जाँच की स्थिति देख सकते हैं, क्या दिखेगा यह बदल सकते हैं, सुधार के लिए कह सकते हैं और जब चाहें अपनी कहानी वापस ले सकते हैं। डोनर होना ज़रूरी नहीं — परिवार के सदस्यों और स्वयंसेवकों का भी स्वागत है।",
+  "An account lets you see the review status, change what is shown, request corrections and withdraw your story whenever you like. You don't need to be a donor — family members and Rakt Mitras are welcome.":
+    "खाते से आप जाँच की स्थिति देख सकते हैं, क्या दिखेगा यह बदल सकते हैं, सुधार के लिए कह सकते हैं और जब चाहें अपनी कहानी वापस ले सकते हैं। डोनर होना ज़रूरी नहीं — परिवार के सदस्यों और रक्त मित्रों का भी स्वागत है।",
   "Create a free account": "मुफ़्त खाता बनाएँ",
   "Please don't include a patient's full name, diagnosis, phone number, address or hospital documents. Stories are personal experiences and are never presented as medical advice.":
     "कृपया मरीज़ का पूरा नाम, बीमारी, फ़ोन नंबर, पता या अस्पताल के कागज़ न डालें। कहानियाँ निजी अनुभव हैं और इन्हें कभी डॉक्टरी सलाह के रूप में नहीं दिखाया जाता।",

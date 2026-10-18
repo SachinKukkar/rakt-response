@@ -8,7 +8,7 @@ const hi: Catalog = {
   "Every Response": "हर जवाब",
   "Can Save a Life.": "एक जान बचा सकता है।",
   "Private by default": "आपकी जानकारी निजी रहती है",
-  "Requests verified by volunteers": "स्वयंसेवक रिक्वेस्ट की जाँच करते हैं",
+  "Requests verified by Rakt Mitras": "रक्त मित्र रिक्वेस्ट की जाँच करते हैं",
   "Free & voluntary": "मुफ़्त और स्वैच्छिक",
   "Bombay blood group (Oh)": "बॉम्बे ब्लड ग्रुप (Oh)",
 
@@ -26,11 +26,11 @@ const hi: Catalog = {
   "Receive relevant requests": "आपके काम की रिक्वेस्ट पाएँ",
   "Only if you opt in: verified requests for your blood group near you.":
     "सिर्फ़ अगर आप चाहें: आपके आस-पास, आपके ब्लड ग्रुप की जाँची गई रिक्वेस्ट।",
-  "Connect through authorised volunteers": "अधिकृत स्वयंसेवकों के ज़रिए जुड़ें",
+  "Connect through authorised Rakt Mitras": "अधिकृत रक्त मित्रों के ज़रिए जुड़ें",
   "Contact happens only with your consent, through approved workflows.": "संपर्क सिर्फ़ आपकी सहमति से और तय तरीके से ही होता है।",
   "Update your history after donating": "रक्तदान के बाद अपना रिकॉर्ड अपडेट करें",
-  "Keep your record current so volunteers respond faster next time.":
-    "अपना रिकॉर्ड ताज़ा रखें, ताकि अगली बार स्वयंसेवक जल्दी मदद कर सकें।",
+  "Keep your record current so Rakt Mitras respond faster next time.":
+    "अपना रिकॉर्ड ताज़ा रखें, ताकि अगली बार रक्त मित्र जल्दी मदद कर सकें।",
 
   // --- Homepage: why it matters -------------------------------------------------------
   "Why blood donation matters": "रक्तदान क्यों ज़रूरी है",
@@ -72,8 +72,8 @@ const hi: Catalog = {
 
   // --- Homepage: blood groups ---------------------------------------------------------
   "Blood groups": "ब्लड ग्रुप",
-  "Knowing your group helps volunteers reach the right donors faster. Compatibility depends on more than the ABO and Rh group: hospitals always cross-match in the laboratory before a transfusion. Transfusion decisions belong to qualified healthcare professionals and licensed blood banks.":
-    "अपना ब्लड ग्रुप पता होने से स्वयंसेवक सही डोनरों तक जल्दी पहुँच पाते हैं। खून का मेल सिर्फ़ ABO और Rh ग्रुप पर निर्भर नहीं करता: खून चढ़ाने से पहले अस्पताल हमेशा लैब में क्रॉस-मैच करते हैं। खून चढ़ाने के फ़ैसले योग्य डॉक्टर-स्वास्थ्यकर्मी और लाइसेंस वाले ब्लड बैंक ही लेते हैं।",
+  "Knowing your group helps Rakt Mitras reach the right donors faster. Compatibility depends on more than the ABO and Rh group: hospitals always cross-match in the laboratory before a transfusion. Transfusion decisions belong to qualified healthcare professionals and licensed blood banks.":
+    "अपना ब्लड ग्रुप पता होने से रक्त मित्र सही डोनरों तक जल्दी पहुँच पाते हैं। खून का मेल सिर्फ़ ABO और Rh ग्रुप पर निर्भर नहीं करता: खून चढ़ाने से पहले अस्पताल हमेशा लैब में क्रॉस-मैच करते हैं। खून चढ़ाने के फ़ैसले योग्य डॉक्टर-स्वास्थ्यकर्मी और लाइसेंस वाले ब्लड बैंक ही लेते हैं।",
   "The eight main blood groups": "आठ मुख्य ब्लड ग्रुप",
   "Blood group {group}": "ब्लड ग्रुप {group}",
 
@@ -106,8 +106,8 @@ const hi: Catalog = {
   "Frequently asked questions": "अक्सर पूछे जाने वाले सवाल",
   "All FAQs": "सभी सवाल-जवाब",
   "Who can see my phone number?": "मेरा फ़ोन नंबर कौन देख सकता है?",
-  "A patient whose request a volunteer has verified, when you can give, one donor at a time; and authorised volunteers. Turn on Hide my number in Privacy & settings any time.":
-    "वह मरीज़ जिसकी रिक्वेस्ट वॉलंटियर ने जाँच ली हो, जब आप दे सकें, एक बार में एक डोनर; और अधिकृत वॉलंटियर। 'प्राइवेसी और सेटिंग्स' में कभी भी 'मेरा नंबर छिपाएँ' चालू करें।",
+  "A patient whose request a Rakt Mitra has verified, when you can give, one donor at a time; and authorised Rakt Mitras. Turn on Hide my number in Privacy & settings any time.":
+    "वह मरीज़ जिसकी रिक्वेस्ट रक्त मित्र ने जाँच ली हो, जब आप दे सकें, एक बार में एक डोनर; और अधिकृत रक्त मित्र। 'प्राइवेसी और सेटिंग्स' में कभी भी 'मेरा नंबर छिपाएँ' चालू करें।",
   "Does registering mean I'm eligible to donate?": "क्या रजिस्टर करने का मतलब है कि मैं रक्तदान कर सकता/सकती हूँ?",
   "No. Eligibility is decided by the blood centre's screening on the day. Rakt Response never makes medical decisions.":
     "नहीं। आप रक्तदान कर सकते हैं या नहीं, यह उसी दिन ब्लड बैंक की जाँच से तय होता है। Rakt Response कभी कोई मेडिकल फ़ैसला नहीं लेता।",
@@ -115,8 +115,8 @@ const hi: Catalog = {
   "No. SDP (single donor platelets) is collected by a machine over a longer session and has different checks and intervals.":
     "नहीं। SDP (एक डोनर से प्लेटलेट्स) मशीन से लिया जाता है, इसमें ज़्यादा समय लगता है, और इसकी जाँच और अंतराल अलग होते हैं।",
   "What should I do in an emergency?": "इमरजेंसी में मुझे क्या करना चाहिए?",
-  "Contact the treating hospital or the nearest licensed blood bank immediately. You can also submit a request here for volunteer support.":
-    "तुरंत इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से संपर्क करें। स्वयंसेवकों की मदद के लिए आप यहाँ रिक्वेस्ट भी भेज सकते हैं।",
+  "Contact the treating hospital or the nearest licensed blood bank immediately. You can also submit a request here for Rakt Mitra support.":
+    "तुरंत इलाज करने वाले अस्पताल या नज़दीकी लाइसेंस वाले ब्लड बैंक से संपर्क करें। रक्त मित्रों की मदद के लिए आप यहाँ रिक्वेस्ट भी भेज सकते हैं।",
 
   // --- Homepage: call to action ---------------------------------------------------------
   "Be the response someone is waiting for.": "वह जवाब बनिए, जिसका कोई इंतज़ार कर रहा है।",
@@ -150,7 +150,7 @@ const hi: Catalog = {
     "वे आँकड़े जो हम प्लेटफ़ॉर्म के रिकॉर्ड से नहीं निकाल सकते, हर एक अपने स्रोत और पुष्टि की तारीख के साथ।",
   "Period: {start} – {end}.": "अवधि: {start} – {end}।",
   "Source: {source}. Verified {date}.": "स्रोत: {source}। पुष्टि: {date}।",
-  "Stories of donors, families and volunteers": "डोनरों, परिवारों और स्वयंसेवकों की कहानियाँ",
+  "Stories of donors, families and Rakt Mitras": "डोनरों, परिवारों और रक्त मित्रों की कहानियाँ",
   "We only publish real experiences after review and with the contributor's consent.":
     "हम सच्चे अनुभव सिर्फ़ जाँच के बाद और कहानी भेजने वाले की सहमति से ही प्रकाशित करते हैं।",
   "Blood donation camps": "रक्तदान कैंप",
@@ -171,11 +171,11 @@ const hi: Catalog = {
   "Donors register themselves and are verified once they confirm their email. Patients see a donor only for a verified request nearby, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility.":
     "डोनर खुद रजिस्टर करते हैं, और ईमेल की पुष्टि करते ही उनकी पुष्टि हो जाती है। मरीज़ों को डोनर सिर्फ़ पास की जाँची हुई रिक्वेस्ट के लिए दिखते हैं, और ब्लड ग्रुप तभी \"जाँचा गया\" माना जाता है जब कोई एडमिन कोई दस्तावेज़ देख ले। यह पुष्टि कभी तय नहीं करती कि आप मेडिकल तौर पर रक्तदान कर सकते हैं या नहीं।",
   "Reviewing blood requests": "खून की रिक्वेस्ट की जाँच",
-  "Every request is checked by an authorised volunteer — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors.":
-    "हर रिक्वेस्ट को \"जाँचा गया\" मानने, सबको दिखाने या डोनरों को भेजने से पहले एक अधिकृत स्वयंसेवक उसकी जाँच करते हैं — आमतौर पर रिक्वेस्ट भेजने वाले या अस्पताल से बात करके।",
+  "Every request is checked by an authorised Rakt Mitra — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors.":
+    "हर रिक्वेस्ट को \"जाँचा गया\" मानने, सबको दिखाने या डोनरों को भेजने से पहले एक अधिकृत रक्त मित्र उसकी जाँच करते हैं — आमतौर पर रिक्वेस्ट भेजने वाले या अस्पताल से बात करके।",
   "Coordinating with donors": "डोनरों से तालमेल",
-  "Once a request is verified, the patient sees donors who can give now and contacts them on each donor's chosen channel. Volunteers help when no one is found. Each contact opened is logged and limited.":
-    "रिक्वेस्ट की जाँच के बाद मरीज़ को वे डोनर दिखते हैं जो अभी रक्तदान कर सकते हैं, और वह हर डोनर से उसके चुने हुए तरीके से संपर्क करता है। कोई न मिले तो स्वयंसेवक मदद करते हैं। हर संपर्क खोलने का रिकॉर्ड रहता है, और इसकी सीमा तय है।",
+  "Once a request is verified, the patient sees donors who can give now and contacts them on each donor's chosen channel. Rakt Mitras help when no one is found. Each contact opened is logged and limited.":
+    "रिक्वेस्ट की जाँच के बाद मरीज़ को वे डोनर दिखते हैं जो अभी रक्तदान कर सकते हैं, और वह हर डोनर से उसके चुने हुए तरीके से संपर्क करता है। कोई न मिले तो रक्त मित्र मदद करते हैं। हर संपर्क खोलने का रिकॉर्ड रहता है, और इसकी सीमा तय है।",
   "Updating donation records": "रक्तदान के रिकॉर्ड अपडेट करना",
   "Donors add donations as self-reported. Authorised reviewers verify them separately for whole blood and SDP.":
     "डोनर अपने रक्तदान \"खुद बताया गया\" के रूप में जोड़ते हैं। अधिकृत समीक्षक होल ब्लड और SDP के लिए इनकी अलग-अलग जाँच करते हैं।",
@@ -202,22 +202,22 @@ const hi: Catalog = {
   "Registered donors who confirmed their email address. Verification is not a medical eligibility decision.":
     "रजिस्टर्ड डोनर, जिन्होंने अपने ईमेल की पुष्टि की है। यह पुष्टि रक्तदान की मेडिकल योग्यता का फ़ैसला नहीं है।",
   "Verified whole blood donations": "जाँचे गए होल ब्लड रक्तदान",
-  "Whole blood donation records verified by an authorised volunteer or administrator.":
-    "होल ब्लड रक्तदान के रिकॉर्ड, जिन्हें अधिकृत स्वयंसेवक या एडमिन ने जाँचा है।",
+  "Whole blood donation records verified by an authorised Rakt Mitra or administrator.":
+    "होल ब्लड रक्तदान के रिकॉर्ड, जिन्हें अधिकृत रक्त मित्र या एडमिन ने जाँचा है।",
   "Verified SDP donations": "जाँचे गए SDP रक्तदान",
   "Single donor platelet donation records that have been verified.": "एक डोनर से प्लेटलेट्स (SDP) रक्तदान के जाँचे गए रिकॉर्ड।",
   "Single donor platelet records that have been verified. Counted separately from whole blood.":
     "एक डोनर से प्लेटलेट्स (SDP) के जाँचे गए रिकॉर्ड। इन्हें होल ब्लड से अलग गिना जाता है।",
   "Blood requests received": "मिली हुई खून की रिक्वेस्ट",
-  "Requests submitted to volunteers (excluding drafts). Includes requests that could not be verified.":
-    "स्वयंसेवकों को भेजी गई रिक्वेस्ट (ड्राफ़्ट छोड़कर)। इसमें वे रिक्वेस्ट भी शामिल हैं जिनकी जाँच नहीं हो पाई।",
+  "Requests submitted to Rakt Mitras (excluding drafts). Includes requests that could not be verified.":
+    "रक्त मित्रों को भेजी गई रिक्वेस्ट (ड्राफ़्ट छोड़कर)। इसमें वे रिक्वेस्ट भी शामिल हैं जिनकी जाँच नहीं हो पाई।",
   "Requests verified": "जाँची गई रिक्वेस्ट",
-  "Requests a volunteer confirmed with the requester or hospital.": "वे रिक्वेस्ट, जिनकी स्वयंसेवक ने रिक्वेस्ट भेजने वाले या अस्पताल से पुष्टि की।",
+  "Requests a Rakt Mitra confirmed with the requester or hospital.": "वे रिक्वेस्ट, जिनकी रक्त मित्र ने रिक्वेस्ट भेजने वाले या अस्पताल से पुष्टि की।",
   "Requests coordinated": "रिक्वेस्ट जिन पर तालमेल हुआ",
-  "Verified requests where volunteers actively coordinated with potential donors.":
-    "जाँची गई रिक्वेस्ट, जिन पर स्वयंसेवकों ने संभावित डोनरों से सक्रिय रूप से तालमेल किया।",
-  "Verified requests that volunteers actively coordinated with potential donors.":
-    "जाँची गई रिक्वेस्ट, जिन पर स्वयंसेवकों ने संभावित डोनरों से सक्रिय रूप से तालमेल किया।",
+  "Verified requests where Rakt Mitras actively coordinated with potential donors.":
+    "जाँची गई रिक्वेस्ट, जिन पर रक्त मित्रों ने संभावित डोनरों से सक्रिय रूप से तालमेल किया।",
+  "Verified requests that Rakt Mitras actively coordinated with potential donors.":
+    "जाँची गई रिक्वेस्ट, जिन पर रक्त मित्रों ने संभावित डोनरों से सक्रिय रूप से तालमेल किया।",
   "Requests fulfilled": "पूरी हुई रिक्वेस्ट",
   "Closed as fulfilled with a confirmation note. Contacting a donor or receiving interest does not count.":
     "पुष्टि के नोट के साथ \"पूरी हुई\" के रूप में बंद की गई। सिर्फ़ डोनर से संपर्क करना या डोनर का तैयार होना इसमें नहीं गिना जाता।",

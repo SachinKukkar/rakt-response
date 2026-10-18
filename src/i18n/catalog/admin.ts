@@ -21,7 +21,7 @@ const hi: Catalog = {
   "Stories awaiting review": "जाँच का इंतज़ार कर रही कहानियाँ",
   "Data checks to look at": "देखने लायक डेटा जाँच",
   "Coordination tools": "तालमेल के टूल",
-  "Everything volunteers can do, available to administrators too.": "स्वयंसेवक जो कुछ कर सकते हैं, वह सब एडमिन भी कर सकते हैं।",
+  "Everything Rakt Mitras can do, available to administrators too.": "रक्त मित्र जो कुछ कर सकते हैं, वह सब एडमिन भी कर सकते हैं।",
   "Donors by blood group": "ब्लड ग्रुप के हिसाब से डोनर",
   "Top districts": "सबसे आगे के ज़िले",
   "Donors by district": "ज़िले के हिसाब से डोनर",
@@ -156,7 +156,7 @@ const hi: Catalog = {
   // --- Donations / requests ---------------------------------------------------------
   "Administrator verification is recorded as “administrator-verified”.": "एडमिन की पुष्टि “एडमिन ने जाँचा” के रूप में दर्ज होती है।",
   "Export CSV": "CSV एक्सपोर्ट करें",
-  "Open a request to verify, assign volunteers or close it.": "जाँचने, स्वयंसेवक तय करने या बंद करने के लिए रिक्वेस्ट खोलें।",
+  "Open a request to verify, assign Rakt Mitras or close it.": "जाँचने, रक्त मित्र तय करने या बंद करने के लिए रिक्वेस्ट खोलें।",
 
   // --- Donors list ------------------------------------------------------------------
   "Donors & members": "डोनर और सदस्य",
@@ -191,8 +191,8 @@ const hi: Catalog = {
   "Hidden from patients": "मरीज़ों से छिपा",
   "Contact directly": "सीधे संपर्क करें",
   "Ask first": "पहले पूछें",
-  "Volunteer directory": "स्वयंसेवकों की डोनर सूची",
-  "Direct contact by volunteers": "स्वयंसेवकों का सीधा संपर्क",
+  "Rakt Mitra directory": "रक्त मित्रों की डोनर सूची",
+  "Direct contact by Rakt Mitras": "रक्त मित्रों का सीधा संपर्क",
   "Edit donor details": "डोनर की जानकारी बदलें",
   "Not known": "पता नहीं",
   "State / UT": "राज्य / केंद्र शासित प्रदेश",
@@ -239,8 +239,8 @@ const hi: Catalog = {
   "Shown to donors as an estimate only.": "डोनर को सिर्फ़ अनुमान के तौर पर दिखाया जाता है।",
   "Requests per anonymous connection per day": "बिना खाते वाले एक कनेक्शन से हर दिन की रिक्वेस्ट",
   "Requests per member per day": "हर सदस्य की हर दिन की रिक्वेस्ट",
-  "Contact views per volunteer per hour": "हर स्वयंसेवक के हर घंटे संपर्क देखने की सीमा",
-  "Contact requests per volunteer per hour": "हर स्वयंसेवक की हर घंटे संपर्क रिक्वेस्ट",
+  "Contact views per Rakt Mitra per hour": "हर रक्त मित्र के हर घंटे संपर्क देखने की सीमा",
+  "Contact requests per Rakt Mitra per hour": "हर रक्त मित्र की हर घंटे संपर्क रिक्वेस्ट",
   "Max donors alerted per verified request": "पुष्टि वाली हर रिक्वेस्ट पर ज़्यादा से ज़्यादा कितने डोनर को अलर्ट",
   "Hours after the needed time before a request expires": "ज़रूरत के समय के कितने घंटे बाद रिक्वेस्ट का समय खत्म हो",
   "Stories per member per day": "हर सदस्य की हर दिन की कहानियाँ",
@@ -321,8 +321,8 @@ const hi: Catalog = {
   " (visible to contributor)": " (कहानी भेजने वाले को दिखता है)",
 
   // --- Users & roles / volunteers -------------------------------------------------------------
-  "Grant volunteer or administrator access with the least privilege needed. You can't change your own role.":
-    "स्वयंसेवक या एडमिन की पहुँच सिर्फ़ उतनी दें जितनी ज़रूरी हो। आप अपनी खुद की भूमिका नहीं बदल सकते।",
+  "Grant Rakt Mitra or administrator access with the least privilege needed. You can't change your own role.":
+    "रक्त मित्र या एडमिन की पहुँच सिर्फ़ उतनी दें जितनी ज़रूरी हो। आप अपनी खुद की भूमिका नहीं बदल सकते।",
   "Roles are stored server-side and checked by the database on every action. Signup details can never grant a role.":
     "भूमिकाएँ सर्वर पर रखी जाती हैं और हर काम पर डेटाबेस इन्हें जाँचता है। साइन-अप की जानकारी से कभी कोई भूमिका नहीं मिलती।",
   "Search by name or exact email": "नाम या पूरे ईमेल से खोजें",
@@ -333,8 +333,8 @@ const hi: Catalog = {
   "Donor / member": "डोनर / सदस्य",
   "This is you.": "यह आप हैं।",
   "Change role": "भूमिका बदलें",
-  "Make volunteer or admin": "स्वयंसेवक या एडमिन बनाएँ",
-  "Volunteers & administrators": "स्वयंसेवक और एडमिन",
+  "Make Rakt Mitra or admin": "रक्त मित्र या एडमिन बनाएँ",
+  "Rakt Mitras & administrators": "रक्त मित्र और एडमिन",
   "Add someone": "किसी को जोड़ें",
   "No staff yet": "अभी कोई टीम सदस्य नहीं",
   "Since {date} · {count} active assignment(s)": "{date} से · {count} चालू काम",
@@ -348,7 +348,7 @@ const hi: Catalog = {
 
   // Role form (src/components/admin/role-form.tsx)
   Role: "भूमिका",
-  "Volunteer permissions": "स्वयंसेवक की अनुमतियाँ",
+  "Rakt Mitra permissions": "रक्त मित्र की अनुमतियाँ",
   "Verify requests": "रिक्वेस्ट जाँचें",
   "Verify donations": "रक्तदान जाँचें",
   "Administrators have every permission, including role management.": "एडमिन के पास हर अनुमति होती है, भूमिकाएँ बदलने की भी।",

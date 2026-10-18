@@ -110,7 +110,7 @@ export function DirectoryFilters({ facets }: { facets: Record<string, number> })
         <SheetContent side="bottom" className="max-h-[88vh] overflow-y-auto rounded-t-3xl sm:mx-auto sm:max-w-2xl">
           <SheetHeader>
             <SheetTitle className="text-lg font-bold">{t("Filter donors")}</SheetTitle>
-            <SheetDescription>{t("Only donors who chose to be visible to volunteers are searchable.")}</SheetDescription>
+            <SheetDescription>{t("Search by blood group, area and availability. Contact details never appear here.")}</SheetDescription>
           </SheetHeader>
           <form ref={formRef} id="directory-filters" onSubmit={apply} className="space-y-4 px-4">
             <fieldset>

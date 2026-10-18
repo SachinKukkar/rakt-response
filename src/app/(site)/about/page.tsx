@@ -13,7 +13,7 @@ import { PHOTOS } from "@/lib/photos";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return pageMetadata(t("About"), t(
-      "Rakt Response is a volunteer community team. Volunteers check every blood request with the hospital, then patients reach voluntary donors who can give right now.",
+      "Rakt Response is a community team of Rakt Mitras. Rakt Mitras check every blood request with the hospital, then patients reach voluntary donors who can give right now.",
     ));
 }
 
@@ -24,7 +24,7 @@ function rich(text: string, slots: Record<string, React.ReactNode>) {
 
 const WHAT_WE_BUILD: Tile[] = [
   { icon: Users, title: "Donor registry", text: "Your blood group, area and availability. Hide your number any time.", tag: "Donors" },
-  { icon: ShieldCheck, title: "Verified requests", text: "Volunteers check every request with the requester or hospital first.", tag: "Checked" },
+  { icon: ShieldCheck, title: "Verified requests", text: "Rakt Mitras check every request with the requester or hospital first.", tag: "Checked" },
   { icon: NotebookPen, title: "Donation history", text: "Log your donations and keep track of the gaps between them.", tag: "Yours" },
   { icon: BookOpen, title: "Blood 101", text: "Plain-language guides to donating. No jargon.", tag: "Learn" },
 ];
@@ -46,7 +46,7 @@ const WE_DONT = [
 
 const STEPS: { title: string; text: string }[] = [
   { title: "You register", text: "Blood group, general area, donation types you're open to." },
-  { title: "We verify", text: "A volunteer checks each request with the requester or hospital." },
+  { title: "We verify", text: "A Rakt Mitra checks each request with the requester or hospital." },
   { title: "Patients reach you", text: "When you can give, a patient with a verified request near you can call you. Hide your number any time." },
   { title: "You choose", text: "Join a request when you can give. Saying no is always fine." },
   { title: "You log it", text: "Add your donation. It stays self-reported until verified." },
@@ -68,9 +68,9 @@ export default async function AboutPage() {
         eyebrow={t("About us")}
         title={t("People helping")}
         highlight={t("people.")}
-        subtitle={t("Rakt Response is a volunteer community team. We help donors and people seeking blood find each other, safely.")}
+        subtitle={t("Rakt Response is a community team of Rakt Mitras. We help donors and people seeking blood find each other, safely.")}
         chips={[
-          { icon: Handshake, label: t("Volunteer-run") },
+          { icon: Handshake, label: t("Run by Rakt Mitras") },
           { icon: Lock, label: t("Verified requests") },
           { icon: BadgeIndianRupee, label: t("Never paid") },
         ]}
@@ -79,7 +79,7 @@ export default async function AboutPage() {
       <div className="page-container space-y-10 pb-4">
         <TLDR
           items={[
-            t("Every request is checked by a volunteer before it shows as verified."),
+            t("Every request is checked by a Rakt Mitra before it shows as verified."),
             t("We connect people in need with potential blood donors."),
             t("We respect your privacy and handle shared information responsibly."),
             t("Emergency? Go straight to the treating hospital or a licensed blood bank."),
@@ -158,7 +158,7 @@ export default async function AboutPage() {
           <MoreDetails title={t("Who we are")}>
             <p>
               {t(
-                "Rakt Response is run by a community team of volunteers. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, quicker and more respectful for everyone involved.",
+                "Rakt Response is run by a community team of Rakt Mitras. We are donors, family members of patients and people who have seen how stressful it can be to look for blood in a hurry. We came together to make that search more organised, quicker and more respectful for everyone involved.",
               )}
             </p>
             <p>

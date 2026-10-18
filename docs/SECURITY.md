@@ -13,7 +13,7 @@
 - [x] Roles only via admin RPCs; no self-assignment; signup metadata ignored for roles (tested).
 - [x] Service role key used only server-side, optional, never `NEXT_PUBLIC_`.
 - [x] Privileged columns (verification, status, provenance, roles) protected by guard triggers (tested).
-- [x] Contact access: volunteers (verified request + standing permission or accepted contact request) and the requesting family (own verified request; donors who can give now and don't hide their number; one at a time, hourly and monthly caps); rate limits and audit entries (tested).
+- [x] Contact access: volunteers (verified request + standing permission or accepted contact request; or, for a few days, a donor who donated for that request and still needs a follow-up) and the requesting family (own verified request; donors who can give now and don't hide their number; one at a time, hourly and monthly caps); rate limits and audit entries (tested).
 - [x] Directory never returns phone, email, PIN or coordinates (tested).
 - [x] Public request/story functions return only safe columns (tested).
 - [x] Audit log append-only, stores changed field names not values.

@@ -21,7 +21,7 @@ export async function SiteFooter() {
           </ArrowLink>
           <p className="mt-8 text-xs leading-relaxed text-cream/55">
             {t(
-              "Rakt Response is a volunteer coordination platform. It does not store blood, certify compatibility or replace a hospital or licensed blood bank. In an emergency, contact the treating hospital or the nearest licensed blood bank immediately.",
+              "Rakt Response is a coordination platform run by Rakt Mitras. It does not store blood, certify compatibility or replace a hospital or licensed blood bank. In an emergency, contact the treating hospital or the nearest licensed blood bank immediately.",
             )}
           </p>
         </div>

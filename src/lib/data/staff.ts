@@ -31,5 +31,5 @@ export async function activeStaff(): Promise<Array<{ user_id: string; role: stri
   const { data } = await supabase.from("staff_roles").select("user_id, role").eq("is_active", true);
   const rows = (data ?? []) as Array<{ user_id: string; role: string }>;
   const names = await displayNames(rows.map((r) => r.user_id));
-  return rows.map((r) => ({ ...r, name: names.get(r.user_id) ?? "Volunteer" }));
+  return rows.map((r) => ({ ...r, name: names.get(r.user_id) ?? "Rakt Mitra" }));
 }

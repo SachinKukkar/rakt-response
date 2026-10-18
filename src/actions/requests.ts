@@ -10,7 +10,7 @@ import { indiaLocalToIso } from "@/lib/format";
 import { normalizePhone } from "@/lib/phone";
 import { createClient } from "@/lib/supabase/server";
 import { uuidSchema } from "@/lib/validation/common";
-import { bloodRequestSchema, type BloodRequestInput } from "@/lib/validation/forms";
+import { bloodRequestSchema, donationReportSchema, type BloodRequestInput } from "@/lib/validation/forms";
 
 export interface SubmittedRequest {
   requestId: string;
@@ -94,6 +94,29 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   );
 }
 
+/** "I donated" (with the day) or "I didn't donate", for a request the donor joined. */
+export async function reportMyDonation(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const donated = formData.get("donated") === "true";
+  const parsed = donationReportSchema.safeParse({
+    request_id: formData.get("request_id"),
+    donated,
+    donation_date: donated ? String(formData.get("donation_date") ?? "") : null,
+  });
+  if (!parsed.success) return validationFailure(parsed.error);
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("report_my_donation", {
+    p_request: parsed.data.request_id,
+    p_donated: parsed.data.donated,
+    p_date: parsed.data.donation_date,
+  });
+  if (error) return fail(friendlyDbError(error));
+  revalidatePath(`/requests/${parsed.data.request_id}`);
+  revalidatePath("/requests");
+  revalidatePath("/dashboard");
+  revalidatePath("/donations");
+  return success(donated ? "Thank you for donating. It's now in your donation record." : "Thanks for letting us know.");
+}
+
 export async function respondToContactRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const id = uuidSchema.safeParse(formData.get("contact_request_id"));
   const accept = formData.get("accept") === "true";
@@ -102,7 +125,7 @@ export async function respondToContactRequest(_prev: ActionResult, formData: For
   const { error } = await supabase.rpc("respond_to_contact_request", { p_contact_request: id.data, p_accept: accept });
   if (error) return fail(friendlyDbError(error));
   revalidatePath("/requests");
-  return success(accept ? "Thank you. The volunteer can now see your contact details for this request." : "Declined. Your details were not shared.");
+  return success(accept ? "Thank you. The Rakt Mitra can now see your contact details for this request." : "Declined. Your details were not shared.");
 }
 
 export interface RevealedDonorContact {

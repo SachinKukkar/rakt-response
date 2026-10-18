@@ -34,7 +34,7 @@ export default async function TermsPage() {
         <h2>{t("What Rakt Response is")}</h2>
         <p>
           {t(
-            "Rakt Response is a free, volunteer-run platform. Voluntary blood donors register and keep a record of their donations. Volunteers verify blood requests, and then the patient can reach donors who can give now. Donors can hide their number at any time.",
+            "Rakt Response is a free platform run by Rakt Mitras. Voluntary blood donors register and keep a record of their donations. Rakt Mitras verify blood requests, and then the patient can reach donors who can give now. Donors can hide their number at any time.",
           )}
         </p>
 
@@ -56,10 +56,10 @@ export default async function TermsPage() {
           <li>{t("Do not attempt to scrape, copy, export or misuse donor information, or to access areas you are not authorised for.")}</li>
         </ul>
 
-        <h2>{t("Volunteers and administrators")}</h2>
+        <h2>{t("Rakt Mitras and administrators")}</h2>
         <p>
           {t(
-            "Authorised volunteers may only use donor information to coordinate a specific, verified blood request, must respect each donor's contact preferences, and must not keep or share contact details for any other purpose. Access is logged and may be withdrawn at any time.",
+            "Authorised Rakt Mitras may only use donor information to coordinate a specific, verified blood request, must respect each donor's contact preferences, and must not keep or share contact details for any other purpose. Access is logged and may be withdrawn at any time.",
           )}
         </p>
 
@@ -81,7 +81,7 @@ export default async function TermsPage() {
         <h2>{t("Liability")}</h2>
         <p>
           {t(
-            "Rakt Response is provided free of charge, as is, by volunteers. To the extent permitted by law, we are not liable for decisions made by donors, requesters, hospitals or blood banks, or for any donor being unavailable.",
+            "Rakt Response is provided free of charge, as is, by Rakt Mitras. To the extent permitted by law, we are not liable for decisions made by donors, requesters, hospitals or blood banks, or for any donor being unavailable.",
           )}
         </p>
 

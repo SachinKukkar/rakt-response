@@ -191,7 +191,7 @@ export const DONATION_EXPERIENCE_LABELS: Record<DonationExperience, string> = {
 
 export const RECORD_SOURCE_LABELS = {
   self_reported: "Self-reported",
-  volunteer_verified: "Volunteer-verified",
+  volunteer_verified: "Verified by a Rakt Mitra",
   admin_verified: "Administrator-verified",
   imported: "Imported",
 } as const;
@@ -218,7 +218,7 @@ export const STORY_TYPE_LABELS: Record<StoryType, string> = {
   donor: "Donor story",
   attendant: "Patient attendant / family",
   recipient: "Recipient",
-  volunteer: "Volunteer experience",
+  volunteer: "Rakt Mitra experience",
   camp: "Donation camp",
 };
 
@@ -226,7 +226,7 @@ export const STORY_TYPE_LABELS: Record<StoryType, string> = {
 export const STORY_CATEGORIES = {
   donors: { label: "Donor stories", types: ["donor"] },
   hope: { label: "Stories of Hope", types: ["attendant", "recipient"] },
-  volunteers: { label: "Volunteer stories", types: ["volunteer"] },
+  volunteers: { label: "Rakt Mitra stories", types: ["volunteer"] },
   camps: { label: "Donation camps", types: ["camp"] },
 } as const satisfies Record<string, { label: string; types: StoryType[] }>;
 export type StoryCategory = keyof typeof STORY_CATEGORIES;

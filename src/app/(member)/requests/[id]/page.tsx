@@ -7,12 +7,15 @@ import { ActionForm } from "@/components/common/action-form";
 import { EmptyState, KeyValue, Notice, PageHeader, SectionHeading } from "@/components/common/page-parts";
 import { RequestCard } from "@/components/requests/request-card";
 import { DonorContactCard } from "@/components/requests/donor-contact-card";
+import { DonationReport } from "@/components/requests/donation-report";
 import { cancelMyRequest, respondToRequest } from "@/actions/requests";
 import { requireViewer } from "@/lib/auth";
 import {
   getEligibleDonors,
+  getMyDonationChecks,
   getOpenRequestsForDonor,
   getRequestDetailsForDonor,
+  type DonationCheck,
   type OpenRequestForDonor,
   type RequestDetailsForDonor,
 } from "@/lib/data/member";
@@ -49,10 +52,17 @@ export default async function RequestPage({ params }: PageProps<"/requests/[id]"
   if (own) return <PatientView request={own} />;
 
   const details = await getRequestDetailsForDonor(id);
-  if (details) return <JoinedDonorView requestId={id} details={details} />;
+  if (details) {
+    const check = (await getMyDonationChecks()).find((c) => c.request_id === id);
+    return <JoinedDonorView requestId={id} details={details} check={check} />;
+  }
 
   const open = (await getOpenRequestsForDonor()).find((r) => r.request_id === id);
   if (open) return <OpenRequestView request={open} />;
+
+  // A request the donor joined that has since closed: "did you donate?", or the thank-you.
+  const check = (await getMyDonationChecks()).find((c) => c.request_id === id);
+  if (check) return <ClosedJoinedView check={check} />;
   notFound();
 }
 
@@ -117,7 +127,7 @@ async function PatientView({ request }: { request: BloodRequestRow }) {
             <EmptyState
               icon={UserRoundSearch}
               title="No donor can give right now in your district"
-              description="Volunteers are looking too. We'll notify you when a donor joins your request."
+              description="Rakt Mitras are looking too. We'll notify you when a donor joins your request."
             />
           ) : null}
         </section>
@@ -126,7 +136,7 @@ async function PatientView({ request }: { request: BloodRequestRow }) {
           {request.closure_reason ? t("Note: {reason}", { reason: t(request.closure_reason) }) : t("This request is closed.")}
         </Notice>
       ) : (
-        <Notice icon={Hospital} title={t("A volunteer is checking your request")}>
+        <Notice icon={Hospital} title={t("A Rakt Mitra is checking your request")}>
           {t("They check it with the hospital. Once it is verified, donors who can give now appear here, and you can contact them directly.")}
         </Notice>
       )}
@@ -147,7 +157,7 @@ async function PatientView({ request }: { request: BloodRequestRow }) {
             {request.requester_phone ? `${formatPhone(request.requester_phone)} · ${t(CONTACT_METHOD_LABELS[request.requester_contact_method])}` : "—"}
           </KeyValue>
         </dl>
-        <p className="mt-3 text-xs text-muted-foreground">{t("Need to change something? Contact a volunteer.")}</p>
+        <p className="mt-3 text-xs text-muted-foreground">{t("Need to change something? Contact a Rakt Mitra.")}</p>
       </section>
 
       {!closed ? (
@@ -157,7 +167,7 @@ async function PatientView({ request }: { request: BloodRequestRow }) {
           label="Cancel — no longer needed"
           variant="ghost"
           size="sm"
-          confirmText="Cancel this request? Donors and volunteers will stop contacting you."
+          confirmText="Cancel this request? Donors and Rakt Mitras will stop contacting you."
           hideAfterSuccess
         />
       ) : null}
@@ -166,7 +176,7 @@ async function PatientView({ request }: { request: BloodRequestRow }) {
 }
 
 /** A donor who joined: what they need at the blood bank, and the family's number. */
-async function JoinedDonorView({ requestId, details }: { requestId: string; details: RequestDetailsForDonor }) {
+async function JoinedDonorView({ requestId, details, check }: { requestId: string; details: RequestDetailsForDonor; check?: DonationCheck }) {
   const t = await getT();
   const phone = details.requester_phone;
   return (
@@ -223,7 +233,7 @@ async function JoinedDonorView({ requestId, details }: { requestId: string; deta
             )}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">{t("A volunteer will share the family's contact details with you.")}</p>
+          <p className="text-sm text-muted-foreground">{t("A Rakt Mitra will share the family's contact details with you.")}</p>
         )}
       </section>
 
@@ -231,15 +241,50 @@ async function JoinedDonorView({ requestId, details }: { requestId: string; deta
         {t("Say you are donating for this patient and give the hospital's IP / UHID number if there is one. The blood centre's doctor decides if you can donate.")}
       </Notice>
 
-      <ActionForm
-        action={respondToRequest}
-        fields={{ request_id: requestId, response: "unavailable" }}
-        label="I can't donate after all"
-        variant="ghost"
-        size="sm"
-        confirmText="Leave this request? The family will no longer see you as ready to donate."
-        hideAfterSuccess
+      {check ? <DonationReport check={check} /> : null}
+
+      {check?.outcome !== "donated" && !check?.ask_now ? (
+        <ActionForm
+          action={respondToRequest}
+          fields={{ request_id: requestId, response: "unavailable" }}
+          label="I can't donate after all"
+          variant="ghost"
+          size="sm"
+          confirmText="Leave this request? The family will no longer see you as ready to donate."
+          hideAfterSuccess
+        />
+      ) : null}
+    </div>
+  );
+}
+
+/** A request the donor joined that has closed: no patient details any more, just the donation question. */
+async function ClosedJoinedView({ check }: { check: DonationCheck }) {
+  const t = await getT();
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow={t("Ref. {code}", { code: check.reference_code })}
+        title={t("You joined this request")}
+        description={t("This request has closed. Thank you for offering to help.")}
+        actions={
+          <Button asChild variant="outline">
+            <Link href="/requests">{t("All requests")}</Link>
+          </Button>
+        }
       />
+      <section className="surface p-5" aria-labelledby="closed-heading">
+        <SectionHeading id="closed-heading" title="The request" as="h3" />
+        <dl>
+          <KeyValue label="Blood group">{check.blood_group}</KeyValue>
+          <KeyValue label="Needed">{t(REQUEST_TYPE_LABELS[check.request_type])}</KeyValue>
+          <KeyValue label="Hospital">{check.hospital_name}</KeyValue>
+          <KeyValue label="City">{`${check.city}, ${check.district}`}</KeyValue>
+          <KeyValue label="When needed">{formatDateTime(check.required_by)}</KeyValue>
+          <KeyValue label="Status">{t(REQUEST_STATUS_LABELS[check.status])}</KeyValue>
+        </dl>
+      </section>
+      <DonationReport check={check} />
     </div>
   );
 }

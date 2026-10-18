@@ -14,9 +14,9 @@ const hi: Catalog = {
   "Every donor matters.": "हर डोनर मायने रखता है।",
   "Every response": "हर जवाब",
   "can save a life.": "एक जान बचा सकता है।",
-  "Free, and every request is checked by volunteers.": "मुफ़्त, और हर रिक्वेस्ट वॉलंटियर जाँचते हैं।",
+  "Free, and every request is checked by Rakt Mitras.": "मुफ़्त, और हर रिक्वेस्ट रक्त मित्र जाँचते हैं।",
   "How it works in four steps": "चार कदमों में पूरी प्रक्रिया",
-  "Volunteer checks": "वॉलंटियर जाँचते हैं",
+  "Rakt Mitra checks": "रक्त मित्र जाँचते हैं",
   "You say yes": "आप हाँ कहते हैं",
   "Donate, log it": "डोनेट करें, दर्ज करें",
   "In the chair": "कुर्सी पर",
@@ -29,7 +29,7 @@ const hi: Catalog = {
   "Facts about donating": "डोनेशन से जुड़ी बातें",
   "Including the rare Bombay (Oh) group.": "दुर्लभ बॉम्बे (Oh) ग्रुप समेत।",
   "To use Rakt Response": "Rakt Response इस्तेमाल करने का खर्च",
-  "Free for donors, families and volunteers.": "डोनर, परिवार और वॉलंटियर, सबके लिए मुफ़्त।",
+  "Free for donors, families and Rakt Mitras.": "डोनर, परिवार और रक्त मित्र, सबके लिए मुफ़्त।",
   "Minutes in the chair": "डोनेशन में लगने वाले मिनट",
   "For a whole blood donation.": "होल ब्लड डोनेशन के लिए।",
   "Parts from one donation": "एक डोनेशन के हिस्से",
@@ -63,7 +63,7 @@ const hi: Catalog = {
   "Hide your number any time": "अपना नंबर कभी भी छिपा सकते हैं",
   "Pause any time": "कभी भी रोक सकते हैं",
   "Verified first": "पहले जाँच",
-  "Checked with the hospital by a volunteer": "वॉलंटियर अस्पताल से पुष्टि करते हैं",
+  "Checked with the hospital by a Rakt Mitra": "रक्त मित्र अस्पताल से पुष्टि करते हैं",
   "Then the patient sees donors who can give now": "फिर मरीज़ को वे डोनर दिखते हैं जो अभी दे सकते हैं",
   "Listed on Find Blood once verified": "जाँच के बाद 'खून ढूँढें' पर दिखती है",
   "Duplicates caught": "दोहराई गई रिक्वेस्ट पकड़ी जाती हैं",
@@ -114,8 +114,8 @@ const hi: Catalog = {
   // --- Homepage: (04) blood groups ---------------------------------------------------
   "Nine blood groups.": "नौ ब्लड ग्रुप।",
   "One community.": "एक परिवार।",
-  "Register yours once. Verified requests reach the right donors faster.":
-    "अपना ग्रुप एक बार दर्ज करें। जाँची हुई रिक्वेस्ट सही डोनर तक जल्दी पहुँचती हैं।",
+  "Register your blood group once. Rakt Mitras help connect people in need with potential donors faster.":
+    "एक बार अपना ब्लड ग्रुप दर्ज करें। रक्त मित्र ज़रूरतमंद लोगों को संभावित डोनर से जल्दी जोड़ने में मदद करते हैं।",
   "Blood groups, including the rare Bombay group": "ब्लड ग्रुप, दुर्लभ बॉम्बे ग्रुप समेत",
   Rare: "दुर्लभ",
   "Rare, and easily mistaken for O in routine tests. People with Oh can receive only Oh blood, so every Oh donor counts.":
@@ -129,12 +129,12 @@ const hi: Catalog = {
     "एक दुर्लभ ब्लड ग्रुप, जो सबसे पहले बॉम्बे (अब मुंबई) में पहचाना गया। आम जाँच में इसे O समझ लिया जाता है, और इस ग्रुप वाले लोगों को सिर्फ़ Oh खून ही चढ़ाया जा सकता है। अगर आपका ग्रुप Oh है, तो कृपया रजिस्टर करें: आप उन गिने-चुने डोनरों में हो सकते हैं जो मदद कर सकते हैं।",
 
   // --- Homepage: (05) who we are -----------------------------------------------------
-  "No family should have to make fifty calls at night to find a donor. So we built a calmer way: requests checked by volunteers, and donors who already said yes.":
-    "किसी भी परिवार को रात में डोनर ढूँढने के लिए पचास फ़ोन नहीं करने चाहिए। इसलिए हमने एक आसान रास्ता बनाया: वॉलंटियर जिन रिक्वेस्ट की जाँच करते हैं, और ऐसे डोनर जो पहले से हाँ कह चुके हैं।",
+  "No family should have to make fifty calls at night to find a donor. So we built a calmer way: requests checked by Rakt Mitras, and donors who already said yes.":
+    "किसी भी परिवार को रात में डोनर ढूँढने के लिए पचास फ़ोन नहीं करने चाहिए। इसलिए हमने एक आसान रास्ता बनाया: रक्त मित्र जिन रिक्वेस्ट की जाँच करते हैं, और ऐसे डोनर जो पहले से हाँ कह चुके हैं।",
   "Rakt Response Team": "Rakt Response टीम",
-  "Volunteers · India · Since 2022": "वॉलंटियर · भारत · 2022 से",
+  "Rakt Mitras · India · Since 2022": "रक्त मित्र · भारत · 2022 से",
   "The team": "टीम",
-  "Core team · Volunteer": "मुख्य टीम · वॉलंटियर",
+  "Core team · Rakt Mitra": "मुख्य टीम · रक्त मित्र",
 
   // --- Homepage: (06) two ways to help -----------------------------------------------
   "Give blood.": "खून दें।",
@@ -149,9 +149,9 @@ const hi: Catalog = {
   "Hide your number or say no any time": "कभी भी नंबर छिपाएँ या मना करें",
   "Keep a record of every donation": "हर डोनेशन का रिकॉर्ड रखें",
   "Submit a request in minutes": "कुछ ही मिनट में रिक्वेस्ट भेजें",
-  "A volunteer checks it with the hospital": "वॉलंटियर अस्पताल से इसकी पुष्टि करता है",
+  "A Rakt Mitra checks it with the hospital": "रक्त मित्र अस्पताल से इसकी पुष्टि करता है",
   "Then see donors who can give now, and call them": "फिर अभी दे सकने वाले डोनर देखें और उन्हें फ़ोन करें",
-  "Volunteers help if no one is found": "कोई न मिले तो वॉलंटियर मदद करते हैं",
+  "Rakt Mitras help if no one is found": "कोई न मिले तो रक्त मित्र मदद करते हैं",
   Sample: "नमूना",
   "These are sample quotes. Real ones will replace them as people share their experiences.":
     "ये नमूने के तौर पर लिखी बातें हैं। लोग अपने अनुभव शेयर करेंगे, तो असली बातें इनकी जगह ले लेंगी।",
@@ -170,7 +170,7 @@ const hi: Catalog = {
   "Real stories replace these samples once contributors share them with consent.":
     "लोग अपनी मर्ज़ी से कहानियाँ शेयर करेंगे, तो असली कहानियाँ इन नमूनों की जगह ले लेंगी।",
   "Asked before every first donation.": "पहले डोनेशन से पहले अक्सर पूछे जाने वाले सवाल।",
-  "Anything else? Ask us. A volunteer replies, usually within a day.": "कुछ और पूछना है? हमसे पूछें। आम तौर पर एक दिन में वॉलंटियर जवाब देते हैं।",
+  "Anything else? Ask us. A Rakt Mitra replies, usually within a day.": "कुछ और पूछना है? हमसे पूछें। आम तौर पर एक दिन में रक्त मित्र जवाब देते हैं।",
   "Ask a question": "सवाल पूछें",
   "Talk to a person.": "किसी इंसान से बात करें।",
   "Not a form.": "फ़ॉर्म से नहीं।",
@@ -201,9 +201,9 @@ const hi: Catalog = {
   "Correcting a record for {name}.": "{name} का रिकॉर्ड ठीक किया जा रहा है।",
   "Save changes": "बदलाव सेव करें",
   "Changes saved.": "बदलाव सेव हो गए।",
-  "Changes saved. The record will be checked again by a volunteer.": "बदलाव सेव हो गए। वॉलंटियर इस रिकॉर्ड की फिर से जाँच करेंगे।",
-  "This record has already been checked. If you save changes, it goes back to self-reported until a volunteer checks it again.":
-    "इस रिकॉर्ड की जाँच हो चुकी है। अगर आप बदलाव सेव करेंगे, तो वॉलंटियर के दोबारा जाँचने तक यह 'खुद बताया गया' हो जाएगा।",
+  "Changes saved. The record will be checked again by a Rakt Mitra.": "बदलाव सेव हो गए। रक्त मित्र इस रिकॉर्ड की फिर से जाँच करेंगे।",
+  "This record has already been checked. If you save changes, it goes back to self-reported until a Rakt Mitra checks it again.":
+    "इस रिकॉर्ड की जाँच हो चुकी है। अगर आप बदलाव सेव करेंगे, तो रक्त मित्र के दोबारा जाँचने तक यह 'खुद बताया गया' हो जाएगा।",
   "Your correction keeps the record's verification status. Every change is logged.": "आपके सुधार से रिकॉर्ड की जाँच वाली स्थिति नहीं बदलती। हर बदलाव का रिकॉर्ड रहता है।",
   "You can't edit this record.": "आप यह रिकॉर्ड नहीं बदल सकते।",
   "You can't remove this record.": "आप यह रिकॉर्ड नहीं हटा सकते।",

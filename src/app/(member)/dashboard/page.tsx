@@ -11,7 +11,7 @@ import { DonationSummaryCards } from "@/components/donations/donation-summary";
 import { RequestCard } from "@/components/requests/request-card";
 import { setAvailability } from "@/actions/profile";
 import { requireViewer } from "@/lib/auth";
-import { getDonorData, getMyNextEligibleDate, getOpenRequestsForDonor, getRequestMatches, profileCompletion } from "@/lib/data/member";
+import { getDonorData, getMyDonationChecks, getMyNextEligibleDate, getOpenRequestsForDonor, getRequestMatches, profileCompletion } from "@/lib/data/member";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/format";
 import { getT } from "@/i18n/server";
@@ -32,11 +32,12 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
   const viewer = await requireViewer("/dashboard");
   const profile = viewer.profile;
   const supabase = await createClient();
-  const [donor, matches, openRequests, nextEligible, notificationsResult] = await Promise.all([
+  const [donor, matches, openRequests, nextEligible, donationChecks, notificationsResult] = await Promise.all([
     getDonorData(viewer.id),
     profile?.is_donor ? getRequestMatches() : Promise.resolve([]),
     profile?.is_donor ? getOpenRequestsForDonor() : Promise.resolve([]),
     profile?.is_donor ? getMyNextEligibleDate() : Promise.resolve(null),
+    profile?.is_donor ? getMyDonationChecks() : Promise.resolve([]),
     supabase.from("notifications").select("id, kind, title, body, link, read_at, created_at").order("created_at", { ascending: false }).limit(3),
   ]);
   const notifications = (notificationsResult.data ?? []) as NotificationRow[];
@@ -53,6 +54,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
   const name = profile?.display_name || profile?.full_name?.split(" ")[0] || t("there");
   const pendingContact = matches.filter((m) => m.contact_request_status === "pending").length;
   const myGroupRequests = openRequests.filter((r) => r.matches_group);
+  const askDonated = donationChecks.filter((c) => c.ask_now);
   const [becomeDonorBefore, becomeDonorAfter] = t(
     "You registered as a member. Add your blood group and area from {link} whenever you're ready to join the donor register.",
   ).split("{link}");
@@ -71,6 +73,21 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
           <Link href="/settings" className="font-semibold underline">
             {t("Manage request")}
           </Link>
+        </Notice>
+      ) : null}
+
+      {askDonated.length ? (
+        <Notice tone="brand" icon={HandHeart} title="Did you donate?">
+          <p>{t("You joined these requests. Tell us if you gave blood, so we can thank you and keep your record right.")}</p>
+          <ul className="mt-1">
+            {askDonated.slice(0, 3).map((c) => (
+              <li key={c.request_id}>
+                <Link href={`/requests/${c.request_id}#donated`} className="inline-flex min-h-11 items-center font-semibold text-primary underline">
+                  {t("{code} at {hospital}", { code: c.reference_code, hospital: c.hospital_name })}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Notice>
       ) : null}
 
