@@ -318,9 +318,7 @@ export default async function HomePage() {
             </p>
           </blockquote>
           <div className="mt-8 flex items-center gap-4">
-            <span className="grid size-14 place-items-center rounded-full bg-white ring-1 ring-navy/10">
-              <LogoMark size="xs" />
-            </span>
+            <LogoMark size={56} />
             <div>
               <p className="text-lg font-medium">{t("Rakt Response Team")}</p>
               <p className="label-mono mt-1.5 text-muted-foreground">{t("Rakt Mitras · India · Since 2022")}</p>

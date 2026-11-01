@@ -4,7 +4,7 @@ import { BLOOD_GROUPS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 /**
- * The nine blood groups orbiting the logo mark. The ring turns slowly; each
+ * The nine blood groups orbiting the logo badge. The ring turns slowly; each
  * drop turns the other way so its label stays upright. Decorative: the groups
  * are also listed in text next to it.
  */
@@ -13,8 +13,8 @@ export function GroupOrbit({ className }: { className?: string }) {
     <div className={cn("relative mx-auto grid size-[19rem] place-items-center sm:size-[25rem]", className)} aria-hidden="true">
       <div className="absolute inset-0 rounded-full border border-white/10 bg-[radial-gradient(circle,rgba(226,69,63,0.22)_0%,rgba(18,4,7,0)_68%)]" />
       <div className="absolute inset-8 rounded-full border border-dashed border-white/15" />
-      <div className="relative grid size-36 place-items-center rounded-full border border-white/10 bg-cream shadow-[0_0_80px_-10px_rgba(255,255,255,0.45)] sm:size-44">
-        <LogoMark size="lg" />
+      <div className="relative size-36 rounded-full shadow-[0_0_80px_-10px_rgba(255,255,255,0.45)] sm:size-44">
+        <LogoMark fill size={176} />
       </div>
       <div className="animate-orbit absolute inset-0 [--orbit-r:124px] sm:[--orbit-r:168px]">
         {BLOOD_GROUPS.map((group, i) => {

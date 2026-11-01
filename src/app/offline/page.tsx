@@ -14,7 +14,7 @@ export default async function OfflinePage() {
   return (
     <main id="main" className="mx-auto flex min-h-full max-w-md flex-1 flex-col items-center justify-center gap-4 px-6 py-16 text-center">
       <Link href="/" className="rounded-full" aria-label={t("Rakt Response home")}>
-        <LogoMark size="lg" />
+        <LogoMark size="lg" unoptimized />
       </Link>
       <WifiOff className="size-8 text-primary" aria-hidden="true" />
       <h1 className="text-2xl font-extrabold">{t("You're offline")}</h1>

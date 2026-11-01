@@ -56,7 +56,7 @@ Local Supabase (`npx supabase db reset`) also loads **fictional** seed accounts 
 | `npm run test:e2e` | Playwright on phone, 320 px and desktop viewports (run `npm run build` first; `PLAYWRIGHT_CHANNEL=chrome` uses installed Chrome) |
 | `npm run test:live` | Full-stack journeys against a **local** Supabase (`npx supabase start`) with `npm run dev` running: signup + email confirmation, donations, requests with patient details, Rakt Mitra verification, donors joining, families contacting donors, donors reporting a donation and the follow-up, stories with photos, password reset, roles, export, deletion |
 | `npm run db:check` | Apply all migrations to an in-memory database |
-| `npm run icons` | Regenerate PWA/favicon derivatives from the supplied logo |
+| `npm run icons` | Rebuild the logo cut-out, email logo, favicon and app icons from the supplied logo |
 | `npm run bootstrap-admin -- <email>` | Create the first administrator (service role key required) |
 
 ## Project structure
@@ -93,7 +93,7 @@ docs/               setup, deployment, database, security, operations, free tier
 
 ## Brand
 
-The official logo was supplied by the Rakt Response Team (`public/brand/logo-original-supplied.png`). It is cut out without redrawing into `public/brand/`: `logo-mark.png` (the drop held in a hand), `logo-wordmark.png` / `logo-wordmark-cream.png` ("RAKT RESPONSE") and `logo-full.png`. `npm run icons` builds the favicon and app icons from the mark. The older badge `public/images/rakt-response-logo.jpeg` is kept only because existing auth emails may link to it.
+The official logo, the round "Rakt Response Team" badge, was supplied by the team (`public/brand/logo-supplied.jpg`). `npm run icons` cuts it out without redrawing it, along its red rim, into `public/brand/logo.png` (transparent corners, used on every page) and builds the email logo (`public/images/rakt-response-logo.jpeg`, the badge on white; it keeps that address because existing auth emails may link to it), favicon and app icons from it. To change the logo, replace that file, check the rim measurements at the top of `scripts/generate-icons.mjs`, and run `npm run icons`.
 
 Design (2026): brand red `#990000` ("night") and cream `#F4F3EF` sections, near-black ink `#1D0B0E` ("navy"), red `#C62A2A` / `#E2453F`, maroon `#5A0909`, Geist and Geist Mono type. Tokens and classes live in `src/app/globals.css`; photographs and where they came from in `src/lib/photos.ts`.
 

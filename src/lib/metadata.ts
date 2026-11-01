@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
 
-/** The card shown when a link is shared (1200×630, ~50 KB, under WhatsApp's 300 KB limit). */
+/**
+ * The card shown when a link is shared (1200×630, ~120 KB, under WhatsApp's 300 KB limit;
+ * `npm run share-card` rebuilds it). Bump `v` when it changes so apps fetch the new one.
+ */
 export const SHARE_IMAGE = {
-  url: "/images/share-card.jpg",
+  url: "/images/share-card.jpg?v=2",
   width: 1200,
   height: 630,
   alt: `${SITE.name} — ${SITE.tagline}`,

@@ -5,8 +5,8 @@ export const SITE = {
   signature: "A Wish to Bring a Special Smile",
   headline: "Every Donor Matters. Every Response Can Save a Life.",
   description: "Connecting voluntary blood donors with people who need help, one response at a time.",
-  /** The logo mark (a drop held in a hand), cut from the supplied logo file. */
-  logo: "/brand/logo-mark.png",
+  /** The round "Rakt Response Team" badge, cut from the supplied logo file (npm run icons). */
+  logo: "/brand/logo.png",
   /** The year Rakt Response started. */
   since: 2022,
 } as const;
