@@ -7,60 +7,85 @@ import { SITE } from "@/lib/constants";
 import { useT } from "@/i18n/client";
 
 /*
- * The supplied Rakt Response logo, cut out of the supplied file
- * (public/brand/logo-original-supplied.png) without redrawing it:
- *   logo-mark.png              the drop held in a hand                         978 × 1074
- *   logo-wordmark(-cream).png  "RAKT RESPONSE" in maroon, or cream on dark    2367 × 240
- *   logo-full.png              mark, wordmark and "SINCE 2026"                2367 × 1614
+ * The supplied Rakt Response logo: the round "Rakt Response Team" badge.
+ * public/brand/logo.png is cut out of public/brand/logo-supplied.jpg without
+ * redrawing it (scripts/generate-icons.mjs, `npm run icons`).
  */
-const MARK = { w: 978, h: 1074 };
-const WORDMARK = { w: 2367, h: 240 };
-const FULL = { w: 2367, h: 1614 };
 
-/** Heights of the mark in CSS pixels. */
-const SIZES = { xs: 30, sm: 38, md: 52, lg: 84, xl: 150 } as const;
+/** Diameters of the badge in CSS pixels. */
+const SIZES = { xs: 36, sm: 40, md: 52, lg: 84, xl: 150 } as const;
 
-export function LogoMark({ size = "sm", className, priority }: { size?: keyof typeof SIZES; className?: string; priority?: boolean }) {
+/**
+ * The badge. `size` is a preset or a diameter in px; with `fill` it fills its
+ * parent (which must be positioned and sized), `size` then only guides `sizes`.
+ */
+export function LogoMark({
+  size = "sm",
+  fill,
+  unoptimized,
+  className,
+  priority,
+}: {
+  size?: keyof typeof SIZES | number;
+  fill?: boolean;
+  /** Load /brand/logo.png directly (the offline page, where the worker has it cached). */
+  unoptimized?: boolean;
+  className?: string;
+  priority?: boolean;
+}) {
   const t = useT();
-  const height = SIZES[size];
-  const width = Math.round((height * MARK.w) / MARK.h);
+  const side = typeof size === "number" ? size : SIZES[size];
+  if (fill) {
+    return (
+      <Image src={SITE.logo} alt={t("Rakt Response logo")} fill priority={priority} sizes={`${side}px`} className={cn("rounded-full object-contain", className)} />
+    );
+  }
   return (
     <Image
       src={SITE.logo}
       alt={t("Rakt Response logo")}
-      width={width}
-      height={height}
+      width={side}
+      height={side}
       priority={priority}
-      sizes={`${width}px`}
-      className={cn("shrink-0 object-contain", className)}
-      style={{ width, height }}
+      unoptimized={unoptimized}
+      sizes={`${side}px`}
+      className={cn("shrink-0 rounded-full object-contain", className)}
+      style={{ width: side, height: side }}
     />
   );
 }
 
-/** "RAKT RESPONSE" from the logo. Decorative: pair it with an accessible name. */
+/**
+ * The name beside the badge, set in the site's type (the badge's own lettering is
+ * too small to read at header sizes). Decorative: pair it with an accessible name.
+ * `height` is the height of the capital letters in CSS pixels.
+ */
 export function LogoWordmark({ tone = "maroon", height = 13, className }: { tone?: "maroon" | "cream"; height?: number; className?: string }) {
-  const width = Math.round((height * WORDMARK.w) / WORDMARK.h);
   return (
-    <Image
-      src={tone === "cream" ? "/brand/logo-wordmark-cream.png" : "/brand/logo-wordmark.png"}
-      alt=""
+    <span
       aria-hidden="true"
-      width={width}
-      height={height}
-      sizes={`${width}px`}
-      className={cn("shrink-0", className)}
-      style={{ width, height }}
-    />
+      className={cn(
+        "shrink-0 leading-none font-extrabold tracking-[0.06em] whitespace-nowrap uppercase",
+        tone === "cream" ? "text-cream" : "text-night",
+        className,
+      )}
+      style={{ fontSize: Math.round(height * 1.38) }}
+    >
+      {SITE.name}
+    </span>
   );
 }
 
-/** Mark and wordmark side by side, linking home. */
+/**
+ * Badge and name side by side, linking home. `compact` keeps it narrow on phones
+ * (smaller name; badge alone below 380 px) so the floating header fits.
+ */
 export function LogoLockup({
   href = "/",
   tone = "cream",
   size = "xs",
   wordmarkHeight = 12,
+  compact,
   priority,
   className,
 }: {
@@ -68,6 +93,7 @@ export function LogoLockup({
   tone?: "maroon" | "cream";
   size?: keyof typeof SIZES;
   wordmarkHeight?: number;
+  compact?: boolean;
   priority?: boolean;
   className?: string;
 }) {
@@ -75,25 +101,11 @@ export function LogoLockup({
   return (
     <Link href={href} className={cn("flex min-h-11 items-center gap-2.5", className)} aria-label={t("Rakt Response home")}>
       <LogoMark size={size} priority={priority} />
-      <LogoWordmark tone={tone} height={wordmarkHeight} />
+      <LogoWordmark
+        tone={tone}
+        height={wordmarkHeight}
+        className={compact ? "max-sm:!text-[13px] max-sm:!tracking-[0.04em] max-[379px]:hidden" : undefined}
+      />
     </Link>
-  );
-}
-
-/** The complete logo as supplied: mark, wordmark and "SINCE 2026". */
-export function LogoFull({ width = 280, priority, className }: { width?: number; priority?: boolean; className?: string }) {
-  const t = useT();
-  const height = Math.round((width * FULL.h) / FULL.w);
-  return (
-    <Image
-      src="/brand/logo-full.png"
-      alt={t("Rakt Response, since 2026")}
-      width={width}
-      height={height}
-      priority={priority}
-      sizes={`${width}px`}
-      className={cn("shrink-0", className)}
-      style={{ width, height }}
-    />
   );
 }

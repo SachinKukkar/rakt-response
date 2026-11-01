@@ -87,9 +87,7 @@ export default async function AboutPage() {
         />
 
         <section aria-labelledby="mission-heading" className="surface-tint flex flex-col items-center gap-5 p-6 text-center sm:flex-row sm:p-8 sm:text-left">
-          <div className="rounded-3xl bg-white p-3 shadow-sm">
-            <LogoMark size="xl" priority />
-          </div>
+          <LogoMark size="xl" priority className="shadow-lg shadow-navy/15" />
           <div className="min-w-0 space-y-3">
             <p className="text-xs font-bold tracking-wider text-primary uppercase">{t("Our mission")}</p>
             <h2 id="mission-heading" className="text-2xl leading-tight font-extrabold sm:text-3xl">

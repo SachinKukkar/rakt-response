@@ -6,7 +6,8 @@
  * Supabase requests or anything sent with credentials, so private donor
  * information is never stored on the device by the worker.
  */
-const VERSION = "rr-v1";
+// Bump to replace cached logos and icons (rr-v2: the round badge logo).
+const VERSION = "rr-v2";
 const STATIC_CACHE = `${VERSION}-static`;
 const OFFLINE_URL = "/offline";
 
@@ -14,7 +15,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(STATIC_CACHE)
-      .then((cache) => cache.addAll([OFFLINE_URL, "/images/rakt-response-logo-192.webp", "/icons/icon-192.png"]))
+      .then((cache) => cache.addAll([OFFLINE_URL, "/brand/logo.png", "/icons/icon-192.png"]))
       .then(() => self.skipWaiting()),
   );
 });
@@ -31,7 +32,10 @@ self.addEventListener("activate", (event) => {
 function isCacheableAsset(url) {
   return (
     url.origin === self.location.origin &&
-    (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/images/") || url.pathname.startsWith("/icons/"))
+    (url.pathname.startsWith("/_next/static/") ||
+      url.pathname.startsWith("/images/") ||
+      url.pathname.startsWith("/icons/") ||
+      url.pathname.startsWith("/brand/"))
   );
 }
 

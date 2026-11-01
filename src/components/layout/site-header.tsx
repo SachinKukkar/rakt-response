@@ -19,7 +19,7 @@ export async function SiteHeader() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
       <div className="wide flex h-[var(--header-h)] items-center justify-between gap-2">
         <div className={`pointer-events-auto flex h-12 items-center rounded-full pr-4 pl-2.5 ${PILL}`}>
-          <LogoLockup tone="maroon" priority wordmarkHeight={12} className="min-h-0" />
+          <LogoLockup tone="maroon" priority compact wordmarkHeight={12} className="min-h-0" />
         </div>
         <HeaderNav className={`pointer-events-auto hidden h-12 items-center gap-0.5 rounded-full px-1.5 xl:flex ${PILL}`} />
         <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2">
