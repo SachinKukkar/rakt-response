@@ -8,7 +8,7 @@ import { useT } from "@/i18n/client";
 
 /*
  * The supplied Rakt Response logo: the round "Rakt Response Team" badge.
- * public/brand/logo.png is cut out of public/brand/logo-supplied.jpg without
+ * public/brand/logo.png is cut out of assets/brand/logo-supplied.svg without
  * redrawing it (scripts/generate-icons.mjs, `npm run icons`).
  */
 

@@ -57,6 +57,7 @@ Local Supabase (`npx supabase db reset`) also loads **fictional** seed accounts 
 | `npm run test:live` | Full-stack journeys against a **local** Supabase (`npx supabase start`) with `npm run dev` running: signup + email confirmation, donations, requests with patient details, Rakt Mitra verification, donors joining, families contacting donors, donors reporting a donation and the follow-up, stories with photos, password reset, roles, export, deletion |
 | `npm run db:check` | Apply all migrations to an in-memory database |
 | `npm run icons` | Rebuild the logo cut-out, email logo, favicon and app icons from the supplied logo |
+| `npm run share-card` | Rebuild the WhatsApp/Facebook link preview (`public/images/share-card.jpg`); then bump `v` in `src/lib/metadata.ts` |
 | `npm run bootstrap-admin -- <email>` | Create the first administrator (service role key required) |
 
 ## Project structure
@@ -93,7 +94,7 @@ docs/               setup, deployment, database, security, operations, free tier
 
 ## Brand
 
-The official logo, the round "Rakt Response Team" badge, was supplied by the team (`public/brand/logo-supplied.jpg`). `npm run icons` cuts it out without redrawing it, along its red rim, into `public/brand/logo.png` (transparent corners, used on every page) and builds the email logo (`public/images/rakt-response-logo.jpeg`, the badge on white; it keeps that address because existing auth emails may link to it), favicon and app icons from it. To change the logo, replace that file, check the rim measurements at the top of `scripts/generate-icons.mjs`, and run `npm run icons`.
+The official logo, the round "Rakt Response Team" badge, was supplied by the team as an SVG (`assets/brand/logo-supplied.svg`, outside `public/`: only the files made from it are served). `npm run icons` cuts it out without redrawing it, along its red rim, into `public/brand/logo.png` (transparent corners, used on every page) and builds the email logo (`public/images/rakt-response-logo.jpeg`, the badge on white; it keeps that address because existing auth emails may link to it), favicon and app icons from it. To change the logo, replace that file, check the rim measurements at the top of `scripts/generate-icons.mjs`, run `npm run icons` and `npm run share-card`, and bump `VERSION` in `public/sw.js` so returning visitors get the new files.
 
 Design (2026): brand red `#990000` ("night") and cream `#F4F3EF` sections, near-black ink `#1D0B0E` ("navy"), red `#C62A2A` / `#E2453F`, maroon `#5A0909`, Geist and Geist Mono type. Tokens and classes live in `src/app/globals.css`; photographs and where they came from in `src/lib/photos.ts`.
 

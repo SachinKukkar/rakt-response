@@ -1,6 +1,6 @@
 /**
  * Builds every logo file the site uses from the supplied Rakt Response logo
- * (public/brand/logo-supplied.jpg: the round "Rakt Response Team" badge on white).
+ * (assets/brand/logo-supplied.svg: the round "Rakt Response Team" badge on white).
  * The artwork is only cut out and resized, never redrawn.
  *   npm run icons
  *
@@ -11,17 +11,17 @@
 import sharp from "sharp";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
-const SOURCE = "public/brand/logo-supplied.jpg";
+const SOURCE = "assets/brand/logo-supplied.svg";
 if (!existsSync(SOURCE)) {
   console.error(`Supplied logo not found at ${SOURCE}.`);
   process.exit(1);
 }
 mkdirSync("public/icons", { recursive: true });
 
-// The badge's red rim, measured on the supplied 1600 × 1600 file (centre and radius in px).
-// The cut sits 1 px inside the rim, so neither the white page nor the soft shadow shows.
-// Measure again if the supplied file changes.
-const RIM = { x: 803.1, y: 800.7, r: 785 };
+// The badge's red rim, measured on the supplied file drawn at its own size, 2000 × 2000
+// (centre and radius in px). The cut sits at least 1.5 px inside the white page, so neither
+// the page nor the soft shadow shows. Measure again if the supplied file changes.
+const RIM = { x: 1004.3, y: 1002.7, r: 980 };
 
 const left = Math.round(RIM.x - RIM.r);
 const top = Math.round(RIM.y - RIM.r);
@@ -30,15 +30,20 @@ const mask = Buffer.from(
   `<svg xmlns="http://www.w3.org/2000/svg" width="${side}" height="${side}">` +
     `<circle cx="${RIM.x - left}" cy="${RIM.y - top}" r="${RIM.r}" fill="#fff"/></svg>`,
 );
-const BADGE = await sharp(SOURCE)
+// density 72 draws the SVG at its own 2000 × 2000 px.
+const BADGE = await sharp(SOURCE, { density: 72 })
   .extract({ left, top, width: side, height: side })
   .ensureAlpha()
   .composite([{ input: mask, blend: "dest-in" }])
   .png()
   .toBuffer();
 
-// Large enough for the biggest use (150 px on About) on a 3× screen.
-await sharp(BADGE).resize(512, 512).png({ compressionLevel: 9 }).toFile("public/brand/logo.png");
+// A 256-colour palette, like the supplied drawing itself (255 colours): a fraction of the
+// size, no visible difference.
+const PALETTE = { compressionLevel: 9, palette: true, quality: 92, effort: 10, dither: 0.6 };
+
+// Large enough for the biggest use (176 px, the blood-group circle) on a 3× screen.
+await sharp(BADGE).resize(768, 768).png(PALETTE).toFile("public/brand/logo.png");
 // Emails can't rely on transparency: the badge on white.
 await sharp(BADGE)
   .resize(560, 560)
@@ -56,8 +61,7 @@ async function square(size, background, padding) {
   const badge = await sharp(BADGE).resize(inner, inner).toBuffer();
   return sharp({ create: { width: size, height: size, channels: 4, background } })
     .composite([{ input: badge, gravity: "center" }])
-    // A 256-colour palette: a fifth of the size, no visible difference at icon sizes.
-    .png({ compressionLevel: 9, palette: true, quality: 92, effort: 10, dither: 0.6 })
+    .png(PALETTE)
     .toBuffer();
 }
 

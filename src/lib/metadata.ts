@@ -6,7 +6,7 @@ import { SITE } from "@/lib/constants";
  * `npm run share-card` rebuilds it). Bump `v` when it changes so apps fetch the new one.
  */
 export const SHARE_IMAGE = {
-  url: "/images/share-card.jpg?v=2",
+  url: "/images/share-card.jpg?v=3",
   width: 1200,
   height: 630,
   alt: `${SITE.name} — ${SITE.tagline}`,

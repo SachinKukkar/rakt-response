@@ -6,8 +6,8 @@
  * Supabase requests or anything sent with credentials, so private donor
  * information is never stored on the device by the worker.
  */
-// Bump to replace cached logos and icons (rr-v2: the round badge logo).
-const VERSION = "rr-v2";
+// Bump to replace cached logos and icons (rr-v3: the badge drawn from the supplied SVG).
+const VERSION = "rr-v3";
 const STATIC_CACHE = `${VERSION}-static`;
 const OFFLINE_URL = "/offline";
 
