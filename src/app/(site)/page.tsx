@@ -29,6 +29,12 @@ import { getImpactMetrics, listPublishedStories } from "@/lib/data/public";
 // Public statistics and stories are refreshed every 5 minutes.
 export const revalidate = 300;
 
+/** The eight ABO/Rh groups plus the rare Bombay phenotype (written "Oh" or "hh"). */
+const ORBIT_GROUPS: Array<{ group: string; label?: string }> = [
+  ...BLOOD_GROUPS.map((group) => ({ group })),
+  { group: "Oh", label: "Bombay blood group (Oh)" },
+];
+
 const STEPS = [
   { icon: UserPlus, title: "Register as a voluntary donor", text: "A short, private sign-up. No medical records needed." },
   { icon: UserRoundCheck, title: "Complete your donor profile", text: "Blood group, broad area and how you'd like to be reached." },
@@ -109,17 +115,20 @@ export default async function HomePage() {
             <LogoMark size="xl" priority className="relative shadow-xl shadow-primary/15" />
             {/* The drops orbit the logo; each counter-rotates so its label stays upright. */}
             <div className="animate-orbit absolute inset-0 [--orbit-r:122px] sm:[--orbit-r:166px]">
-              {(["A+", "O-", "AB-", "B+"] as const).map((group, i) => (
-                <div
-                  key={group}
-                  className="absolute top-1/2 left-1/2 -mt-[18px] -ml-[18px]"
-                  style={{ transform: `rotate(${i * 90 - 45}deg) translateY(calc(var(--orbit-r) * -1)) rotate(${45 - i * 90}deg)` }}
-                >
-                  <div className="animate-orbit-reverse">
-                    <BloodGroupChip group={group} size="sm" tone={i % 2 ? "outline" : "solid"} />
+              {ORBIT_GROUPS.map((item, i) => {
+                const angle = (360 / ORBIT_GROUPS.length) * i;
+                return (
+                  <div
+                    key={item.group}
+                    className="absolute top-1/2 left-1/2 -mt-[18px] -ml-[18px]"
+                    style={{ transform: `rotate(${angle}deg) translateY(calc(var(--orbit-r) * -1)) rotate(${-angle}deg)` }}
+                  >
+                    <div className="animate-orbit-reverse">
+                      <BloodGroupChip group={item.group} label={item.label} size="sm" tone={i % 2 ? "outline" : "solid"} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

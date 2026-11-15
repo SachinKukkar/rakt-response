@@ -32,15 +32,34 @@ test("public pages render live data from the seed", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("staff areas are hidden: no public admin links, 404 when signed out", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('a[href^="/admin"], a[href^="/volunteer"]')).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /admin/i })).toHaveCount(0);
+  for (const path of ["/admin", "/admin/donors", "/volunteer", "/api/admin/export/donors"]) {
+    const response = await page.goto(path);
+    expect(response?.status(), path).toBe(404);
+    await expect(page).not.toHaveURL(/\/login/);
+  }
+  const robots = await (await page.request.get("/robots.txt")).text();
+  expect(robots).not.toMatch(/admin|volunteer/);
+});
+
+test("administrators sign in through the shared login and land on the admin hub", async ({ page }) => {
+  await login(page, "admin@example.test");
+  await expect(page).toHaveURL(/\/admin$/);
+});
+
 test("every donor page loads for a donor", async ({ page }) => {
   const errors = trackErrors(page);
   await login(page, "donor1@example.test");
   for (const path of DONOR_PAGES) await expectHealthyPage(page, path);
   // Donors are kept out of staff areas.
-  await page.goto("/volunteer");
-  await expect(page).toHaveURL(/\/dashboard\?notice=staff-only/);
-  await page.goto("/admin");
-  await expect(page).toHaveURL(/\/dashboard\?notice=staff-only/);
+  for (const path of ["/volunteer", "/admin", "/admin/users"]) {
+    const response = await page.goto(path);
+    expect(response?.status(), path).toBe(404);
+    await expect(page).toHaveURL(new RegExp(`${path}$`));
+  }
   expect(errors).toEqual([]);
 });
 
@@ -48,8 +67,8 @@ test("every volunteer page loads for a volunteer, admin pages do not", async ({ 
   const errors = trackErrors(page);
   await login(page, "volunteer@example.test");
   for (const path of VOLUNTEER_PAGES) await expectHealthyPage(page, path);
-  await page.goto("/admin/users");
-  await expect(page).toHaveURL(/\/volunteer\?notice=admin-only/);
+  const response = await page.goto("/admin/users");
+  expect(response?.status()).toBe(404);
   expect(errors).toEqual([]);
 });
 

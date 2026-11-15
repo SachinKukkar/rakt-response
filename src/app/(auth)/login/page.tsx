@@ -12,7 +12,8 @@ export const metadata: Metadata = { title: "Sign in" };
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
   const next = safeNextPath(typeof params.next === "string" ? params.next : undefined, "/dashboard");
-  if (await getViewer()) redirect(next);
+  const viewer = await getViewer();
+  if (viewer) redirect(viewer.isAdmin && next === "/dashboard" ? "/admin" : next);
   const notice =
     params.error === "link"
       ? "That link has expired or was already used. Please sign in or request a new link."

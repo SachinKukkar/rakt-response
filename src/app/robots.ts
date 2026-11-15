@@ -7,7 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard", "/profile", "/donations", "/requests", "/notifications", "/settings", "/volunteer", "/admin", "/api", "/auth", "/share-your-story/submissions"],
+        // Staff areas are deliberately not listed here (that would advertise them);
+        // member pages also send noindex.
+        disallow: ["/dashboard", "/profile", "/donations", "/requests", "/notifications", "/settings", "/api", "/auth", "/share-your-story/submissions"],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

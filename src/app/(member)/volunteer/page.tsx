@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AlarmClock, ClipboardCheck, Droplet, HandHeart, ShieldAlert, Siren, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ActionForm } from "@/components/common/action-form";
-import { EmptyState, Notice, PageHeader, SectionHeading, StatCard } from "@/components/common/page-parts";
+import { EmptyState, PageHeader, SectionHeading, StatCard } from "@/components/common/page-parts";
 import { RequestCard } from "@/components/requests/request-card";
 import { runCoordinationHousekeeping } from "@/actions/volunteer";
 import { requireStaff } from "@/lib/auth";
@@ -27,9 +27,8 @@ interface Overview {
 
 const REQUEST_COLUMNS = "id, reference_code, blood_group, request_type, units_needed, hospital_name, city, district, required_by, urgency, status, created_at";
 
-export default async function VolunteerOverviewPage({ searchParams }: PageProps<"/volunteer">) {
+export default async function VolunteerOverviewPage() {
   const viewer = await requireStaff();
-  const params = await searchParams;
   const supabase = await createClient();
   // Housekeeping is cheap and idempotent; running it here avoids needing a scheduler.
   await Promise.all([supabase.rpc("expire_stale_requests"), supabase.rpc("generate_follow_up_reminders")]);
@@ -84,7 +83,6 @@ export default async function VolunteerOverviewPage({ searchParams }: PageProps<
           </Button>
         }
       />
-      {params.notice === "admin-only" ? <Notice>That area is only for administrators.</Notice> : null}
 
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Summary">
         <StatCard label="Awaiting verification" value={formatNumber(overview.awaiting_verification)} icon={ClipboardCheck} tone="brand" />

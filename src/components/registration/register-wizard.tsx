@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { LocationPickers } from "@/components/forms/location-pickers";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Controller, useFieldArray, useForm, useWatch, type FieldPath } from "react-hook-form";
@@ -18,7 +19,6 @@ import {
   DONATION_EXPERIENCE_LABELS,
   DONATION_TYPE_LABELS,
   DONATION_TYPES,
-  INDIAN_STATES,
   type ContactMethod,
   type DonationExperience,
   type DonationType,
@@ -27,7 +27,6 @@ import { findPossibleDuplicates } from "@/lib/donations";
 import { formatDate, todayInIndia } from "@/lib/format";
 import {
   accountStepSchema,
-  consentStepSchema,
   donorStepSchema,
   historyStepSchema,
   locationStepSchema,
@@ -35,14 +34,13 @@ import {
 } from "@/lib/validation/registration";
 import { cn } from "@/lib/utils";
 
-type StepKey = "account" | "donor" | "location" | "history" | "consent" | "review";
+type StepKey = "account" | "donor" | "location" | "history" | "review";
 
 const STEP_META: Record<StepKey, { title: string; subtitle: string }> = {
   account: { title: "Create your account", subtitle: "Your login details stay private." },
   donor: { title: "About you as a donor", subtitle: "Only what's needed to coordinate safely." },
   location: { title: "Where are you based?", subtitle: "Area details only — never your exact address." },
   history: { title: "Donation history", subtitle: "Self-reported until a volunteer verifies it." },
-  consent: { title: "Availability & consent", subtitle: "You decide who can find and contact you." },
   review: { title: "Review & confirm", subtitle: "Check everything before you register." },
 };
 
@@ -51,7 +49,6 @@ const STEP_SCHEMAS: Partial<Record<StepKey, z.ZodType>> = {
   donor: donorStepSchema,
   location: locationStepSchema,
   history: historyStepSchema,
-  consent: consentStepSchema,
 };
 
 const DEFAULTS: RegistrationInput = {
@@ -67,11 +64,13 @@ const DEFAULTS: RegistrationInput = {
   },
   location: { state: "", district: "", city: "", locality: "", pincode: "", lat: null, lng: null, max_distance_km: null },
   history: { has_donated: false, approx_previous_donations: null, donations: [] },
+  // Donors join to be reachable, so this starts on. One clear switch on the review
+  // step controls it, and each part can be changed later in Privacy & settings.
   consent: {
-    directory_visible: false,
-    contact_consent: false,
-    open_to_contact: false,
-    emergency_alerts: false,
+    directory_visible: true,
+    contact_consent: true,
+    open_to_contact: true,
+    emergency_alerts: true,
     show_donation_summary: false,
   },
 };
@@ -88,7 +87,7 @@ export function RegisterWizard() {
 
   const isDonor = useWatch({ control, name: "donor.is_donor" });
   const steps: StepKey[] = useMemo(
-    () => (isDonor ? ["account", "donor", "location", "history", "consent", "review"] : ["account", "donor", "location", "review"]),
+    () => (isDonor ? ["account", "donor", "location", "history", "review"] : ["account", "donor", "location", "review"]),
     [isDonor],
   );
   const step = steps[Math.min(stepIndex, steps.length - 1)];
@@ -192,7 +191,11 @@ export function RegisterWizard() {
     return (node as { message?: string } | undefined)?.message;
   };
 
-  const contactConsent = useWatch({ control, name: "consent.contact_consent" });
+  const reachable = useWatch({ control, name: "consent.contact_consent" });
+  const [locState, locDistrict, locCity, locPincode] = useWatch({
+    control,
+    name: ["location.state", "location.district", "location.city", "location.pincode"],
+  });
   const lat = useWatch({ control, name: "location.lat" });
   const lng = useWatch({ control, name: "location.lng" });
   const coords = lat !== null && lng !== null ? { lat, lng } : null;
@@ -400,23 +403,13 @@ export function RegisterWizard() {
         {step === "location" ? (
           <div className="space-y-4">
             {!isDonor ? <p className="text-sm text-muted-foreground">Optional for members who are not registering as donors.</p> : null}
-            <Field id="state" label="State / union territory" required={isDonor} error={e("location.state")}>
-              <select {...fieldAria("state", e("location.state"))} className={selectClass} autoComplete="address-level1" {...register("location.state")}>
-                <option value="">Select…</option>
-                {INDIAN_STATES.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </Field>
+            <LocationPickers
+              required={isDonor}
+              values={{ state: locState ?? "", district: locDistrict ?? "", city: locCity ?? "", pincode: locPincode ?? "" }}
+              onChange={(field, value) => setValue(`location.${field}`, value as never, { shouldDirty: true })}
+              errors={{ state: e("location.state"), district: e("location.district"), city: e("location.city") }}
+            />
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field id="district" label="District" required={isDonor} error={e("location.district")}>
-                <Input {...fieldAria("district", e("location.district"))} {...register("location.district")} />
-              </Field>
-              <Field id="city" label="City / town" required={isDonor} error={e("location.city")}>
-                <Input {...fieldAria("city", e("location.city"))} autoComplete="address-level2" {...register("location.city")} />
-              </Field>
               <Field id="locality" label="Locality / area" error={e("location.locality")} hint="Neighbourhood only — not your street address.">
                 <Input {...fieldAria("locality", e("location.locality"), true)} {...register("location.locality")} />
               </Field>
@@ -579,86 +572,24 @@ export function RegisterWizard() {
           </div>
         ) : null}
 
-        {step === "consent" ? (
+        {step === "review" ? (
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              Each permission is separate and optional. You can change any of them at any time from Privacy &amp; settings.
-            </p>
-            <Controller
-              control={control}
-              name="consent.directory_visible"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="directory_visible"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  title="Show me in the volunteer donor directory"
-                  description="Authorised volunteers can see your display name, blood group and broad area (city/locality). Never your phone, email or address. Not visible to the public."
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.contact_consent"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="contact_consent"
-                  checked={field.value}
-                  onCheckedChange={(v) => {
-                    field.onChange(v);
-                    if (!v) setValue("consent.open_to_contact", false);
-                  }}
-                  title="Allow authorised volunteers to contact me about blood requests"
-                  description="Your number is revealed only to a volunteer coordinating a verified request, and every access is logged."
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.open_to_contact"
-              render={({ field }) => (
-                <div className={cn(!contactConsent && "pointer-events-none opacity-50")} aria-disabled={!contactConsent}>
-                  <ChoiceRow
-                    id="open_to_contact"
-                    checked={field.value && contactConsent}
-                    onCheckedChange={field.onChange}
-                    error={e("consent.open_to_contact")}
-                    title="I'm currently open to being contacted"
-                    description="Turn this off any time you can't donate (travel, illness, recent donation)."
-                  />
-                </div>
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.emergency_alerts"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="emergency_alerts"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  title="Send me in-app alerts for verified requests near me"
-                  description="Only verified requests matching your blood group and district. No SMS or bulk messages."
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="consent.show_donation_summary"
-              render={({ field }) => (
-                <ChoiceRow
-                  id="show_donation_summary"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  title="Show my verified donation summary to volunteers"
-                  description="Last verified whole blood / SDP dates and counts. Helps volunteers, but is never a medical eligibility decision."
-                />
-              )}
-            />
+            <ReviewSummary values={getValues()} isDonor={isDonor} onEdit={goTo} />
+            {isDonor ? (
+              <ChoiceRow
+                id="reachable"
+                checked={reachable}
+                onCheckedChange={(v) => {
+                  for (const key of ["directory_visible", "contact_consent", "open_to_contact", "emergency_alerts"] as const) {
+                    setValue(`consent.${key}`, v);
+                  }
+                }}
+                title="Volunteers can reach me when my blood group is needed nearby"
+                description="Only Rakt Response volunteers and admins see your name, blood group and area. Never the public or other donors. Your number is shown only for a verified request, and every view is logged. Change this any time in Privacy & settings."
+              />
+            ) : null}
           </div>
         ) : null}
-
-        {step === "review" ? <ReviewSummary values={getValues()} isDonor={isDonor} onEdit={goTo} /> : null}
 
         {serverError ? (
           <p className="rounded-xl border border-destructive/25 bg-destructive/5 px-3.5 py-3 text-sm text-destructive" role="alert">
@@ -696,7 +627,6 @@ export function RegisterWizard() {
 }
 
 function ReviewSummary({ values, isDonor, onEdit }: { values: RegistrationInput; isDonor: boolean; onEdit: (step: StepKey) => void }) {
-  const yesNo = (v: boolean) => (v ? "Yes" : "No");
   const sections: Array<{ step: StepKey; title: string; rows: Array<[string, string]> }> = [
     {
       step: "account",
@@ -738,17 +668,6 @@ function ReviewSummary({ values, isDonor, onEdit }: { values: RegistrationInput;
         rows: values.history.has_donated
           ? values.history.donations.map((d, i) => [`#${i + 1} ${DONATION_TYPE_LABELS[d.donation_type]}`, `${formatDate(d.donation_date)} · ${d.centre_name}`])
           : [["History", "No previous donations"]],
-      },
-      {
-        step: "consent",
-        title: "Your permissions",
-        rows: [
-          ["Visible in volunteer directory", yesNo(values.consent.directory_visible)],
-          ["Volunteers may contact me", yesNo(values.consent.contact_consent)],
-          ["Currently open to contact", yesNo(values.consent.contact_consent && values.consent.open_to_contact)],
-          ["In-app request alerts", yesNo(values.consent.emergency_alerts)],
-          ["Share verified donation summary", yesNo(values.consent.show_donation_summary)],
-        ],
       },
     );
   }

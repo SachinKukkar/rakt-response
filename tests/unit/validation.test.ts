@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { accountStepSchema, donorStepSchema, historyStepSchema, registrationSchema } from "@/lib/validation/registration";
-import { bloodRequestSchema, donationRecordSchema, preferencesSchema, storySchema } from "@/lib/validation/forms";
+import { adminDonorSchema, bloodRequestSchema, donationRecordSchema, preferencesSchema, profileSchema, storySchema } from "@/lib/validation/forms";
 
 const validRegistration = {
   account: { full_name: "Asha Fictional", email: "ASHA@Example.test ", password: "safePass1", confirm_password: "safePass1", accept_terms: true },
@@ -162,5 +162,39 @@ describe("other forms", () => {
     expect(storySchema.safeParse({ ...story, consent_publish: false }).success).toBe(false);
     expect(storySchema.safeParse({ ...story, rights_confirmed: false }).success).toBe(false);
     expect(storySchema.safeParse({ ...story, follow_up_email: "" }).success).toBe(false);
+  });
+});
+
+describe("profile and admin edits", () => {
+  const profile = { full_name: "Fictional Donor", display_name: "", donation_experience: "" as const, approx_previous_donations: null, phone: "", whatsapp: "" };
+
+  it("accepts an optional bio up to 280 characters", () => {
+    expect(profileSchema.safeParse({ ...profile, bio: "" }).success).toBe(true);
+    expect(profileSchema.safeParse({ ...profile, bio: "x".repeat(280) }).success).toBe(true);
+    expect(profileSchema.safeParse({ ...profile, bio: "x".repeat(281) }).success).toBe(false);
+  });
+
+  const admin = {
+    profile_id: "00000000-0000-4000-8000-000000000001",
+    full_name: "Fictional Donor",
+    display_name: "",
+    blood_group: "O-",
+    phone: "",
+    whatsapp: "",
+    state: "Maharashtra",
+    district: "Pune",
+    city: "Pune",
+    locality: "",
+    pincode: "411001",
+  };
+
+  it("lets administrators correct details", () => {
+    expect(adminDonorSchema.safeParse(admin).success).toBe(true);
+    expect(adminDonorSchema.safeParse({ ...admin, state: "", district: "", city: "", blood_group: "" }).success).toBe(true);
+  });
+
+  it("requires the area fields together and a valid blood group", () => {
+    expect(adminDonorSchema.safeParse({ ...admin, city: "" }).success).toBe(false);
+    expect(adminDonorSchema.safeParse({ ...admin, blood_group: "Z+" }).success).toBe(false);
   });
 });

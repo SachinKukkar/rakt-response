@@ -8,12 +8,12 @@ import { KeyValue, Notice, PageHeader, SectionHeading } from "@/components/commo
 import { Pill, ProfileVerificationBadge, VerificationBadge } from "@/components/common/status-badge";
 import { selectClass } from "@/components/common/form-parts";
 import { addInternalNote } from "@/actions/volunteer";
-import { processDeletion, resolveBloodGroupChange, setProfileActive, verifyProfile } from "@/actions/admin";
+import { adminUpdateDonor, processDeletion, resolveBloodGroupChange, setProfileActive, verifyProfile } from "@/actions/admin";
 import { requireAdmin } from "@/lib/auth";
 import { getDonationRecords, getDonorData } from "@/lib/data/member";
 import { displayNames } from "@/lib/data/staff";
 import { createClient } from "@/lib/supabase/server";
-import { CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
+import { BLOOD_GROUPS, CONTACT_METHOD_LABELS, DONATION_TYPE_LABELS, INDIAN_STATES, PROFILE_VERIFICATION_LABELS, type ProfileVerification } from "@/lib/constants";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { formatPhone } from "@/lib/phone";
 import { uuidSchema } from "@/lib/validation/common";
@@ -54,6 +54,7 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
             {role?.is_active ? <Pill tone="info">{role.role}</Pill> : null}
             {!profile.is_active ? <Pill tone="danger">Inactive</Pill> : null}
           </div>
+          {profile.bio ? <p className="text-sm italic">“{profile.bio}”</p> : null}
           <p className="text-sm text-muted-foreground">
             {profile.display_name ? `Display name “${profile.display_name}” · ` : ""}Joined {formatDate(profile.created_at)} · active {formatDate(profile.last_active_at)}
           </p>
@@ -96,9 +97,66 @@ export default async function AdminDonorPage({ params }: PageProps<"/admin/donor
         </section>
       </div>
 
+      <details className="surface p-4">
+        <summary className="flex min-h-10 cursor-pointer items-center font-bold text-navy">Edit donor details</summary>
+        <ActionForm action={adminUpdateDonor} fields={{ profile_id: profile.id }} label="Save details" className="mt-3 grid gap-3 sm:grid-cols-2">
+          {(
+            [
+              ["full_name", "Full name", profile.full_name, 100],
+              ["display_name", "Display name", profile.display_name ?? "", 60],
+              ["phone", "Mobile", donor.contacts?.phone ?? "", 20],
+              ["whatsapp", "WhatsApp", donor.contacts?.whatsapp ?? "", 20],
+            ] as const
+          ).map(([name, label, value, max]) => (
+            <label key={name} className="space-y-1 text-sm font-semibold text-navy">
+              {label}
+              <Input name={name} defaultValue={value} maxLength={max} required={name === "full_name"} />
+            </label>
+          ))}
+          <label className="space-y-1 text-sm font-semibold text-navy">
+            Blood group
+            <select name="blood_group" defaultValue={profile.blood_group ?? ""} className={selectClass}>
+              <option value="">Not known</option>
+              {BLOOD_GROUPS.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="space-y-1 text-sm font-semibold text-navy">
+            State / UT
+            <select name="state" defaultValue={donor.location?.state ?? ""} className={selectClass}>
+              <option value="">No area</option>
+              {INDIAN_STATES.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </label>
+          {(
+            [
+              ["district", "District", donor.location?.district ?? "", 80],
+              ["city", "City / town", donor.location?.city ?? "", 80],
+              ["locality", "Locality", donor.location?.locality ?? "", 120],
+              ["pincode", "PIN code", donor.location?.pincode ?? "", 6],
+            ] as const
+          ).map(([name, label, value, max]) => (
+            <label key={name} className="space-y-1 text-sm font-semibold text-navy">
+              {label}
+              <Input name={name} defaultValue={value} maxLength={max} />
+            </label>
+          ))}
+          <p className="text-xs text-muted-foreground sm:col-span-2">
+            Changes are recorded in the audit log. To mark the blood group as document-checked, use Verification below.
+          </p>
+        </ActionForm>
+      </details>
+
       {!self ? (
         <section className="surface space-y-4 p-4" aria-labelledby="verify-heading">
-          <SectionHeading id="verify-heading" title="Verification" description="Confirms identity details with proportionate evidence. It is not a medical eligibility decision." as="h3" />
+          <SectionHeading id="verify-heading" title="Verification" description="Profiles verify automatically when the donor confirms their email. Use this to put a profile on hold or mark the blood group document-checked. It is not a medical eligibility decision." as="h3" />
           <ActionForm action={verifyProfile} fields={{ profile_id: profile.id }} label="Save verification" className="grid gap-3 sm:grid-cols-2">
             <label className="space-y-1 text-sm font-semibold text-navy">
               Profile status

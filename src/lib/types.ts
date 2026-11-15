@@ -22,6 +22,7 @@ export interface ProfileRow {
   id: string;
   full_name: string;
   display_name: string | null;
+  bio: string | null;
   is_donor: boolean;
   blood_group: BloodGroup | null;
   blood_group_verified: boolean;

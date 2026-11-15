@@ -12,17 +12,20 @@ export function BloodGroupChip({
   group,
   size = "md",
   tone = "solid",
+  label,
   className,
 }: {
   group: BloodGroup | string;
   size?: keyof typeof SIZE;
   tone?: "solid" | "soft" | "outline";
+  /** Accessible name override (e.g. "Bombay blood group (Oh)"). */
+  label?: string;
   className?: string;
 }) {
   return (
     <span
       className={cn("relative inline-grid shrink-0 place-items-center font-extrabold", SIZE[size], className)}
-      aria-label={`Blood group ${group}`}
+      aria-label={label ?? `Blood group ${group}`}
       role="img"
     >
       <svg viewBox="0 0 48 56" aria-hidden="true" className="absolute inset-0 size-full">

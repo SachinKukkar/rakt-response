@@ -64,6 +64,14 @@ export function LoginForm({ next }: { next?: string }) {
         </Link>
       </div>
       <FormMessage state={state} />
+      {errors?._unconfirmed ? (
+        <p className="text-sm">
+          Can&apos;t find it?{" "}
+          <Link href="/verify-email" className="font-semibold text-primary hover:underline">
+            Resend the verification email
+          </Link>
+        </p>
+      ) : null}
       <SubmitButton className="w-full" size="lg" pendingText="Signing in…">
         Sign in
       </SubmitButton>

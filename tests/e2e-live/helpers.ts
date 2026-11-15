@@ -9,7 +9,8 @@ export async function login(page: Page, email: string, password = PASSWORD) {
   await page.locator("#email").fill(email);
   await page.locator("#password").fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 });
+  // Administrators land on the admin hub; everyone else on the dashboard.
+  await expect(page).toHaveURL(/\/(dashboard|admin)/, { timeout: 30_000 });
 }
 
 export async function logout(page: Page) {

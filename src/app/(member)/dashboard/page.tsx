@@ -20,8 +20,6 @@ import type { NotificationRow } from "@/lib/types";
 export const metadata: Metadata = { title: "Dashboard" };
 
 const NOTICES: Record<string, string> = {
-  "staff-only": "That area is only for authorised volunteers.",
-  "admin-only": "That area is only for administrators.",
   "password-updated": "Your password was updated.",
 };
 

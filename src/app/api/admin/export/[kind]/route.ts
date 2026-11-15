@@ -12,7 +12,7 @@ const MAX_ROWS = 5000;
 export async function GET(_request: NextRequest, { params }: RouteContext<"/api/admin/export/[kind]">) {
   const viewer = await getViewer();
   if (!viewer?.isAdmin) {
-    return new NextResponse("Forbidden", { status: 403 });
+    return new NextResponse("Not found", { status: 404 });
   }
   const { kind } = await params;
   const supabase = await createClient();

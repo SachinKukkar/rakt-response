@@ -22,16 +22,22 @@ export async function signIn(_prev: ActionResult, formData: FormData): Promise<A
   const parsed = loginSchema.safeParse({ email: formData.get("email"), password: formData.get("password") });
   if (!parsed.success) return validationFailure(parsed.error);
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
     if (/not confirmed/i.test(error.message)) {
-      return fail("Please confirm your email address first. Check your inbox for the verification link.");
+      return fail("Please confirm your email address first. Check your inbox for the verification link.", { _unconfirmed: ["1"] });
     }
     if (error.status === 429) return fail("Too many sign-in attempts. Please wait a few minutes and try again.");
     // Same message for unknown email and wrong password (prevents account enumeration).
     return fail("The email or password is incorrect.");
   }
-  redirect(safeNextPath(String(formData.get("next") ?? ""), "/dashboard"));
+  const requested = String(formData.get("next") ?? "");
+  if ((!requested || requested === "/dashboard") && data.user) {
+    // Same login for everyone; administrators go straight to their hub.
+    const { data: role } = await supabase.from("staff_roles").select("role").eq("user_id", data.user.id).eq("is_active", true).maybeSingle();
+    if (role?.role === "admin") redirect("/admin");
+  }
+  redirect(safeNextPath(requested, "/dashboard"));
 }
 
 /** Builds the signup metadata consumed by the database bootstrap trigger. */

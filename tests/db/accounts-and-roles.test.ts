@@ -85,6 +85,30 @@ describe("signup bootstrap trigger", () => {
     expect(loc.rows).toHaveLength(1);
   });
 
+  it("marks a donor verified when they confirm their email", async () => {
+    const pending = await createUser(db, donorMetadata({ full_name: "Pending Person" }), { confirmed: false });
+    const before = await db.query<{ verification_status: string }>("select verification_status from public.profiles where id = $1", [pending.id]);
+    expect(before.rows[0].verification_status).toBe("unverified");
+    await db.query("update auth.users set email_confirmed_at = now() where id = $1", [pending.id]);
+    const after = await db.query<{ verification_status: string; verified_at: string | null }>(
+      "select verification_status, verified_at from public.profiles where id = $1",
+      [pending.id],
+    );
+    expect(after.rows[0].verification_status).toBe("verified");
+    expect(after.rows[0].verified_at).not.toBeNull();
+    const note = await db.query<{ title: string }>("select title from public.notifications where user_id = $1", [pending.id]);
+    expect(note.rows.map((n) => n.title)).toContain("Your email is verified");
+    // Blood group verification stays an administrator decision.
+    const bg = await db.query<{ blood_group_verified: boolean }>("select blood_group_verified from public.profiles where id = $1", [pending.id]);
+    expect(bg.rows[0].blood_group_verified).toBe(false);
+  });
+
+  it("lets donors set a short bio but not exceed 280 characters", async () => {
+    await as(db, donorA, (tx) => tx.query("update public.profiles set bio = 'I donate because my friend needed blood once.' where id = $1", [donorA.id]));
+    const tooLong = await expectDbError(as(db, donorA, (tx) => tx.query("update public.profiles set bio = $2 where id = $1", [donorA.id, "x".repeat(300)])));
+    expect(tooLong).toMatch(/check constraint|violates/);
+  });
+
   it("never derives roles from signup metadata", async () => {
     const user = await createUser(db, { ...donorMetadata(), role: "admin", staff_role: "admin", is_admin: true });
     const roles = await db.query("select * from public.staff_roles where user_id = $1", [user.id]);

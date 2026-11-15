@@ -49,6 +49,7 @@ export default async function EditProfilePage() {
           defaults={{
             full_name: profile?.full_name ?? "",
             display_name: profile?.display_name ?? "",
+            bio: profile?.bio ?? "",
             donation_experience: profile?.donation_experience ?? "",
             approx_previous_donations: profile?.approx_previous_donations ?? null,
             phone: donor.contacts?.phone ?? "",

@@ -8,10 +8,11 @@ import { BottomNav, SideNav, type NavItem } from "./member-nav";
 function bottomItems(viewer: Viewer): NavItem[] {
   const items: NavItem[] = [{ href: "/dashboard", label: "Home", icon: "home" }];
   if (viewer.isAdmin) {
+    // Admins are donors first: their own donor tabs, plus one Admin hub.
     items.push(
-      { href: "/volunteer", label: "Volunteer", icon: "volunteer" },
-      { href: "/admin", label: "Admin", icon: "admin" },
       { href: "/requests", label: "Requests", icon: "requests" },
+      { href: "/donations", label: "Donations", icon: "donations" },
+      { href: "/admin", label: "Admin", icon: "admin" },
     );
   } else if (viewer.isStaff) {
     items.push(
@@ -44,7 +45,7 @@ function sideGroups(viewer: Viewer) {
       ],
     },
   ];
-  if (viewer.isStaff) {
+  if (viewer.isStaff && !viewer.isAdmin) {
     groups.push({
       title: "Volunteer",
       items: [
@@ -63,6 +64,8 @@ function sideGroups(viewer: Viewer) {
         { href: "/admin", label: "Overview", icon: "admin", exact: true },
         { href: "/admin/donors", label: "Donors", icon: "users" },
         { href: "/admin/requests", label: "Requests", icon: "list" },
+        { href: "/volunteer/requests", label: "Coordinate requests", icon: "requests" },
+        { href: "/volunteer/donors", label: "Donor directory", icon: "users" },
         { href: "/admin/donations", label: "Donations", icon: "donations" },
         { href: "/admin/users", label: "Users & roles", icon: "profile" },
         { href: "/admin/volunteers", label: "Volunteers", icon: "volunteer" },

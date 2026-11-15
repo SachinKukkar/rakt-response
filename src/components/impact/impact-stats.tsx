@@ -12,7 +12,7 @@ export interface MetricDefinition {
 
 export const HOME_METRICS: MetricDefinition[] = [
   { key: "registered_donors", label: "Registered donors", icon: Users, definition: "Active donor accounts with a confirmed email address." },
-  { key: "verified_donors", label: "Verified donors", icon: BadgeCheck, definition: "Donor profiles checked by a Rakt Response administrator." },
+  { key: "verified_donors", label: "Verified donors", icon: BadgeCheck, definition: "Registered donors who confirmed their email address." },
   { key: "verified_whole_blood_donations", label: "Verified whole blood donations", icon: Droplet, definition: "Whole blood donation records verified by an authorised volunteer or administrator." },
   { key: "verified_sdp_donations", label: "Verified SDP donations", icon: HeartPulse, definition: "Single donor platelet donation records that have been verified." },
   { key: "requests_coordinated", label: "Requests coordinated", icon: HandHeart, definition: "Verified requests that volunteers actively coordinated with potential donors." },

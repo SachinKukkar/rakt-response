@@ -7,16 +7,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ChoiceRow, Field, FormMessage, SubmitButton, fieldAria, selectClass } from "@/components/common/form-parts";
 import { BloodGroupPicker } from "@/components/forms/pickers";
 import { ApproxLocation } from "@/components/map/approx-location";
+import { LocationPickers } from "@/components/forms/location-pickers";
 import { changeBloodGroup, removeProfilePhoto, updateLocation, updatePreferences, updateProfile, uploadProfilePhoto } from "@/actions/profile";
 import { initialActionState, type ActionResult } from "@/lib/action-result";
 import { resizeImageForUpload } from "@/lib/client-image";
 import {
   CONTACT_METHOD_LABELS,
   DONATION_EXPERIENCE_LABELS,
-  INDIAN_STATES,
   type BloodGroup,
   type ContactMethod,
   type DonationExperience,
@@ -52,6 +53,14 @@ export function ProfileDetailsForm({ defaults, ageConfirmed }: { defaults: Profi
       </Field>
       <Field id="display_name" label="Display name for volunteers" error={errors.display_name?.message} hint="Optional — shown instead of your full name.">
         <Input {...fieldAria("display_name", errors.display_name?.message, true)} {...register("display_name")} />
+      </Field>
+      <Field
+        id="bio"
+        label="Why I donate"
+        error={errors.bio?.message}
+        hint="Optional, up to 280 characters. Shown on your profile and to volunteers and admins."
+      >
+        <Textarea {...fieldAria("bio", errors.bio?.message, true)} rows={3} maxLength={280} {...register("bio")} />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="phone" label="Mobile number" error={errors.phone?.message} hint="Private. Only shared with consent.">
@@ -143,6 +152,7 @@ export function LocationForm({ defaults }: { defaults: DonorLocationInput }) {
   const [pending, startTransition] = useTransition();
   const lat = useWatch({ control, name: "lat" });
   const lng = useWatch({ control, name: "lng" });
+  const [locState, locDistrict, locCity, locPincode] = useWatch({ control, name: ["state", "district", "city", "pincode"] });
   const onSubmit = handleSubmit((values) =>
     startTransition(async () => {
       const r = await updateLocation(values);
@@ -152,23 +162,13 @@ export function LocationForm({ defaults }: { defaults: DonorLocationInput }) {
   );
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-4">
-      <Field id="state" label="State / union territory" required error={errors.state?.message}>
-        <select {...fieldAria("state", errors.state?.message)} className={selectClass} {...register("state")}>
-          <option value="">Select…</option>
-          {INDIAN_STATES.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <LocationPickers
+        required
+        values={{ state: locState ?? "", district: locDistrict ?? "", city: locCity ?? "", pincode: locPincode ?? "" }}
+        onChange={(field, value) => setValue(field, value as never, { shouldDirty: true })}
+        errors={{ state: errors.state?.message, district: errors.district?.message, city: errors.city?.message }}
+      />
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="district" label="District" required error={errors.district?.message}>
-          <Input {...fieldAria("district", errors.district?.message)} {...register("district")} />
-        </Field>
-        <Field id="city" label="City / town" required error={errors.city?.message}>
-          <Input {...fieldAria("city", errors.city?.message)} {...register("city")} />
-        </Field>
         <Field id="locality" label="Locality / area" error={errors.locality?.message}>
           <Input {...fieldAria("locality", errors.locality?.message)} {...register("locality")} />
         </Field>

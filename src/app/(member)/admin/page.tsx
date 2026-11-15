@@ -9,6 +9,13 @@ import { BLOOD_GROUPS } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Administration" };
 
+const TOOLS = [
+  { href: "/volunteer/requests", label: "Coordinate requests", icon: HandHeart },
+  { href: "/volunteer/donors", label: "Donor directory", icon: Users },
+  { href: "/volunteer/coordination", label: "My coordination", icon: ClipboardCheck },
+  { href: "/volunteer/donations", label: "Donation records", icon: Droplet },
+];
+
 export default async function AdminOverviewPage() {
   const [analytics, storyQueue] = await Promise.all([getAdminAnalytics(), storiesAwaitingReview()]);
   if (!analytics) return <Notice tone="warning">Analytics could not be loaded.</Notice>;
@@ -45,6 +52,21 @@ export default async function AdminOverviewPage() {
                 <item.icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
                 <span className="flex-1 text-sm font-semibold text-navy">{item.label}</span>
                 <span className="rounded-full bg-accent px-2.5 py-0.5 text-sm font-bold text-accent-foreground">{formatNumber(item.value)}</span>
+                <ArrowRight className="size-4 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="tools-heading">
+        <SectionHeading id="tools-heading" title="Coordination tools" description="Everything volunteers can do, available to administrators too." />
+        <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {TOOLS.map((tool) => (
+            <li key={tool.href}>
+              <Link href={tool.href} className="surface flex min-h-14 items-center gap-3 p-4 hover:border-primary/40">
+                <tool.icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
+                <span className="flex-1 text-sm font-semibold text-navy">{tool.label}</span>
                 <ArrowRight className="size-4 text-muted-foreground" aria-hidden="true" />
               </Link>
             </li>

@@ -10,7 +10,7 @@ import { normalizePhone } from "@/lib/phone";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { uuidSchema } from "@/lib/validation/common";
-import { campSchema, metricSourceSchema, settingsSchema, staffRoleSchema, storyPublicContentSchema } from "@/lib/validation/forms";
+import { adminDonorSchema, campSchema, metricSourceSchema, settingsSchema, staffRoleSchema, storyPublicContentSchema } from "@/lib/validation/forms";
 
 const str = (fd: FormData, key: string) => String(fd.get(key) ?? "").trim();
 const bool = (fd: FormData, key: string) => fd.get(key) === "on" || fd.get(key) === "true";
@@ -34,6 +34,40 @@ export async function verifyProfile(_prev: ActionResult, fd: FormData): Promise<
   revalidatePath(`/admin/donors/${id.data}`);
   revalidatePath("/admin/donors");
   return success("Verification updated and the donor was notified.");
+}
+
+export async function adminUpdateDonor(_prev: ActionResult, fd: FormData): Promise<ActionResult> {
+  await requireAdmin();
+  const keys = ["profile_id", "full_name", "display_name", "blood_group", "phone", "whatsapp", "state", "district", "city", "locality", "pincode"] as const;
+  const parsed = adminDonorSchema.safeParse(Object.fromEntries(keys.map((k) => [k, str(fd, k)])));
+  // ActionForm shows one message, so name the first problem directly.
+  if (!parsed.success) return fail(parsed.error.issues[0]?.message ?? "Please check the details.");
+  const v = parsed.data;
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name: v.full_name,
+      display_name: v.display_name || null,
+      ...(v.blood_group ? { blood_group: v.blood_group, requested_blood_group: null } : {}),
+    })
+    .eq("id", v.profile_id);
+  if (error) return fail(friendlyDbError(error));
+  const { error: contactError } = await supabase
+    .from("profile_contacts")
+    .update({ phone: normalizePhone(v.phone), whatsapp: normalizePhone(v.whatsapp) })
+    .eq("profile_id", v.profile_id);
+  if (contactError) return fail(friendlyDbError(contactError));
+  if (v.state) {
+    const { error: locationError } = await supabase.from("donor_locations").upsert(
+      { profile_id: v.profile_id, state: v.state, district: v.district, city: v.city, locality: v.locality || null, pincode: v.pincode || null },
+      { onConflict: "profile_id" },
+    );
+    if (locationError) return fail(friendlyDbError(locationError));
+  }
+  revalidatePath(`/admin/donors/${v.profile_id}`);
+  revalidatePath("/admin/donors");
+  return success("Donor details saved.");
 }
 
 export async function resolveBloodGroupChange(_prev: ActionResult, fd: FormData): Promise<ActionResult> {

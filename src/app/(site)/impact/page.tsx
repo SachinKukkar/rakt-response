@@ -37,7 +37,7 @@ export const revalidate = 300;
 
 const IMPACT_METRICS: MetricDefinition[] = [
   { key: "registered_donors", label: "Registered donors", icon: Users, definition: "Active donor accounts with a confirmed email address." },
-  { key: "verified_donors", label: "Verified donors", icon: UserCheck, definition: "Donor profiles checked by an administrator. Verification is not a medical eligibility decision." },
+  { key: "verified_donors", label: "Verified donors", icon: UserCheck, definition: "Registered donors who confirmed their email address. Verification is not a medical eligibility decision." },
   { key: "verified_whole_blood_donations", label: "Verified whole blood donations", icon: Droplet, definition: "Whole blood donation records verified by an authorised volunteer or administrator." },
   { key: "verified_sdp_donations", label: "Verified SDP donations", icon: HeartPulse, definition: "Single donor platelet records that have been verified. Counted separately from whole blood." },
   { key: "requests_received", label: "Blood requests received", icon: Inbox, definition: "Requests submitted to volunteers (excluding drafts). Includes requests that could not be verified." },
@@ -66,7 +66,7 @@ interface PublicCamp {
 }
 
 const HOW_WE_WORK = [
-  { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves. Profiles are private by default and an administrator can verify identity details. Verification never decides medical eligibility." },
+  { icon: UserCheck, title: "Donor registration & verification", text: "Donors register themselves and are verified once they confirm their email. Profiles are private by default, and blood groups are marked verified only after an administrator checks a document. Verification never decides medical eligibility." },
   { icon: ClipboardCheck, title: "Reviewing blood requests", text: "Every request is checked by an authorised volunteer — usually with the requester or hospital — before it is marked verified, shown publicly or sent to donors." },
   { icon: HandHeart, title: "Coordinating with donors", text: "Volunteers contact only donors who allowed it, or who accept a contact request. Each access to contact details is logged and rate-limited." },
   { icon: Droplet, title: "Updating donation records", text: "Donors add donations as self-reported. Authorised reviewers verify them separately for whole blood and SDP." },
